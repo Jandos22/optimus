@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 import * as application from './application.actions';
 // import * as $ from 'jquery';
 import * as sprLib from 'sprestlib';
@@ -11,8 +12,6 @@ import { Locations } from '../shared/interfaces/locations.model';
 
 @Injectable()
 export class ApplicationEffects {
-
-    header = new HttpHeaders().set('Accept', 'application/json; odata=verbose');
 
     @Effect() setTitle = this.actions$
         .ofType(application.CHANGE_APP_NAME)

@@ -13,15 +13,18 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromRouter from '@ngrx/router-store';
 import * as fromLayout from '../store/layout.reducer';
 import * as fromApplication from '../store/application.reducer';
+import * as fromUser from '../store/user.reducer';
 
 export interface State {
     application: fromApplication.ApplicationState;
+    user: fromUser.UserState;
     layout: fromLayout.LayoutState;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
 export const reducers: ActionReducerMap<State> = {
     application: fromApplication.reducer,
+    user: fromUser.reducer,
     layout: fromLayout.reducer,
     routerReducer: fromRouter.routerReducer,
 };

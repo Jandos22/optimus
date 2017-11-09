@@ -1,3 +1,4 @@
+
 // 3rd Party Modules
 import { SidebarModule } from 'ng-sidebar';
 import { MaterialDesignModule } from './shared/libraries/material-design.module';
@@ -29,6 +30,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CustomRouterStateSerializer } from './store/router.utilities';
 import { reducers, metaReducers } from './store/app.reducers';
 import { ApplicationEffects } from './store/application.effects';
+import { UserEffects } from './store/user.effects';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,10 @@ import { ApplicationEffects } from './store/application.effects';
     MaterialDesignModule,
     SidebarModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([ApplicationEffects]),
+    EffectsModule.forRoot([
+      ApplicationEffects,
+      UserEffects
+      ]),
     StoreRouterConnectingModule,
     AppRoutingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],

@@ -5,7 +5,7 @@ import * as fromRoot from '../../store/app.reducers';
 import * as application from '../../store/application.actions';
 import * as layout from '../../store/layout.actions';
 import { Locations } from '../../shared/interfaces/locations.model';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+// import { fromPromise } from 'rxjs/observable/fromPromise';
 
 @Component({
   selector: 'app-header',
