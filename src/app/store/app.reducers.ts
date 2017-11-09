@@ -38,7 +38,7 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 export const metaReducers: MetaReducer<State>[]
     = !environment.production ? [logger, storeFreeze] : [];
 
-// Layout Reducers
+// Layout Reducer Selectors
 export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>('layout');
 
 export const getSidenavState
@@ -55,3 +55,9 @@ export const getSidenavBackDrop
 
 export const getSidenavCloseOnBackDrop
     = createSelector(getLayoutState, fromLayout.getSidenavCloseOnBackDrop);
+
+// Layout Reducer Selectors
+export const getApplicationState = createFeatureSelector<fromApplication.ApplicationState>('application');
+
+export const getApplicationLocations
+    = createSelector(getApplicationState, fromApplication.getApplicationLocations);

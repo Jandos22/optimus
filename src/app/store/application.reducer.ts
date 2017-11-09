@@ -1,13 +1,16 @@
 import * as application from './application.actions';
+import { Locations } from '../shared/interfaces/locations.model';
 
 export interface ApplicationState {
     name: string;
     location: string;
+    locations: Locations;
 }
 
 const initialState: ApplicationState = {
     name: null,
-    location: null
+    location: null,
+    locations: null
 };
 
 export function reducer(state = initialState, action: application.Actions): ApplicationState {
@@ -26,6 +29,12 @@ export function reducer(state = initialState, action: application.Actions): Appl
                 location: action.payload
             };
 
+        case application.SET_LOCATIONS:
+            return {
+                ...state,
+                locations: action.payload
+            };
+
         default:
             return state;
 
@@ -38,3 +47,6 @@ export const getApplicationName
 
 export const getApplicationLocation
     = (state: ApplicationState) => state.location;
+
+export const getApplicationLocations
+    = (state: ApplicationState) => state.locations;

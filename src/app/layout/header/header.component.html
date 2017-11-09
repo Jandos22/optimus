@@ -16,8 +16,8 @@
             KZTZ <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #locationsMenu="matMenu">
-            <button mat-menu-item *ngFor="let location of locations">
-                <span>{{ location.code }}</span>
+            <button mat-menu-item *ngFor="let location of locations$ | async">
+                <span>{{ location.Location }}</span>
             </button>
         </mat-menu>
   </span>

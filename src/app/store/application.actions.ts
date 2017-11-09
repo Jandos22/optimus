@@ -1,3 +1,4 @@
+import { Locations } from './../shared/interfaces/locations.model';
 import { Action } from '@ngrx/store';
 
 export const CHANGE_APP_NAME = '[Application] Change App Name';
@@ -28,7 +29,7 @@ export class GetLocations implements Action {
 
 export class SetLocations implements Action {
     readonly type = SET_LOCATIONS;
-    constructor() {}
+    constructor(public payload: Locations) {}
 }
 
 export type Actions

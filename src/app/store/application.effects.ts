@@ -7,6 +7,7 @@ import 'rxjs/add/operator/switchMap';
 import * as application from './application.actions';
 // import * as $ from 'jquery';
 import * as sprLib from 'sprestlib';
+import { Locations } from '../shared/interfaces/locations.model';
 
 @Injectable()
 export class ApplicationEffects {
@@ -27,17 +28,9 @@ export class ApplicationEffects {
     @Effect() getLocations = this.actions$
         .ofType(application.GET_LOCATIONS)
         .switchMap((action: application.GetLocations) => {
-
             return sprLib.list('NgLocations').getItems(['Id', 'Location']);
-
-            // return this.httpClient.get<any>(
-            //     '/_api/web/lists/getbytitle(\'NgLocations\')/items', {
-            //         observe: 'body',
-            //         headers: this.header
-            //     });
         })
-        .map((data) => {
-            console.log(data);
+        .map((data: Locations[]) => {
             return {
                 type: application.SET_LOCATIONS,
                 payload: data
