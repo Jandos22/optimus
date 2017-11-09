@@ -1,0 +1,26 @@
+<app-header></app-header> 
+
+<!-- Container for sidebar(s) + page content -->
+<ng-sidebar-container>
+
+    <!-- A sidebar -->
+    <ng-sidebar [opened]="sidenavShow$ | async" 
+                [mode]="sidenavMode$ | async" 
+                [autoCollapseWidth]="sidenavAutoCollapseWidth$ | async" 
+                [showBackdrop]="sidenavBackDrop$ | async" 
+                [closeOnClickBackdrop]="sidenavCloseOnBackDrop$ | async" 
+                [autoFocus]="'false'"
+                [sidebarClass]="'optimus-sidebar'"
+                (onClosed)="closeSidenav()">
+        <app-sidenav></app-sidenav>
+    </ng-sidebar>
+
+    <!-- Page content -->
+    <div ng-sidebar-content class="contentWrapper">
+        <router-outlet></router-outlet>
+    </div>
+
+</ng-sidebar-container>
+
+
+

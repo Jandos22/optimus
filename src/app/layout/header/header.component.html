@@ -1,0 +1,24 @@
+<mat-toolbar fxLayoutAlign="start center" id="rw-header" color="primary">
+  
+    <span>
+        <button mat-icon-button (click)="toggleSidenav()" class="iconFix">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </span>
+    <span>
+        <button mat-button routerLink="/">
+            Optimus
+        </button>
+    </span>
+  <span fxFlex></span>
+  <span>
+        <button mat-button [matMenuTriggerFor]="locationsMenu">
+            KZTZ <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu #locationsMenu="matMenu">
+            <button mat-menu-item *ngFor="let location of locations">
+                <span>{{ location.code }}</span>
+            </button>
+        </mat-menu>
+  </span>
+</mat-toolbar>
