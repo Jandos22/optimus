@@ -38,6 +38,9 @@ export class UserEffects {
                 ];
         });
 
+    // Check Current User by Alias in NgPeople list
+    // if true > update state
+    // if false > show warning and ask user to sign up
     @Effect() checkCurrentUser = this.actions$
         .ofType(user.CHECK_CURRENT_USER)
         .switchMap((action: user.CheckCurrentUser) => {
@@ -58,7 +61,7 @@ export class UserEffects {
                     name: userdata.Name,
                     surname: userdata.Surname,
                     nameSurname: userdata.Name + ' ' + userdata.Surname,
-                    surnameName: userdata.Surname + ' ' + userdata.name,
+                    surnameName: userdata.Surname + ' ' + userdata.Name,
                     photo: userdata.Photo.Url
                 };
 
