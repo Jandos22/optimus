@@ -39,7 +39,6 @@ export function reducer(state = initialState, action: user.Actions): UserState {
             };
 
         case user.SET_OPTIMUS_USER:
-            console.log('triggerred?');
             return {
                 ...state,
                 ...action.payload
