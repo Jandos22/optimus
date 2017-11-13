@@ -66,8 +66,6 @@ export class UserEffects {
                     photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/')
                 };
 
-                console.log(optimusUserData);
-
                 return {
                     type: user.SET_OPTIMUS_USER,
                     payload: optimusUserData

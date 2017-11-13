@@ -1,19 +1,27 @@
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PeopleComponent } from './people.component';
+import { reducer } from './store/people.reducer';
+// import { reducers } from './store/reducers';
+import { PeopleEffects } from './store/people.effects';
 
 export const peopleRoutes: Routes = [
-  { path: '', component: PeopleComponent}
+  { path: ':location', component: PeopleComponent},
+  { path: '', component: PeopleComponent},
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(peopleRoutes)
+    RouterModule.forChild(peopleRoutes),
+    StoreModule.forFeature('people', reducer),
+    EffectsModule.forFeature([PeopleEffects])
   ],
   exports: [
-    RouterModule
+    RouterModule,
   ],
   declarations: [PeopleComponent]
 })
