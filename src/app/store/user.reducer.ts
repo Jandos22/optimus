@@ -49,3 +49,7 @@ export function reducer(state = initialState, action: user.Actions): UserState {
             return state;
     }
 }
+
+export const getIsRegistered = (state: UserState) => state.isRegistered;
+export const getInitials = (state: UserState) => state.initials;
+export const getPhoto = (state: UserState) => state.photo;

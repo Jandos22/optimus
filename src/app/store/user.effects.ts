@@ -62,7 +62,8 @@ export class UserEffects {
                     surname: userdata.Surname,
                     nameSurname: userdata.Name + ' ' + userdata.Surname,
                     surnameName: userdata.Surname + ' ' + userdata.Name,
-                    photo: userdata.Photo.Url
+                    // photo: userdata.Photo.Url
+                    photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/')
                 };
 
                 console.log(optimusUserData);

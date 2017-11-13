@@ -18,10 +18,19 @@ export class HeaderComponent implements OnInit {
   locations$: Observable<Locations>;
   selectedLocation: string;
 
+  // Current User Information
+  isRegistered$: Observable<boolean>;
+  initials$: Observable<string>;
+  photo$: Observable<string>;
+
   constructor(private store: Store<fromRoot.State>) {
     // this.locations = [{ code: 'KZTZ' }, { code: 'KZAU' }];
     this.selectedLocation = 'KZTZ';
     this.locations$ = this.store.select(fromRoot.getApplicationLocations);
+
+    this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
+    this.initials$ = this.store.select(fromRoot.getInitials);
+    this.photo$ = this.store.select(fromRoot.getPhoto);
    }
 
   ngOnInit() {

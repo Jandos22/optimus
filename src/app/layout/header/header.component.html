@@ -10,8 +10,11 @@
             Optimus
         </button>
     </span>
-  <span fxFlex></span>
-  <span>
+    <span fxFlex></span>
+
+    
+    
+    <span>
         <button mat-button [matMenuTriggerFor]="locationsMenu">
             KZTZ <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
@@ -20,5 +23,13 @@
                 <span>{{ location.Location }}</span>
             </button>
         </mat-menu>
-  </span>
+    </span>
+
+    <!-- Show Current User Data -->
+    <span *ngIf="isRegistered$ | async">
+        <button mat-icon-button>
+            <img [src]="photo$ | async" [alt]="initials$ | async" class="userPhoto">
+        </button>
+    </span >
+
 </mat-toolbar>

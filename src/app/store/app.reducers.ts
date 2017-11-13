@@ -41,26 +41,38 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 export const metaReducers: MetaReducer<State>[]
     = !environment.production ? [logger, storeFreeze] : [];
 
-// Layout Reducer Selectors
+// LAYOUT Selectors
 export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>('layout');
 
-export const getSidenavState
+    export const getSidenavState
     = createSelector(getLayoutState, fromLayout.getSidenavState);
 
-export const getSidenavMode
+    export const getSidenavMode
     = createSelector(getLayoutState, fromLayout.getSidenavMode);
 
-export const getSidenavAutoCollapseWidth
+    export const getSidenavAutoCollapseWidth
     = createSelector(getLayoutState, fromLayout.getSidenavAutoCollapseWidth);
 
-export const getSidenavBackDrop
+    export const getSidenavBackDrop
     = createSelector(getLayoutState, fromLayout.getSidenavBackDrop);
 
-export const getSidenavCloseOnBackDrop
+    export const getSidenavCloseOnBackDrop
     = createSelector(getLayoutState, fromLayout.getSidenavCloseOnBackDrop);
 
-// Layout Reducer Selectors
+// APPLICATION Selectors
 export const getApplicationState = createFeatureSelector<fromApplication.ApplicationState>('application');
 
-export const getApplicationLocations
+    export const getApplicationLocations
     = createSelector(getApplicationState, fromApplication.getApplicationLocations);
+
+// USER Selectors
+export const getUserState = createFeatureSelector<fromUser.UserState>('user');
+
+    export const getIsRegistered
+    = createSelector(getUserState, fromUser.getIsRegistered);
+
+    export const getInitials
+    = createSelector(getUserState, fromUser.getInitials);
+
+    export const getPhoto
+    = createSelector(getUserState, fromUser.getPhoto);
