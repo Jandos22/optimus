@@ -16,7 +16,7 @@
     
     <span>
         <button mat-button [matMenuTriggerFor]="locationsMenu">
-            KZTZ <mat-icon>keyboard_arrow_down</mat-icon>
+            {{ selectedLocation$ | async }} <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #locationsMenu="matMenu">
             <button mat-menu-item *ngFor="let location of locations$ | async">

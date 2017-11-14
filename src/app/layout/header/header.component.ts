@@ -16,7 +16,7 @@ import { Locations } from '../../shared/interfaces/locations.model';
 export class HeaderComponent implements OnInit {
 
   locations$: Observable<Locations>;
-  selectedLocation: string;
+  selectedLocation$: Observable<string>;
 
   // Current User Information
   isRegistered$: Observable<boolean>;
@@ -24,9 +24,9 @@ export class HeaderComponent implements OnInit {
   photo$: Observable<string>;
 
   constructor(private store: Store<fromRoot.State>) {
-    // this.locations = [{ code: 'KZTZ' }, { code: 'KZAU' }];
-    this.selectedLocation = 'KZTZ';
+
     this.locations$ = this.store.select(fromRoot.getApplicationLocations);
+    this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
 
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
     this.initials$ = this.store.select(fromRoot.getInitials);

@@ -7,6 +7,8 @@ export const SET_LOCATION = '[Application] Set Location';
 export const GET_LOCATIONS = '[Application] Get Locations List';
 export const SET_LOCATIONS = '[Application] Set Locations List';
 
+export const SET_SELECTED_LOCATION = '[Application] Set Selected Location';
+
 export class ChangeAppName implements Action {
     readonly type = CHANGE_APP_NAME;
     constructor(public payload: string) {}
@@ -32,9 +34,15 @@ export class SetLocations implements Action {
     constructor(public payload: Locations) {}
 }
 
+export class SetSelectedLocation implements Action {
+    readonly type = SET_SELECTED_LOCATION;
+    constructor(public payload: string) {}
+}
+
 export type Actions
     = ChangeAppName
     | SetAppName
     | SetLocation
     | GetLocations
-    | SetLocations;
+    | SetLocations
+    | SetSelectedLocation;

@@ -65,6 +65,9 @@ export const getApplicationState = createFeatureSelector<fromApplication.Applica
     export const getApplicationLocations
     = createSelector(getApplicationState, fromApplication.getApplicationLocations);
 
+    export const getApplicationLocation
+    = createSelector(getApplicationState, fromApplication.getApplicationLocation);
+
 // USER Selectors
 export const getUserState = createFeatureSelector<fromUser.UserState>('user');
 

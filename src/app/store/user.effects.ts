@@ -8,6 +8,7 @@ import 'rxjs/add/operator/mergeMap';
 // import * as $ from 'jquery';
 import * as sprLib from 'sprestlib';
 import * as user from './user.actions';
+import * as application from './application.actions';
 
 @Injectable()
 export class UserEffects {
@@ -46,11 +47,11 @@ export class UserEffects {
         .switchMap((action: user.CheckCurrentUser) => {
             const alias = '\'' + action.payload + '\'';
             return sprLib.list('NgPeople').getItems({
-                listCols: ['Id', 'Name', 'Surname', 'Alias', 'Email', 'Photo'],
+                listCols: ['Id', 'Name', 'Surname', 'Alias', 'Email', 'Photo', 'Location'],
                 queryFilter: 'Alias eq ' + alias
             });
         })
-        .map((data: any) => {
+        .mergeMap((data: any) => {
 
             if (data.length > 0) {
 
@@ -60,16 +61,17 @@ export class UserEffects {
                     isRegistered: true,
                     name: userdata.Name,
                     surname: userdata.Surname,
-                    nameSurname: userdata.Name + ' ' + userdata.Surname,
-                    surnameName: userdata.Surname + ' ' + userdata.Name,
                     // photo: userdata.Photo.Url
-                    photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/')
+                    photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/'),
+                    location: userdata.Location
                 };
 
-                return {
-                    type: user.SET_OPTIMUS_USER,
-                    payload: optimusUserData
-                };
+                return [
+                    { type: user.SET_OPTIMUS_USER,
+                      payload: optimusUserData },
+                    { type: application.SET_SELECTED_LOCATION,
+                      payload: userdata.Location }
+                    ];
 
             } else {
                 console.log(false);

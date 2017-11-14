@@ -8,8 +8,6 @@ export interface UserState {
     isRegistered: boolean;
     name: string;
     surname: string;
-    nameSurname: string;
-    surnameName: string;
     photo: string;
     location: string;
 }
@@ -22,8 +20,6 @@ const initialState: UserState = {
     isRegistered: null,
     name: null,
     surname: null,
-    nameSurname: null,
-    surnameName: null,
     photo: null,
     location: null
 };

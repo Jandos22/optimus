@@ -35,6 +35,12 @@ export function reducer(state = initialState, action: application.Actions): Appl
                 locations: action.payload
             };
 
+        case application.SET_SELECTED_LOCATION:
+            return {
+                ...state,
+                location: action.payload
+            };
+
         default:
             return state;
 
