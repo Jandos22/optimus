@@ -41,4 +41,8 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(new layout.ToggleSidenav());
   }
 
+  onSelectLocation(location) {
+    this.store.dispatch(new application.SetSelectedLocation(location));
+  }
+
 }

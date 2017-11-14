@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../store/app.reducers';
+import * as fromPeople from './store/people.reducer';
+// import * as fromRoot from '../../store/app.reducers';
 import * as application from '../../store/application.actions';
 import * as people from './store/people.actions';
 
@@ -14,7 +15,7 @@ export class PeopleComponent implements OnInit {
 
   appName = 'People';
 
-  constructor(private store: Store<fromRoot.State>) { }
+  constructor(private store: Store<fromPeople.FeatureState>) { }
 
   ngOnInit() {
     this.store.dispatch(new application.ChangeAppName(this.appName));

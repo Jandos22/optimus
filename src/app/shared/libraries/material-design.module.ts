@@ -6,7 +6,9 @@ import {
   MatToolbarModule,
   MatButtonModule,
   MatIconModule,
-  MatMenuModule
+  MatMenuModule,
+  MatFormFieldModule,
+  MatInputModule
 } from '@angular/material';
 
 @NgModule({
@@ -17,7 +19,9 @@ import {
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   exports: [
     MatSelectModule,
@@ -25,7 +29,9 @@ import {
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: []
 })

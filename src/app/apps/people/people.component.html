@@ -1,3 +1,11 @@
-<p>
-  people works!
-</p>
+<mat-toolbar class="toolbarContainer">
+  <mat-toolbar-row>
+    <span class="toolbarElement">{{ appName }}</span>
+    <span class="toolbarElement inputElement">
+      <mat-form-field [floatPlaceholder]="'never'">
+        <input matInput placeholder="Search">
+        <!-- <mat-hint align="start"><strong>Search in Optimus's People database</strong> </mat-hint> -->
+      </mat-form-field>
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>

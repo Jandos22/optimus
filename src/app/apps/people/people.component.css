@@ -1,0 +1,11 @@
+toolbarContainer {
+    background-color: #d4d5d6;
+}
+
+.toolbarElement {
+    padding: 0 10px 0 10px;
+}
+
+.inputElement {
+    font-size: 0.875rem;
+}

@@ -1,6 +1,7 @@
+import * as fromRoot from '../../../store/app.reducers';
 import * as people from './people.actions';
 
-export interface FeatureState {
+export interface FeatureState extends fromRoot.State {
     people: PeopleState;
 }
 

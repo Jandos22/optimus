@@ -1,3 +1,4 @@
+import { MaterialDesignModule } from './../../shared/libraries/material-design.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
@@ -16,6 +17,7 @@ export const peopleRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    MaterialDesignModule,
     RouterModule.forChild(peopleRoutes),
     StoreModule.forFeature('people', reducer),
     EffectsModule.forFeature([PeopleEffects])
