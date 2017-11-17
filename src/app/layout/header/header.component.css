@@ -17,3 +17,13 @@
     height: 32px;
     width: 32px;
 }
+
+.appNameInHeaderAndOptimus {
+    position: absolute;
+    margin: 0 0 0 210px;
+}
+
+.appNameInHeader {
+    position: absolute;
+    margin: 0 0 0 56px;
+}

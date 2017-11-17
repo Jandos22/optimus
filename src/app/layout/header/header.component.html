@@ -5,10 +5,14 @@
             <mat-icon>menu</mat-icon>
         </button>
     </span>
-    <span>
+    <span *ngIf="!(isSmall$ | async)">
         <button mat-button routerLink="/">
+            <!-- <h1>Optimus</h1> -->
             Optimus
         </button>
+    </span>
+    <span [ngClass]="{'appNameInHeaderAndOptimus': !(isSmall$ | async), 'appNameInHeader': isSmall$ | async}">
+        <h1>{{ appName$ | async }}</h1>
     </span>
     <span fxFlex></span>
 

@@ -44,6 +44,9 @@ export const metaReducers: MetaReducer<State>[]
 // LAYOUT Selectors
 export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>('layout');
 
+    export const getIsSmall
+    = createSelector(getLayoutState, fromLayout.getIsSmall);
+
     export const getSidenavState
     = createSelector(getLayoutState, fromLayout.getSidenavState);
 
@@ -61,6 +64,9 @@ export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>('lay
 
 // APPLICATION Selectors
 export const getApplicationState = createFeatureSelector<fromApplication.ApplicationState>('application');
+
+    export const getApplicationName
+    = createSelector(getApplicationState, fromApplication.getApplicationName);
 
     export const getApplicationLocations
     = createSelector(getApplicationState, fromApplication.getApplicationLocations);

@@ -15,8 +15,11 @@ import { Locations } from '../../shared/interfaces/locations.model';
 })
 export class HeaderComponent implements OnInit {
 
+  appName$: Observable<string>;
   locations$: Observable<Locations>;
   selectedLocation$: Observable<string>;
+
+  isSmall$: Observable<boolean>;
 
   // Current User Information
   isRegistered$: Observable<boolean>;
@@ -27,6 +30,9 @@ export class HeaderComponent implements OnInit {
 
     this.locations$ = this.store.select(fromRoot.getApplicationLocations);
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
+    this.appName$ = this.store.select(fromRoot.getApplicationName);
+
+    this.isSmall$ = this.store.select(fromRoot.getIsSmall);
 
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
     this.initials$ = this.store.select(fromRoot.getInitials);

@@ -10,6 +10,7 @@ export interface LayoutState {
 
 const initialState: LayoutState = {
     window: {
+        smallWindow: null,
         innerWidth: null,
         innerHeight: null,
     },
@@ -27,6 +28,7 @@ export function reducer(state = initialState, action: layout.Actions): LayoutSta
     let show: boolean;
     let mode: string;
     let backDrop: boolean;
+    let smallWindow: boolean;
 
     switch (action.type) {
 
@@ -35,6 +37,7 @@ export function reducer(state = initialState, action: layout.Actions): LayoutSta
         const b = state.sidenav.autoCollapseWidth;
 
         a <= b ? mode = 'over' : mode = 'push';
+        a <= b ? smallWindow = true : smallWindow = false;
         mode === 'over' ? backDrop = true : backDrop = false;
         mode === 'push' ? show = true : show = false;
 
@@ -42,6 +45,7 @@ export function reducer(state = initialState, action: layout.Actions): LayoutSta
             ...state,
             window: {
                 ...state.window,
+                smallWindow: smallWindow,
                 innerWidth: action.payload.innerWidth,
                 innerHeight: action.payload.innerHeight,
             },
@@ -74,6 +78,8 @@ export function reducer(state = initialState, action: layout.Actions): LayoutSta
             return state;
     }
 }
+
+export const getIsSmall = (state: LayoutState) => state.window.smallWindow;
 
 export const getSidenavState = (state: LayoutState) => state.sidenav.show;
 export const getSidenavMode = (state: LayoutState) => state.sidenav.mode;

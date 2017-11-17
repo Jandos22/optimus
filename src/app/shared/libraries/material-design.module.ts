@@ -10,6 +10,7 @@ import {
   MatFormFieldModule,
   MatInputModule
 } from '@angular/material';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import {
     MatMenuModule,
     FlexLayoutModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    LayoutModule
   ],
   exports: [
     MatSelectModule,
@@ -31,7 +33,8 @@ import {
     MatMenuModule,
     FlexLayoutModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    LayoutModule
   ],
   declarations: []
 })

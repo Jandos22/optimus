@@ -44,7 +44,8 @@ export class LayoutComponent implements OnInit {
   }
 
   initLayout() {
-    const payload = { innerWidth: this.innerWidth,
+    const payload = { smallWindow: undefined,
+                      innerWidth: this.innerWidth,
                       innerHeight: this.innerHeight };
     this.store.dispatch(new layout.InitLayout(payload));
   }
