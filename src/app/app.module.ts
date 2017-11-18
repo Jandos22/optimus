@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 // import { Routes, RouterModule } from '@angular/router';
 
@@ -44,6 +44,7 @@ import { UserEffects } from './store/user.effects';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     PrimengModule,
     MaterialDesignModule,
     SidebarModule.forRoot(),
@@ -59,6 +60,9 @@ import { UserEffects } from './store/user.effects';
   providers: [
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer},
     Title
+  ],
+  exports: [
+    ReactiveFormsModule,
   ],
   bootstrap: [AppComponent]
 })

@@ -13,8 +13,8 @@ export interface PeopleState {
 
 const initialState: PeopleState = {
     search: {
-        location: undefined,
-        query: undefined
+        location: null,
+        query: null
     },
     users: null
 };
@@ -30,6 +30,13 @@ export function reducer(state = initialState, action: people.Actions): PeopleSta
                 ...state,
                 search: { ...state.search,
                           location: action.payload }
+            };
+
+        case people.UPDATE_SEARCH_QUERY:
+            return {
+                ...state,
+                search: { ...state.search,
+                          query: action.payload }
             };
 
         case people.CLEAR_STATE:

@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialDesignModule } from './../../shared/libraries/material-design.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -18,12 +19,14 @@ export const peopleRoutes: Routes = [
   imports: [
     CommonModule,
     MaterialDesignModule,
+    ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
     StoreModule.forFeature('people', reducer),
     EffectsModule.forFeature([PeopleEffects])
   ],
   exports: [
     RouterModule,
+    ReactiveFormsModule
   ],
   declarations: [PeopleComponent]
 })
