@@ -13,9 +13,9 @@ import * as sprLib from 'sprestlib';
 import * as people from './people.actions';
 
 // PRODUCTION
-const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-// const apiPath = '';
+const apiPath = '';
 
 const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 
@@ -35,7 +35,7 @@ export class PeopleEffects {
             console.log(data);
         });
 
-    @Effect({dispatch: false}) triggerSearch = this.actions$
+    @Effect() triggerSearch = this.actions$
         .ofType(people.TRIGGER_SEARCH)
         .switchMap((action: people.TriggerSearch) => {
 
@@ -58,8 +58,15 @@ export class PeopleEffects {
             return this.http.get( uri, { headers: new HttpHeaders().set(headkey, headval) }
             );
         })
-        .do((data: any) => {
-            console.log(data.d);
+        .map((data: any) => {
+            console.log(data.d.results.length);
+            if (data.d.results.length > 0) {
+                console.log(data.d.results.length);
+                return {
+                    type: people.UPDATE_PEOPLE_LIST,
+                    payload: data.d.results
+                };
+            }
         });
 
     constructor(private actions$: Actions,

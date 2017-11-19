@@ -19,11 +19,9 @@
 }
 
 .appNameInHeaderAndOptimus {
-    position: absolute;
-    margin: 0 0 0 210px;
+    padding: 0 10px 0 26px;
 }
 
 .appNameInHeader {
-    position: absolute;
-    margin: 0 0 0 56px;
+    padding: 0 10px 0 12px;
 }

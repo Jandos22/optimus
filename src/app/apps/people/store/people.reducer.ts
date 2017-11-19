@@ -39,6 +39,12 @@ export function reducer(state = initialState, action: people.Actions): PeopleSta
                           query: action.payload }
             };
 
+        case people.UPDATE_PEOPLE_LIST:
+            return {
+                ...state,
+                users: action.payload
+            };
+
         case people.CLEAR_STATE:
             return {
                 ...state,
@@ -53,3 +59,4 @@ export function reducer(state = initialState, action: people.Actions): PeopleSta
 
 // Prepared Selectors
 export const getSearchParams = (state: FeatureState) => state.people.search;
+export const getPeopleList = (state: FeatureState) => state.people.users;

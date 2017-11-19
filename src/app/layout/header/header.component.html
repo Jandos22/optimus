@@ -1,22 +1,26 @@
 <mat-toolbar fxLayoutAlign="start center" id="rw-header" color="primary">
-  
+    
     <span>
         <button mat-icon-button (click)="toggleSidenav()" class="iconFix">
             <mat-icon>menu</mat-icon>
         </button>
     </span>
-    <span *ngIf="!(isSmall$ | async)">
-        <button mat-button routerLink="/">
-            <!-- <h1>Optimus</h1> -->
-            Optimus
-        </button>
+
+    <span fxFlex="144px" *ngIf="!(isSmall$ | async)">
+        
+        <span>
+            <button mat-button routerLink="/">
+                <!-- <h1>Optimus</h1> -->
+                Optimus
+            </button>
+        </span>
     </span>
+    
     <span [ngClass]="{'appNameInHeaderAndOptimus': !(isSmall$ | async), 'appNameInHeader': isSmall$ | async}">
         <h1>{{ appName$ | async }}</h1>
     </span>
-    <span fxFlex></span>
 
-    
+    <span fxFlex></span>
     
     <span>
         <button mat-button [matMenuTriggerFor]="locationsMenu">

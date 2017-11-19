@@ -1,18 +1,2 @@
-<mat-toolbar class="toolbarContainer">
-  <mat-toolbar-row>
-    <!-- <span class="toolbarElement">{{ appName }}</span> -->
-    <form [formGroup]="peopleFiltersForm">
-
-      <span class="toolbarElement inputElement">
-        <mat-form-field [floatPlaceholder]="'never'">
-          <input  matInput 
-                  placeholder="Search"
-                  formControlName="query">
-          <!-- <mat-hint align="start"><strong>Search in Optimus's People database</strong> </mat-hint> -->
-        </mat-form-field>
-      </span>
-
-    </form>
-    
-  </mat-toolbar-row>
-</mat-toolbar>
+<app-people-toolbar></app-people-toolbar>
+<app-people-list></app-people-list>

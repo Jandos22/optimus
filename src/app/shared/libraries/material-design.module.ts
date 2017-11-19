@@ -8,7 +8,10 @@ import {
   MatIconModule,
   MatMenuModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatListModule,
+  MatCardModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -23,7 +26,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     FlexLayoutModule,
     MatFormFieldModule,
     MatInputModule,
-    LayoutModule
+    MatListModule,
+    MatCardModule,
+    LayoutModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatSelectModule,
@@ -34,7 +40,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     FlexLayoutModule,
     MatFormFieldModule,
     MatInputModule,
-    LayoutModule
+    MatListModule,
+    MatCardModule,
+    LayoutModule,
+    MatProgressSpinnerModule
   ],
   declarations: []
 })

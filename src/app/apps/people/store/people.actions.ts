@@ -5,6 +5,7 @@ export const UPDATE_SEARCH_LOCATION = '[People] Update Search Location';
 export const UPDATE_SEARCH_QUERY = '[People] Update Search Query';
 
 export const TRIGGER_SEARCH = '[People] Trigger Search';
+export const UPDATE_PEOPLE_LIST = '[People] Update People List';
 
 export const CLEAR_STATE = '[People] Clear State';
 
@@ -14,6 +15,11 @@ export class NavigatedToPeople implements Action {
 
 export class TriggerSearch implements Action {
     readonly type = TRIGGER_SEARCH;
+    constructor(public payload: any) {}
+}
+
+export class UpdatePeopleList implements Action {
+    readonly type = UPDATE_PEOPLE_LIST;
     constructor(public payload: any) {}
 }
 
@@ -34,6 +40,7 @@ export class ClearState implements Action {
 export type Actions
     = NavigatedToPeople
     | TriggerSearch
+    | UpdatePeopleList
     | UpdateSelectedLocationInSearch
     | UpdateSearchQuery
     | ClearState;

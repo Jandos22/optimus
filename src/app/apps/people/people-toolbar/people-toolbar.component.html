@@ -1,0 +1,22 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <!-- <span class="toolbarElement">{{ appName }}</span> -->
+    <form [formGroup]="peopleFiltersForm">
+
+      <span class="toolbarElement inputElement">
+        <!-- <button mat-icon-button><mat-icon>search</mat-icon></button> -->
+        <mat-form-field [floatPlaceholder]="'never'">
+          <input  matInput 
+                  placeholder="Search"
+                  formControlName="query">
+          <mat-spinner
+            *ngIf="working$ | async"
+            [mode]="indeterminate">
+          </mat-spinner>
+        </mat-form-field>
+      </span>
+
+    </form>
+    
+  </mat-toolbar-row>
+</mat-toolbar>
