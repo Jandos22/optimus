@@ -13,7 +13,7 @@ import * as sprLib from 'sprestlib';
 import * as people from './people.actions';
 
 // PRODUCTION
-const apiPath = 'https://slb001.sharepoint.com/sites/wireline';
+const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
 // const apiPath = '';
 
