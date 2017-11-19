@@ -12,6 +12,11 @@ import * as sprLib from 'sprestlib';
 
 import * as people from './people.actions';
 
+// PRODUCTION
+const apiPath = 'https://slb001.sharepoint.com/sites/wireline';
+// DEVELOPMENT
+// const apiPath = '';
+
 const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 
 const headkey = 'accept';
@@ -35,7 +40,7 @@ export class PeopleEffects {
         .switchMap((action: people.TriggerSearch) => {
 
             const search = action.payload;
-            let uri = listGetNgPeople;
+            let uri = apiPath.concat(listGetNgPeople);
 
             if (search.location) {
                 uri = uri.concat('&$filter=(Location eq \'' + search.location + '\')');
