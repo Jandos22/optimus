@@ -61,8 +61,8 @@ export class UserEffects {
                     isRegistered: true,
                     name: userdata.Name,
                     surname: userdata.Surname,
-                    // photo: userdata.Photo.Url,
-                    photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/'),
+                    photo: userdata.Photo.Url,
+                    // photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/'),
                     location: userdata.Location
                 };
 
