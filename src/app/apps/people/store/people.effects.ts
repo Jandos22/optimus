@@ -13,9 +13,9 @@ import * as sprLib from 'sprestlib';
 import * as people from './people.actions';
 
 // PRODUCTION
-const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-// const apiPath = '';
+const apiPath = '';
 
 const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 

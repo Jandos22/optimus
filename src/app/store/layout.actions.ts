@@ -1,14 +1,16 @@
-import { WindowProperties } from '../shared/interfaces/window-properties.model';
 import { Action } from '@ngrx/store';
+import { WindowProperties } from '../shared/interfaces/window-properties.model';
+import { SidenavProperties } from '../shared/interfaces/sidenav-properties.model';
 
-export const INIT_LAYOUT = '[Layout] Init Layout';
+export const UPDATE_LAYOUT = '[Layout] Update Layout';
 export const TOGGLE_SIDENAV = '[Layout] Toggle Sidenav';
 export const CLOSE_SIDENAV = '[Layout] Close Sidenav';
 export const CLICK_SIDENAV = '[Layout] Click Sidenav';
 
-export class InitLayout implements Action {
-    readonly type = INIT_LAYOUT;
-    constructor(public payload: WindowProperties) {}
+export class UpdateLayout implements Action {
+    readonly type = UPDATE_LAYOUT;
+    constructor(public window: WindowProperties,
+                public sidenav: SidenavProperties) {}
 }
 
 export class ToggleSidenav implements Action {
@@ -24,7 +26,7 @@ export class ClickSidenav implements Action {
 }
 
 export type Actions
-    = InitLayout
+    = UpdateLayout
     | ToggleSidenav
     | CloseSidenav
     | ClickSidenav;

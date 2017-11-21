@@ -1,5 +1,7 @@
 export interface WindowProperties {
-    smallWindow: boolean;
-    innerWidth: number;
-    innerHeight: number;
+    isXS: boolean;
+    isS: boolean;
+    isM: boolean;
+    isL: boolean;
+    isXL: boolean;
 }

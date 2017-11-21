@@ -1,26 +1,15 @@
 <app-header></app-header> 
-
-<!-- Container for sidebar(s) + page content -->
-<ng-sidebar-container>
-
-    <!-- A sidebar -->
-    <ng-sidebar [opened]="sidenavShow$ | async" 
-                [mode]="sidenavMode$ | async" 
-                [autoCollapseWidth]="sidenavAutoCollapseWidth$ | async" 
-                [showBackdrop]="sidenavBackDrop$ | async" 
-                [closeOnClickBackdrop]="sidenavCloseOnBackDrop$ | async" 
-                [autoFocus]="'false'"
-                [sidebarClass]="'optimus-sidebar'"
-                (onClosed)="closeSidenav()">
+<mat-sidenav-container class="sidenavContainer">
+    <!-- Sidenav Container -->
+    <mat-sidenav
+        [opened]="sidenavOpened$ | async"
+        [mode]="sidenavMode$ | async"
+        (close)="onSidenavClose()">
+        <!-- Sidenav Content -->
         <app-sidenav></app-sidenav>
-    </ng-sidebar>
-
-    <!-- Page content -->
+    </mat-sidenav>
+    <!-- Content Container -->
     <div ng-sidebar-content fxLayout="column" fxFlexFill class="contentWrapper">
         <router-outlet></router-outlet>
     </div>
-
-</ng-sidebar-container>
-
-
-
+</mat-sidenav-container>

@@ -1,7 +1,5 @@
 export interface SidenavProperties {
-    show: boolean;
+    opened: boolean;
     mode: string;
-    autoCollapseWidth: number;
-    backDrop: boolean;
-    closeOnClickBackDrop: boolean;
+    lockedinclosed: boolean;
 }

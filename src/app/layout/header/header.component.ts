@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   locations$: Observable<Locations>;
   selectedLocation$: Observable<string>;
 
-  isSmall$: Observable<boolean>;
+  isSidenavOpen$: Observable<boolean>;
 
   // Current User Information
   isRegistered$: Observable<boolean>;
@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
     this.appName$ = this.store.select(fromRoot.getApplicationName);
 
-    this.isSmall$ = this.store.select(fromRoot.getIsSmall);
+    this.isSidenavOpen$ = this.store.select(fromRoot.getSidenavOpened);
 
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
     this.initials$ = this.store.select(fromRoot.getInitials);

@@ -23,9 +23,10 @@ body {
     padding: calc(100vh - 50vh) 0 0 0;
 }
 
-ng-sidebar-container {
+/* mat-sidenav-container {
     height: calc(100vh - 56px) !important;
-}
+    width: 100%;
+} */
 
 .optimus-sidebar {
     width: 200px;

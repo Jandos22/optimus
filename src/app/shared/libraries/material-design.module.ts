@@ -11,7 +11,8 @@ import {
   MatInputModule,
   MatListModule,
   MatCardModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSidenavModule
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -29,7 +30,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatListModule,
     MatCardModule,
     LayoutModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSidenavModule
   ],
   exports: [
     MatSelectModule,
@@ -43,7 +45,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatListModule,
     MatCardModule,
     LayoutModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSidenavModule
   ],
   declarations: []
 })
