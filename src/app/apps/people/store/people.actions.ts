@@ -1,46 +1,52 @@
 import { Action } from '@ngrx/store';
+import { PeopleSearch } from '../model/people-search.model';
 
-export const NAVIGATED_TO_PEOPLE = '[People] Navigated To People';
-export const UPDATE_SEARCH_LOCATION = '[People] Update Search Location';
-export const UPDATE_SEARCH_QUERY = '[People] Update Search Query';
+export const PEOPLE_PROCESS_NEW_SEARCH_PARAMS = '[People] Process New Search Params';
+export const PEOPLE_UPDATE_SEARCH_LOCATION = '[People] Update Search Location';
+export const PEOPLE_UPDATE_SEARCH_QUERY = '[People] Update Search Query';
+export const PEOPLE_TRIGGER_SEARCH = '[People] Trigger Search';
+export const PEOPLE_UPDATE_PEOPLE_LIST = '[People] Update People List';
+export const PEOPLE_NO_RESULTS = '[People] No Results';
+export const PEOPLE_CLEAR_STATE = '[People] Clear State';
 
-export const TRIGGER_SEARCH = '[People] Trigger Search';
-export const UPDATE_PEOPLE_LIST = '[People] Update People List';
-
-export const CLEAR_STATE = '[People] Clear State';
-
-export class NavigatedToPeople implements Action {
-    readonly type = NAVIGATED_TO_PEOPLE;
-}
-
-export class TriggerSearch implements Action {
-    readonly type = TRIGGER_SEARCH;
+export class PeopleTriggerSearch implements Action {
+    readonly type = PEOPLE_TRIGGER_SEARCH;
     constructor(public payload: any) {}
 }
 
-export class UpdatePeopleList implements Action {
-    readonly type = UPDATE_PEOPLE_LIST;
+export class PeopleUpdatePeopleList implements Action {
+    readonly type = PEOPLE_UPDATE_PEOPLE_LIST;
     constructor(public payload: any) {}
 }
 
-export class UpdateSelectedLocationInSearch implements Action {
-    readonly type = UPDATE_SEARCH_LOCATION;
+export class PeopleNoResults implements Action {
+    readonly type = PEOPLE_NO_RESULTS;
+}
+
+export class PeopleProcessNewSearchParams implements Action {
+    readonly type = PEOPLE_PROCESS_NEW_SEARCH_PARAMS;
+    constructor(public payload: any) {}
+}
+
+export class PeopleUpdateSelectedLocationInSearch implements Action {
+    readonly type = PEOPLE_UPDATE_SEARCH_LOCATION;
     constructor(public payload: string) {}
 }
 
-export class UpdateSearchQuery implements Action {
-    readonly type = UPDATE_SEARCH_QUERY;
+export class PeopleUpdateSearchQuery implements Action {
+    readonly type = PEOPLE_UPDATE_SEARCH_QUERY;
     constructor(public payload: string) {}
 }
 
-export class ClearState implements Action {
-    readonly type = CLEAR_STATE;
+export class PeopleClearState implements Action {
+    readonly type = PEOPLE_CLEAR_STATE;
 }
 
 export type Actions
-    = NavigatedToPeople
-    | TriggerSearch
-    | UpdatePeopleList
-    | UpdateSelectedLocationInSearch
-    | UpdateSearchQuery
-    | ClearState;
+    = PeopleProcessNewSearchParams
+    | PeopleTriggerSearch
+    | PeopleUpdatePeopleList
+    | PeopleNoResults
+    | PeopleUpdateSelectedLocationInSearch
+    | PeopleUpdateSearchQuery
+    | PeopleClearState;

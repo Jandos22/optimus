@@ -2,7 +2,7 @@ import * as fromRoot from '../../../store/app.reducers';
 import * as people from './people.actions';
 import { PeopleSearch } from '../model/people-search.model';
 
-export interface FeatureState extends fromRoot.State {
+export interface PeopleFeatureState extends fromRoot.State {
     people: PeopleState;
 }
 
@@ -19,33 +19,36 @@ const initialState: PeopleState = {
     users: null
 };
 
-export function reducer(state = initialState, action: people.Actions): PeopleState {
+export function people_reducer(state = initialState, action: people.Actions): PeopleState {
     switch (action.type) {
 
-        case people.NAVIGATED_TO_PEOPLE:
-            return state;
-
-        case people.UPDATE_SEARCH_LOCATION:
+        case people.PEOPLE_UPDATE_SEARCH_LOCATION:
             return {
                 ...state,
                 search: { ...state.search,
                           location: action.payload }
             };
 
-        case people.UPDATE_SEARCH_QUERY:
+        case people.PEOPLE_UPDATE_SEARCH_QUERY:
             return {
                 ...state,
                 search: { ...state.search,
                           query: action.payload }
             };
 
-        case people.UPDATE_PEOPLE_LIST:
+        case people.PEOPLE_UPDATE_PEOPLE_LIST:
             return {
                 ...state,
                 users: action.payload
             };
 
-        case people.CLEAR_STATE:
+        case people.PEOPLE_NO_RESULTS:
+            return {
+                ...state,
+                users: null
+            };
+
+        case people.PEOPLE_CLEAR_STATE:
             return {
                 ...state,
                 search: undefined,
@@ -58,5 +61,7 @@ export function reducer(state = initialState, action: people.Actions): PeopleSta
 }
 
 // Prepared Selectors
-export const getSearchParams = (state: FeatureState) => state.people.search;
-export const getPeopleList = (state: FeatureState) => state.people.users;
+export const getPeopleSearchParams = (state: PeopleFeatureState) => state.people.search;
+export const getPeopleSearchLocation = (state: PeopleFeatureState) => state.people.search.location;
+export const getPeopleSearchQuery = (state: PeopleFeatureState) => state.people.search.query;
+export const getPeopleList = (state: PeopleFeatureState) => state.people.users;

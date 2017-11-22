@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <form [formGroup]="harcsFiltersForm">
+
+      <span class="toolbarElement inputElement">
+
+        <mat-form-field [floatPlaceholder]="'never'">
+          <input  matInput 
+                  placeholder="Search"
+                  formControlName="query">
+        </mat-form-field>
+        
+      </span>
+
+    </form>
+    
+  </mat-toolbar-row>
+</mat-toolbar>

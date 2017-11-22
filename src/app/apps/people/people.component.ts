@@ -14,7 +14,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   appName = 'People';
 
-  constructor(private store: Store<fromPeople.FeatureState>) {
+  constructor(private store: Store<fromPeople.PeopleFeatureState>) {
 
   }
 
@@ -23,7 +23,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new people.ClearState);
+    this.store.dispatch(new people.PeopleClearState);
   }
 
 }

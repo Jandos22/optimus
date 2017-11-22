@@ -16,7 +16,7 @@ export class PeopleListComponent implements OnInit {
 
   users$: Observable<any>;
 
-  constructor(private store: Store<fromPeople.FeatureState>) { }
+  constructor(private store: Store<fromPeople.PeopleFeatureState>) { }
 
   ngOnInit() {
     this.users$ = this.store.select(fromPeople.getPeopleList);

@@ -52,7 +52,7 @@ export class LayoutComponent implements OnInit {
         if (window) { this.windowState = window; }
       });
 
-    this.windowState$ = this.store.select(fromRoot.getSidenavState)
+    this.sidenavState$ = this.store.select(fromRoot.getSidenavState)
       .subscribe((sidenav) => {
         if (sidenav) { this.sidenavState = sidenav; }
       });

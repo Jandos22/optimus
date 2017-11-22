@@ -6,14 +6,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PeopleComponent } from './people.component';
-import { reducer } from './store/people.reducer';
-// import { reducers } from './store/reducers';
+import { people_reducer } from './store/people.reducer';
 import { PeopleEffects } from './store/people.effects';
 import { PeopleToolbarComponent } from './people-toolbar/people-toolbar.component';
 import { PeopleListComponent } from './people-list/people-list.component';
 
 export const peopleRoutes: Routes = [
-  { path: ':location', component: PeopleComponent},
   { path: '', component: PeopleComponent},
 ];
 
@@ -23,7 +21,7 @@ export const peopleRoutes: Routes = [
     MaterialDesignModule,
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
-    StoreModule.forFeature('people', reducer),
+    StoreModule.forFeature('people', people_reducer),
     EffectsModule.forFeature([PeopleEffects])
   ],
   exports: [

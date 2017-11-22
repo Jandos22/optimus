@@ -1,4 +1,3 @@
-import { Store } from '@ngrx/store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -10,49 +9,37 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 
 import * as sprLib from 'sprestlib';
-import * as fromPeople from '../store/people.reducer';
-import * as people from './people.actions';
+
+import * as harcs from './harcs.actions';
 
 // PRODUCTION
 // const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
 const apiPath = '';
-
-const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
+const listCols = 'Id,Title,Group,Number,Status,HSE,SQ,Location,ValidFrom,ValidTo';
+const listGetNgHARCs = '_api/web/lists/GetByTitle(\'NgHARCs\')/items?$select=' + listCols;
 
 const headkey = 'accept';
 const headval = 'application/json;odata=verbose';
 
-
 @Injectable()
-export class PeopleEffects {
-
-    @Effect({dispatch: false}) processNewSearchParams = this.actions$
-        .ofType(people.PEOPLE_PROCESS_NEW_SEARCH_PARAMS)
-        .map((action: people.PeopleProcessNewSearchParams) => {
-            console.log('runs');
-            return action.payload;
-        })
-        .do((data) => {
-            console.log(data);
-        });
-
+export class HarcsEffects {
 
     @Effect() triggerSearch = this.actions$
-        .ofType(people.PEOPLE_TRIGGER_SEARCH)
-        .switchMap((action: people.PeopleTriggerSearch) => {
+        .ofType(harcs.HARCS_TRIGGER_SEARCH)
+        .switchMap((action: harcs.HarcsTriggerSearch) => {
 
             const search = action.payload;
-            let uri = apiPath.concat(listGetNgPeople);
+            let uri = apiPath.concat(listGetNgHARCs);
 
             if (search.location) {
                 uri = uri.concat('&$filter=(Location eq \'' + search.location + '\')');
                 if (search.query) {
                     uri = uri.concat(' and ('
-                        + '(substringof(\'' + search.query + '\', Alias))'
-                        + ' or (substringof(\'' + search.query + '\', Name))'
-                        + ' or (substringof(\'' + search.query + '\', Surname))'
-                        + ' or (substringof(\'' + search.query + '\', Email))'
+                        + '(substringof(\'' + search.query + '\', Title))'
+                        + ' or (substringof(\'' + search.query + '\', Group))'
+                        + ' or (substringof(\'' + search.query + '\', Number))'
+                        + ' or (substringof(\'' + search.query + '\', Status))'
                       + ')'
                     );
                 }
@@ -65,20 +52,18 @@ export class PeopleEffects {
             console.log(data.d.results.length);
             if (data.d.results.length > 0) {
                 return {
-                    type: people.PEOPLE_UPDATE_PEOPLE_LIST,
+                    type: harcs.HARCS_UPDATE_HARCS_LIST,
                     payload: data.d.results
                 };
             }
 
             if (data.d.results.length === 0) {
                 return {
-                    type: people.PEOPLE_NO_RESULTS
+                    type: harcs.HARCS_NO_RESULTS
                 };
             }
-
         });
 
     constructor(private actions$: Actions,
-                private http: HttpClient,
-                private store: Store<fromPeople.PeopleFeatureState>) {}
+                private http: HttpClient) {}
 }

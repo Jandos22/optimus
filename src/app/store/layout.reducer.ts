@@ -31,18 +31,17 @@ export function reducer(state = initialState, action: layout.Actions): LayoutSta
     switch (action.type) {
 
         case layout.UPDATE_LAYOUT:
-
-        return {
-            ...state,
-            window: {
-                ...state.window,
-                ...action.window
-            },
-            sidenav: {
-                ...state.sidenav,
-                ...action.sidenav
-            }
-        };
+            return {
+                ...state,
+                window: {
+                    ...state.window,
+                    ...action.window
+                },
+                sidenav: {
+                    ...state.sidenav,
+                    ...action.sidenav
+                }
+            };
 
         case layout.TOGGLE_SIDENAV:
             show = !state.sidenav.opened;
