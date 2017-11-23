@@ -23,11 +23,8 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   peopleFiltersForm: FormGroup;
 
   selectedLocation$: Subscription;
-  searchParams$: Subscription;
 
-  currentParams: Observable<PeopleSearch>;
-
-  constructor(private store: Store<fromPeople.PeopleFeatureState>) {
+  constructor(private store: Store<fromPeople.FeatureState>) {
   }
 
   ngOnInit() {
@@ -35,62 +32,38 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
     // Initialize PeopleFilters Form
     this.peopleFiltersForm = new FormGroup({
       query: new FormControl(null),
+      location: new FormControl(null)
     });
 
     // Update State on query text change > people.search.query
     this.peopleFiltersForm.controls['query'].valueChanges
       .debounceTime(700)
-      .subscribe((query) => {
-        this.processChangedParams('query', query);
-        console.log(this.currentParams);
-      });
+      .subscribe(() => { this.onPeopleFormChange(); });
+
+    this.peopleFiltersForm.controls['location'].valueChanges
+      .debounceTime(700)
+      .subscribe(() => { this.onPeopleFormChange(); });
 
     // This subscription will update SEARCH parameters whenever user changes LOCATION in header
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation)
       .subscribe((location) => {
-        if (location) {
-          console.log(this.currentParams);
-          this.processChangedParams('location', location);
+
+        if (location !== this.peopleFiltersForm.controls['location'].value) {
+          this.peopleFiltersForm.controls['location'].setValue(location);
         }
+
       });
 
-
-    // this.searchParams$ = this.store.select(fromPeople.getPeopleSearchParams)
-    // .subscribe((params) => {
-    //   if (params) {
-    //     if (params) {
-    //       this.store.dispatch(new people.PeopleProcessNewSearchParams(params));
-    //     }
-
-    //    }
-    // });
-
-  }
-
-  processChangedParams(field, value): PeopleSearch {
-    console.log(field, value);
-    switch (field) {
-      case 'location':
-        return {
-          ...this.currentParams,
-          location: value
-        };
-
-      case 'query':
-      console.log('query updated');
-      return {
-        ...this.currentParams,
-        query: value
-      };
-
-      default:
-        return this.currentParams;
-    }
   }
 
   ngOnDestroy() {
     this.selectedLocation$.unsubscribe();
-    this.searchParams$.unsubscribe();
+  }
+
+  onPeopleFormChange() {
+    const params = this.peopleFiltersForm.value;
+    this.store.dispatch(new people.UpdateSearchParams(params));
+    this.store.dispatch(new people.TriggerSearch(params));
   }
 
 }

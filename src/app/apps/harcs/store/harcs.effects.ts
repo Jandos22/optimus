@@ -1,3 +1,4 @@
+import { PeopleSearch } from './../../people/model/people-search.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -26,13 +27,13 @@ const headval = 'application/json;odata=verbose';
 export class HarcsEffects {
 
     @Effect() triggerSearch = this.actions$
-        .ofType(harcs.HARCS_TRIGGER_SEARCH)
-        .switchMap((action: harcs.HarcsTriggerSearch) => {
+        .ofType(harcs.TRIGGER_SEARCH)
+        .switchMap((action: harcs.TriggerSearch) => {
 
-            const search = action.payload;
+            const search = action.params;
             let uri = apiPath.concat(listGetNgHARCs);
 
-            if (search.location) {
+            if (search) {
                 uri = uri.concat('&$filter=(Location eq \'' + search.location + '\')');
                 if (search.query) {
                     uri = uri.concat(' and ('
@@ -52,18 +53,18 @@ export class HarcsEffects {
             console.log(data.d.results.length);
             if (data.d.results.length > 0) {
                 return {
-                    type: harcs.HARCS_UPDATE_HARCS_LIST,
+                    type: harcs.UPDATE_HARCS_LIST,
                     payload: data.d.results
                 };
             }
 
             if (data.d.results.length === 0) {
                 return {
-                    type: harcs.HARCS_NO_RESULTS
+                    type: harcs.NO_RESULTS
                 };
             }
         });
 
     constructor(private actions$: Actions,
-                private http: HttpClient) {}
+        private http: HttpClient ) {}
 }

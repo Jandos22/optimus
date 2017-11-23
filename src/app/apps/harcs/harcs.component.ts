@@ -14,14 +14,14 @@ export class HarcsComponent implements OnInit, OnDestroy {
 
   appName = 'HARCs';
 
-  constructor(private store: Store<fromHarcs.HarcsFeatureState>) { }
+  constructor(private store: Store<fromHarcs.FeatureState>) { }
 
   ngOnInit() {
     this.store.dispatch(new application.ChangeAppName(this.appName));
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new harcs.HarcsClearState);
+    this.store.dispatch(new harcs.ClearState);
   }
 
 

@@ -1,6 +1,6 @@
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { harcs_reducer } from './store/harcs.reducer';
+import { reducer } from './store/harcs.reducer';
 import { HarcsEffects } from './store/harcs.effects';
 
 import { MaterialDesignModule } from './../../shared/libraries/material-design.module';
@@ -21,7 +21,7 @@ export const harcsRoutes: Routes = [
     MaterialDesignModule,
     ReactiveFormsModule,
     RouterModule.forChild(harcsRoutes),
-    StoreModule.forFeature('harcs', harcs_reducer),
+    StoreModule.forFeature('harcs', reducer),
     EffectsModule.forFeature([HarcsEffects])
   ],
   exports: [

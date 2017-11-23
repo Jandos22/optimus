@@ -1,4 +1,3 @@
-import { Store } from '@ngrx/store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -10,8 +9,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 
 import * as sprLib from 'sprestlib';
-import * as fromPeople from '../store/people.reducer';
 import * as people from './people.actions';
+import { PeopleSearch } from '../model/people-search.model';
 
 // PRODUCTION
 // const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
@@ -27,22 +26,11 @@ const headval = 'application/json;odata=verbose';
 @Injectable()
 export class PeopleEffects {
 
-    @Effect({dispatch: false}) processNewSearchParams = this.actions$
-        .ofType(people.PEOPLE_PROCESS_NEW_SEARCH_PARAMS)
-        .map((action: people.PeopleProcessNewSearchParams) => {
-            console.log('runs');
-            return action.payload;
-        })
-        .do((data) => {
-            console.log(data);
-        });
-
-
     @Effect() triggerSearch = this.actions$
-        .ofType(people.PEOPLE_TRIGGER_SEARCH)
-        .switchMap((action: people.PeopleTriggerSearch) => {
+        .ofType(people.TRIGGER_SEARCH)
+        .switchMap((action: people.TriggerSearch) => {
 
-            const search = action.payload;
+            const search = action.params;
             let uri = apiPath.concat(listGetNgPeople);
 
             if (search.location) {
@@ -65,20 +53,19 @@ export class PeopleEffects {
             console.log(data.d.results.length);
             if (data.d.results.length > 0) {
                 return {
-                    type: people.PEOPLE_UPDATE_PEOPLE_LIST,
+                    type: people.UPDATE_PEOPLE_LIST,
                     payload: data.d.results
                 };
             }
 
             if (data.d.results.length === 0) {
                 return {
-                    type: people.PEOPLE_NO_RESULTS
+                    type: people.NO_RESULTS
                 };
             }
 
         });
 
     constructor(private actions$: Actions,
-                private http: HttpClient,
-                private store: Store<fromPeople.PeopleFeatureState>) {}
+                private http: HttpClient) {}
 }

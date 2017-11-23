@@ -20,56 +20,46 @@ export class HarcsToolbarComponent implements OnInit, OnDestroy {
   harcsFiltersForm: FormGroup;
 
   selectedLocation$: Subscription;
-  searchParamsLocation$: Subscription;
-  searchParamsQuery$: Subscription;
 
-  constructor(private store: Store<fromHarcs.HarcsFeatureState>) { }
+  constructor(private store: Store<fromHarcs.FeatureState>) { }
 
   ngOnInit() {
 
     // Initialize PeopleFilters Form
     this.harcsFiltersForm = new FormGroup({
       query: new FormControl(null),
+      location: new FormControl(null)
     });
 
     // Update State on query text change > harcs.search.query
     this.harcsFiltersForm.controls['query'].valueChanges
-    .debounceTime(700)
-    .subscribe((querytext) => {
-      this.store.dispatch(new harcs.HarcsUpdateSearchQuery(querytext));
-    });
+      .debounceTime(700)
+      .subscribe(() => { this.onHarcsFormChange(); });
+
+    this.harcsFiltersForm.controls['location'].valueChanges
+      .debounceTime(700)
+      .subscribe(() => { this.onHarcsFormChange(); });
 
     // This subscription will update SEARCH parameters whenever user changes LOCATION in header
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation)
-    .subscribe((location) => {
-      console.log(location);
-      if (location) { this.store.dispatch(new harcs.HarcsUpdateSelectedLocationInSearch(location)); }
-    });
+      .subscribe((location) => {
 
-    // Trigger Search when people.search changes in state
-    this.searchParamsLocation$ = this.store.select(fromHarcs.getHarcsSearchLocation)
-    .subscribe((location) => {
-      console.log(location);
-      if (location) {
-        this.store.dispatch(new harcs.HarcsTriggerSearch(location));
-       }
-    });
+        if (location !== this.harcsFiltersForm.controls['location'].value) {
+          this.harcsFiltersForm.controls['location'].setValue(location);
+        }
 
-    // Trigger Search when people.search changes in state
-    this.searchParamsQuery$ = this.store.select(fromHarcs.getHarcsSearchQuery)
-    .subscribe((query) => {
-      console.log(query);
-      if (query) {
-        this.store.dispatch(new harcs.HarcsTriggerSearch(query));
-       }
-    });
+      });
 
   }
 
   ngOnDestroy() {
     this.selectedLocation$.unsubscribe();
-    this.searchParamsLocation$.unsubscribe();
-    this.searchParamsQuery$.unsubscribe();
+  }
+
+  onHarcsFormChange() {
+    const params = this.harcsFiltersForm.value;
+    this.store.dispatch(new harcs.UpdateSearchParams(params));
+    this.store.dispatch(new harcs.TriggerSearch(params));
   }
 
 }

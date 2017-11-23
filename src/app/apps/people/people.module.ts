@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PeopleComponent } from './people.component';
-import { people_reducer } from './store/people.reducer';
+import { reducer } from './store/people.reducer';
 import { PeopleEffects } from './store/people.effects';
 import { PeopleToolbarComponent } from './people-toolbar/people-toolbar.component';
 import { PeopleListComponent } from './people-list/people-list.component';
@@ -21,7 +21,7 @@ export const peopleRoutes: Routes = [
     MaterialDesignModule,
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
-    StoreModule.forFeature('people', people_reducer),
+    StoreModule.forFeature('people', reducer),
     EffectsModule.forFeature([PeopleEffects])
   ],
   exports: [

@@ -1,44 +1,39 @@
+import { PeopleSearch } from './../../people/model/people-search.model';
 import { Action } from '@ngrx/store';
+import { HarcsSearch } from '../model/harcs-search.model';
 
-export const HARCS_TRIGGER_SEARCH = '[Harcs] Trigger Search';
-export const HARCS_UPDATE_SEARCH_LOCATION = '[Harcs] Update Search Location';
-export const HARCS_UPDATE_SEARCH_QUERY = '[Harcs] Update Search Query';
-export const HARCS_UPDATE_HARCS_LIST = '[Harcs] Update Harcs List';
-export const HARCS_NO_RESULTS = '[Harcs] NO_RESULTS';
-export const HARCS_CLEAR_STATE = '[Harcs] Clear State';
+export const UPDATE_SEARCH_PARAMS = '[Harcs] Update Search Params';
+export const TRIGGER_SEARCH = '[Harcs] Trigger Search';
+export const UPDATE_HARCS_LIST = '[Harcs] Update Harcs List';
+export const NO_RESULTS = '[Harcs] NO_RESULTS';
+export const CLEAR_STATE = '[Harcs] Clear State';
 
-export class HarcsTriggerSearch implements Action {
-    readonly type = HARCS_TRIGGER_SEARCH;
+export class UpdateSearchParams implements Action {
+    readonly type = UPDATE_SEARCH_PARAMS;
+    constructor(public params: PeopleSearch) {}
+}
+
+export class TriggerSearch implements Action {
+    readonly type = TRIGGER_SEARCH;
+    constructor(public params: HarcsSearch) {}
+}
+
+export class UpdateHarcsList implements Action {
+    readonly type = UPDATE_HARCS_LIST;
     constructor(public payload: any) {}
 }
 
-export class HarcsUpdateSelectedLocationInSearch implements Action {
-    readonly type = HARCS_UPDATE_SEARCH_LOCATION;
-    constructor(public payload: string) {}
+export class NoResults implements Action {
+    readonly type = NO_RESULTS;
 }
 
-export class HarcsUpdateSearchQuery implements Action {
-    readonly type = HARCS_UPDATE_SEARCH_QUERY;
-    constructor(public payload: string) {}
-}
-
-export class HarcsUpdateHarcsList implements Action {
-    readonly type = HARCS_UPDATE_HARCS_LIST;
-    constructor(public payload: any) {}
-}
-
-export class HarcsNoResults implements Action {
-    readonly type = HARCS_NO_RESULTS;
-}
-
-export class HarcsClearState implements Action {
-    readonly type = HARCS_CLEAR_STATE;
+export class ClearState implements Action {
+    readonly type = CLEAR_STATE;
 }
 
 export type Actions
-= HarcsTriggerSearch
-| HarcsUpdateSelectedLocationInSearch
-| HarcsUpdateHarcsList
-| HarcsNoResults
-| HarcsUpdateSearchQuery
-| HarcsClearState;
+= TriggerSearch
+| UpdateSearchParams
+| UpdateHarcsList
+| NoResults
+| ClearState;
