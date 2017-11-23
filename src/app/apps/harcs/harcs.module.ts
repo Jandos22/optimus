@@ -1,3 +1,4 @@
+import { HarcGroupPipe } from './pipes/harc-group.pipe';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducer } from './store/harcs.reducer';
@@ -10,6 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HarcsComponent } from './harcs.component';
 import { HarcsToolbarComponent } from './harcs-toolbar/harcs-toolbar.component';
+import { HarcsListComponent } from './harcs-list/harcs-list.component';
 
 export const harcsRoutes: Routes = [
   { path: '', component: HarcsComponent},
@@ -28,6 +30,11 @@ export const harcsRoutes: Routes = [
     RouterModule,
     ReactiveFormsModule
   ],
-  declarations: [HarcsComponent, HarcsToolbarComponent]
+  declarations: [
+    HarcGroupPipe,
+    HarcsComponent,
+    HarcsToolbarComponent,
+    HarcsListComponent
+  ]
 })
 export class HarcsModule { }
