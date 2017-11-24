@@ -13,9 +13,9 @@ import * as people from './people.actions';
 import { PeopleSearch } from '../model/people-search.model';
 
 // PRODUCTION
-// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-const apiPath = '';
+// const apiPath = '';
 
 const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 

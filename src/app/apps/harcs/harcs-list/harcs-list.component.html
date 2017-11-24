@@ -4,8 +4,8 @@
   <mat-card *ngFor="let harc of harcs$ | async | harcGroup:'Wellsite Operations'" class="harcContainer">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px" >
       <span fxLayout="column">
-        <span class="title">{{ harc.Title }}</span>
-        <span class="number">{{ harc.Number }}</span>
+        <span class="title">{{ harc.Title | slice:0:40 }}...</span>
+        <span class="number">HARC <a [href]="harc.qpid" target="_blank">{{ harc.Number }}</a></span>
       </span>
       <span fxLayout="column" class="harcStatus">
         <span fxLayout="row" fxLayoutAlign="space-between center" class="harcDates">

@@ -14,10 +14,10 @@ import * as sprLib from 'sprestlib';
 import * as harcs from './harcs.actions';
 
 // PRODUCTION
-// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-const apiPath = '';
-const listCols = 'Id,Title,Group,Number,Status,HSE,SQ,Location,ValidFrom,ValidTo';
+// const apiPath = '';
+const listCols = 'Id,Title,Group,Number,Status,Location,ValidTo,QPID';
 const listGetNgHARCs = '_api/web/lists/GetByTitle(\'NgHARCs\')/items?$select=' + listCols;
 
 const headkey = 'accept';

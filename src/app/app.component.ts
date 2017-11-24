@@ -5,7 +5,7 @@ import * as user from './store/user.actions';
 
 @Component({
   selector: 'app-root',
-  template: '<app-layout></app-layout>',
+  template: '<app-layout class="appMinWidth"></app-layout>',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {

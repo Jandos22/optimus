@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import * as fromHarcs from '../store/harcs.reducer';
 import { MatProgressBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-harcs-list',
@@ -49,8 +50,15 @@ export class HarcsListComponent implements OnInit {
       const validTo = Date.parse(harc.ValidTo);
       const daysLeft = Math.floor((validTo - today) / 86400000);
       const percentsLeft = Math.floor(daysLeft / 365 * 100);
+      const qpidTemplate = 'http://quest.slb.com/quest/HARC/HARCView.asp?QPID=';
+      const qpid = qpidTemplate.concat(harc.QPID);
 
-      harcsMap[i] = { ...harcsMap[i], daysLeft: daysLeft, percentsLeft: percentsLeft };
+      harcsMap[i] = {
+        ...harcsMap[i],
+        daysLeft: daysLeft,
+        percentsLeft: percentsLeft,
+        qpid: qpid
+      };
 
       if (daysLeft <= 0) {
         harcsMap[i] = { ...harcsMap[i], Status: 'Expired', daysLeft: '', percentsLeft: 100 };
