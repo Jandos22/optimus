@@ -18,10 +18,10 @@
     width: 32px;
 }
 
-.appNameInHeaderAndOptimus {
+.both {
     padding: 0 10px 0 26px;
 }
 
-.appNameInHeader {
+.single {
     padding: 0 10px 0 12px;
 }

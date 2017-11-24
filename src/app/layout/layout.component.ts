@@ -21,6 +21,8 @@ export class LayoutComponent implements OnInit {
   sidenavOpened$: Observable<boolean>;
   sidenavMode$: Observable<string>;
 
+  working$: Observable<boolean>;
+
   // Layout Properties
 
   windowState$: Subscription;
@@ -43,6 +45,8 @@ export class LayoutComponent implements OnInit {
 
     this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
+
+    this.working$ = this.store.select(fromRoot.getApplicationWorking);
 
     this.innerWidth = (window.innerWidth);
     this.innerHeight = (window.innerHeight);

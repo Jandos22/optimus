@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducers';
 import * as fromHarcs from '../store/harcs.reducer';
 import * as harcs from '../store/harcs.actions';
+import * as application from '../../../store/application.actions';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
@@ -59,6 +60,7 @@ export class HarcsToolbarComponent implements OnInit, OnDestroy {
   onHarcsFormChange() {
     const params = this.harcsFiltersForm.value;
     this.store.dispatch(new harcs.UpdateSearchParams(params));
+    this.store.dispatch(new application.StartWorking);
     this.store.dispatch(new harcs.TriggerSearch(params));
   }
 

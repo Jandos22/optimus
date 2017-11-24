@@ -12,11 +12,12 @@ import 'rxjs/add/operator/mergeMap';
 import * as sprLib from 'sprestlib';
 
 import * as harcs from './harcs.actions';
+import * as application from '../../../store/application.actions';
 
 // PRODUCTION
-const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-// const apiPath = '';
+const apiPath = '';
 const listCols = 'Id,Title,Group,Number,Status,Location,ValidTo,QPID';
 const listGetNgHARCs = '_api/web/lists/GetByTitle(\'NgHARCs\')/items?$select=' + listCols;
 
@@ -49,19 +50,28 @@ export class HarcsEffects {
             return this.http.get( uri, { headers: new HttpHeaders().set(headkey, headval) }
             );
         })
-        .map((data: any) => {
+        .mergeMap((data: any) => {
             console.log(data.d.results.length);
             if (data.d.results.length > 0) {
-                return {
-                    type: harcs.UPDATE_HARCS_LIST,
-                    payload: data.d.results
-                };
+                return [
+                    {
+                        type: harcs.UPDATE_HARCS_LIST,
+                        payload: data.d.results
+                    },
+                    {
+                        type: application.FINISH_WORKING
+                    }
+                ];
             }
 
             if (data.d.results.length === 0) {
-                return {
-                    type: harcs.NO_RESULTS
-                };
+                return [
+                    {
+                        type: harcs.NO_RESULTS
+                    },
+                    {
+                        type: application.FINISH_WORKING
+                }];
             }
         });
 

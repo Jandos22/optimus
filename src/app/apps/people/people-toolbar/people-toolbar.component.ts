@@ -2,6 +2,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducers';
 import * as fromPeople from '../store/people.reducer';
 import * as people from '../store/people.actions';
+import * as application from '../../../store/application.actions';
 
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -63,6 +64,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   onPeopleFormChange() {
     const params = this.peopleFiltersForm.value;
     this.store.dispatch(new people.UpdateSearchParams(params));
+    this.store.dispatch(new application.StartWorking);
     this.store.dispatch(new people.TriggerSearch(params));
   }
 

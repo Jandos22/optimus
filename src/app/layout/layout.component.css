@@ -11,3 +11,9 @@ mat-sidenav {
     background: #f5f5f5;
     padding: 0px;
 }
+
+.workingOnRequest {
+    position: absolute;
+    margin-top: 0px;
+    z-index: 2000;
+}

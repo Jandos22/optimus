@@ -6,17 +6,16 @@
         </button>
     </span>
 
-    <span fxFlex="144px" *ngIf="isSidenavOpen$ | async">
+    <span fxFlex="144px" *ngIf="header.title">
         
         <span>
             <button mat-button routerLink="/">
-                <!-- <h1>Optimus</h1> -->
                 Optimus
             </button>
         </span>
     </span>
     
-    <span [ngClass]="{'appNameInHeaderAndOptimus': (isSidenavOpen$ | async), 'appNameInHeader': !(isSidenavOpen$ | async)}">
+    <span [ngClass]="header.appNameClass">
         <h1>{{ appName$ | async }}</h1>
     </span>
 

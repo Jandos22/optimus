@@ -5,12 +5,14 @@ export interface ApplicationState {
     name: string;
     location: string;
     locations: Locations;
+    working: boolean;
 }
 
 const initialState: ApplicationState = {
     name: null,
     location: null,
-    locations: null
+    locations: null,
+    working: false
 };
 
 export function reducer(state = initialState, action: application.Actions): ApplicationState {
@@ -41,6 +43,32 @@ export function reducer(state = initialState, action: application.Actions): Appl
                 location: action.payload
             };
 
+        case application.START_WORKING:
+
+            if (state.working === false) {
+                return {
+                    ...state,
+                    working: true
+                };
+            } else if (state.working === true) {
+                return state;
+            } else {
+                return state;
+            }
+
+        case application.FINISH_WORKING:
+
+            if (state.working === true) {
+                return {
+                    ...state,
+                    working: false
+                };
+            } else if (state.working === false) {
+                return state;
+            } else {
+                return state;
+            }
+
         default:
             return state;
 
@@ -56,3 +84,6 @@ export const getApplicationLocation
 
 export const getApplicationLocations
     = (state: ApplicationState) => state.locations;
+
+export const getApplicationWorking
+    = (state: ApplicationState) => state.working;

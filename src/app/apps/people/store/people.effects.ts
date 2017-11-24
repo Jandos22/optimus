@@ -10,12 +10,13 @@ import 'rxjs/add/operator/mergeMap';
 
 import * as sprLib from 'sprestlib';
 import * as people from './people.actions';
+import * as application from '../../../store/application.actions';
 import { PeopleSearch } from '../model/people-search.model';
 
 // PRODUCTION
-const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
+// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
 // DEVELOPMENT
-// const apiPath = '';
+const apiPath = '';
 
 const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 
@@ -46,22 +47,30 @@ export class PeopleEffects {
                 }
             }
 
-            return this.http.get( uri, { headers: new HttpHeaders().set(headkey, headval) }
-            );
+            return this.http.get( uri, { headers: new HttpHeaders().set(headkey, headval) });
         })
-        .map((data: any) => {
+        .mergeMap((data: any) => {
             console.log(data.d.results.length);
             if (data.d.results.length > 0) {
-                return {
-                    type: people.UPDATE_PEOPLE_LIST,
-                    payload: data.d.results
-                };
+                return [
+                    {
+                        type: people.UPDATE_PEOPLE_LIST,
+                        payload: data.d.results
+                    },
+                    {
+                        type: application.FINISH_WORKING
+                    }
+                ];
             }
 
             if (data.d.results.length === 0) {
-                return {
-                    type: people.NO_RESULTS
-                };
+                return [
+                    {
+                        type: people.NO_RESULTS
+                    },
+                    {
+                        type: application.FINISH_WORKING
+                }];
             }
 
         });
