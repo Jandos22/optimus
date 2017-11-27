@@ -23,5 +23,9 @@
 }
 
 .single {
-    padding: 0 10px 0 12px;
+    padding: 0 10px 0 10px;
+}
+
+.smallButton {
+    min-width: 0px !important;
 }

@@ -6,12 +6,14 @@ import * as application from '../../../store/application.actions';
 
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import { PeopleSearch } from '../model/people-search.model';
+import { PeopleFormComponent } from '../people-form/people-form.component';
 
 @Component({
   selector: 'app-people-toolbar',
@@ -25,7 +27,10 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
 
   selectedLocation$: Subscription;
 
-  constructor(private store: Store<fromPeople.FeatureState>) {
+  constructor(
+    private store: Store<fromPeople.FeatureState>,
+    public dialog: MatDialog) {
+
   }
 
   ngOnInit() {
@@ -57,15 +62,31 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-    this.selectedLocation$.unsubscribe();
-  }
-
   onPeopleFormChange() {
     const params = this.peopleFiltersForm.value;
     this.store.dispatch(new people.UpdateSearchParams(params));
     this.store.dispatch(new application.StartWorking);
     this.store.dispatch(new people.TriggerSearch(params));
+  }
+
+  openForm(mode) {
+
+    switch (mode) {
+      case 'new':
+
+        let dialogRef = this.dialog.open(PeopleFormComponent, {
+        });
+
+        return console.log('new button clicked');
+
+      case 'view':
+        return console.log('view button clicked');
+    }
+
+  }
+
+  ngOnDestroy() {
+    this.selectedLocation$.unsubscribe();
   }
 
 }

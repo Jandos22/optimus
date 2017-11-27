@@ -1,20 +1,22 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <!-- <span class="toolbarElement">{{ appName }}</span> -->
     <form [formGroup]="peopleFiltersForm">
 
+      <span>
+        <button mat-icon-button (click)="openForm('new')">
+          <mat-icon>add</mat-icon>
+        </button>
+      </span>
+
       <span class="toolbarElement inputElement">
-        <!-- <button mat-icon-button><mat-icon>search</mat-icon></button> -->
         <mat-form-field [floatPlaceholder]="'never'">
           <input  matInput 
                   placeholder="Search"
                   formControlName="query"
                   autocomplete="off">
-          <!-- <mat-spinner
-            [mode]="indeterminate">
-          </mat-spinner> -->
         </mat-form-field>
       </span>
+      
 
     </form>
     

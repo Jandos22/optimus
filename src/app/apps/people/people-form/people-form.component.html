@@ -1,0 +1,80 @@
+<h3 mat-dialog-title>New User</h3>
+
+<mat-dialog-content>
+  <form [formGroup]="userForm">
+
+    <div fxLayout="row" fxLayoutGap="24px" fxLayoutWrap.xs="wrap">
+
+      <div fxFlex="180px">
+        <div><h1>photo</h1></div>
+      </div>
+      
+      <span fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="24px" fxFlex>
+
+        <span fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="24px" fxFlex="180px">
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="Name"
+                    formControlName="name"
+                    autocomplete="off">
+            <mat-error *ngIf="userForm.get('name').invalid">{{ getErrorName() }}</mat-error>
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="Surname"
+                    formControlName="surname"
+                    autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="GIN"
+                    formControlName="gin"
+                    autocomplete="off">
+          </mat-form-field>
+
+        </span>
+
+        <span fxLayout="row" fxLayoutWrap="wrap" fxFlex="180px">
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="Alias"
+                    formControlName="alias"
+                    autocomplete="off">
+          </mat-form-field>
+      
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="Email"
+                    formControlName="email"
+                    autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input  matInput 
+                    placeholder="Location"
+                    formControlName="location"
+                    autocomplete="off">
+          </mat-form-field>
+
+        </span>
+
+      </span>
+
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end start">
+
+  <button 
+    mat-raised-button tabindex="-1" color="primary"
+    [disabled]="userForm.invalid">
+    SAVE
+  </button>
+
+  <button mat-raised-button tabindex="-1" (click)="closeUserForm()">DISCARD</button>
+</mat-dialog-actions>

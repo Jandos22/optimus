@@ -10,6 +10,7 @@ import { reducer } from './store/people.reducer';
 import { PeopleEffects } from './store/people.effects';
 import { PeopleToolbarComponent } from './people-toolbar/people-toolbar.component';
 import { PeopleListComponent } from './people-list/people-list.component';
+import { PeopleFormComponent } from './people-form/people-form.component';
 
 export const peopleRoutes: Routes = [
   { path: '', component: PeopleComponent},
@@ -28,10 +29,14 @@ export const peopleRoutes: Routes = [
     RouterModule,
     ReactiveFormsModule
   ],
+  entryComponents: [
+    PeopleFormComponent
+  ],
   declarations: [
     PeopleComponent,
     PeopleToolbarComponent,
-    PeopleListComponent
+    PeopleListComponent,
+    PeopleFormComponent
   ]
 })
 export class PeopleModule { }

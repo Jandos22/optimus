@@ -1,3 +1,4 @@
+import { WindowProperties } from './../../shared/interfaces/window-properties.model';
 import { HeaderProperties } from './../../shared/interfaces/header-properties.model';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -7,6 +8,7 @@ import * as application from '../../store/application.actions';
 import * as layout from '../../store/layout.actions';
 import { Locations } from '../../shared/interfaces/locations.model';
 import { SidenavProperties } from '../../shared/interfaces/sidenav-properties.model';
+import { Subscription } from 'rxjs/Subscription';
 // import { fromPromise } from 'rxjs/observable/fromPromise';
 
 @Component({
@@ -21,6 +23,9 @@ export class HeaderComponent implements OnInit {
   locations$: Observable<Locations>;
   selectedLocation$: Observable<string>;
 
+  window$: Observable<WindowProperties>;
+  forWindowState$$: Subscription;
+
   sidenav$: Observable<SidenavProperties>;
 
   // isSidenavOpen$: Observable<boolean>;
@@ -30,6 +35,7 @@ export class HeaderComponent implements OnInit {
 
   // Header Properties
   header: HeaderProperties;
+  window: WindowProperties;
 
   // Current User Information
   isRegistered$: Observable<boolean>;
@@ -47,6 +53,7 @@ export class HeaderComponent implements OnInit {
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
     this.appName$ = this.store.select(fromRoot.getApplicationName);
 
+    this.window$ = this.store.select(fromRoot.getWindowState);
     this.sidenav$ = this.store.select(fromRoot.getSidenavState);
 
     // this.isSidenavOpen$ = this.store.select(fromRoot.getSidenavOpened);
@@ -63,6 +70,11 @@ export class HeaderComponent implements OnInit {
 
     this.sidenav$.subscribe((sidenav) => {
       this.recalculateHeader(sidenav.opened, sidenav.mode);
+    });
+
+    this.forWindowState$$ = this.window$.subscribe((window) => {
+      this.window = window;
+      console.log(this.window.isXS);
     });
 
   }

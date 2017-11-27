@@ -22,8 +22,8 @@
     <span fxFlex></span>
     
     <span>
-        <button mat-button [matMenuTriggerFor]="locationsMenu">
-            {{ selectedLocation$ | async }} <mat-icon>keyboard_arrow_down</mat-icon>
+        <button mat-button [matMenuTriggerFor]="locationsMenu" [class.smallButton]="window.isXS">
+            {{ selectedLocation$ | async }}<mat-icon fxHide.xs>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #locationsMenu="matMenu">
             <button mat-menu-item *ngFor="let location of locations$ | async" (click)="onSelectLocation(location.Location)">
