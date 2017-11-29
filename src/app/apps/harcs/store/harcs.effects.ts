@@ -1,3 +1,4 @@
+import { ApiPath } from '../../../shared/constants';
 import { PeopleSearch } from './../../people/model/people-search.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,12 +15,8 @@ import * as sprLib from 'sprestlib';
 import * as harcs from './harcs.actions';
 import * as application from '../../../store/application.actions';
 
-// PRODUCTION
-// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
-// DEVELOPMENT
-const apiPath = '';
 const listCols = 'Id,Title,Group,Number,Status,Location,ValidTo,QPID';
-const listGetNgHARCs = '_api/web/lists/GetByTitle(\'NgHARCs\')/items?$select=' + listCols;
+const listGetNgHARCs = 'web/lists/GetByTitle(\'NgHARCs\')/items?$select=' + listCols;
 
 const headkey = 'accept';
 const headval = 'application/json;odata=verbose';
@@ -32,7 +29,7 @@ export class HarcsEffects {
         .switchMap((action: harcs.TriggerSearch) => {
 
             const search = action.params;
-            let uri = apiPath.concat(listGetNgHARCs);
+            let uri = ApiPath.concat(listGetNgHARCs);
 
             if (search) {
                 uri = uri.concat('&$filter=(Location eq \'' + search.location + '\')');

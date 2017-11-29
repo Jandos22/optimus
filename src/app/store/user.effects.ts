@@ -1,3 +1,4 @@
+import { ApiPath, ProxyPath, WirelinePath } from '../shared/constants';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
@@ -57,12 +58,15 @@ export class UserEffects {
 
                 const userdata = data[0];
 
+                if (ApiPath === '_api/') {
+                    userdata.Photo.Url.replace(WirelinePath, ProxyPath);
+                }
+
                 const optimusUserData = {
                     isRegistered: true,
                     name: userdata.Name,
                     surname: userdata.Surname,
-                    // photo: userdata.Photo.Url,
-                    photo: userdata.Photo.Url.replace('https://slb001.sharepoint.com/sites/wireline/', 'http://localhost:8080/'),
+                    photo: userdata.Photo.Url,
                     location: userdata.Location
                 };
 

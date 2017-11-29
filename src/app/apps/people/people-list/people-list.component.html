@@ -3,8 +3,7 @@
     <div fxLayout="row" fxLayoutAlign="start center">
       <button mat-icon-button>
           <img *ngIf="user.Photo" [src]="user.Photo.Url" class="userPhoto">
-          <img *ngIf="!user.Photo" src="../../assets/no_user_photo.png" class="userPhoto">
-          <!-- <mat-icon *ngIf="!user.Photo" class="userPhoto">account_circle</mat-icon> -->
+          <img *ngIf="!user.Photo" [src]="assetsPath + 'no_user_photo.png'" class="userPhoto">
       </button>
       <span class="nameSurname" fxLayout="column">
         <span>{{ user.Name }} {{ user.Surname }}</span>

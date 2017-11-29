@@ -1,3 +1,4 @@
+import { ApiPath } from '../../../shared/constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -13,12 +14,7 @@ import * as people from './people.actions';
 import * as application from '../../../store/application.actions';
 import { PeopleSearch } from '../model/people-search.model';
 
-// PRODUCTION
-// const apiPath = 'https://slb001.sharepoint.com/sites/wireline/';
-// DEVELOPMENT
-const apiPath = '';
-
-const listGetNgPeople = '_api/web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
+const listGetNgPeople = 'web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Alias,Name,Surname,Email,Location,Photo';
 
 const headkey = 'accept';
 const headval = 'application/json;odata=verbose';
@@ -32,7 +28,7 @@ export class PeopleEffects {
         .switchMap((action: people.TriggerSearch) => {
 
             const search = action.params;
-            let uri = apiPath.concat(listGetNgPeople);
+            let uri = ApiPath.concat(listGetNgPeople);
 
             if (search.location) {
                 uri = uri.concat('&$filter=(Location eq \'' + search.location + '\')');
@@ -79,7 +75,7 @@ export class PeopleEffects {
         .ofType(people.SAVE_NEW_USER)
         .switchMap((action: people.SaveNewUser) => {
 
-            console.log(action.userData);
+            const itemType = this.getItemType('NgPeople');
 
             const body = {
                 Name: action.userData.name,
@@ -98,4 +94,8 @@ export class PeopleEffects {
 
     constructor(private actions$: Actions,
                 private http: HttpClient) {}
+
+    getItemType(listname: string) {
+        return 'SP.Data' + listname.charAt(0).toUpperCase() + listname.slice(1) + 'ListItem';
+    }
 }
