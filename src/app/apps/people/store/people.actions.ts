@@ -1,10 +1,15 @@
 import { Action } from '@ngrx/store';
 import { PeopleSearch } from '../model/people-search.model';
+import { UserData } from '../model/user-data.model';
 
 export const UPDATE_SEARCH_PARAMS = '[People] Update Search Params';
 export const TRIGGER_SEARCH = '[People] Trigger Search';
 export const UPDATE_PEOPLE_LIST = '[People] Update People List';
 export const NO_RESULTS = '[People] No Results';
+
+// Form Actions
+export const SAVE_NEW_USER = '[People] Save New User';
+
 export const CLEAR_STATE = '[People] Clear State';
 
 export class TriggerSearch implements Action {
@@ -26,6 +31,13 @@ export class UpdateSearchParams implements Action {
     constructor(public params: PeopleSearch) {}
 }
 
+// Form Actions
+
+export class SaveNewUser implements Action {
+    readonly type = SAVE_NEW_USER;
+    constructor(public userData: UserData) {}
+}
+
 export class ClearState implements Action {
     readonly type = CLEAR_STATE;
 }
@@ -35,4 +47,5 @@ export type Actions
     | UpdatePeopleList
     | NoResults
     | UpdateSearchParams
+    | SaveNewUser
     | ClearState;

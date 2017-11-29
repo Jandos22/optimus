@@ -3,3 +3,15 @@
     display: block;
     background: #f4f4f4;
 }
+
+.selectPhoto {
+    cursor: pointer;
+    padding: 12px;
+    font-size: 0.875rem;
+}
+
+.userPhoto {
+    border-radius: 50%;
+    height: 150px !important;
+    width: 150px !important;
+}

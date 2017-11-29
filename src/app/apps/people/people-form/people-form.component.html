@@ -1,15 +1,35 @@
 <h3 mat-dialog-title>New User</h3>
 
 <mat-dialog-content>
-  <form [formGroup]="userForm">
+  
 
     <div fxLayout="row" fxLayoutGap="24px" fxLayoutWrap.xs="wrap">
 
-      <div fxFlex="180px">
-        <div><h1>photo</h1></div>
+      <div fxFlex="150px">
+
+        <!-- Ready Photo -->
+        <img [src]="data.image" class="userPhoto" *ngIf="photoState.photoCropped">
+
+        <!-- Image Cropper -->
+        <img-cropper
+          [hidden]="photoState.photoCropped"
+          #cropper
+          [image]="data"
+          [settings]="cropperSettings"
+          (onCrop)="onCrop(data)">
+        </img-cropper>
+        
+        <!-- Action Buttons -->
+        <div fxLayoutAlign="center">
+          <label for="photo" class="selectPhoto" *ngIf="!photoState.photoSelected">SELECT</label>
+          <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)"/>
+          <span class=selectPhoto (click)="doCrop()" *ngIf="photoState.photoSelected && !photoState.photoCropped">CROP</span>
+          <span class=selectPhoto (click)="cancelSelected()" *ngIf="photoState.photoSelected">CANCEL</span>
+        </div>
+        
       </div>
-      
-      <span fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="24px" fxFlex>
+
+      <form [formGroup]="userForm" fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="24px" fxFlex>
 
         <span fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="24px" fxFlex="180px">
           <mat-form-field>
@@ -33,7 +53,6 @@
                     formControlName="gin"
                     autocomplete="off">
           </mat-form-field>
-
         </span>
 
         <span fxLayout="row" fxLayoutWrap="wrap" fxFlex="180px">
@@ -57,14 +76,13 @@
                     formControlName="location"
                     autocomplete="off">
           </mat-form-field>
-
         </span>
 
-      </span>
+    </form>
 
-    </div>
+  </div>
 
-  </form>
+  
 
 </mat-dialog-content>
 
@@ -72,7 +90,8 @@
 
   <button 
     mat-raised-button tabindex="-1" color="primary"
-    [disabled]="userForm.invalid">
+    [disabled]="userForm.invalid"
+    (click)="onSave(userForm.value)">
     SAVE
   </button>
 

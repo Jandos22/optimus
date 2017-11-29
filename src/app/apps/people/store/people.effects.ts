@@ -75,6 +75,27 @@ export class PeopleEffects {
 
         });
 
+    @Effect({dispatch: false}) saveNewUser = this.actions$
+        .ofType(people.SAVE_NEW_USER)
+        .switchMap((action: people.SaveNewUser) => {
+
+            console.log(action.userData);
+
+            const body = {
+                Name: action.userData.name,
+                Surname: action.userData.surname,
+                Alias: action.userData.alias,
+                Gin: action.userData.gin,
+                Location: action.userData.location,
+                Email: action.userData.email
+            };
+
+            return sprLib.list('NgPeople').create(body);
+        })
+        .do((data: any) => {
+           console.log(data);
+        });
+
     constructor(private actions$: Actions,
                 private http: HttpClient) {}
 }

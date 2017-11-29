@@ -1,13 +1,19 @@
+import { UserPhotoState } from './../model/user-photo-state.model';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import * as fromPeople from '../store/people.reducer';
+import * as people from '../store/people.actions';
 
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogTitle, MAT_DIALOG_DATA } from '@angular/material';
 
 import { WindowProperties } from '../../../shared/interfaces/window-properties.model';
 import { Observable } from 'rxjs/Observable';
+
+import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
+
+import * as lib64 from 'base64-arraybuffer';
 
 @Component({
   selector: 'app-people-form',
@@ -21,22 +27,43 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   toResizeForm$$: Subscription;
 
-  fieldsContainer: string;
-  fieldsContainerAlign: string;
-
   userForm: FormGroup;
+
+  cropperSettings: CropperSettings;
+  data: any;
+
+  photoState: UserPhotoState;
+
+  @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
 
   constructor(
     public store: Store<fromPeople.FeatureState>,
     public fb: FormBuilder,
-    public dialogRef: MatDialogRef<PeopleFormComponent>
+    public dialogRef: MatDialogRef<PeopleFormComponent>,
   ) {
 
     // Observable: watch changes in layout.window
     this.window$ = this.store.select('layout', 'window');
 
-    this.fieldsContainer = 'row';
-    this.fieldsContainer = '';
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 150;
+    this.cropperSettings.height = 150;
+    this.cropperSettings.croppedWidth = 150;
+    this.cropperSettings.croppedHeight = 150;
+    this.cropperSettings.canvasWidth = 150;
+    this.cropperSettings.canvasHeight = 150;
+    this.cropperSettings.fileType = 'image/jpeg';
+
+    this.photoState = {
+      newUser: true,
+      photoExists: false,
+      photoSelected: false,
+      photoCropped: false
+    };
+
+    this.data = {};
+
   }
 
   ngOnInit() {
@@ -52,8 +79,16 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       alias: ['', Validators.required],
       gin: ['', Validators.required],
       email: ['', Validators.required],
-      location: ['', Validators.required]
+      location: ['', Validators.required],
+      photo: this.fb.group({
+        arraybuffer: ['', Validators.required],
+        photoname: ['']
+      })
     });
+
+    // this.forImgArrayBuffer$$ = this.imgArrayBuffer$.subscribe((data: ArrayBuffer) => {
+    //   console.log(data);
+    // });
 
   }
 
@@ -66,31 +101,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     } else {
       width = '636px';
     }
-    this.fieldsContainer = this.checkLayout(window);
-    this.fieldsContainerAlign = this.checkLayoutAlign(window);
     this.dialogRef.updateSize(width);
-  }
-
-  checkLayout(window: WindowProperties) {
-    console.log('checking layout');
-    if (window.isS800 || window.isXS) {
-      return 'column';
-    } else {
-      return 'row';
-    }
-  }
-
-  checkLayoutAlign(window: WindowProperties) {
-    console.log('checking layout');
-    if (window.isS800 || window.isXS) {
-      return 'space-around';
-    } else {
-      return '';
-    }
-  }
-
-  calcFlex(window) {
-    console.log(window);
   }
 
   getErrorName() {
@@ -99,13 +110,69 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       (required ? 'Name is required' : '') : '';
   }
 
-  logForm() {
-    console.log(this.userForm);
-    console.log(this.userForm.invalid);
+  fileChangeListener($event) {
+
+    console.log($event);
+
+    // reset cropped to false, when photo selected
+    this.photoState.photoCropped = false;
+    this.photoState.photoSelected = true;
+
+    const image: any = new Image();
+    const file: File = $event.target.files[0];
+
+    const myReader: FileReader = new FileReader();
+    const that = this;
+
+    myReader.onloadend = function (loadEvent: any) {
+        image.src = loadEvent.target.result;
+        console.log(image);
+        that.cropper.setImage(image);
+
+    };
+
+    myReader.readAsDataURL(file);
+
+  }
+
+  doCrop() {
+    this.photoState.photoCropped = true;
+  }
+
+  onCrop(file) {
+    const imageUrl = file.image.replace(/^data:image\/(png|jpg);base64,/, '');
+    const imageBuffer = lib64.decode(imageUrl);
+    this.userForm.get('photo').get('arraybuffer').setValue(imageBuffer);
+    console.log(this.userForm.value);
+  }
+
+  cancelSelected() {
+    // this.data = {};
+    this.photoState.photoCropped = false;
+    this.photoState.photoSelected = false;
+
+    const photoInput = <HTMLInputElement>document.getElementById('photo');
+    photoInput.value = null;
+
+    this.cropper.cropper.reset();
+
+    this.userForm.get('photo').get('arraybuffer').setValue('');
+    this.userForm.get('photo').get('photoname').setValue('');
+
+    console.log(this.userForm.get('photo').get('arraybuffer').value);
+
+  }
+
+  onSave(userData) {
+    this.store.dispatch(new people.SaveNewUser(userData));
   }
 
   closeUserForm() {
     this.dialogRef.close();
+  }
+
+  logForm() {
+    console.log(this.userForm.value);
   }
 
   ngOnDestroy() {
