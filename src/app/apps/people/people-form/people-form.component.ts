@@ -1,3 +1,4 @@
+import * as sp from './../../../store/sp.actions';
 import { UserPhotoState } from './../model/user-photo-state.model';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 
 import * as lib64 from 'base64-arraybuffer';
+import { PeopleForm } from '../model/people-form.model';
 
 @Component({
   selector: 'app-people-form',
@@ -77,11 +79,11 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       alias: ['', Validators.required],
-      gin: ['', Validators.required],
+      gin: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       email: ['', Validators.required],
       location: ['', Validators.required],
       photo: this.fb.group({
-        arraybuffer: ['', Validators.required],
+        arraybuffer: [''],
         photoname: ['']
       })
     });
@@ -140,10 +142,63 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   }
 
   onCrop(file) {
-    const imageUrl = file.image.replace(/^data:image\/(png|jpg);base64,/, '');
+    const imageUrl = file.image.replace('data:image/jpeg;base64,/', '');
     const imageBuffer = lib64.decode(imageUrl);
     this.userForm.get('photo').get('arraybuffer').setValue(imageBuffer);
-    console.log(this.userForm.value);
+
+    // console.log(file);
+
+    // const myReader: FileReader = new FileReader();
+    // const that = this;
+
+    // myReader.onloadend = function (loadEvent: any) {
+    //   console.log(loadEvent);
+    //   that.userForm.get('photo').get('arraybuffer').setValue(loadEvent.target.result);
+    // };
+
+    // const blob = this.dataURLtoBlob(file.image);
+
+    // console.log(blob);
+
+    // myReader.readAsArrayBuffer(blob);
+
+    // console.log(this.userForm.value);
+  }
+
+  dataURLtoBlob(dataurl) {
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new Blob([u8arr], {type: mime});
+  }
+
+  dataURItoBlob (dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    let byteString = atob(dataURI.split(',')[1]);
+  
+    // separate out the mime component
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  
+    // write the bytes of the string to an ArrayBuffer
+    let ab = new ArrayBuffer(byteString.length);
+  
+    // create a view into the buffer
+    let ia = new Uint8Array(ab);
+  
+    // set the bytes of the buffer to the correct values
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+  
+    // write the ArrayBuffer to a blob, and you're done
+    let blob = new Blob([ab], {type: mimeString});
+    return blob;
+  
   }
 
   cancelSelected() {
@@ -163,8 +218,27 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   }
 
-  onSave(userData) {
-    this.store.dispatch(new people.SaveNewUser(userData));
+  onSave(userData: PeopleForm) {
+
+    // Split Data into 2 objects
+    const ngPeopleData = {
+        Name: userData.name,
+        Surname: userData.surname,
+        Alias: userData.alias,
+        Email: userData.email,
+        Gin: userData.gin.toString(),
+        Location: userData.location
+      };
+    const image = {
+        ArrayBuffer: userData.photo.arraybuffer,
+        Filename: userData.photo.photoname + 'random.jpg'
+      };
+
+    // Add item in NgPeople list
+    this.store.dispatch(new sp.AddItem(ngPeopleData, 'NgPeople', image, 'NgPhotos'));
+
+    // Add photo in NgPhotos list
+
   }
 
   closeUserForm() {

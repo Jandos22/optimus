@@ -19,7 +19,6 @@ const listGetNgPeople = 'web/lists/GetByTitle(\'NgPeople\')/items?$select=Id,Ali
 const headkey = 'accept';
 const headval = 'application/json;odata=verbose';
 
-
 @Injectable()
 export class PeopleEffects {
 
@@ -69,27 +68,6 @@ export class PeopleEffects {
                 }];
             }
 
-        });
-
-    @Effect({dispatch: false}) saveNewUser = this.actions$
-        .ofType(people.SAVE_NEW_USER)
-        .switchMap((action: people.SaveNewUser) => {
-
-            const itemType = this.getItemType('NgPeople');
-
-            const body = {
-                Name: action.userData.name,
-                Surname: action.userData.surname,
-                Alias: action.userData.alias,
-                Gin: action.userData.gin,
-                Location: action.userData.location,
-                Email: action.userData.email
-            };
-
-            return sprLib.list('NgPeople').create(body);
-        })
-        .do((data: any) => {
-           console.log(data);
         });
 
     constructor(private actions$: Actions,

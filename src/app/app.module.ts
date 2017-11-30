@@ -31,6 +31,7 @@ import { CustomRouterStateSerializer } from './store/router.utilities';
 import { reducers, metaReducers } from './store/app.reducers';
 import { ApplicationEffects } from './store/application.effects';
 import { UserEffects } from './store/user.effects';
+import { SpEffects } from './store/sp.effects';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { UserEffects } from './store/user.effects';
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
       ApplicationEffects,
-      UserEffects
+      UserEffects,
+      SpEffects
       ]),
     StoreRouterConnectingModule,
     AppRoutingModule,

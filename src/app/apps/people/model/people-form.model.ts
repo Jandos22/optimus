@@ -1,9 +1,9 @@
-export interface UserData {
+export interface PeopleForm {
     name: string;
     surname: string;
     alias: string;
     email: string;
-    gin: string;
+    gin: number;
     location: string;
     photo: {
         arraybuffer: ArrayBuffer;
