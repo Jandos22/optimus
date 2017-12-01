@@ -100,13 +100,13 @@ export class SpEffects {
                         // return this.http.post(
                         //     this.getUrlImageListItems(item.imageListName, item.image.Filename),
                         //     item.image.ArrayBuffer,
-                        //     { headers: new HttpHeaders()
-                        //         .set('accept', 'application/json;odata=verbose')
-                        //         .append('X-RequestDigest', item.fdv)
-                        //         .append('content-type', 'undefined')
-                        //         .append('processData', 'false')
-                        //         // .append('transformRequest', '')
-                        //     }
+                        //     // { headers: new HttpHeaders()
+                        //     //     .set('accept', 'application/json;odata=verbose')
+                        //     //     // .append('X-RequestDigest', item.fdv)
+                        //     //     .append('content-type', 'undefined')
+                        //     //     // .append('processData', 'false')
+                        //     //     // .append('transformRequest', '')
+                        //     // }
                         // ).map((good) => good, (bad) => console.log(bad));
 
                     } else {
@@ -138,6 +138,6 @@ export class SpEffects {
     }
 
     getUrlImageListItems(imagelist: string, filename: string) {
-        return ApiPath + 'web/lists/getbytitle(\'' + imagelist + '\')/rootfolder/files/add(url=\'' + filename + '\',overwrite=\'true\')';
+        return ApiPath + 'web/lists/GetFolderByServerRelativeUrl(\'' + imagelist + '\')/rootfolder/files/add(url=\'' + filename + '\',overwrite=\'true\')';
     }
 }

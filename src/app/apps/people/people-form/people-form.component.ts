@@ -34,6 +34,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   cropperSettings: CropperSettings;
   data: any;
 
+  file: File;
+
   photoState: UserPhotoState;
 
   @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
@@ -77,20 +79,17 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     // Initialize User Form
     this.userForm = this.fb.group({
       name: ['', Validators.required],
-      surname: ['', Validators.required],
-      alias: ['', Validators.required],
-      gin: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
-      email: ['', Validators.required],
-      location: ['', Validators.required],
+      surname: [''],
+      alias: [''],
+      gin: [''],
+      email: [''],
+      location: [''],
       photo: this.fb.group({
         arraybuffer: [''],
         photoname: ['']
       })
     });
 
-    // this.forImgArrayBuffer$$ = this.imgArrayBuffer$.subscribe((data: ArrayBuffer) => {
-    //   console.log(data);
-    // });
 
   }
 
@@ -126,55 +125,70 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     const myReader: FileReader = new FileReader();
     const that = this;
 
+    this.sendFile(file);
+
     myReader.onloadend = function (loadEvent: any) {
         image.src = loadEvent.target.result;
         console.log(image);
         that.cropper.setImage(image);
-
     };
 
     myReader.readAsDataURL(file);
 
   }
 
+  sendFile(file) {
+    const myReader: FileReader = new FileReader();
+    const that = this;
+    myReader.onloadend = function (loadEvent: any) {
+      that.userForm.get('photo').get('arraybuffer').setValue(loadEvent.target.result);
+    };
+    myReader.readAsArrayBuffer(file);
+  }
+
+  _base64ToArrayBuffer(base64) {
+    let binary_string =  window.atob(base64);
+    let len = binary_string.length;
+    let bytes = new Uint8Array( len );
+    for (let i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
   doCrop() {
     this.photoState.photoCropped = true;
   }
 
   onCrop(file) {
-    const imageUrl = file.image.replace('data:image/jpeg;base64,/', '');
-    const imageBuffer = lib64.decode(imageUrl);
-    this.userForm.get('photo').get('arraybuffer').setValue(imageBuffer);
 
-    // console.log(file);
+    console.log(file);
 
-    // const myReader: FileReader = new FileReader();
-    // const that = this;
+    const myReader: FileReader = new FileReader();
+    const that = this;
 
-    // myReader.onloadend = function (loadEvent: any) {
-    //   console.log(loadEvent);
-    //   that.userForm.get('photo').get('arraybuffer').setValue(loadEvent.target.result);
-    // };
+    myReader.onload = function (loadEvent: any) {
+      console.log(loadEvent);
+      that.userForm.get('photo').get('arraybuffer').setValue(loadEvent.target.result);
+    };
 
-    // const blob = this.dataURLtoBlob(file.image);
+    const blob = this.dataURItoBlob(file.image);
 
-    // console.log(blob);
+    myReader.readAsArrayBuffer(blob);
 
-    // myReader.readAsArrayBuffer(blob);
-
-    // console.log(this.userForm.value);
+    console.log(this.userForm.value);
   }
 
-  dataURLtoBlob(dataurl) {
-    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  // dataURLtoBlob(dataurl) {
+  //   let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+  //       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
 
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
+  //   while (n--) {
+  //       u8arr[n] = bstr.charCodeAt(n);
+  //   }
 
-    return new Blob([u8arr], {type: mime});
-  }
+  //   return new Blob([u8arr], {type: mime});
+  // }
 
   dataURItoBlob (dataURI) {
     // convert base64 to raw binary data held in a string

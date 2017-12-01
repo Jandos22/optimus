@@ -1,4 +1,5 @@
-import { ImageCropperComponent } from 'ng2-img-cropper';
+import { ImageCropperModule } from 'ng2-img-cropper/src/imageCropperModule';
+// import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialDesignModule } from './../../shared/libraries/material-design.module';
 import { StoreModule } from '@ngrx/store';
@@ -24,7 +25,8 @@ export const peopleRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
     StoreModule.forFeature('people', reducer),
-    EffectsModule.forFeature([PeopleEffects])
+    EffectsModule.forFeature([PeopleEffects]),
+    ImageCropperModule
   ],
   exports: [
     RouterModule,
@@ -38,7 +40,7 @@ export const peopleRoutes: Routes = [
     PeopleToolbarComponent,
     PeopleListComponent,
     PeopleFormComponent,
-    ImageCropperComponent
+    // ImageCropperComponent
   ]
 })
 export class PeopleModule { }

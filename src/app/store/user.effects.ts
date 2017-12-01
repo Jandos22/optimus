@@ -58,7 +58,9 @@ export class UserEffects {
 
                 const userdata = data[0];
 
-                if (ApiPath === '_api/') {
+                const api = ApiPath;
+
+                if (api.length === 5) {
                     userdata.Photo.Url.replace(WirelinePath, ProxyPath);
                 }
 

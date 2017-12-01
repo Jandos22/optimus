@@ -38,7 +38,7 @@ import { SpEffects } from './store/sp.effects';
     AppComponent,
     LayoutComponent,
     HeaderComponent,
-    SidenavComponent
+    SidenavComponent,
   ],
   imports: [
     BrowserModule,
