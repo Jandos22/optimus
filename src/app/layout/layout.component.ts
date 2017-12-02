@@ -90,7 +90,6 @@ export class LayoutComponent implements OnInit {
 
     const currentWindowState: WindowProperties = {
       isXS: false,
-      isS800: false,
       isS: false,
       isM: false,
       isL: false,
@@ -107,8 +106,6 @@ export class LayoutComponent implements OnInit {
 
     if (this.innerWidth <= 600) {
       currentWindowState.isXS = true;
-    } else if (this.innerWidth <= 800) {
-      currentWindowState.isS800 = true;
     } else if (this.innerWidth <= 960) {
       currentWindowState.isS = true;
     } else if (this.innerWidth <= 1280) {
@@ -122,7 +119,6 @@ export class LayoutComponent implements OnInit {
     if ( curretSidenavState.mode !== this.sidenavState.mode
       || curretSidenavState.opened !== this.sidenavState.opened
       || currentWindowState.isXS !== this.windowState.isXS
-      || currentWindowState.isS800 !== this.windowState.isS800
       || currentWindowState.isS !== this.windowState.isS
       || currentWindowState.isM !== this.windowState.isM
       || currentWindowState.isL !== this.windowState.isL

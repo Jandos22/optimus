@@ -16,6 +16,7 @@ import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper'
 
 import * as lib64 from 'base64-arraybuffer';
 import { PeopleForm } from '../model/people-form.model';
+import { WirelinePath } from '../../../shared/constants';
 
 @Component({
   selector: 'app-people-form',
@@ -30,6 +31,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   toResizeForm$$: Subscription;
 
   userForm: FormGroup;
+    alias$$: Subscription;
+
 
   cropperSettings: CropperSettings;
   data: any;
@@ -51,13 +54,14 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
-    this.cropperSettings.width = 150;
-    this.cropperSettings.height = 150;
-    this.cropperSettings.croppedWidth = 150;
-    this.cropperSettings.croppedHeight = 150;
-    this.cropperSettings.canvasWidth = 150;
-    this.cropperSettings.canvasHeight = 150;
+    this.cropperSettings.width = 180;
+    this.cropperSettings.height = 180;
+    this.cropperSettings.croppedWidth = 180;
+    this.cropperSettings.croppedHeight = 180;
+    this.cropperSettings.canvasWidth = 180;
+    this.cropperSettings.canvasHeight = 180;
     this.cropperSettings.fileType = 'image/jpeg';
+    this.cropperSettings.cropOnResize = true;
 
     this.photoState = {
       newUser: true,
@@ -82,14 +86,24 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       surname: [''],
       alias: [''],
       gin: [''],
-      email: [''],
+      email: ['', [Validators.required, Validators.email]],
       location: [''],
+      photoUrl: this.fb.group({
+        Url: [''],
+        Description: ['']
+      }),
       photo: this.fb.group({
         arraybuffer: [''],
         photoname: ['']
       })
     });
 
+    this.alias$$ = this.userForm.get('alias').valueChanges.subscribe((val) => {
+      this.userForm.get('email').setValue(val + '@slb.com');
+      this.userForm.get('photo').get('photoname').setValue(val + '.jpg');
+      this.userForm.get('photoUrl').get('Url').setValue(WirelinePath + 'NgPhotos/' + val + '.jpg');
+      this.userForm.get('photoUrl').get('Description').setValue(val);
+    });
 
   }
 
@@ -105,12 +119,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.dialogRef.updateSize(width);
   }
 
-  getErrorName() {
-    const required = this.userForm.controls['name'].hasError('required');
-    return this.userForm.controls['name'].touched ?
-      (required ? 'Name is required' : '') : '';
-  }
-
   fileChangeListener($event) {
 
     console.log($event);
@@ -124,8 +132,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     const myReader: FileReader = new FileReader();
     const that = this;
-
-    this.sendFile(file);
 
     myReader.onloadend = function (loadEvent: any) {
         image.src = loadEvent.target.result;
@@ -161,58 +167,28 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   }
 
   onCrop(file) {
-
-    console.log(file);
-
     const myReader: FileReader = new FileReader();
     const that = this;
-
-    myReader.onload = function (loadEvent: any) {
-      console.log(loadEvent);
+    myReader.onloadend = function (loadEvent: any) {
       that.userForm.get('photo').get('arraybuffer').setValue(loadEvent.target.result);
     };
-
     const blob = this.dataURItoBlob(file.image);
-
     myReader.readAsArrayBuffer(blob);
-
     console.log(this.userForm.value);
   }
 
-  // dataURLtoBlob(dataurl) {
-  //   let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-  //       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
 
-  //   while (n--) {
-  //       u8arr[n] = bstr.charCodeAt(n);
-  //   }
-
-  //   return new Blob([u8arr], {type: mime});
-  // }
-
+  // Transform dataUrl to Blob
   dataURItoBlob (dataURI) {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    let byteString = atob(dataURI.split(',')[1]);
-  
-    // separate out the mime component
-    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-  
-    // write the bytes of the string to an ArrayBuffer
-    let ab = new ArrayBuffer(byteString.length);
-  
-    // create a view into the buffer
-    let ia = new Uint8Array(ab);
-  
-    // set the bytes of the buffer to the correct values
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
     for (let i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
     }
-  
-    // write the ArrayBuffer to a blob, and you're done
-    let blob = new Blob([ab], {type: mimeString});
+    const blob = new Blob([ab], {type: mimeString});
     return blob;
-  
   }
 
   cancelSelected() {
@@ -234,6 +210,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   onSave(userData: PeopleForm) {
 
+    console.log(userData);
+
     // Split Data into 2 objects
     const ngPeopleData = {
         Name: userData.name,
@@ -241,17 +219,22 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         Alias: userData.alias,
         Email: userData.email,
         Gin: userData.gin.toString(),
-        Location: userData.location
+        Photo: {
+          Url: userData.photoUrl.Url,
+          Description: userData.photoUrl.Description
+        },
+        Location: userData.location,
       };
     const image = {
         ArrayBuffer: userData.photo.arraybuffer,
-        Filename: userData.photo.photoname + 'random.jpg'
+        Filename: userData.photo.photoname
       };
 
     // Add item in NgPeople list
-    this.store.dispatch(new sp.AddItem(ngPeopleData, 'NgPeople', image, 'NgPhotos'));
+    this.store.dispatch(new sp.AddItem(ngPeopleData, 'NgPeople'));
 
     // Add photo in NgPhotos list
+    this.store.dispatch(new sp.AddImage(image, 'NgPhotos'));
 
   }
 
@@ -263,9 +246,23 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     console.log(this.userForm.value);
   }
 
+
+  // ERROR MESSAGES
+  // For each form control
+
+  getErrorName() {
+    const required = this.userForm.controls['name'].hasError('required');
+    return this.userForm.controls['name'].touched ?
+      (required ? 'Name is required' : '') : '';
+  }
+
+  // WHEN COMPONENT DESTROYED
+  // Unsubscribe() from Observables
+
   ngOnDestroy() {
     console.log('form destroyed');
     this.toResizeForm$$.unsubscribe();
+    this.alias$$.unsubscribe();
   }
 
 }

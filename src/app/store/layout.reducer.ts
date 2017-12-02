@@ -11,7 +11,6 @@ export interface LayoutState {
 const initialState: LayoutState = {
     window: {
         isXS: false,
-        isS800: false,
         isS: false,
         isM: false,
         isL: false,

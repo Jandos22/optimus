@@ -1,133 +1,134 @@
-import { SpImage } from './../shared/interfaces/sp-image.model';
-import { ApiPath } from './../shared/constants/index';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+// Constants
 
+import { ApiPath } from './../shared/constants';
+
+// Interfaces
+
+import {
+    SpImage,
+    FormDigestValue } from './../models';
+
+// Angular
+
+import {
+    HttpClient,
+    HttpHeaders,
+    HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+// RxJs -----------------
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/debounceTime';
 
-import * as sprLib from 'sprestlib';
+// NgRx ----------------
+
+import { Effect, Actions } from '@ngrx/effects';
 import * as sp from './sp.actions';
 import * as application from '../store/application.actions';
-import { FormDigestValue } from '../shared/interfaces/form-digest-value.model';
-import { SpAddItem } from '../shared/interfaces/sp-add-item.model';
-import { Observable } from 'rxjs/Observable';
-import { HttpParams } from '@angular/common/http';
 
+// Libraries
+
+import * as sprLib from 'sprestlib';
 import * as $ from 'jquery/dist/jquery.min.js';
 
 @Injectable()
 export class SpEffects {
 
-    ArrayOfImagesToUpload$: Observable<any>;
 
+    // - - - - - - - - - - - - - - - -
+    // Add new item to SharePoint list
     @Effect({dispatch: false}) addItem = this.actions$
         .ofType(sp.ADD_ITEM)
         .switchMap((action: sp.AddItem) => {
 
-            return this.http.post(
-                ApiPath + 'contextinfo',
-                { headers: new HttpHeaders().set('accept', 'application/json;odata=verbose') })
-                .map(
+            // always get Form Digest Value first,
+            // then use FDV to construct the real request
+            return this.http
+                .post(
+                    ApiPath + 'contextinfo',
+                    { headers: new HttpHeaders().set('accept', 'application/json;odata=verbose')})
+                .switchMap(
                     // success get FDV (kinda authorization token)
-                    (fdv_object: FormDigestValue) => {
+                    (fdv: FormDigestValue) => {
 
-                        if (!action.imageListName && !action.image) {
-                            return {
-                                body: action.body,
-                                listname: action.itemListName,
-                                fdv: fdv_object.FormDigestValue
-                            };
-                        } else if (action.imageListName && action.image) {
-                            return {
-                                body: action.body,
-                                listname: action.itemListName,
-                                hasImage: true,
-                                image: action.image,
-                                imageListName: action.imageListName,
-                                fdv: fdv_object.FormDigestValue
-                            };
+                        const spItemObject = {
+                            ...action.item,
+                            __metadata: {
+                                type: this.getListEntity(action.list)
+                            }
+                        };
+
+                        return this.http
+                            .post(
+                                this.getUrlListItems(action.list),
+                                JSON.stringify(spItemObject),
+                                { headers: new HttpHeaders()
+                                    .set('accept', 'application/json;odata=verbose')
+                                    .append('content-type', 'application/json;odata=verbose')
+                                    .append('X-RequestDigest', fdv.FormDigestValue) })
+                            .map((res) => {
+                                console.log('added', res);
+                                return 'success';
+                            })
+                            .catch(this.handleError);
                         }
-
-                    // if error when getting FDV then do something
-                    }, (error) => {
-                        console.log(error);
-                    }
-                );
+                )
+                .catch(this.handleError);
         })
-        .switchMap((item: SpAddItem) => {
+        .catch(this.handleError);
 
-            console.log(item);
 
-            const spItemObject = {
-                ...item.body,
-                __metadata: {
-                    type: this.getListEntity(item.listname)
+    // - - - - - - - - - - - - - - - -
+    // upload image on SharePoint Image Library
+    @Effect({dispatch: false}) addImage = this.actions$
+    .ofType(sp.ADD_IMAGE)
+    .switchMap((action: sp.AddImage) => {
+
+        // always get Form Digest Value first,
+        // then use FDV to construct the real request
+        return this.http
+            .post(
+                ApiPath + 'contextinfo', // Url
+                { headers: new HttpHeaders().set('accept', 'application/json;odata=verbose') })
+            .switchMap(
+                // success get FDV (kinda authorization token)
+                (fdv: FormDigestValue) => {
+
+                    const promise = $.ajax({
+                        url: this.constructUrl_imageUpload(action.library, action.image.Filename),
+                        type: 'POST',
+                        data: action.image.ArrayBuffer,
+                        processData: false,
+                        headers: {
+                            'accept': 'application/json;odata=verbose',
+                            'X-RequestDigest': fdv.FormDigestValue
+                        }
+                    });
+
+                    // use jQuery temporarily, as there is an issue with sp-rest-proxy
+                    return Observable.fromPromise(promise);
+
                 }
-            };
-
-            return this.http.post(
-                this.getUrlListItems(item.listname),
-                JSON.stringify(spItemObject),
-                { headers: new HttpHeaders()
-                    .set('accept', 'application/json;odata=verbose')
-                    .append('content-type', 'application/json;odata=verbose')
-                    .append('X-RequestDigest', item.fdv)
-                })
-                .switchMap((result: any) => {
-                    // if successfull then upload images if any
-                    if (item.hasImage) {
-
-                        console.log(item.image.ArrayBuffer.byteLength);
-
-                        return $.ajax({
-                            url: this.getUrlImageListItems(item.imageListName, item.image.Filename),
-                            type: 'POST',
-                            data: item.image.ArrayBuffer,
-                            processData: false,
-                            headers: {
-                                'accept': 'application/json;odata=verbose',
-                                'X-RequestDigest': item.fdv
-                            },
-                            sucess: (res) => res,
-                            error: (err) => err
-                        });
-
-                        // return this.http.post(
-                        //     this.getUrlImageListItems(item.imageListName, item.image.Filename),
-                        //     item.image.ArrayBuffer,
-                        //     // { headers: new HttpHeaders()
-                        //     //     .set('accept', 'application/json;odata=verbose')
-                        //     //     // .append('X-RequestDigest', item.fdv)
-                        //     //     .append('content-type', 'undefined')
-                        //     //     // .append('processData', 'false')
-                        //     //     // .append('transformRequest', '')
-                        //     // }
-                        // ).map((good) => good, (bad) => console.log(bad));
-
-                    } else {
-                        return result;
-                    }
-
-                });
-        })
-        .map(
-            (result) => {
-                console.log('only item added', result);
-            }, (error) => {
-                console.log(error);
-            }
-        );
+            ).map((res) => {
+                console.log('uploaded', res);
+            });
+    });
 
     constructor(private actions$: Actions,
-                private http: HttpClient) {
-
-        this.ArrayOfImagesToUpload$ = Observable[''];
-    }
+                private http: HttpClient) {}
 
     getListEntity(listname: string) {
         return 'SP.Data.' + listname.charAt(0).toUpperCase() + listname.slice(1) + 'ListItem';
@@ -137,7 +138,19 @@ export class SpEffects {
         return ApiPath + 'web/lists/getbytitle(\'' + listname + '\')/items';
     }
 
-    getUrlImageListItems(imagelist: string, filename: string) {
-        return ApiPath + 'web/lists/GetFolderByServerRelativeUrl(\'' + imagelist + '\')/rootfolder/files/add(url=\'' + filename + '\',overwrite=\'true\')';
+    constructUrl_imageUpload(imagelist: string, filename: string) {
+        return ApiPath + 'web/lists/getbytitle(\'' + imagelist + '\')/rootfolder/files/add(url=\'' + filename + '\',overwrite=\'true\')';
+    }
+
+    getFDV() {
+        return this.http.post(
+            ApiPath + 'contextinfo',
+            { headers: new HttpHeaders().set('accept', 'application/json;odata=verbose') })
+            .toPromise();
+    }
+
+    handleError(res: Response) {
+        console.log(res);
+        return Observable.throw('Server Error');
     }
 }

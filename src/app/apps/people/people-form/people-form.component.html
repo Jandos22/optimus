@@ -5,7 +5,7 @@
 
     <div fxLayout="row" fxLayoutGap="24px" fxLayoutWrap.xs="wrap">
 
-      <div fxFlex="150px">
+      <div fxFlex="180px">
 
         <!-- Ready Photo -->
         <img [src]="data.image" class="userPhoto" *ngIf="photoState.photoCropped">
@@ -15,8 +15,8 @@
           [hidden]="photoState.photoCropped"
           #cropper
           [image]="data"
-          [settings]="cropperSettings">
-          <!-- (onCrop)="onCrop(data)"> -->
+          [settings]="cropperSettings"
+          (onCrop)="onCrop(data)">
         </img-cropper>
         
         <!-- Action Buttons -->

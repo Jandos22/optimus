@@ -5,6 +5,10 @@ export interface PeopleForm {
     email: string;
     gin: number;
     location: string;
+    photoUrl: {
+        Url: string;
+        Description: string;
+    };
     photo: {
         arraybuffer: ArrayBuffer;
         photoname: string;
