@@ -1,7 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import * as fromRoot from '../../store/app.reducers';
-import * as application from '../../store/application.actions';
+import * as fromRoot from '../../store';
+import * as application from '../../store/actions/application.action';
 
 @Component({
   selector: 'app-home',
@@ -11,10 +11,9 @@ import * as application from '../../store/application.actions';
 export class HomeComponent implements OnInit {
   appName = 'Home';
 
-  constructor(private store: Store<fromRoot.State>) { }
+  constructor(private store: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
     this.store.dispatch(new application.ChangeAppName(this.appName));
   }
-
 }

@@ -1,15 +1,9 @@
-
 // 3rd Party Modules
 import { SidebarModule } from 'ng-sidebar';
-import { MaterialDesignModule } from './shared/libraries/material-design.module';
-import { PrimengModule } from './shared/libraries/primeng.module';
+import { MaterialDesignModule } from './libraries/material-design.module';
 
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LayoutComponent } from './layout/layout.component';
-import { SidenavComponent } from './layout/sidenav/sidenav.component';
-import { HeaderComponent } from './layout/header/header.component';
 
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,54 +12,53 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-// import { Routes, RouterModule } from '@angular/router';
 
 import { environment } from './../environments/environment';
 
-// NgRx State Management Modules
-import { StoreModule } from '@ngrx/store';
+// NgRx
+import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
+
+import {
+  StoreRouterConnectingModule,
+  RouterStateSerializer
+} from '@ngrx/router-store';
+
+import { reducers, effects, CustomSerializer } from './store';
+
+// not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CustomRouterStateSerializer } from './store/router.utilities';
-import { reducers, metaReducers } from './store/app.reducers';
-import { ApplicationEffects } from './store/application.effects';
-import { UserEffects } from './store/user.effects';
-import { SpEffects } from './store/sp.effects';
+import { storeFreeze } from 'ngrx-store-freeze';
+
+export const metaReducers: MetaReducer<any>[] = !environment.production
+  ? [storeFreeze]
+  : [];
+
+// containers
+import { AppComponent } from './app.component';
+import * as fromContainers from './containers';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LayoutComponent,
-    HeaderComponent,
-    SidenavComponent,
-  ],
+  declarations: [AppComponent, ...fromContainers.containers],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    PrimengModule,
     MaterialDesignModule,
     SidebarModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([
-      ApplicationEffects,
-      UserEffects,
-      SpEffects
-      ]),
+    EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     AppRoutingModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
-    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer},
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
     Title
   ],
-  exports: [
-    ReactiveFormsModule,
-  ],
+  exports: [ReactiveFormsModule, ...fromContainers.containers],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
