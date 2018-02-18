@@ -66,6 +66,7 @@ export function reducer(
       };
 
     case fromLayout.CLICK_SIDENAV:
+      state.sidenav.mode === 'over' ? (show = false) : (show = true);
       return {
         ...state,
         sidenav: {

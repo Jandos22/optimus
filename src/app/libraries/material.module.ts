@@ -56,4 +56,4 @@ import { LayoutModule } from '@angular/cdk/layout';
   ],
   declarations: []
 })
-export class MaterialDesignModule { }
+export class MaterialModule {}

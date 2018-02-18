@@ -15,28 +15,25 @@ import * as sprLib from 'sprestlib';
 
 import { ApiPath, WirelinePath, ProxyPath } from '../../constants';
 
+import { UserService } from '../../services/index';
+
 @Injectable()
 export class UserEffects {
-  constructor(private actions$: Actions, private http: HttpClient) {}
+  constructor(
+    private actions$: Actions,
+    private http: HttpClient,
+    private userService: UserService
+  ) {}
 
   @Effect()
   getCurrentUser$ = this.actions$.ofType(fromUser.GET_CURRENT_USER).pipe(
-    switchMap(() => sprLib.user().info()),
+    // switchMap(() => sprLib.user().info()),
+    switchMap(() => this.userService.getCurrentUser()),
     mergeMap((data: any) => {
-      const email = data.LoginName.replace('i:0#.f|membership|', '');
-      const username = email.replace('@slb.com', '');
-      const initials = username.substring(0, 2).toUpperCase();
-
-      const currentUser = {
-        username: username,
-        email: email,
-        initials: initials,
-        spId: data.Id
-      };
-
+      const currentUser = this.userService.prepCurrentUserObject(data);
       return [
         new fromUser.SetCurrentUser(currentUser),
-        new fromUser.CheckCurrentUser(username)
+        new fromUser.CheckCurrentUser(currentUser.username)
       ];
     })
   );

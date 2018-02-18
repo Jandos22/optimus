@@ -1,5 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
+
+// ngrx
 import * as fromRoot from '../../store';
 import * as application from '../../store/actions/application.action';
 

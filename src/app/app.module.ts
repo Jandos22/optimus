@@ -1,6 +1,6 @@
 // 3rd Party Modules
 import { SidebarModule } from 'ng-sidebar';
-import { MaterialDesignModule } from './libraries/material-design.module';
+import { MaterialModule } from './libraries/material.module';
 
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
@@ -34,9 +34,18 @@ export const metaReducers: MetaReducer<any>[] = !environment.production
   ? [storeFreeze]
   : [];
 
+// modules
+import { RegistrationModule } from './apps/registration/registration.module';
+
 // containers
 import { AppComponent } from './app.component';
 import * as fromContainers from './containers';
+
+// services
+import * as fromServices from './services';
+
+// guards
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [AppComponent, ...fromContainers.containers],
@@ -46,19 +55,22 @@ import * as fromContainers from './containers';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialDesignModule,
+    MaterialModule,
     SidebarModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     AppRoutingModule,
+    RegistrationModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
+    Title,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
-    Title
+    ...fromServices.services,
+    AuthGuard
   ],
-  exports: [ReactiveFormsModule, ...fromContainers.containers],
+  exports: [...fromContainers.containers, MaterialModule, ReactiveFormsModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

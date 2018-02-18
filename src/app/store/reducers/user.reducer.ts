@@ -1,16 +1,5 @@
+import { UserState } from './../../ngrx-state-models/user-state.model';
 import * as fromUser from '../actions/user.action';
-
-export interface UserState {
-  username: string;
-  email: string;
-  initials: string;
-  spId: number;
-  isRegistered: boolean;
-  name: string;
-  surname: string;
-  photo: string;
-  location: string;
-}
 
 const initialState: UserState = {
   username: null,
@@ -41,12 +30,21 @@ export function reducer(
         ...action.payload
       };
 
+    case fromUser.SET_USER_NOT_REGISTERED:
+      return {
+        ...state,
+        isRegistered: action.payload
+      };
+
     default:
       return state;
   }
 }
 
 // state selectors
+export const getUser = (state: UserState) => state;
+export const getUsername = (state: UserState) => state.username;
+export const getEmail = (state: UserState) => state.email;
 export const getIsRegistered = (state: UserState) => state.isRegistered;
 export const getInitials = (state: UserState) => state.initials;
 export const getPhoto = (state: UserState) => state.photo;

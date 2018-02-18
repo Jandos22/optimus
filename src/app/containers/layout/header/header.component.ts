@@ -1,13 +1,22 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+
+import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store';
 import * as application from '../../../store/actions/application.action';
 import * as layout from '../../../store/actions/layout.action';
 
+// constants
+import { WirelinePath } from './../../../constants/index';
+
+// models
+import { UserState } from './../../../ngrx-state-models/user-state.model';
 import { Locations } from '../../../models/locations.m';
 import { SidenavProperties } from '../../../models/sidenav-properties.m';
 import { WindowProperties } from '../../../models/window-properties.m';
@@ -19,7 +28,7 @@ import { HeaderProperties } from '../../../models/header-properties.m';
   styleUrls: ['./header.component.css'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   appName$: Observable<string>;
   locations$: Observable<Locations[]>;
   selectedLocation$: Observable<string>;
@@ -36,9 +45,18 @@ export class HeaderComponent implements OnInit {
   // Current User Information
   isRegistered$: Observable<boolean>;
   initials$: Observable<string>;
-  photo$: Observable<string>;
+  // photo$: Subscription;
 
-  constructor(private store: Store<fromRoot.RootState>) {
+  // ngrx user slice
+  user$: Subscription;
+  user: UserState;
+
+  // photo: string;
+
+  constructor(
+    private store: Store<fromRoot.RootState>,
+    private router: Router
+  ) {
     this.header = {
       title: null,
       appNameClass: null
@@ -53,7 +71,6 @@ export class HeaderComponent implements OnInit {
 
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
     this.initials$ = this.store.select(fromRoot.getInitials);
-    this.photo$ = this.store.select(fromRoot.getPhoto);
   }
 
   ngOnInit() {
@@ -67,6 +84,16 @@ export class HeaderComponent implements OnInit {
       this.window = window;
       // console.log(this.window.isXS);
     });
+
+    this.user$ = this.store
+      .select(fromRoot.getUser)
+      .map((user: UserState) => {
+        const photo = `${user.photo}?v=${new Date().getTime()}`;
+        return { ...user, photo };
+      })
+      .subscribe(user => {
+        this.user = user;
+      });
   }
 
   toggleSidenav() {
@@ -92,5 +119,15 @@ export class HeaderComponent implements OnInit {
       console.log('recalculate header: no match');
     }
     // console.log(this.header);
+  }
+
+  logout() {
+    // this.router.navigateByUrl(WirelinePath + '/_layouts/15/SignOut.aspx');
+    // this.router.navigateByUrl('google.kz');
+    window.location.href = WirelinePath + '/_layouts/15/SignOut.aspx';
+  }
+
+  ngOnDestroy() {
+    this.user$.unsubscribe();
   }
 }

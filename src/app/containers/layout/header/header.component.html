@@ -1,5 +1,5 @@
 <mat-toolbar fxLayoutAlign="start center" id="rw-header" color="primary">
-    
+
     <span>
         <button mat-icon-button (click)="toggleSidenav()" class="iconFix">
             <mat-icon>menu</mat-icon>
@@ -7,23 +7,28 @@
     </span>
 
     <span fxFlex="144px" *ngIf="header.title">
-        
+
         <span>
             <button mat-button routerLink="/">
                 Optimus
             </button>
         </span>
     </span>
-    
+
     <span [ngClass]="header.appNameClass">
         <h1>{{ appName$ | async }}</h1>
     </span>
 
     <span fxFlex></span>
-    
-    <span>
+
+    <!-- 
+    Show Location selector
+    for registered users only
+    -->
+    <span *ngIf="isRegistered$ | async">
         <button mat-button [matMenuTriggerFor]="locationsMenu" [class.smallButton]="window.isXS">
-            {{ selectedLocation$ | async }}<mat-icon fxHide.xs>keyboard_arrow_down</mat-icon>
+            {{ selectedLocation$ | async }}
+            <mat-icon fxHide.xs>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #locationsMenu="matMenu">
             <button mat-menu-item *ngFor="let location of locations$ | async" (click)="onSelectLocation(location.Location)">
@@ -32,11 +37,24 @@
         </mat-menu>
     </span>
 
-    <!-- Show Current User Data -->
+    <!--
+    Show Current User Data 
+    for registered users only
+    -->
     <span *ngIf="isRegistered$ | async">
-        <button mat-icon-button>
-            <img [src]="photo$ | async" [alt]="initials$ | async" class="userPhoto">
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+            <img [src]="user.photo" [alt]="user.initials" class="userPhoto">
         </button>
-    </span >
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item>
+                <!-- <mat-icon>dialpad</mat-icon> -->
+                <span>{{ user.name }} {{ user.surname }}</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <!-- <mat-icon>dialpad</mat-icon> -->
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+    </span>
 
 </mat-toolbar>

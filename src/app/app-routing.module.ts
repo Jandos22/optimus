@@ -2,9 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './guards/auth.guard';
+
 export const appRoutes: Routes = [
-  { path: 'home', loadChildren: './apps/home/home.module#HomeModule' },
-  // { path: 'people', loadChildren: './apps/people/people.module#PeopleModule' },
+  {
+    path: 'home',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/home/home.module#HomeModule'
+  },
+  {
+    path: 'people',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/people/people.module#PeopleModule'
+  },
+  {
+    path: 'registration',
+    loadChildren: './apps/registration/registration.module#RegistrationModule'
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

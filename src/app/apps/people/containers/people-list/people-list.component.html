@@ -1,0 +1,6 @@
+<mat-list>
+    <mat-list-item *ngFor="let user of (users$ | async)">
+        <h3 matLine>{{ user.id.Name + ' ' + user.id.Surname }}</h3>
+        <p matLine>{{ user.id.Email}}</p>
+    </mat-list-item>
+</mat-list>

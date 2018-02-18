@@ -11,6 +11,9 @@ import * as fromApplication from './application.reducer';
 import * as fromLayout from './layout.reducer';
 import * as fromUser from './user.reducer';
 
+// models
+import { UserState } from './../../ngrx-state-models/user-state.model';
+
 export interface RouterStateUrl {
   url: string;
   queryParams: Params;
@@ -20,7 +23,7 @@ export interface RouterStateUrl {
 export interface RootState {
   routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
   application: fromApplication.ApplicationState;
-  user: fromUser.UserState;
+  user: UserState;
   layout: fromLayout.LayoutState;
 }
 
@@ -44,7 +47,7 @@ export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>(
   'layout'
 );
 
-export const getUserState = createFeatureSelector<fromUser.UserState>('user');
+export const getUserState = createFeatureSelector<UserState>('user');
 
 // custom router serializer
 export class CustomSerializer

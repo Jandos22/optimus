@@ -28,7 +28,7 @@ export class ApplicationEffects {
       const title = action.payload;
       title === 'Home'
         ? this._title.setTitle('Optimus')
-        : this._title.setTitle(title + ' -Optimus');
+        : this._title.setTitle(title + ' - Optimus');
       return new fromApplication.SetAppName(title);
     })
   );
