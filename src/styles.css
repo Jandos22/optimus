@@ -1,3 +1,6 @@
+/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
@@ -6,9 +9,6 @@ body {
     font-family: 'Roboto', sans-serif;
     vertical-align: baseline;
 }
-
-/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 .loading {
     margin: 0;
