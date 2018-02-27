@@ -8,9 +8,12 @@ import * as fromApplicationActions from './../../../../store/actions/application
 
 @Component({
   selector: 'app-people',
-  templateUrl: './people.component.html',
   styleUrls: ['./people.component.css'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  template: `
+    <app-people-toolbar></app-people-toolbar>
+    <app-people-list fxFlexFill></app-people-list>
+  `
 })
 export class PeopleComponent implements OnInit, OnDestroy {
   // title in header

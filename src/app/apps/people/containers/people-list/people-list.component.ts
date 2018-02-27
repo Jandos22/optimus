@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 // ngrx
-import * as fromPeople from '../../store/reducers/users.reducer';
+import * as fromStore from '../../store';
 
 // material
 import { MatList, MatListItem } from '@angular/material';
@@ -20,11 +20,11 @@ import { UserEntity } from '../../models/user-entity.model';
   encapsulation: ViewEncapsulation.None
 })
 export class PeopleListComponent implements OnInit {
-  constructor(private store: Store<fromPeople.UsersState>) {}
+  constructor(private store: Store<fromStore.PeopleState>) {}
 
   users$: Observable<UserEntity>;
 
   ngOnInit() {
-    this.users$ = this.store.select(fromPeople.getUserEntities);
+    this.users$ = this.store.select(fromStore.getAllUsers);
   }
 }

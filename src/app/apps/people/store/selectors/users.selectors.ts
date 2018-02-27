@@ -25,3 +25,7 @@ export const getUsersLoading = createSelector(
   getUsersState,
   fromUsers.getUsersLoading
 );
+
+export const getAllUsers = createSelector(getUserEntities, entities => {
+  return Object.keys(entities).map(id => entities[id]);
+});

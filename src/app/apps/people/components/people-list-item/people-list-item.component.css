@@ -1,0 +1,21 @@
+a.emailLink:link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+a.emailLink:visited {
+  text-decoration: none;
+}
+
+a.emailLink:hover {
+  text-decoration: underline;
+}
+
+a.emailLink:active {
+  text-decoration: underline;
+}
+
+.nameSurname {
+  font-size: 0.87em !important;
+  font-weight: bold !important;
+}

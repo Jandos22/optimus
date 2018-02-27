@@ -26,7 +26,6 @@ export function reducer(
 
     case fromUsers.LOAD_USERS_SUCCESS: {
       const users = action.payload;
-      console.log(users);
       const entity = users.reduce(
         (entities: { [id: number]: User }, user: User) => {
           return {

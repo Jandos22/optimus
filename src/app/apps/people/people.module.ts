@@ -14,7 +14,7 @@ import { reducers, effects } from './store';
 import * as fromContainers from './containers';
 
 // components
-// import * as fromComponents from './components';
+import * as fromComponents from './components';
 
 // services
 import * as fromServices from './services';
@@ -35,15 +35,12 @@ export const peopleRoutes: Routes = [
     ImageCropperModule
   ],
   providers: [...fromServices.services],
-  declarations: [
-    ...fromContainers.containers
-    // ...fromComponents.components
-  ],
+  declarations: [...fromContainers.containers, ...fromComponents.components],
   exports: [
     RouterModule,
     ReactiveFormsModule,
-    ...fromContainers.containers
-    // ...fromComponents.components
+    ...fromContainers.containers,
+    ...fromComponents.components
   ]
 })
 export class PeopleModule {}
