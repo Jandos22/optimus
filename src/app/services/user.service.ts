@@ -24,7 +24,7 @@ export class UserService {
   }
 
   getLoggedInUser() {
-    return this.http.get(`${ApiPath}/Web/CurrentUser`);
+    return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
   checkLoggedInUserRegistered(alias) {

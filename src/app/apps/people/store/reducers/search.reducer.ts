@@ -23,17 +23,25 @@ export function reducer(
   action: fromSearch.PeopleSearchActions
 ): SearchState {
   switch (action.type) {
-    case fromSearch.UPDATE_SEARCH_PARAMS:
+    case fromSearch.UPDATE_SEARCH_QUERY:
       return {
         ...state,
         params: {
           ...state.params,
-          query: action.payload.query,
-          location: action.payload.location
+          query: action.query
         }
       };
 
-    case fromSearch.START_PEOPLE_SEARCH:
+    case fromSearch.UPDATE_SEARCH_LOCATION:
+      return {
+        ...state,
+        params: {
+          ...state.params,
+          location: action.location
+        }
+      };
+
+    case fromSearch.START_SEARCH_PEOPLE:
       return {
         ...state,
         searching: true,
@@ -58,6 +66,7 @@ export function reducer(
   }
 }
 
-export const getSearchParams = (state: SearchState) => state;
+export const getSearch = (state: SearchState) => state;
+export const getSearchParams = (state: SearchState) => state.params;
 export const getSearchLocation = (state: SearchState) => state.params.location;
 export const getSearchQuery = (state: SearchState) => state.params.query;

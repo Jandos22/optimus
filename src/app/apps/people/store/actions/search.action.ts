@@ -2,23 +2,25 @@ import { Action } from '@ngrx/store';
 
 export const TRIGGER_SEARCH = '[People.Search] Trigger Search';
 export const UPDATE_SEARCH_PARAMS = '[People.Search] Update Search Params';
-export const START_PEOPLE_SEARCH = '[People.Search] Start Search';
+export const UPDATE_SEARCH_QUERY = '[People] Update Search Query';
+export const UPDATE_SEARCH_LOCATION = '[People] Update Search Location';
+export const START_SEARCH_PEOPLE = '[People] Start Search';
 export const FINISH_PEOPLE_SEARCH = '[People.Search] Finish Search';
 
 export const CLEAR_SEARCH_STATE = '[People.Search] Clear State';
 
-export class TriggerSearch implements Action {
-  readonly type = TRIGGER_SEARCH;
-  constructor(public payload: any) {}
+export class UpdateSearchQuery implements Action {
+  readonly type = UPDATE_SEARCH_QUERY;
+  constructor(public query: string) {}
 }
 
-export class UpdateSearchParams implements Action {
-  readonly type = UPDATE_SEARCH_PARAMS;
-  constructor(public payload: any) {}
+export class UpdateSearchLocation implements Action {
+  readonly type = UPDATE_SEARCH_LOCATION;
+  constructor(public location: string) {}
 }
 
-export class StartPeopleSearch implements Action {
-  readonly type = START_PEOPLE_SEARCH;
+export class StartSearchPeople implements Action {
+  readonly type = START_SEARCH_PEOPLE;
   constructor(public payload: any) {}
 }
 
@@ -31,8 +33,8 @@ export class ClearSearchState implements Action {
 }
 
 export type PeopleSearchActions =
-  | TriggerSearch
-  | UpdateSearchParams
-  | StartPeopleSearch
+  | UpdateSearchQuery
+  | UpdateSearchLocation
+  | StartSearchPeople
   | FinishPeopleSearch
   | ClearSearchState;

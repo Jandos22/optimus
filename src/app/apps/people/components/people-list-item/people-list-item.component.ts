@@ -7,10 +7,10 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   template: `
     <mat-list-item>
         <img matListAvatar [src]="user.Photo?.Url" [alt]="user.Photo?.Description">
-        
-            <h3 matLine>{{ user.Name }} {{ user.Surname }}</h3>
-            <a matLine [href]="'mailto:' + user.Email" class="emailLink">{{ user.Email }}</a>
-        
+
+          <h3 matLine>{{ user.Name }} {{ user.Surname }}</h3>
+          <a matLine [href]="'mailto:' + user.Email" class="emailLink">{{ user.Email }}</a>
+
         <mat-divider [inset]="false" *ngIf="!last"></mat-divider>
     <mat-list-item>
     `

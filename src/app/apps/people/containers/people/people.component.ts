@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
+import { Subscription } from 'rxjs/Subscription';
+
 import { Store } from '@ngrx/store';
 import * as fromPeople from '../../store';
-import * as fromSearchActions from '../../store/actions/search.action';
-import * as fromUsersActions from '../../store/actions/users.action';
-import * as fromApplicationActions from './../../../../store/actions/application.action';
+import * as fromRoot from '../../../../store';
+
+import { PeopleSearchParams } from './../../models/people-search-params.model';
 
 @Component({
   selector: 'app-people',
@@ -19,20 +21,31 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // title in header
   appName = 'People';
 
-  constructor(private store: Store<fromPeople.PeopleState>) {}
+  searchParams$: Subscription;
+
+  constructor(
+    private peopleStore: Store<fromPeople.PeopleState>,
+    private rootStore: Store<fromRoot.RootState>
+  ) {}
 
   ngOnInit() {
-    this.store.dispatch(new fromApplicationActions.ChangeAppName(this.appName));
-    this.store.dispatch(
-      new fromSearchActions.TriggerSearch({
-        query: '',
-        location: 'KZTZ'
-      })
-    );
+    // update html page title
+    this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
+
+    // monitor search params and respond to changes
+    this.searchParams$ = this.peopleStore
+      .select(fromPeople.getSearchParams)
+      .subscribe(params => this.onParamsChange(params));
+  }
+
+  onParamsChange(params: PeopleSearchParams) {
+    if (params.location !== null) {
+      console.log('start');
+      this.peopleStore.dispatch(new fromPeople.StartSearchPeople(params));
+    }
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new fromSearchActions.ClearSearchState());
-    this.store.dispatch(new fromUsersActions.ClearUsersState());
+    this.searchParams$.unsubscribe();
   }
 }

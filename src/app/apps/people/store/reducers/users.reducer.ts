@@ -33,7 +33,7 @@ export function reducer(
             [user.Id]: user
           };
         },
-        { ...state.entities }
+        {}
       );
 
       return {

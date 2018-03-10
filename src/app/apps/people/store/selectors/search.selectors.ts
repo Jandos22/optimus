@@ -11,6 +11,8 @@ export const getSearchState = createSelector(
 
 // selectors
 
+export const getSearch = createSelector(getSearchState, fromSearch.getSearch);
+
 export const getSearchParams = createSelector(
   getSearchState,
   fromSearch.getSearchParams
