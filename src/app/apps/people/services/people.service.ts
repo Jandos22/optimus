@@ -13,11 +13,18 @@ export class PeopleService {
   constructor(private http: HttpClient) {}
 
   getPeople(location, query) {
-    const select = '$select=Id,Alias,Name,Surname,Email,Gin,Location,Photo';
+    // api url for NgPeople
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
 
+    // select only following fields
+    const select = '?$select=Id,Alias,Name,Surname,Email,Gin,Location,Photo';
+    url += select;
+
+    // $filter by following specific query
     if (query || location) {
-      url += `?$filter=`;
+      if (query || location !== 'Global') {
+        url += `&$filter=`;
+      }
 
       if (query) {
         url += `((substringof('${query}',Name))`;
@@ -35,6 +42,12 @@ export class PeopleService {
         url += `(Location eq '${location}')`;
       }
     }
+
+    // $orderby
+    url += `&$orderby=Name desc`;
+
+    // $top
+    url += `&$top=5`;
 
     return this.http
       .get(url, {
