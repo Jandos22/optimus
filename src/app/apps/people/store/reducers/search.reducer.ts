@@ -5,8 +5,11 @@ export interface SearchState {
     query: string;
     location: string;
   };
-  searching: boolean;
-  completed: boolean;
+  uri: {
+    __prev: string;
+    __curr: string;
+    __next: string;
+  };
 }
 
 export const initialState: SearchState = {
@@ -14,8 +17,11 @@ export const initialState: SearchState = {
     query: null,
     location: null
   },
-  searching: false,
-  completed: false
+  uri: {
+    __prev: '',
+    __curr: '',
+    __next: ''
+  }
 };
 
 export function reducer(
@@ -43,22 +49,25 @@ export function reducer(
 
     case fromSearch.START_SEARCH_PEOPLE:
       return {
-        ...state,
-        searching: true,
-        completed: false
+        ...state
       };
 
-    case fromSearch.FINISH_PEOPLE_SEARCH:
+    case fromSearch.UPDATE_SEARCH_URI_CURRENT:
       return {
         ...state,
-        searching: false,
-        completed: true
+        uri: {
+          ...state.uri,
+          __curr: action.uri
+        }
       };
 
-    case fromSearch.CLEAR_SEARCH_STATE:
+    case fromSearch.UPDATE_SEARCH_URI_NEXT:
       return {
         ...state,
-        ...initialState
+        uri: {
+          ...state.uri,
+          __next: action.uri
+        }
       };
 
     default:
@@ -70,3 +79,4 @@ export const getSearch = (state: SearchState) => state;
 export const getSearchParams = (state: SearchState) => state.params;
 export const getSearchLocation = (state: SearchState) => state.params.location;
 export const getSearchQuery = (state: SearchState) => state.params.query;
+export const getSearchUriCurrent = (state: SearchState) => state.uri.__curr;

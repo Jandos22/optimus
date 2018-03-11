@@ -1,13 +1,22 @@
 import { Action } from '@ngrx/store';
 
-export const TRIGGER_SEARCH = '[People.Search] Trigger Search';
-export const UPDATE_SEARCH_PARAMS = '[People.Search] Update Search Params';
+// interfaces
+import { PeopleSearchParams } from '../../models/people-search-params.model';
+
+// actions
+export const ON_SEARCH_PARAMS_CHANGE = '[People] E - On Search Params Change';
 export const UPDATE_SEARCH_QUERY = '[People] Update Search Query';
 export const UPDATE_SEARCH_LOCATION = '[People] Update Search Location';
 export const START_SEARCH_PEOPLE = '[People] Start Search';
-export const FINISH_PEOPLE_SEARCH = '[People.Search] Finish Search';
+export const UPDATE_SEARCH_URI_CURRENT = '[People] Update Search Uri Current';
+export const UPDATE_SEARCH_URI_NEXT = '[People] Update Search Uri Next';
 
-export const CLEAR_SEARCH_STATE = '[People.Search] Clear State';
+// action creators
+
+export class OnSearchParamsChange implements Action {
+  readonly type = ON_SEARCH_PARAMS_CHANGE;
+  constructor(public params: PeopleSearchParams) {}
+}
 
 export class UpdateSearchQuery implements Action {
   readonly type = UPDATE_SEARCH_QUERY;
@@ -21,20 +30,22 @@ export class UpdateSearchLocation implements Action {
 
 export class StartSearchPeople implements Action {
   readonly type = START_SEARCH_PEOPLE;
-  constructor(public payload: any) {}
+  constructor(public url: any) {}
 }
 
-export class FinishPeopleSearch implements Action {
-  readonly type = FINISH_PEOPLE_SEARCH;
+export class UpdateSearchUriCurrent implements Action {
+  readonly type = UPDATE_SEARCH_URI_CURRENT;
+  constructor(public uri: string) {}
 }
 
-export class ClearSearchState implements Action {
-  readonly type = CLEAR_SEARCH_STATE;
+export class UpdateSearchUriNext implements Action {
+  readonly type = UPDATE_SEARCH_URI_NEXT;
+  constructor(public uri: string) {}
 }
 
 export type PeopleSearchActions =
   | UpdateSearchQuery
   | UpdateSearchLocation
   | StartSearchPeople
-  | FinishPeopleSearch
-  | ClearSearchState;
+  | UpdateSearchUriCurrent
+  | UpdateSearchUriNext;

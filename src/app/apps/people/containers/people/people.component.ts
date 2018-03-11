@@ -36,12 +36,25 @@ export class PeopleComponent implements OnInit, OnDestroy {
     this.searchParams$ = this.peopleStore
       .select(fromPeople.getSearchParams)
       .subscribe(params => this.onParamsChange(params));
+
+    // monitor current uri and respond on updates
+    this.searchParams$ = this.peopleStore
+      .select(fromPeople.getSearchUriCurrent)
+      .subscribe(__curr => this.onCurrentUriChange(__curr));
   }
 
+  // when params change, then trigger action in effects
+  // and update people.uri.current
   onParamsChange(params: PeopleSearchParams) {
     if (params.location !== null) {
       console.log('start');
-      this.peopleStore.dispatch(new fromPeople.StartSearchPeople(params));
+      this.peopleStore.dispatch(new fromPeople.OnSearchParamsChange(params));
+    }
+  }
+
+  onCurrentUriChange(__curr) {
+    if (__curr) {
+      this.peopleStore.dispatch(new fromPeople.StartSearchPeople(__curr));
     }
   }
 

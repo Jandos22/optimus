@@ -1,18 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+// rxjs
 import { Observable } from 'rxjs/Observable';
 import { map, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
+// constants
 import { ApiPath } from '../../../constants';
 import { hk_accept, hv_appjson } from '../../../constants/headers';
+
+// interfaces
+import { PeopleSearchParams } from './../models/people-search-params.model';
 
 @Injectable()
 export class PeopleService {
   constructor(private http: HttpClient) {}
 
-  getPeople(location, query) {
+  getPeopleWithGivenUrl(url) {
+    return this.http
+      .get(url, {
+        headers: new HttpHeaders().set(hk_accept, hv_appjson)
+      })
+      .pipe(
+        map((response: any) => {
+          if (response.d.results) {
+            return response.d;
+          }
+        }),
+        catchError((error: any) => Observable.throw(error.json()))
+      );
+  }
+
+  buildUrlToGetPeople(params: PeopleSearchParams) {
+    const query = params.query;
+    const location = params.location;
+
     // api url for NgPeople
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
 
@@ -49,17 +72,6 @@ export class PeopleService {
     // $top
     url += `&$top=5`;
 
-    return this.http
-      .get(url, {
-        headers: new HttpHeaders().set(hk_accept, hv_appjson)
-      })
-      .pipe(
-        map((response: any) => {
-          if (response.d.results) {
-            return response.d.results;
-          }
-        }),
-        catchError((error: any) => Observable.throw(error.json()))
-      );
+    return url;
   }
 }
