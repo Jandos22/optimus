@@ -2,15 +2,11 @@ import * as fromUsers from '../actions/users.action';
 import { User } from '../../models/user.m';
 
 export interface UsersState {
-  entities: { [id: number]: User };
-  loading: boolean;
-  loaded: boolean;
+  list: any[];
 }
 
 export const initialState: UsersState = {
-  entities: {},
-  loading: false,
-  loaded: false
+  list: []
 };
 
 export function reducer(
@@ -18,37 +14,16 @@ export function reducer(
   action: fromUsers.PeopleUsersActions
 ): UsersState {
   switch (action.type) {
-    case fromUsers.LOAD_USERS:
-      return {
-        ...state,
-        loading: true
-      };
-
     case fromUsers.LOAD_USERS_SUCCESS: {
-      const users = action.payload;
-      const entity = users.reduce(
-        (entities: { [id: number]: User }, user: User) => {
-          return {
-            ...entities,
-            [user.Id]: user
-          };
-        },
-        {}
-      );
-
       return {
         ...state,
-        loading: false,
-        loaded: true,
-        entities: entity
+        list: action.payload
       };
     }
 
     case fromUsers.LOAD_USERS_FAIL: {
       return {
-        ...state,
-        loading: false,
-        loaded: false
+        ...state
       };
     }
 
@@ -64,6 +39,4 @@ export function reducer(
   }
 }
 
-export const getUserEntities = (state: UsersState) => state.entities;
-export const getUsersLoading = (state: UsersState) => state.loading;
-export const getUsersLoaded = (state: UsersState) => state.loaded;
+export const getUserList = (state: UsersState) => state.list;

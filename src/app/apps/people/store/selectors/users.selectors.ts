@@ -11,21 +11,4 @@ export const getUsersState = createSelector(
 
 // selectors
 
-export const getUserEntities = createSelector(
-  getUsersState,
-  fromUsers.getUserEntities
-);
-
-export const getUsersLoaded = createSelector(
-  getUsersState,
-  fromUsers.getUsersLoaded
-);
-
-export const getUsersLoading = createSelector(
-  getUsersState,
-  fromUsers.getUsersLoading
-);
-
-export const getAllUsers = createSelector(getUserEntities, entities => {
-  return Object.keys(entities).map(id => entities[id]);
-});
+export const getUserList = createSelector(getUsersState, fromUsers.getUserList);

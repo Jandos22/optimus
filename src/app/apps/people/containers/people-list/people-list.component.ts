@@ -25,6 +25,6 @@ export class PeopleListComponent implements OnInit {
   users$: Observable<UserEntity>;
 
   ngOnInit() {
-    this.users$ = this.store.select(fromStore.getAllUsers);
+    this.users$ = this.store.select(fromStore.getUserList);
   }
 }
