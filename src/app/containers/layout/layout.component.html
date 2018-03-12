@@ -4,13 +4,13 @@
 </mat-progress-bar>
 
 <mat-sidenav-container class="sidenavContainer">
-    <!-- Sidenav Container -->
-    <mat-sidenav [opened]="sidenavOpened$ | async" [mode]="sidenavMode$ | async" (close)="onSidenavClose()">
-        <!-- Sidenav Content -->
-        <app-sidenav></app-sidenav>
-    </mat-sidenav>
-    <!-- Content Container -->
-    <div ng-sidebar-content fxLayout="column" class="contentWrapper">
-        <router-outlet></router-outlet>
-    </div>
+  <!-- Sidenav Container -->
+  <mat-sidenav [opened]="sidenavOpened$ | async" [mode]="sidenavMode$ | async" (close)="onSidenavClose()">
+    <!-- Sidenav Content -->
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <!-- Content Container -->
+  <div ng-sidebar-content fxLayout="column" fxFlexFill>
+    <router-outlet></router-outlet>
+  </div>
 </mat-sidenav-container>

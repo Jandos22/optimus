@@ -1,26 +1,26 @@
 /* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* You can add global styles to this file, and also import other style files */
 body {
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    font-family: 'Roboto', sans-serif;
-    vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-family: 'Roboto', sans-serif;
+  vertical-align: baseline;
 }
 
 .loading {
-    margin: 0;
-    height: 100vh;
-    background-color: #673ab7;
+  margin: 0;
+  height: 100vh;
+  background-color: #673ab7;
 }
 
 .loadingOptimus {
-    display: block;
-    margin: auto;
-    width: 216px;
-    padding: calc(100vh - 50vh) 0 0 0;
+  display: block;
+  margin: auto;
+  width: 216px;
+  padding: calc(100vh - 50vh) 0 0 0;
 }
 
 /* mat-sidenav-container {
@@ -29,5 +29,33 @@ body {
 } */
 
 .optimus-sidebar {
-    width: 200px;
+  width: 200px;
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+.flexToolbar {
+  flex: 0 0 auto;
+  flex-basis: 64px;
+}
+
+.flexContent {
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+}
+
+.flexFooter {
+  flex: 0 0 auto;
+  flex-basis: 56px;
 }

@@ -70,7 +70,7 @@ export class PeopleService {
     url += `&$orderby=Name desc`;
 
     // $top
-    url += `&$top=5`;
+    url += `&$top=10`;
 
     return url;
   }

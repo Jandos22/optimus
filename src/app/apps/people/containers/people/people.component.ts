@@ -13,8 +13,11 @@ import { PeopleSearchParams } from './../../models/people-search-params.model';
   styleUrls: ['./people.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <app-people-toolbar></app-people-toolbar>
-    <app-people-list fxFlexFill></app-people-list>
+
+    <app-people-toolbar class="flexToolbar"></app-people-toolbar>
+    <app-people-list class="flexContent"></app-people-list>
+    <app-people-toolbar-bottom class="flexFooter"></app-people-toolbar-bottom>
+
   `
 })
 export class PeopleComponent implements OnInit, OnDestroy {
@@ -29,6 +32,10 @@ export class PeopleComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // this fix is to make content of People to fill full height
+    const app_people = document.getElementsByTagName('app-people')[0];
+    app_people ? app_people.setAttribute('class', 'flexContainer') : '';
+
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
 

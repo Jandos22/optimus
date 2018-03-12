@@ -1,0 +1,11 @@
+.toolbar {
+  background-color: #e6e5e4;
+}
+
+.customToolbarRowTop {
+  height: 64px;
+}
+
+.customToolbarRow {
+  height: 52px;
+}
