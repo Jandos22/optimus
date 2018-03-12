@@ -7,6 +7,7 @@ import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
 import { PeopleSearchParams } from './../../models/people-search-params.model';
+import { PeopleSearchUri } from './../../models/people-search-uri.model';
 
 @Component({
   selector: 'app-people',
@@ -16,7 +17,7 @@ import { PeopleSearchParams } from './../../models/people-search-params.model';
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
     <app-people-list class="flexContent"></app-people-list>
-    <app-people-toolbar-bottom class="flexFooter"></app-people-toolbar-bottom>
+    <app-people-toolbar-bottom class="flexFooter" [uri]="uri"></app-people-toolbar-bottom>
 
   `
 })
@@ -25,6 +26,10 @@ export class PeopleComponent implements OnInit, OnDestroy {
   appName = 'People';
 
   searchParams$: Subscription;
+  searchUri$: Subscription;
+  searchUriCurrent$: Subscription;
+
+  uri: PeopleSearchUri;
 
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
@@ -44,10 +49,20 @@ export class PeopleComponent implements OnInit, OnDestroy {
       .select(fromPeople.getSearchParams)
       .subscribe(params => this.onParamsChange(params));
 
+    // subscribe to search uri
+    this.searchUri$ = this.peopleStore
+      .select(fromPeople.getSearchUri)
+      .subscribe(uri => {
+        this.uri = uri;
+        console.log(this.uri);
+      });
+
     // monitor current uri and respond on updates
-    this.searchParams$ = this.peopleStore
+    this.searchUriCurrent$ = this.peopleStore
       .select(fromPeople.getSearchUriCurrent)
-      .subscribe(__curr => this.onCurrentUriChange(__curr));
+      .subscribe(__curr => {
+        this.onCurrentUriChange(__curr);
+      });
   }
 
   // when params change, then trigger action in effects
@@ -67,5 +82,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.searchParams$.unsubscribe();
+    this.searchUri$.unsubscribe();
+    this.searchUriCurrent$.unsubscribe();
   }
 }

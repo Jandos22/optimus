@@ -28,6 +28,16 @@ export const getSearchLocation = createSelector(
   fromSearch.getSearchLocation
 );
 
+export const getSearchUri = createSelector(
+  getSearchState,
+  fromSearch.getSearchUri
+);
+
+export const getSearchUriPrevious = createSelector(
+  getSearchState,
+  fromSearch.getSearchUriPrevious
+);
+
 export const getSearchUriCurrent = createSelector(
   getSearchState,
   fromSearch.getSearchUriCurrent

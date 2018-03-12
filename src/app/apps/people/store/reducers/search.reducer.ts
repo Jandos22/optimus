@@ -79,4 +79,6 @@ export const getSearch = (state: SearchState) => state;
 export const getSearchParams = (state: SearchState) => state.params;
 export const getSearchLocation = (state: SearchState) => state.params.location;
 export const getSearchQuery = (state: SearchState) => state.params.query;
+export const getSearchUri = (state: SearchState) => state.uri;
+export const getSearchUriPrevious = (state: SearchState) => state.uri.__prev;
 export const getSearchUriCurrent = (state: SearchState) => state.uri.__curr;

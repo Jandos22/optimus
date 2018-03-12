@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { PeopleSearchUri } from './../../models/people-search-uri.model';
 
 @Component({
   selector: 'app-people-toolbar-bottom',
@@ -6,17 +8,31 @@ import { Component } from '@angular/core';
   template: `
     <mat-toolbar-row class="toolbarForPaging">
       <div fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
-        <button mat-icon-button>
-          <mat-icon>navigate_before</mat-icon>
-        </button>
-        <div>Center</div>
-        <button mat-icon-button>
-          <mat-icon>navigate_next</mat-icon>
-        </button>
+
+        <span class="footerButton">
+          <button mat-icon-button *ngIf="uri?.__prev">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+        </span>
+
+        <span>Center</span>
+
+        <span class="footerButton">
+          <button mat-icon-button *ngIf="uri?.__next">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </span>
+
       </div>
     </mat-toolbar-row>
   `
 })
 export class PeopleToolbarBottomComponent {
+  // buttons - disabled or enabled
+  back = false;
+  next = false;
+
+  @Input() uri: PeopleSearchUri;
+
   constructor() {}
 }
