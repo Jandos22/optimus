@@ -1,3 +1,4 @@
+import { SpResponse } from './../../../models/sp-response.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -23,9 +24,9 @@ export class PeopleService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
-        map((response: any) => {
+        map((response: SpResponse) => {
           if (response.d.results) {
-            return response.d;
+            return response;
           }
         }),
         catchError((error: any) => Observable.throw(error.json()))
@@ -35,6 +36,7 @@ export class PeopleService {
   buildUrlToGetPeople(params: PeopleSearchParams) {
     const query = params.query;
     const location = params.location;
+    const top = params.top;
 
     // api url for NgPeople
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
@@ -70,7 +72,7 @@ export class PeopleService {
     url += `&$orderby=Name desc`;
 
     // $top
-    url += `&$top=10`;
+    url += `&$top=${top}`;
 
     return url;
   }

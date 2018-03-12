@@ -10,7 +10,12 @@ import * as fromUsers from '../actions/users.action';
 
 import * as fromServices from '../../services';
 
+// constants
+import { WirelinePath, ApiPath } from './../../../../constants/index';
+
+// interfaces
 import { SearchUsers } from '../../models/search-users.m';
+import { SpResponse } from './../../../../models/sp-response.model';
 
 @Injectable()
 export class SearchEffects {
@@ -39,15 +44,24 @@ export class SearchEffects {
       map((action: fromSearch.StartSearchPeople) => action.url),
       switchMap((url: string) => {
         return this.peopleService.getPeopleWithGivenUrl(url).pipe(
-          mergeMap(data => {
+          mergeMap((res: SpResponse) => {
             const array = [];
 
-            if (data.results) {
-              array.push(new fromUsers.LoadUsersSuccess(data.results));
+            if (res.d.results) {
+              array.push(new fromUsers.LoadUsersSuccess(res.d.results));
             }
 
-            if (data.__next) {
-              array.push(new fromSearch.UpdateSearchUriNext(data.__next));
+            if (res.d.__next) {
+              let url = res.d.__next;
+
+              // for development mode url need to start with '_api/'
+              if (url.startsWith(WirelinePath) && ApiPath === '_api/') {
+                url = url.replace(WirelinePath + '/', '');
+              }
+
+              array.push(new fromSearch.UpdateSearchUriNext(url));
+            } else {
+              array.push(new fromSearch.UpdateSearchUriNext(''));
             }
 
             return array;

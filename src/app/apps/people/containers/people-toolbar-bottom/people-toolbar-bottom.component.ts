@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { PeopleSearchUri } from './../../models/people-search-uri.model';
 
@@ -10,7 +10,7 @@ import { PeopleSearchUri } from './../../models/people-search-uri.model';
       <div fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
 
         <span class="footerButton">
-          <button mat-icon-button *ngIf="uri?.__prev">
+          <button mat-icon-button *ngIf="uri?.__prev" (click)="onPrevClick()">
             <mat-icon>navigate_before</mat-icon>
           </button>
         </span>
@@ -18,7 +18,7 @@ import { PeopleSearchUri } from './../../models/people-search-uri.model';
         <span>Center</span>
 
         <span class="footerButton">
-          <button mat-icon-button *ngIf="uri?.__next">
+          <button mat-icon-button *ngIf="uri?.__next" (click)="onNextClick()">
             <mat-icon>navigate_next</mat-icon>
           </button>
         </span>
@@ -34,5 +34,16 @@ export class PeopleToolbarBottomComponent {
 
   @Input() uri: PeopleSearchUri;
 
+  @Output() onNext = new EventEmitter<any>();
+  @Output() onPrev = new EventEmitter<any>();
+
   constructor() {}
+
+  onPrevClick() {
+    this.onPrev.emit(this.uri);
+  }
+
+  onNextClick() {
+    this.onNext.emit();
+  }
 }

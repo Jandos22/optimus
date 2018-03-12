@@ -4,6 +4,7 @@ export interface SearchState {
   params: {
     query: string;
     location: string;
+    top: number;
   };
   uri: {
     __prev: string;
@@ -15,7 +16,8 @@ export interface SearchState {
 export const initialState: SearchState = {
   params: {
     query: null,
-    location: null
+    location: null,
+    top: null
   },
   uri: {
     __prev: '',
@@ -29,6 +31,14 @@ export function reducer(
   action: fromSearch.PeopleSearchActions
 ): SearchState {
   switch (action.type) {
+    case fromSearch.UPDATE_SEARCH_PARAMS:
+      return {
+        ...state,
+        params: {
+          ...action.params
+        }
+      };
+
     case fromSearch.UPDATE_SEARCH_QUERY:
       return {
         ...state,
@@ -50,6 +60,15 @@ export function reducer(
     case fromSearch.START_SEARCH_PEOPLE:
       return {
         ...state
+      };
+
+    case fromSearch.UPDATE_SEARCH_URI_PREVIOUS:
+      return {
+        ...state,
+        uri: {
+          ...state.uri,
+          __prev: action.uri
+        }
       };
 
     case fromSearch.UPDATE_SEARCH_URI_CURRENT:

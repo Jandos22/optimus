@@ -1,7 +1,5 @@
-import { UsersService } from './users.service';
 import { PeopleService } from './people.service';
 
-export const services: any[] = [UsersService, PeopleService];
+export const services: any[] = [PeopleService];
 
-export * from './users.service';
 export * from './people.service';

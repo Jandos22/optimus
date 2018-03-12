@@ -17,7 +17,9 @@ import { PeopleSearchUri } from './../../models/people-search-uri.model';
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
     <app-people-list class="flexContent"></app-people-list>
-    <app-people-toolbar-bottom class="flexFooter" [uri]="uri"></app-people-toolbar-bottom>
+    <app-people-toolbar-bottom class="flexFooter" [uri]="uri"
+      (onNext)="onNext()" (onPrev)="onPrev(uri)">
+    </app-people-toolbar-bottom>
 
   `
 })
@@ -77,6 +79,29 @@ export class PeopleComponent implements OnInit, OnDestroy {
   onCurrentUriChange(__curr) {
     if (__curr) {
       this.peopleStore.dispatch(new fromPeople.StartSearchPeople(__curr));
+    }
+  }
+
+  // when next clicked, then pass __next to __curr
+  // and pass __curr to __prev
+  onNext() {
+    this.peopleStore.dispatch(
+      new fromPeople.UpdateSearchUriPrevious(this.uri.__curr)
+    );
+
+    this.peopleStore.dispatch(
+      new fromPeople.UpdateSearchUriCurrent(this.uri.__next)
+    );
+  }
+
+  onPrev(uri: PeopleSearchUri) {
+    this.peopleStore.dispatch(new fromPeople.UpdateSearchUriNext(uri.__curr));
+    this.peopleStore.dispatch(
+      new fromPeople.UpdateSearchUriCurrent(uri.__prev)
+    );
+
+    if (uri.__prev.indexOf('skiptoken') === -1) {
+      this.peopleStore.dispatch(new fromPeople.UpdateSearchUriPrevious(''));
     }
   }
 

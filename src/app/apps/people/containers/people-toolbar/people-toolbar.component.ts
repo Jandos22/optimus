@@ -33,6 +33,11 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
             <span fxFlex></span>
 
+            <app-people-top-select
+              [top]="peopleFiltersForm.get('search.top').value"
+              (onSelectTop)="onSelectTop($event)">
+            </app-people-top-select>
+
             <button mat-icon-button>
               <mat-icon>filter_list</mat-icon>
             </button>
@@ -50,27 +55,29 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   peopleFiltersForm = new FormGroup({
     search: new FormGroup({
       query: new FormControl(''),
-      location: new FormControl('')
+      location: new FormControl(''),
+      top: new FormControl(10)
     })
   });
 
-  searchQuery$: Subscription = this.peopleFiltersForm
-    .get('search.query')
+  search$: Subscription = this.peopleFiltersForm
+    .get('search')
     .valueChanges.pipe(
       debounceTime(600),
       skipWhile(
-        query => this.peopleFiltersForm.get('search.query').invalid === true
+        _ => this.peopleFiltersForm.get('search.query').invalid === true
       )
     )
-    .subscribe(query => {
-      this.peopleStore.dispatch(new fromPeople.UpdateSearchQuery(query));
+    .subscribe(params => {
+      console.log(params);
+      this.peopleStore.dispatch(new fromPeople.UpdateSearchParams(params));
     });
 
-  searchLocation$: Subscription = this.peopleFiltersForm
-    .get('search.location')
-    .valueChanges.subscribe(location => {
-      this.peopleStore.dispatch(new fromPeople.UpdateSearchLocation(location));
-    });
+  // searchLocation$: Subscription = this.peopleFiltersForm
+  //   .get('search.location')
+  //   .valueChanges.subscribe(location => {
+  //     this.peopleStore.dispatch(new fromPeople.UpdateSearchLocation(location));
+  //   });
 
   // comes from STORE.application.location
   // controlled from *HEADER select menu
@@ -80,6 +87,10 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
     private peopleStore: Store<fromPeople.PeopleState>,
     private rootStore: Store<fromRoot.RootState>
   ) {}
+
+  onSelectTop(top) {
+    this.peopleFiltersForm.get('search.top').setValue(top);
+  }
 
   ngOnInit() {
     // subscribe to store and update selected location on change
@@ -93,7 +104,6 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.selectedLocation$.unsubscribe();
-    this.searchLocation$.unsubscribe();
-    this.searchQuery$.unsubscribe();
+    this.search$.unsubscribe();
   }
 }
