@@ -31,8 +31,8 @@ export class SearchEffects {
   // when params change:
   // reset pagination and get new url
   @Effect()
-  onParamsChange$ = this.actions$.ofType(fromParams.ON_PARAMS_CHANGE).pipe(
-    map((action: fromParams.OnParamsChange) => {
+  updateParams$ = this.actions$.ofType(fromParams.UPDATE_PARAMS).pipe(
+    map((action: fromParams.UpdateParams) => {
       return action.params;
     }),
     mergeMap(params => {
@@ -86,6 +86,20 @@ export class SearchEffects {
         }),
         catchError(error => of(new fromNgPeople.ErrorGetPeople(error)))
       );
+    })
+  );
+
+  @Effect()
+  onNext$ = this.actions$.ofType(fromPagination.ON_NEXT).pipe(
+    map((action: fromPagination.OnNext) => {
+      return new fromSearch.BeginSearch(action.url);
+    })
+  );
+
+  @Effect()
+  onBack$ = this.actions$.ofType(fromPagination.ON_BACK).pipe(
+    map((action: fromPagination.OnBack) => {
+      return new fromSearch.BeginSearch(action.url);
     })
   );
 }

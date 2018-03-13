@@ -17,8 +17,8 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
     <app-people-list class="flexContent"></app-people-list>
-    <app-people-toolbar-bottom class="flexFooter" [indexes]="uri"
-      (onNext)="onNext()" (onPrev)="onPrev(uri)">
+    <app-people-toolbar-bottom class="flexFooter" [indexes]="indexes"
+      (onNext)="onNext($event)" (onBack)="onBack($event)">
     </app-people-toolbar-bottom>
 
   `
@@ -27,11 +27,11 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // title in header
   appName = 'People';
 
-  params$: Subscription;
+  // pagination
   indexes$: Subscription;
   indexCurrent$: Subscription;
   links$: Subscription;
-
+  // pagination local copy
   indexes: PaginationIndexes;
   links: string[];
 
@@ -48,11 +48,6 @@ export class PeopleComponent implements OnInit, OnDestroy {
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
 
-    // monitor params and respond to changes
-    this.params$ = this.peopleStore
-      .select(fromPeople.getParams)
-      .subscribe(params => this.onParamsChange(params));
-
     // subscribe to indexes
     this.indexes$ = this.peopleStore
       .select(fromPeople.getPageIndexes)
@@ -61,46 +56,40 @@ export class PeopleComponent implements OnInit, OnDestroy {
         console.log(this.indexes);
       });
 
+    // monitor current index, trigger search when changed
+    this.indexCurrent$ = this.peopleStore
+      .select(fromPeople.getPageCurrentIndex)
+      .subscribe(index => {
+        console.log(index);
+      });
+
     // subscribe to search pagelinks
     this.links$ = this.peopleStore
       .select(fromPeople.getPageLinks)
       .subscribe(links => {
         this.links = links;
       });
-
-    // monitor current uri and respond on updates
-    this.indexCurrent$ = this.peopleStore
-      .select(fromPeople.getPageCurrentIndex)
-      .subscribe(curr => {
-        this.onCurrentIndexChange(curr);
-      });
   }
 
-  // when params change, then trigger action in effects
-  // and update people.uri.current
-  onParamsChange(params: PeopleParams) {
-    if (params.location !== null) {
-      console.log('params changed');
-      this.peopleStore.dispatch(new fromPeople.OnParamsChange(params));
-    }
+  // onCurrentIndexChange(index) {
+  //   if (index) {
+  //     this.peopleStore.dispatch(
+  //       new fromPeople.StartSearchPeople(this.links[index])
+  //     );
+  //   }
+  // }
+
+  onNext(indexes: PaginationIndexes) {
+    this.peopleStore.dispatch(new fromPeople.OnNext(this.links[indexes.next]));
   }
 
-  onCurrentIndexChange(index) {
-    if (index) {
-      this.peopleStore.dispatch(
-        new fromPeople.StartSearchPeople(this.links[index])
-      );
-    }
+  onBack(indexes: PaginationIndexes) {
+    this.peopleStore.dispatch(
+      new fromPeople.OnBack(this.links[indexes.previous])
+    );
   }
-
-  // when next clicked, then pass __next to __curr
-  // and pass __curr to __prev
-  onNext() {}
-
-  onPrev() {}
 
   ngOnDestroy() {
-    this.params$.unsubscribe();
     this.indexes$.unsubscribe();
     this.indexCurrent$.unsubscribe();
     this.links$.unsubscribe();

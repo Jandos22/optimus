@@ -54,6 +54,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
 
   // when params change,
   // update store with new params values
+  // same action activates in search effects
   params$: Subscription = this.paramsForm.valueChanges
     .pipe(
       debounceTime(600),

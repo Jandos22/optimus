@@ -10,7 +10,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
       <div fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
 
         <span class="footerButton">
-          <button mat-icon-button *ngIf="indexes?.prev || indexes?.prev === 0" (click)="onPrevClick()">
+          <button mat-icon-button *ngIf="indexes?.previous || indexes?.previous === 0" (click)="onBackClick()">
             <mat-icon>navigate_before</mat-icon>
           </button>
         </span>
@@ -35,15 +35,15 @@ export class PeopleToolbarBottomComponent {
   @Input() indexes: PaginationIndexes;
 
   @Output() onNext = new EventEmitter<any>();
-  @Output() onPrev = new EventEmitter<any>();
+  @Output() onBack = new EventEmitter<any>();
 
   constructor() {}
 
-  onPrevClick() {
-    this.onPrev.emit(this.indexes);
+  onBackClick() {
+    this.onBack.emit(this.indexes);
   }
 
   onNextClick() {
-    this.onNext.emit();
+    this.onNext.emit(this.indexes);
   }
 }
