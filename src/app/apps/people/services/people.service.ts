@@ -12,7 +12,7 @@ import { ApiPath } from '../../../constants';
 import { hk_accept, hv_appjson } from '../../../constants/headers';
 
 // interfaces
-import { PeopleSearchParams } from './../models/people-search-params.model';
+import { PeopleParams } from './../models/people-params.model';
 
 @Injectable()
 export class PeopleService {
@@ -33,7 +33,7 @@ export class PeopleService {
       );
   }
 
-  buildUrlToGetPeople(params: PeopleSearchParams) {
+  buildUrlToGetPeople(params: PeopleParams) {
     const query = params.query;
     const location = params.location;
     const top = params.top;

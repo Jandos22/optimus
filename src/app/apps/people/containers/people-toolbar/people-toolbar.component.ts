@@ -6,10 +6,7 @@ import * as fromRoot from '../../../../store';
 import * as fromPeople from '../../store';
 
 import { Subscription } from 'rxjs/Subscription';
-
 import { Observable } from 'rxjs/Observable';
-import { merge } from 'rxjs/observable/merge';
-
 import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
 @Component({
@@ -28,13 +25,13 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
             </span>
 
             <app-people-search
-                [parent]="peopleFiltersForm">
+                [parent]="paramsForm">
             </app-people-search>
 
             <span fxFlex></span>
 
             <app-people-top-select
-              [top]="peopleFiltersForm.get('search.top').value"
+              [top]="paramsForm.get('top').value"
               (onSelectTop)="onSelectTop($event)">
             </app-people-top-select>
 
@@ -45,39 +42,27 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
           </div>
 
         </mat-toolbar-row>
-        <!-- <mat-toolbar-row class="customToolbarRow">
-           <app-people-paging fxFlexFill></app-people-paging>
-        </mat-toolbar-row> -->
     </mat-toolbar>
     `
 })
 export class PeopleToolbarComponent implements OnInit, OnDestroy {
-  peopleFiltersForm = new FormGroup({
-    search: new FormGroup({
-      query: new FormControl(''),
-      location: new FormControl(''),
-      top: new FormControl(10)
-    })
+  paramsForm = new FormGroup({
+    query: new FormControl(''),
+    location: new FormControl(''),
+    top: new FormControl(10)
   });
 
-  search$: Subscription = this.peopleFiltersForm
-    .get('search')
-    .valueChanges.pipe(
+  // when params change,
+  // update store with new params values
+  params$: Subscription = this.paramsForm.valueChanges
+    .pipe(
       debounceTime(600),
-      skipWhile(
-        _ => this.peopleFiltersForm.get('search.query').invalid === true
-      )
+      skipWhile(_ => this.paramsForm.get('query').invalid === true)
     )
     .subscribe(params => {
       console.log(params);
-      this.peopleStore.dispatch(new fromPeople.UpdateSearchParams(params));
+      this.peopleStore.dispatch(new fromPeople.UpdateParams(params));
     });
-
-  // searchLocation$: Subscription = this.peopleFiltersForm
-  //   .get('search.location')
-  //   .valueChanges.subscribe(location => {
-  //     this.peopleStore.dispatch(new fromPeople.UpdateSearchLocation(location));
-  //   });
 
   // comes from STORE.application.location
   // controlled from *HEADER select menu
@@ -89,7 +74,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   ) {}
 
   onSelectTop(top) {
-    this.peopleFiltersForm.get('search.top').setValue(top);
+    this.paramsForm.get('top').setValue(top);
   }
 
   ngOnInit() {
@@ -98,12 +83,12 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
       .select(fromRoot.getApplicationLocation)
       .subscribe(location => {
         console.log(location);
-        this.peopleFiltersForm.get('search.location').setValue(location);
+        this.paramsForm.get('location').setValue(location);
       });
   }
 
   ngOnDestroy() {
     this.selectedLocation$.unsubscribe();
-    this.search$.unsubscribe();
+    this.params$.unsubscribe();
   }
 }

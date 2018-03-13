@@ -1,4 +1,4 @@
-export interface UserEntity {
+export interface PeopleItem {
   [id: number]: {
     Id: number;
     Name: string;

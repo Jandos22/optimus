@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
-import { PeopleSearchParams } from './../../models/people-search-params.model';
-import { PeopleSearchUri } from './../../models/people-search-uri.model';
+import { PeopleParams } from './../../models/people-params.model';
+import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
 @Component({
   selector: 'app-people',
@@ -17,7 +17,7 @@ import { PeopleSearchUri } from './../../models/people-search-uri.model';
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
     <app-people-list class="flexContent"></app-people-list>
-    <app-people-toolbar-bottom class="flexFooter" [uri]="uri"
+    <app-people-toolbar-bottom class="flexFooter" [indexes]="uri"
       (onNext)="onNext()" (onPrev)="onPrev(uri)">
     </app-people-toolbar-bottom>
 
@@ -27,11 +27,13 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // title in header
   appName = 'People';
 
-  searchParams$: Subscription;
-  searchUri$: Subscription;
-  searchUriCurrent$: Subscription;
+  params$: Subscription;
+  indexes$: Subscription;
+  indexCurrent$: Subscription;
+  links$: Subscription;
 
-  uri: PeopleSearchUri;
+  indexes: PaginationIndexes;
+  links: string[];
 
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
@@ -46,68 +48,61 @@ export class PeopleComponent implements OnInit, OnDestroy {
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
 
-    // monitor search params and respond to changes
-    this.searchParams$ = this.peopleStore
-      .select(fromPeople.getSearchParams)
+    // monitor params and respond to changes
+    this.params$ = this.peopleStore
+      .select(fromPeople.getParams)
       .subscribe(params => this.onParamsChange(params));
 
-    // subscribe to search uri
-    this.searchUri$ = this.peopleStore
-      .select(fromPeople.getSearchUri)
-      .subscribe(uri => {
-        this.uri = uri;
-        console.log(this.uri);
+    // subscribe to indexes
+    this.indexes$ = this.peopleStore
+      .select(fromPeople.getPageIndexes)
+      .subscribe(indexes => {
+        this.indexes = indexes;
+        console.log(this.indexes);
+      });
+
+    // subscribe to search pagelinks
+    this.links$ = this.peopleStore
+      .select(fromPeople.getPageLinks)
+      .subscribe(links => {
+        this.links = links;
       });
 
     // monitor current uri and respond on updates
-    this.searchUriCurrent$ = this.peopleStore
-      .select(fromPeople.getSearchUriCurrent)
-      .subscribe(__curr => {
-        this.onCurrentUriChange(__curr);
+    this.indexCurrent$ = this.peopleStore
+      .select(fromPeople.getPageCurrentIndex)
+      .subscribe(curr => {
+        this.onCurrentIndexChange(curr);
       });
   }
 
   // when params change, then trigger action in effects
   // and update people.uri.current
-  onParamsChange(params: PeopleSearchParams) {
+  onParamsChange(params: PeopleParams) {
     if (params.location !== null) {
-      console.log('start');
-      this.peopleStore.dispatch(new fromPeople.OnSearchParamsChange(params));
+      console.log('params changed');
+      this.peopleStore.dispatch(new fromPeople.OnParamsChange(params));
     }
   }
 
-  onCurrentUriChange(__curr) {
-    if (__curr) {
-      this.peopleStore.dispatch(new fromPeople.StartSearchPeople(__curr));
+  onCurrentIndexChange(index) {
+    if (index) {
+      this.peopleStore.dispatch(
+        new fromPeople.StartSearchPeople(this.links[index])
+      );
     }
   }
 
   // when next clicked, then pass __next to __curr
   // and pass __curr to __prev
-  onNext() {
-    this.peopleStore.dispatch(
-      new fromPeople.UpdateSearchUriPrevious(this.uri.__curr)
-    );
+  onNext() {}
 
-    this.peopleStore.dispatch(
-      new fromPeople.UpdateSearchUriCurrent(this.uri.__next)
-    );
-  }
-
-  onPrev(uri: PeopleSearchUri) {
-    this.peopleStore.dispatch(new fromPeople.UpdateSearchUriNext(uri.__curr));
-    this.peopleStore.dispatch(
-      new fromPeople.UpdateSearchUriCurrent(uri.__prev)
-    );
-
-    if (uri.__prev.indexOf('skiptoken') === -1) {
-      this.peopleStore.dispatch(new fromPeople.UpdateSearchUriPrevious(''));
-    }
-  }
+  onPrev() {}
 
   ngOnDestroy() {
-    this.searchParams$.unsubscribe();
-    this.searchUri$.unsubscribe();
-    this.searchUriCurrent$.unsubscribe();
+    this.params$.unsubscribe();
+    this.indexes$.unsubscribe();
+    this.indexCurrent$.unsubscribe();
+    this.links$.unsubscribe();
   }
 }

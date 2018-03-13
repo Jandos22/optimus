@@ -10,8 +10,8 @@ import * as fromPeople from '../../store';
   styleUrls: ['people-search.component.css'],
   template: `
     <span [formGroup]="parent" class="toolbarElement inputElement">
-        <mat-form-field formGroupName="search" [floatPlaceholder]="'never'">
-            <input  matInput 
+        <mat-form-field [floatPlaceholder]="'never'">
+            <input  matInput
                 placeholder="Search"
                 formControlName="query"
                 autocomplete="off">

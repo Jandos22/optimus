@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 
+// ngrx
 import { Effect, Actions } from '@ngrx/effects';
-
 import { of } from 'rxjs/observable/of';
 import { map, switchMap, mergeMap, catchError, tap } from 'rxjs/operators';
 
-import * as fromSearch from '../actions/search.action';
-import * as fromUsers from '../actions/users.action';
+// actions
+import * as fromSearch from '../actions/search.actions';
+import * as fromParams from '../actions/params.action';
+import * as fromPagination from '../actions/pagination.action';
+import * as fromNgPeople from '../actions/ng-people.action';
 
-import * as fromServices from '../../services';
+// services
+import { PeopleService } from '../../services/people.service';
 
 // constants
 import { WirelinePath, ApiPath } from './../../../../constants/index';
@@ -21,53 +25,67 @@ import { SpResponse } from './../../../../models/sp-response.model';
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private peopleService: fromServices.PeopleService
+    private peopleService: PeopleService
   ) {}
 
+  // when params change:
+  // reset pagination and get new url
   @Effect()
-  onSearchParamsChange$ = this.actions$
-    .ofType(fromSearch.ON_SEARCH_PARAMS_CHANGE)
-    .pipe(
-      map((action: fromSearch.OnSearchParamsChange) => {
-        return this.peopleService.buildUrlToGetPeople(action.params);
-      }),
-      map(__curr => {
-        console.log(__curr);
-        return new fromSearch.UpdateSearchUriCurrent(__curr);
-      })
-    );
+  onParamsChange$ = this.actions$.ofType(fromParams.ON_PARAMS_CHANGE).pipe(
+    map((action: fromParams.OnParamsChange) => {
+      return action.params;
+    }),
+    mergeMap(params => {
+      return [
+        new fromPagination.ResetPagination(),
+        new fromSearch.GetNewUrl(params)
+      ];
+    })
+  );
+
+  // when receive new url
+  // start new page (index 0 and one only link)
+  // start new search with new url
+  @Effect()
+  getNewUrl$ = this.actions$.ofType(fromSearch.GET_NEW_URL).pipe(
+    map((action: fromSearch.GetNewUrl) => {
+      return this.peopleService.buildUrlToGetPeople(action.params);
+    }),
+    switchMap(url => {
+      return [
+        new fromPagination.StartNewPage(url),
+        new fromSearch.BeginSearch(url)
+      ];
+    })
+  );
 
   @Effect()
-  startSearchPeople$ = this.actions$
-    .ofType(fromSearch.START_SEARCH_PEOPLE)
-    .pipe(
-      map((action: fromSearch.StartSearchPeople) => action.url),
-      switchMap((url: string) => {
-        return this.peopleService.getPeopleWithGivenUrl(url).pipe(
-          mergeMap((res: SpResponse) => {
-            const array = [];
+  beginSearch$ = this.actions$.ofType(fromSearch.BEGIN_SEARCH).pipe(
+    map((action: fromSearch.BeginSearch) => action.url),
+    switchMap((url: string) => {
+      // send request to server via service
+      return this.peopleService.getPeopleWithGivenUrl(url).pipe(
+        mergeMap((res: SpResponse) => {
+          // collection of actions that will be dispatched
+          const dispatch = [];
 
-            if (res.d.results) {
-              array.push(new fromUsers.LoadUsersSuccess(res.d.results));
-            }
+          // if results are not empty, then update NgPeople list
+          if (res.d.results) {
+            dispatch.push(new fromNgPeople.UpdatePeopleList(res.d.results));
+          }
 
-            if (res.d.__next) {
-              let url = res.d.__next;
+          // if results have next page, then add its url to links array
+          if (res.d.__next) {
+            dispatch.push(new fromPagination.AddNextLink(res.d.__next));
+          } else {
+            dispatch.push(new fromPagination.NoNextLink());
+          }
 
-              // for development mode url need to start with '_api/'
-              if (url.startsWith(WirelinePath) && ApiPath === '_api/') {
-                url = url.replace(WirelinePath + '/', '');
-              }
-
-              array.push(new fromSearch.UpdateSearchUriNext(url));
-            } else {
-              array.push(new fromSearch.UpdateSearchUriNext(''));
-            }
-
-            return array;
-          }),
-          catchError(error => of(new fromUsers.LoadUsersFail(error)))
-        );
-      })
-    );
+          // dispatched several actions using mergeMap
+          return dispatch;
+        }),
+        catchError(error => of(new fromNgPeople.ErrorGetPeople(error)))
+      );
+    })
+  );
 }

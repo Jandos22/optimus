@@ -11,7 +11,7 @@ import * as fromStore from '../../store';
 import { MatList, MatListItem } from '@angular/material';
 
 // models
-import { UserEntity } from '../../models/user-entity.model';
+import { PeopleItem } from '../../models/people-item.model';
 
 @Component({
   selector: 'app-people-list',
@@ -22,9 +22,9 @@ import { UserEntity } from '../../models/user-entity.model';
 export class PeopleListComponent implements OnInit {
   constructor(private store: Store<fromStore.PeopleState>) {}
 
-  users$: Observable<UserEntity>;
+  users$: Observable<PeopleItem>;
 
   ngOnInit() {
-    this.users$ = this.store.select(fromStore.getUserList);
+    this.users$ = this.store.select(fromStore.getPeopleList);
   }
 }
