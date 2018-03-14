@@ -41,7 +41,7 @@ export class AuthGuard implements OnDestroy {
   // on first load "isRegistered" will be null
   // so checkRegistration() activated
   canActivate() {
-    console.log(this.isRegistered);
+    console.log('is registered?: ' + this.isRegistered);
     return this.isRegistered ? true : this.checkRegistration();
   }
 
@@ -55,6 +55,7 @@ export class AuthGuard implements OnDestroy {
       .getLoggedInUser()
       .toPromise()
       .then((loggedInUser: CurrentUser) => {
+        console.log(loggedInUser);
         const user = this.userService.prepCurrentUserObject(loggedInUser);
         this.store.dispatch(new userActions.SetCurrentUser(user));
         return user.username;

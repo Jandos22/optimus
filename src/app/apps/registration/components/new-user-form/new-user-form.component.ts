@@ -118,7 +118,6 @@ export class NewUserFormComponent implements OnInit, OnChanges {
       Filename: ['', Validators.required],
       ArrayBuffer: [new ArrayBuffer(0), Validators.required]
     });
-    console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
   }
 
   ngOnChanges(changes: SimpleChanges) {
