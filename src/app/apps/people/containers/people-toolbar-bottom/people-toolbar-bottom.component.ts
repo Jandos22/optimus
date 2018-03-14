@@ -15,7 +15,13 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
           </button>
         </span>
 
-        <span>Center</span>
+        <span>
+          {{
+            listLength && from && to
+            ? (from + ' - ' + to + (total ? (' of ' + total) : ''))
+            : '0 results'
+          }}
+        </span>
 
         <span class="footerButton">
           <button mat-icon-button *ngIf="indexes?.next" (click)="onNextClick()">
@@ -33,6 +39,10 @@ export class PeopleToolbarBottomComponent {
   next = false;
 
   @Input() indexes: PaginationIndexes;
+  @Input() listLength: number;
+  @Input() from: number;
+  @Input() to: number;
+  @Input() total: any;
 
   @Output() onNext = new EventEmitter<any>();
   @Output() onBack = new EventEmitter<any>();

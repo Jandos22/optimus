@@ -15,3 +15,8 @@ export const getPeopleList = createSelector(
   getNgPeopleState,
   fromNgPeople.getNgPeopleList
 );
+
+export const getPeopleTotal = createSelector(
+  getNgPeopleState,
+  fromNgPeople.getNgPeopleTotal
+);

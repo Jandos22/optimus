@@ -33,16 +33,21 @@ export class PeopleService {
       );
   }
 
-  buildUrlToGetPeople(params: PeopleParams) {
-    const query = params.query;
-    const location = params.location;
-    const top = params.top;
-
+  buildUrlToGetPeople(params: PeopleParams, counter?: boolean) {
     // api url for NgPeople
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
 
     // select only following fields
-    const select = '?$select=Id,Alias,Name,Surname,Email,Gin,Location,Photo';
+    let select = '?$select=Id,Alias,Name,Surname,Email,Gin,Location,Photo';
+
+    // parameters
+    const query = params.query;
+    const location = params.location;
+    let top = params.top;
+
+    // to count total
+    counter ? ((top = 500), (select = `?$select=Alias`)) : '';
+
     url += select;
 
     // $filter by following specific query

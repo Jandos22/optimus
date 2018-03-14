@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
+// interfaces
+import { PeopleItem } from './../../models/people-item.model';
 import { PeopleParams } from './../../models/people-params.model';
 import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
@@ -16,8 +18,11 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
   template: `
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
-    <app-people-list class="flexContent"></app-people-list>
-    <app-people-toolbar-bottom class="flexFooter" [indexes]="indexes"
+    <app-people-list class="flexContent" [list]="list">
+    </app-people-list>
+    <app-people-toolbar-bottom class="flexFooter"
+      [indexes]="indexes" [listLength]="listLength"
+      [from]="from" [to]="to" [total]="total"
       (onNext)="onNext($event)" (onBack)="onBack($event)">
     </app-people-toolbar-bottom>
 
@@ -27,10 +32,25 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // title in header
   appName = 'People';
 
+  // data
+  list$: Subscription;
+  list: PeopleItem[];
+  total$: Subscription;
+  total: any;
+
+  // counter
+  listLength: number;
+  from: number;
+  to: number;
+
+  // params
+  params$: Subscription;
+  params: PeopleParams;
+
   // pagination
   indexes$: Subscription;
-  indexCurrent$: Subscription;
   links$: Subscription;
+
   // pagination local copy
   indexes: PaginationIndexes;
   links: string[];
@@ -38,7 +58,30 @@ export class PeopleComponent implements OnInit, OnDestroy {
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
     private rootStore: Store<fromRoot.RootState>
-  ) {}
+  ) {
+    this.list$ = this.peopleStore
+      .select(fromPeople.getPeopleList)
+      .subscribe(list => {
+        // goes in people-list component
+        this.list = list;
+
+        // go in people-toolbar-bottom component
+        this.listLength = list.length;
+        if (this.indexes) {
+          this.from = this.indexes.current * this.params.top + 1;
+          this.to = this.from + this.listLength - 1;
+        }
+
+        // count total
+        this.countTotalItems(this.params);
+      });
+
+    this.total$ = this.peopleStore
+      .select(fromPeople.getPeopleTotal)
+      .subscribe(total => {
+        this.total = total;
+      });
+  }
 
   ngOnInit() {
     // this fix is to make content of People to fill full height
@@ -57,10 +100,10 @@ export class PeopleComponent implements OnInit, OnDestroy {
       });
 
     // monitor current index, trigger search when changed
-    this.indexCurrent$ = this.peopleStore
-      .select(fromPeople.getPageCurrentIndex)
-      .subscribe(index => {
-        console.log(index);
+    this.params$ = this.peopleStore
+      .select(fromPeople.getParams)
+      .subscribe(params => {
+        this.params = params;
       });
 
     // subscribe to search pagelinks
@@ -70,14 +113,6 @@ export class PeopleComponent implements OnInit, OnDestroy {
         this.links = links;
       });
   }
-
-  // onCurrentIndexChange(index) {
-  //   if (index) {
-  //     this.peopleStore.dispatch(
-  //       new fromPeople.StartSearchPeople(this.links[index])
-  //     );
-  //   }
-  // }
 
   onNext(indexes: PaginationIndexes) {
     this.peopleStore.dispatch(new fromPeople.OnNext(this.links[indexes.next]));
@@ -89,9 +124,17 @@ export class PeopleComponent implements OnInit, OnDestroy {
     );
   }
 
+  countTotalItems(params) {
+    if (params) {
+      this.peopleStore.dispatch(new fromPeople.BeginCount(params));
+    }
+  }
+
   ngOnDestroy() {
+    this.list$.unsubscribe();
+    this.total$.unsubscribe();
     this.indexes$.unsubscribe();
-    this.indexCurrent$.unsubscribe();
+    this.params$.unsubscribe();
     this.links$.unsubscribe();
   }
 }

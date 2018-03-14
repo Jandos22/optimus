@@ -3,11 +3,7 @@ import { User } from '../../models/user.m';
 
 export interface NgPeopleState {
   list: any[];
-  counter: {
-    from: number;
-    to: number;
-    total: number;
-  };
+  total: any;
   state: {
     searching: boolean;
     errors: any[];
@@ -16,11 +12,7 @@ export interface NgPeopleState {
 
 export const initialState: NgPeopleState = {
   list: [],
-  counter: {
-    from: null,
-    to: null,
-    total: null
-  },
+  total: null,
   state: {
     searching: false,
     errors: []
@@ -49,9 +41,17 @@ export function reducer(
       };
     }
 
+    case fromNgPeople.UPDATE_TOTAL_ITEMS: {
+      return {
+        ...state,
+        total: action.total
+      };
+    }
+
     default:
       return state;
   }
 }
 
 export const getNgPeopleList = (state: NgPeopleState) => state.list;
+export const getNgPeopleTotal = (state: NgPeopleState) => state.total;
