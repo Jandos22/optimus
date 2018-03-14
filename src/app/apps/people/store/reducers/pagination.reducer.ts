@@ -91,7 +91,7 @@ export const getPageLinks = (state: PaginationState) => state.links;
 // help functions
 
 export function checkUrl(url: string) {
-  if (ApiPath === '_api/' && url.startsWith(WirelinePath)) {
+  if (ApiPath.startsWith('_api/') && url.startsWith(WirelinePath)) {
     return url.replace(WirelinePath + '/', '');
   } else {
     return url;
