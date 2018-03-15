@@ -1,0 +1,13 @@
+{
+  "short_name": "Optimus",
+  "name": "Optimus",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "display": "fullscreen",
+  "orientation": "portrait"
+}
