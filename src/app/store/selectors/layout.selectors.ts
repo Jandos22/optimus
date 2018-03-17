@@ -3,9 +3,9 @@ import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../';
 import * as fromLayout from '../reducers/layout.reducer';
 
-export const getWindowState = createSelector(
+export const getLayoutWindow = createSelector(
   fromRoot.getLayoutState,
-  fromLayout.getWindowState
+  fromLayout.getLayoutWindow
 );
 
 export const getSidenavState = createSelector(

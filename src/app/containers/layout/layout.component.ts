@@ -61,7 +61,7 @@ export class LayoutComponent implements OnInit {
     this.innerHeight = window.innerHeight;
 
     this.windowState$ = this.store
-      .select(fromRoot.getWindowState)
+      .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
         if (window) {
           this.windowState = window;

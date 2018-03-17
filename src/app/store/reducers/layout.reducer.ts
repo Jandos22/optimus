@@ -80,7 +80,7 @@ export function reducer(
   }
 }
 
-export const getWindowState = (state: LayoutState) => state.window;
+export const getLayoutWindow = (state: LayoutState) => state.window;
 export const getIsXS = (state: LayoutState) => state.window.isXS;
 
 export const getSidenavState = (state: LayoutState) => state.sidenav;

@@ -66,7 +66,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
     this.appName$ = this.store.select(fromRoot.getApplicationName);
 
-    this.window$ = this.store.select(fromRoot.getWindowState);
+    this.window$ = this.store.select(fromRoot.getLayoutWindow);
     this.sidenav$ = this.store.select(fromRoot.getSidenavState);
 
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
