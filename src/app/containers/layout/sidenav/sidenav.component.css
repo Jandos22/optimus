@@ -4,7 +4,8 @@ ul {
     padding: 16px 0 16px 0;
     font-size: 0.875em;
     width: 200px;
-    background-color: #eeeeee;
+    /* background-color: #eeeeee; */
+    background-color: rgba(201, 205, 209, .75);
     /* background-color: #dddfff; */
     position: static;
     overflow: auto;

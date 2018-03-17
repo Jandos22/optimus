@@ -9,7 +9,19 @@ import * as layout from '../../../store/actions/layout.action';
 
 @Component({
   selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
+  template: `
+  <ul fxLayout="column" fxFlexFill >
+    <li *ngIf="isRegistered$ | async">
+        <a routerLink="/" class="noSelect" (click)="onSidenavClick()">Home</a>
+    </li>
+    <li *ngIf="isRegistered$ | async">
+        <a routerLink="/people" class="noSelect" (click)="onSidenavClick()">People</a>
+    </li>
+    <li *ngIf="(isRegistered$ | async) === false">
+          <a routerLink="/registration" class="noSelect" (click)="onSidenavClick()">Registration</a>
+      </li>
+  </ul>
+  `,
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit, OnDestroy {
@@ -19,9 +31,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   onSidenavClick() {
     this.store.dispatch(new layout.ClickSidenav());

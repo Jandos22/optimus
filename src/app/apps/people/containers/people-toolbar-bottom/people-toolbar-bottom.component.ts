@@ -47,7 +47,7 @@ export class PeopleToolbarBottomComponent {
   @Output() onNext = new EventEmitter<any>();
   @Output() onBack = new EventEmitter<any>();
 
-  constructor() {}
+  constructor() { }
 
   onBackClick() {
     this.onBack.emit(this.indexes);
