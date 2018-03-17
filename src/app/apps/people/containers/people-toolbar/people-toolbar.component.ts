@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
           <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
 
             <span>
-                <button mat-icon-button>
+                <button mat-icon-button (click)="onOpenForm('new')">
                     <mat-icon>add</mat-icon>
                 </button>
             </span>
@@ -52,6 +52,8 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
     top: new FormControl(10)
   });
 
+  @Output() openForm = new EventEmitter<string>();
+
   // when params change,
   // update store with new params values
   // same action activates in search effects
@@ -60,10 +62,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
       debounceTime(600),
       skipWhile(_ => this.paramsForm.get('query').invalid === true)
     )
-    .subscribe(params => {
-      console.log(params);
-      this.peopleStore.dispatch(new fromPeople.UpdateParams(params));
-    });
+    .subscribe(params => this.peopleStore.dispatch(new fromPeople.UpdateParams(params)));
 
   // comes from STORE.application.location
   // controlled from *HEADER select menu
@@ -72,7 +71,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
     private rootStore: Store<fromRoot.RootState>
-  ) {}
+  ) { }
 
   onSelectTop(top) {
     this.paramsForm.get('top').setValue(top);
@@ -83,9 +82,12 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
     this.selectedLocation$ = this.rootStore
       .select(fromRoot.getApplicationLocation)
       .subscribe(location => {
-        console.log(location);
         this.paramsForm.get('location').setValue(location);
       });
+  }
+
+  onOpenForm(state) {
+    this.openForm.emit(state);
   }
 
   ngOnDestroy() {

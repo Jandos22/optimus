@@ -6,10 +6,16 @@ import { Store } from '@ngrx/store';
 import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
+// material
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
 // interfaces
 import { PeopleItem } from './../../models/people-item.model';
 import { PeopleParams } from './../../models/people-params.model';
 import { PaginationIndexes } from './../../models/pagination-indexes.model';
+
+// form component
+import { PeopleFormComponent } from '../../forms/people-form/people-form.component';
 
 @Component({
   selector: 'app-people',
@@ -17,9 +23,14 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
   encapsulation: ViewEncapsulation.Emulated,
   template: `
 
-    <app-people-toolbar class="flexToolbar"></app-people-toolbar>
-    <app-people-list class="flexContent" [list]="list" style="padding: 8px 0;">
+    <app-people-toolbar class="flexToolbar"
+      (openForm)="openForm($event)">
+    </app-people-toolbar>
+
+    <app-people-list class="flexContent" style="padding: 8px 0;"
+      [list]="list" (openItem)="openForm('view', $event)">
     </app-people-list>
+
     <app-people-toolbar-bottom class="flexFooter"
       [indexes]="indexes" [listLength]="listLength"
       [from]="from" [to]="to" [total]="total"
@@ -57,7 +68,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
-    private rootStore: Store<fromRoot.RootState>
+    private rootStore: Store<fromRoot.RootState>,
+    public form: MatDialog
   ) {
     this.list$ = this.peopleStore
       .select(fromPeople.getPeopleList)
@@ -94,10 +106,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     // subscribe to indexes
     this.indexes$ = this.peopleStore
       .select(fromPeople.getPageIndexes)
-      .subscribe(indexes => {
-        this.indexes = indexes;
-        console.log(this.indexes);
-      });
+      .subscribe(indexes => (this.indexes = indexes));
 
     // monitor current index, trigger search when changed
     this.params$ = this.peopleStore
@@ -128,6 +137,11 @@ export class PeopleComponent implements OnInit, OnDestroy {
     if (params) {
       this.peopleStore.dispatch(new fromPeople.BeginCount(params));
     }
+  }
+
+  openForm(mode, item?): void {
+    const data = { mode, item };
+    let formRef = this.form.open(PeopleFormComponent, { data });
   }
 
   ngOnDestroy() {

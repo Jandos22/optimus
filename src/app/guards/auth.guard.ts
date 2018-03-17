@@ -55,7 +55,7 @@ export class AuthGuard implements OnDestroy {
       .getLoggedInUser()
       .toPromise()
       .then((loggedInUser: CurrentUser) => {
-        console.log(loggedInUser);
+        // console.log(loggedInUser);
         const user = this.userService.prepCurrentUserObject(loggedInUser);
         this.store.dispatch(new userActions.SetCurrentUser(user));
         return user.username;

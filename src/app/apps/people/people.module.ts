@@ -16,6 +16,9 @@ import * as fromContainers from './containers';
 // components
 import * as fromComponents from './components';
 
+// forms
+import * as fromForms from './forms';
+
 // services
 import * as fromServices from './services';
 
@@ -35,7 +38,12 @@ export const peopleRoutes: Routes = [
     ImageCropperModule
   ],
   providers: [...fromServices.services],
-  declarations: [...fromContainers.containers, ...fromComponents.components],
+  declarations: [
+    ...fromContainers.containers,
+    ...fromComponents.components,
+    ...fromForms.forms
+  ],
+  entryComponents: [...fromForms.forms],
   exports: [
     RouterModule,
     ReactiveFormsModule,

@@ -26,7 +26,7 @@ export class PeopleTopSelectComponent implements OnInit {
   ngOnInit() {}
 
   onSelect(top) {
-    console.log(top);
+    // console.log(top);
     this.onSelectTop.emit(top);
   }
 }

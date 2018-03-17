@@ -32,8 +32,6 @@ export function reducer(
       };
 
     case fromPagination.START_NEW_PAGE:
-      console.log(action.url);
-      console.log(checkUrl(action.url));
       return {
         ...state,
         indexes: { previous: null, current: 0, next: null },

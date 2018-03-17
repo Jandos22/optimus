@@ -106,14 +106,11 @@ export class SearchEffects {
   @Effect()
   onBeginCount$ = this.actions$.ofType(fromSearch.BEGIN_COUNT).pipe(
     map((action: fromSearch.BeginCount) => {
-      console.log(action.params);
       return this.peopleService.buildUrlToGetPeople(action.params, true);
     }),
     switchMap(url => {
       return this.peopleService.getPeopleWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
-          console.log(url);
-          console.log(res.d.results);
           if (res.d.results.length === 0) {
             return new fromNgPeople.UpdateTotalItems(0);
           } else if (res.d.results.length <= 500 && !res.d.__next) {
