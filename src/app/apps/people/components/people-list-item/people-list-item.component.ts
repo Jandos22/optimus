@@ -1,3 +1,4 @@
+import { MatListItem } from '@angular/material';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -5,18 +6,29 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   styleUrls: ['people-list-item.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <mat-list-item>
-        <img matListAvatar [src]="user.Photo?.Url" [alt]="user.Photo?.Description">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="itemContainer">
 
-          <h3 matLine>{{ user.Name }} {{ user.Surname }}</h3>
-          <a matLine [href]="'mailto:' + user.Email" class="emailLink">{{ user.Email }}</a>
+      <button mat-icon-button fxFLex="40px">
+        <img [src]="user.Photo?.Url" [alt]="user.Photo?.Description" class="peopleAvatar">
+      </button>
 
-        <mat-divider [inset]="false" *ngIf="!last"></mat-divider>
-    <mat-list-item>
+      <span fxFlex class="listItemMiddle">
+        <span fxLayout="column">
+          <span>{{ user.Name }} {{ user.Surname }}</span>
+          <span class="emailLink"><a matLine [href]="'mailto:' + user.Email" class="emailLink">{{ user.Email }}</a></span>
+        </span>
+      </span>
+
+      <span fxFlex="40px" class="right">
+      </span>
+
+    </div>
+          
+    <mat-divider *ngIf="!last"></mat-divider>
     `
 })
 export class PeopleListItemComponent {
   @Input() user: any;
   @Input() last: boolean;
-  constructor() {}
+  constructor() { }
 }

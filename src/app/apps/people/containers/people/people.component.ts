@@ -18,7 +18,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
   template: `
 
     <app-people-toolbar class="flexToolbar"></app-people-toolbar>
-    <app-people-list class="flexContent" [list]="list">
+    <app-people-list class="flexContent" [list]="list" style="padding: 8px 0;">
     </app-people-list>
     <app-people-toolbar-bottom class="flexFooter"
       [indexes]="indexes" [listLength]="listLength"
