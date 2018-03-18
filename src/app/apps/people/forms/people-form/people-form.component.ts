@@ -26,13 +26,15 @@ import { PeopleItem } from '../../models/people-item.model';
   selector: 'app-people-form',
   styleUrls: ['people-form.component.css'],
   template: `
-    <h2 mat-dialog-title>{{ data.mode === 'new' ? 'New User' : (form.get('Name').value + ' ' + form.get('Surname').value)}}</h2>
+    <span mat-dialog-title style="text-align: center;">{{ title }}</span>
     <mat-dialog-content>
     
       <!-- Common -->
       <div fxLayout="row wrap" fxLayoutGap.gt-xs="16px">
 
-        <app-people-form-photo [parent]="form" fxFlex="180px"></app-people-form-photo>
+        <div fxLayout="row wrap" fxFlex.gt-xs="180px">
+          <app-people-form-photo fxFlex [parent]="form"></app-people-form-photo>
+        </div>
         
         <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
           <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
@@ -128,6 +130,12 @@ export class PeopleFormComponent implements OnInit {
         Description: [isNew ? '' : user.Photo.Description]
       })
     });
+  }
+
+  get title() {
+    return this.mode.isNew
+      ? 'New User'
+      : this.user.Name + ' ' + this.user.Surname;
   }
 
   get mode() {

@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'app-people-form-photo',
   styleUrls: ['people-form-photo.component.css'],
   template: `
-    <div fxFlex [formGroup]="parent" style="padding-bottom: 16px;">
+    <div fxFlex fxLayout="row wrap" fxLayoutAlign="center" [formGroup]="parent">
       <img [src]="parent.get('Photo.Url').value" class="userPhoto">
     </div>
     `
