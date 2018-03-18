@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 
 // material
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // services
 import { ValidationService } from '../../../../validators/validation.service';
@@ -27,8 +27,30 @@ import { PeopleItem } from '../../models/people-item.model';
   styleUrls: ['people-form.component.css'],
   template: `
     <h2 mat-dialog-title>{{ data.mode === 'new' ? 'New User' : (form.get('Name').value + ' ' + form.get('Surname').value)}}</h2>
-    <mat-dialog-content>Body</mat-dialog-content>
-    <mat-dialog-actions>Actions</mat-dialog-actions>
+    <mat-dialog-content>
+    
+      <!-- Common -->
+      <div fxLayout="row wrap" fxLayoutGap.gt-xs="16px">
+
+        <app-people-form-photo [parent]="form" fxFlex="180px"></app-people-form-photo>
+        
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
+          <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
+            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
+            <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
+            <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
+            <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
+            <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
+            <app-people-form-location fxFlex.gt-xs="180px" [parent]="form"></app-people-form-location>
+          </div>
+        </div>
+
+      </div>
+      
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+      <button mat-button tabindex="-1" (click)="onClose()">CLOSE</button>
+    </mat-dialog-actions>
     `
 })
 export class PeopleFormComponent implements OnInit {
@@ -52,11 +74,22 @@ export class PeopleFormComponent implements OnInit {
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
         let width: string;
-        let height: string;
-        window.isXS ? ((width = '80%'), (height = '80%')) : (width = '600px');
-        console.log(width, height);
-        this.dialogRef.updateSize(width, height);
+        // let height: string;
+        window.isXS
+          ? (width = '80%')
+          : window.isS
+            ? (width = '424px')
+            : window.isM ? (width = '636px') : (width = '832px');
+
+        console.log(width);
+        this.dialogRef.updateSize(width);
       });
+  }
+
+  // ACTION BUTTONS
+
+  onClose() {
+    this.dialogRef.close();
   }
 
   //
@@ -68,6 +101,7 @@ export class PeopleFormComponent implements OnInit {
 
     // check if mode is 'new' or 'view'
     const isNew = data.mode === 'new' ? true : false;
+    const isView = data.mode === 'view' ? true : false;
 
     // if mode is 'view' then populate user
     if (!isNew) {
@@ -75,12 +109,12 @@ export class PeopleFormComponent implements OnInit {
     }
 
     this.form = this.fb.group({
-      Name: [isNew ? '' : user.Name, Validators.required],
-      Surname: [isNew ? '' : user.Surname, Validators.required],
-      Alias: [{ value: '', disabled: true }, Validators.required],
-      Email: [{ value: '', disabled: true }, Validators.required],
+      Name: [this.nameInput, Validators.required],
+      Surname: [this.surnameInput, Validators.required],
+      Alias: [this.aliasInput, Validators.required],
+      Email: [this.emailInput, Validators.required],
       Gin: [
-        '',
+        this.ginInput,
         [
           Validators.required,
           Validators.minLength(8),
@@ -88,11 +122,65 @@ export class PeopleFormComponent implements OnInit {
           ValidationService.onlyNumbers
         ]
       ],
-      Location: ['', Validators.required],
+      Location: [this.locationInput, Validators.required],
       Photo: this.fb.group({
-        Url: [''],
-        Description: ['']
+        Url: [isNew ? '' : user.Photo.Url],
+        Description: [isNew ? '' : user.Photo.Description]
       })
     });
+  }
+
+  get mode() {
+    const isNew = this.data.mode === 'new' ? true : false;
+    const isView = this.data.mode === 'view' ? true : false;
+    const isEdit = this.data.mode === 'edit' ? true : false;
+    return { isNew, isView, isEdit };
+  }
+
+  get user(): PeopleItem {
+    return !this.mode.isNew ? this.data.item : '';
+  }
+
+  get nameInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Name, disabled: true }
+        : this.user.Name;
+  }
+  get surnameInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Surname, disabled: true }
+        : this.user.Surname;
+  }
+  get aliasInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Alias, disabled: true }
+        : this.user.Alias;
+  }
+  get emailInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Email, disabled: true }
+        : this.user.Email;
+  }
+  get ginInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Gin, disabled: true }
+        : this.user.Gin;
+  }
+  get locationInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView
+        ? { value: this.user.Location, disabled: true }
+        : this.user.Location;
   }
 }

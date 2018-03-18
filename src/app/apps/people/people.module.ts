@@ -1,11 +1,14 @@
+// 3rd party
 import { ImageCropperModule } from 'ng2-img-cropper/src/imageCropperModule';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../libraries/material.module';
 
+// angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
+// ngrx
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, effects } from './store';
@@ -18,6 +21,9 @@ import * as fromComponents from './components';
 
 // forms
 import * as fromForms from './forms';
+
+// form components
+import * as fromFormComponents from './forms/people-form';
 
 // services
 import * as fromServices from './services';
@@ -41,7 +47,8 @@ export const peopleRoutes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
-    ...fromForms.forms
+    ...fromForms.forms,
+    ...fromFormComponents.forms_components
   ],
   entryComponents: [...fromForms.forms],
   exports: [
