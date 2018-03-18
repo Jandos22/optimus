@@ -68,3 +68,16 @@ body {
     font-size: 16px !important;
   }
 }
+
+.mat-dialog-container {
+  background-color: #f6f5f4 !important;
+}
+
+.mat-dialog-content {
+  padding-top: 20px !important;
+  background-color: #ffffff !important;
+}
+
+.mat-dialog-title {
+  margin-bottom: 5px !important;
+}

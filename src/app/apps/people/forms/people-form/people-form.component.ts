@@ -30,7 +30,7 @@ import { PeopleItem } from '../../models/people-item.model';
     <mat-dialog-content>
     
       <!-- Common -->
-      <div fxLayout="row wrap" fxLayoutGap.gt-xs="16px">
+      <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start stretch">
 
         <div fxLayout="row wrap" fxFlex.gt-xs="180px">
           <app-people-form-photo fxFlex [parent]="form"></app-people-form-photo>
@@ -50,7 +50,8 @@ import { PeopleItem } from '../../models/people-item.model';
       </div>
       
     </mat-dialog-content>
-    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
+      <button mat-button tabindex="-1">EDIT</button>
       <button mat-button tabindex="-1" (click)="onClose()">CLOSE</button>
     </mat-dialog-actions>
     `
@@ -80,8 +81,8 @@ export class PeopleFormComponent implements OnInit {
         window.isXS
           ? (width = '80%')
           : window.isS
-            ? (width = '424px')
-            : window.isM ? (width = '636px') : (width = '832px');
+            ? (width = '440px')
+            : window.isM ? (width = '652px') : (width = '832px');
 
         console.log(width);
         this.dialogRef.updateSize(width);
