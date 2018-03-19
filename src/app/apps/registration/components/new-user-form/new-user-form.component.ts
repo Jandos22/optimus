@@ -77,10 +77,6 @@ export class NewUserFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.disabled = true;
 
-    // this.form.get('Gin').valueChanges.subscribe(next => {
-    //   console.log(next, this.form.get('Gin').errors);
-    // });
-
     this.form.get('Alias').valueChanges.subscribe(alias => {
       this.form
         .get('Photo.Url')

@@ -1,3 +1,4 @@
+import { Locations } from './../../../../../models/locations.m';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -7,14 +8,20 @@ import { FormGroup } from '@angular/forms';
   template: `
     <div [formGroup]="parent" fxFlex>
         <mat-form-field fxFlex>
-            <input matInput placeholder="Location" formControlName="Location" autocomplete="off">
-            <mat-error *ngIf="parent.get('Location').invalid"></mat-error>
+          <mat-select placeholder="Location" formControlName="Location" [disabled]="disabled">
+            <mat-option *ngFor="let item of locations" [value]="item.Location">
+                {{ item.Location }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="parent.get('Location').invalid"></mat-error>
         </mat-form-field>
     </div>
     `
 })
 export class PeopleFormLocationComponent {
   @Input() parent: FormGroup;
+  @Input() locations: Locations;
+  @Input() disabled: boolean;
 
   constructor() {}
 

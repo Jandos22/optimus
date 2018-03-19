@@ -2,5 +2,16 @@
   border-radius: 50%;
   width: 110px;
   height: 110px;
+  margin-top: 2px;
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+.userPhoto.modeNewOrEdit {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.userPhoto.modeNewOrEdit:hover {
+  margin-top: 1px;
+  border: 2px solid rgba(103, 58, 183);
+  cursor: pointer;
 }

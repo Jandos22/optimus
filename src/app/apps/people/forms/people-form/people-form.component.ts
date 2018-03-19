@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import {
   FormArray,
@@ -10,6 +10,7 @@ import {
 
 // rxjs
 import { Subscription } from 'rxjs/Subscription';
+import { map, tap } from 'rxjs/operators';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -20,7 +21,21 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // services
 import { ValidationService } from '../../../../validators/validation.service';
-import { PeopleItem } from '../../models/people-item.model';
+
+// interfaces
+import { PeopleItem, PeopleItemChanges } from '../../models/people-item.model';
+import { Locations } from './../../../../models/locations.m';
+
+export interface Photo {
+  photoExists: boolean;
+  photoSelected: boolean;
+  photoCropped: boolean;
+  photo: string;
+  arrayBuffer: ArrayBuffer;
+}
+
+// dialog components
+import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/people-form-photo-picker.component';
 
 @Component({
   selector: 'app-people-form',
@@ -33,7 +48,9 @@ import { PeopleItem } from '../../models/people-item.model';
       <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start stretch">
 
         <div fxLayout="row wrap" fxFlex.gt-xs="180px">
-          <app-people-form-photo fxFlex [parent]="form"></app-people-form-photo>
+          <app-people-form-photo fxFlex 
+            [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
+          </app-people-form-photo>
         </div>
         
         <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
@@ -43,7 +60,9 @@ import { PeopleItem } from '../../models/people-item.model';
             <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
             <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
             <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
-            <app-people-form-location fxFlex.gt-xs="180px" [parent]="form"></app-people-form-location>
+            <app-people-form-location fxFlex.gt-xs="180px" 
+              [parent]="form" [locations]="locations" [disabled]="locationDisabled">
+            </app-people-form-location>
           </div>
         </div>
 
@@ -51,27 +70,44 @@ import { PeopleItem } from '../../models/people-item.model';
       
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
-      <button mat-button tabindex="-1">EDIT</button>
-      <button mat-button tabindex="-1" (click)="onClose()">CLOSE</button>
+      <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onLog()">SHOW FORM VALUES</button>
+      <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
+      <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
+      <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
+      
+      <button mat-button tabindex="-1" color="primary" [disabled]="form.invalid || !changesMade"
+        *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
+      
     </mat-dialog-actions>
     `
 })
-export class PeopleFormComponent implements OnInit {
+export class PeopleFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  photoForm: FormGroup;
 
   window$: Subscription;
+  locations$: Subscription;
+
+  locations: Locations[];
+  photo: string;
+
+  changesList: PeopleItemChanges;
+
+  _name$: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private fromRoot: Store<fromRoot.RootState>,
     public dialogRef: MatDialogRef<PeopleFormComponent>,
+    public photoDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    // initialize form when component instantiated
-    this.initForm(data);
-  }
+  ) {}
 
   ngOnInit() {
+    // initialize form when component instantiated
+    this.initForm();
+    this.initPhotoForm();
+
     // on each breakpoint change, update size of form dialog
     this.window$ = this.fromRoot
       .select(fromRoot.getLayoutWindow)
@@ -87,30 +123,66 @@ export class PeopleFormComponent implements OnInit {
         console.log(width);
         this.dialogRef.updateSize(width);
       });
+
+    this.locations$ = this.fromRoot
+      .select(fromRoot.getApplicationLocations)
+      .subscribe(locations => (this.locations = locations));
+  }
+
+  openPhotoPicker() {
+    // you can't open photo picker when mode is view
+    let dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
+      data: {
+        photo: this.photo,
+        arrayBuffer: this.photoForm.get('ArrayBuffer').value
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: Photo) => {
+      console.log(result);
+      if (result) {
+        this.photo = result.photo;
+        this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
+        this.photoForm
+          .get('Filename')
+          .setValue(this.form.get('Alias').value + '.jpg');
+      }
+      console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
+    });
   }
 
   // ACTION BUTTONS
+
+  onLog() {
+    console.log(this.form);
+    console.log(this.photoForm);
+  }
 
   onClose() {
     this.dialogRef.close();
   }
 
-  //
-  //
-  //
-  initForm(data) {
-    console.log(data);
-    let user: PeopleItem;
+  onEdit() {
+    this.data.mode = 'edit';
+    this.initForm();
+    // register my custom change detectors if mode is edit
+    this.mode.isEdit ? this.resetChangesList() : '';
+    this.mode.isEdit ? this.changeDetector(this.form) : '';
+  }
 
-    // check if mode is 'new' or 'view'
-    const isNew = data.mode === 'new' ? true : false;
-    const isView = data.mode === 'view' ? true : false;
-
-    // if mode is 'view' then populate user
-    if (!isNew) {
-      user = data.item;
+  onCancel() {
+    if (this.mode.isEdit) {
+      this.data.mode = 'view';
+      this.initForm();
+      this.initPhotoForm();
     }
+    if (this.mode.isNew) {
+      this.onClose();
+    }
+  }
 
+  //
+  initForm() {
     this.form = this.fb.group({
       Name: [this.nameInput, Validators.required],
       Surname: [this.surnameInput, Validators.required],
@@ -127,10 +199,37 @@ export class PeopleFormComponent implements OnInit {
       ],
       Location: [this.locationInput, Validators.required],
       Photo: this.fb.group({
-        Url: [isNew ? '' : user.Photo.Url],
-        Description: [isNew ? '' : user.Photo.Description]
+        Url: [this.photoInput['Url']],
+        Description: [this.photoInput['Description']]
       })
     });
+  }
+
+  initPhotoForm() {
+    this.photoForm = this.fb.group({
+      Filename: ['', Validators.required],
+      ArrayBuffer: [new ArrayBuffer(0), Validators.required]
+    });
+    this.photo = this.form.get('Photo.Url').value;
+  }
+
+  changeDetector(form: FormGroup) {
+    const initial: PeopleItem = { ...this.data.item };
+    // watch Name
+    form.get('Name').valueChanges.subscribe(val => {
+      initial.Name !== val
+        ? (this.changesList.Name = true)
+        : (this.changesList.Name = false);
+      console.log(this.changesMade);
+    });
+  }
+
+  get changesMade(): boolean {
+    for (let key in this.changesList) {
+      if (this.changesList[key] === true) {
+        return true;
+      }
+    }
   }
 
   get title() {
@@ -150,12 +249,13 @@ export class PeopleFormComponent implements OnInit {
     return !this.mode.isNew ? this.data.item : '';
   }
 
+  // form values
   get nameInput() {
     return this.mode.isNew
       ? ''
       : this.mode.isView
         ? { value: this.user.Name, disabled: true }
-        : this.user.Name;
+        : { value: this.user.Name, disabled: false };
   }
   get surnameInput() {
     return this.mode.isNew
@@ -169,14 +269,14 @@ export class PeopleFormComponent implements OnInit {
       ? ''
       : this.mode.isView
         ? { value: this.user.Alias, disabled: true }
-        : this.user.Alias;
+        : { value: this.user.Alias, disabled: true };
   }
   get emailInput() {
     return this.mode.isNew
       ? ''
       : this.mode.isView
         ? { value: this.user.Email, disabled: true }
-        : this.user.Email;
+        : { value: this.user.Email, disabled: true };
   }
   get ginInput() {
     return this.mode.isNew
@@ -188,8 +288,31 @@ export class PeopleFormComponent implements OnInit {
   get locationInput() {
     return this.mode.isNew
       ? ''
-      : this.mode.isView
-        ? { value: this.user.Location, disabled: true }
-        : this.user.Location;
+      : this.mode.isView || this.mode.isEdit ? this.user.Location : '';
+  }
+  get locationDisabled() {
+    return this.mode.isNew ? false : this.mode.isView ? true : false;
+  }
+  get photoInput() {
+    return this.mode.isNew
+      ? ''
+      : this.mode.isView ? { ...this.user.Photo } : { ...this.user.Photo };
+  }
+
+  ngOnDestroy() {
+    this.window$.unsubscribe();
+    this.locations$.unsubscribe();
+  }
+
+  resetChangesList(): void {
+    this.changesList = {
+      Name: false,
+      Surname: false,
+      Alias: false,
+      Email: false,
+      Gin: false,
+      Location: false,
+      Photo: false
+    };
   }
 }

@@ -12,3 +12,13 @@ export interface PeopleItem {
   };
   __metadata: any;
 }
+
+export interface PeopleItemChanges {
+  Name: boolean;
+  Surname: boolean;
+  Alias: boolean;
+  Email: boolean;
+  Gin: boolean;
+  Location: boolean;
+  Photo: boolean;
+}
