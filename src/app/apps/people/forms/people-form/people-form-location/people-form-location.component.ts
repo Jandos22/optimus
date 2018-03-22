@@ -1,10 +1,11 @@
 import { Locations } from './../../../../../models/locations.m';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-people-form-location',
   styleUrls: ['people-form-location.component.css'],
+  encapsulation: ViewEncapsulation.Emulated,
   template: `
     <div [formGroup]="parent" fxFlex>
         <mat-form-field fxFlex>

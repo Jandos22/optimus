@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-people-form-email',
   styleUrls: ['people-form-email.component.css'],
+  encapsulation: ViewEncapsulation.Emulated,
   template: `
     <div [formGroup]="parent" fxFlex>
         <mat-form-field fxFlex>
