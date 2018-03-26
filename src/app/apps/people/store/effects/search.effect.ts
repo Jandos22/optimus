@@ -54,7 +54,8 @@ export class SearchEffects {
     switchMap(url => {
       return [
         new fromPagination.StartNewPage(url),
-        new fromSearch.BeginSearch(url)
+        new fromSearch.BeginSearch(url),
+        new fromNgPeople.SearchTrue()
       ];
     })
   );
@@ -72,6 +73,7 @@ export class SearchEffects {
           // if results are not empty, then update NgPeople list
           if (res.d.results) {
             dispatch.push(new fromNgPeople.UpdatePeopleList(res.d.results));
+            dispatch.push(new fromNgPeople.SearchFalse());
           }
 
           // if results have next page, then add its url to links array

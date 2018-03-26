@@ -13,12 +13,6 @@ mat-sidenav {
   height: 100%;
 }
 
-.workingOnRequest {
-  position: absolute;
-  margin-top: 0px;
-  z-index: 2000;
-}
-
 .fix_fxFlexFill {
   height: 100%;
   margin: 0px;

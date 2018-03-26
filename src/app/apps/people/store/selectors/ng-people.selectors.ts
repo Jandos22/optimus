@@ -11,6 +11,11 @@ export const getNgPeopleState = createSelector(
 
 // selectors
 
+export const getPeopleSearching = createSelector(
+  getNgPeopleState,
+  fromNgPeople.getNgPeopleSearching
+);
+
 export const getPeopleList = createSelector(
   getNgPeopleState,
   fromNgPeople.getNgPeopleList

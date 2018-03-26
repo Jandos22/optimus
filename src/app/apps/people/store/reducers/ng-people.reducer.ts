@@ -4,19 +4,15 @@ import { User } from '../../models/user.m';
 export interface NgPeopleState {
   list: any[];
   total: any;
-  state: {
-    searching: boolean;
-    errors: any[];
-  };
+  searching: boolean;
+  errors: any[];
 }
 
 export const initialState: NgPeopleState = {
   list: [],
   total: null,
-  state: {
-    searching: false,
-    errors: []
-  }
+  searching: false,
+  errors: []
 };
 
 export function reducer(
@@ -24,6 +20,20 @@ export function reducer(
   action: fromNgPeople.NgPeopleActions
 ): NgPeopleState {
   switch (action.type) {
+    case fromNgPeople.SEARCH_TRUE: {
+      return {
+        ...state,
+        searching: true
+      };
+    }
+
+    case fromNgPeople.SEARCH_FALSE: {
+      return {
+        ...state,
+        searching: false
+      };
+    }
+
     case fromNgPeople.UPDATE_PEOPLE_LIST: {
       return {
         ...state,
@@ -34,10 +44,7 @@ export function reducer(
     case fromNgPeople.ERROR_GET_PEOPLE: {
       return {
         ...state,
-        state: {
-          ...state.state,
-          errors: [...state.state.errors, action.error]
-        }
+        errors: [...action.error]
       };
     }
 
@@ -55,3 +62,4 @@ export function reducer(
 
 export const getNgPeopleList = (state: NgPeopleState) => state.list;
 export const getNgPeopleTotal = (state: NgPeopleState) => state.total;
+export const getNgPeopleSearching = (state: NgPeopleState) => state.searching;

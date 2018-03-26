@@ -22,6 +22,9 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
   styleUrls: ['./people.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
+    <mat-progress-bar *ngIf="searching" 
+      class="workingOnRequest" color="warn" mode="indeterminate">
+    </mat-progress-bar>
 
     <app-people-toolbar class="flexToolbar"
       (openForm)="openForm($event)">
@@ -46,8 +49,12 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // data
   list$: Subscription;
   list: PeopleItem[];
+
   total$: Subscription;
   total: any;
+
+  searching$: Subscription;
+  searching: boolean;
 
   // counter
   listLength: number;
@@ -92,6 +99,12 @@ export class PeopleComponent implements OnInit, OnDestroy {
       .select(fromPeople.getPeopleTotal)
       .subscribe(total => {
         this.total = total;
+      });
+
+    this.searching$ = this.peopleStore
+      .select(fromPeople.getPeopleSearching)
+      .subscribe(search => {
+        this.searching = search;
       });
   }
 
