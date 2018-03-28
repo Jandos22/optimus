@@ -43,41 +43,41 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
   template: `
     <span mat-dialog-title style="text-align: center;">{{ title }}</span>
     <mat-dialog-content>
-    
+
       <!-- Common -->
       <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start stretch">
 
         <div fxLayout="row wrap" fxFlex.gt-xs="180px">
-          <app-people-form-photo fxFlex 
+          <app-people-form-photo fxFlex
             [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
           </app-people-form-photo>
         </div>
-        
-        <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-between start">
-          <div fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
+
+        <div fxFlex fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
+
             <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
             <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
             <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
             <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
             <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
-            <app-people-form-location fxFlex.gt-xs="180px" 
+            <app-people-form-location fxFlex.gt-xs="180px"
               [parent]="form" [locations]="locations" [disabled]="locationDisabled">
             </app-people-form-location>
-          </div>
+
         </div>
 
       </div>
-      
+
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onLog()">SHOW FORM VALUES</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
-      
+
       <button mat-button tabindex="-1" color="primary" [disabled]="form.invalid || !changesMade"
         *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
-      
+
     </mat-dialog-actions>
     `
 })
