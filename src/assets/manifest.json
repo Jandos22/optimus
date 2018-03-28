@@ -3,11 +3,12 @@
   "name": "Optimus",
   "icons": [
     {
-      "src": "assets/favicon.png",
-      "sizes": "192x192",
+      "src": "favicon_iphone.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ],
-  "display": "fullscreen",
+  "start_url": "index.aspx",
+  "display": "standalone",
   "orientation": "portrait"
 }
