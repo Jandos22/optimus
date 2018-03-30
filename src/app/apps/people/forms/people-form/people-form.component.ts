@@ -75,7 +75,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
 
-      <button mat-button tabindex="-1" color="primary" [disabled]="form.invalid || !changesMade"
+      <button mat-button tabindex="-1" color="primary" [disabled]="form.invalid"
         *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
 
     </mat-dialog-actions>
@@ -165,9 +165,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   onEdit() {
     this.data.mode = 'edit';
     this.initForm();
-    // register my custom change detectors if mode is edit
-    this.mode.isEdit ? this.resetChangesList() : '';
-    this.mode.isEdit ? this.changeDetector(this.form) : '';
   }
 
   onCancel() {
@@ -211,25 +208,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       ArrayBuffer: [new ArrayBuffer(0), Validators.required]
     });
     this.photo = this.form.get('Photo.Url').value;
-  }
-
-  changeDetector(form: FormGroup) {
-    const initial: PeopleItem = { ...this.data.item };
-    // watch Name
-    form.get('Name').valueChanges.subscribe(val => {
-      initial.Name !== val
-        ? (this.changesList.Name = true)
-        : (this.changesList.Name = false);
-      console.log(this.changesMade);
-    });
-  }
-
-  get changesMade(): boolean {
-    for (let key in this.changesList) {
-      if (this.changesList[key] === true) {
-        return true;
-      }
-    }
   }
 
   get title() {
@@ -302,17 +280,5 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.window$.unsubscribe();
     this.locations$.unsubscribe();
-  }
-
-  resetChangesList(): void {
-    this.changesList = {
-      Name: false,
-      Surname: false,
-      Alias: false,
-      Email: false,
-      Gin: false,
-      Location: false,
-      Photo: false
-    };
   }
 }

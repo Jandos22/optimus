@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -18,11 +24,9 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
           <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
 
-            <span>
-                <button mat-icon-button (click)="onOpenForm('new')">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </span>
+            <button mat-icon-button>
+              <mat-icon>people</mat-icon>
+            </button>
 
             <app-people-search
                 [parent]="paramsForm">
@@ -30,14 +34,18 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
             <span fxFlex></span>
 
+            <!--
             <app-people-top-select
               [top]="paramsForm.get('top').value"
               (onSelectTop)="onSelectTop($event)">
             </app-people-top-select>
+            -->
 
-            <button mat-icon-button>
-              <mat-icon>filter_list</mat-icon>
-            </button>
+            <span>
+                <button mat-icon-button (click)="onOpenForm('new')" color="warn">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </span>
 
           </div>
 
@@ -62,7 +70,9 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
       debounceTime(600),
       skipWhile(_ => this.paramsForm.get('query').invalid === true)
     )
-    .subscribe(params => this.peopleStore.dispatch(new fromPeople.UpdateParams(params)));
+    .subscribe(params =>
+      this.peopleStore.dispatch(new fromPeople.UpdateParams(params))
+    );
 
   // comes from STORE.application.location
   // controlled from *HEADER select menu
@@ -71,7 +81,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
     private rootStore: Store<fromRoot.RootState>
-  ) { }
+  ) {}
 
   onSelectTop(top) {
     this.paramsForm.get('top').setValue(top);
