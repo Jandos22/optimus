@@ -70,7 +70,6 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
 
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
-      <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onLog()">SHOW FORM VALUES</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
@@ -153,7 +152,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // ACTION BUTTONS
 
-  onLog() {
+  onSave() {
     console.log(this.form);
     console.log(this.photoForm);
   }
