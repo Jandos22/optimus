@@ -4,7 +4,7 @@ import {
   ImageCropperComponent,
   CropperSettings,
   Bounds
-} from 'ng2-img-cropper';
+} from 'ngx-img-cropper';
 
 import {
   MatDialog,
@@ -37,10 +37,14 @@ export interface UserPhotoState {
       </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row" fxLayoutAlign="start start" class="actions">
-      <button mat-raised-button color="primary" *ngIf="!photoState.photoSelected">
-          <label for="photo">BROWSE</label>
-          <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
-      </button>
+      
+      <label for="photo">
+        <a mat-raised-button color="primary" *ngIf="!photoState.photoSelected">
+          BROWSE  
+        </a>
+      </label>
+      <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
+
       <button mat-raised-button color="primary" (click)="doCrop()" *ngIf="photoState.photoSelected && !photoState.photoCropped">
           CROP
       </button>
@@ -81,6 +85,7 @@ export class PeopleFormPhotoPickerComponent {
     this.cropperSettings.canvasHeight = 180;
     this.cropperSettings.fileType = 'image/jpeg';
     this.cropperSettings.cropOnResize = true;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'rgb(103, 58, 183)';
   }
 
   onDialogOpen() {
