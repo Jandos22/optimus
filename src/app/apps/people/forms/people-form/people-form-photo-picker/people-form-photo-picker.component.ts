@@ -31,17 +31,17 @@ export interface UserPhotoState {
         <!-- Ready Photo -->
         <img [src]="data.image" class="userPhoto" *ngIf="photoState.photoCropped">
         <!-- Image Cropper -->
-        <img-cropper [hidden]="photoState.photoCropped" #cropper 
+        <img-cropper [hidden]="photoState.photoCropped" #cropper
         [image]="data" [settings]="cropperSettings" (onCrop)="onCrop(data)">
         </img-cropper>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row" fxLayoutAlign="start start" class="actions">
-      
-      <label for="photo">
-        <a mat-raised-button color="primary" *ngIf="!photoState.photoSelected">
-          BROWSE  
-        </a>
+
+      <label for="photo" *ngIf="!photoState.photoSelected" >
+        <div class="fileBrowseButton" fxLayout="row" fxLayoutAlign="center center">
+          <span class="mat-button-wrapper">BROWSE</span>
+        </div>
       </label>
       <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
 
