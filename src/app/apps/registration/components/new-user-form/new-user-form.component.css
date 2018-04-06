@@ -33,3 +33,6 @@
   width: 150px;
   height: 150px;
 }
+.userPhoto:hover {
+  cursor: pointer;
+}

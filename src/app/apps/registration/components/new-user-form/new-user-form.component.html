@@ -4,12 +4,10 @@
         <mat-card-header [ngClass]="photoShow ? 'withPhoto' : 'noPhoto'">
 
             <div mat-card-avatar>
-                <button mat-icon-button color="warn" (click)="openPhotoPicker()">
-
-                    <mat-icon *ngIf="!photoShow">add_a_photo</mat-icon>
-                    <img *ngIf="photoShow" [src]="photoShow" class="userPhoto">
-
+                <button mat-icon-button color="warn" *ngIf="!photoShow" (click)="openPhotoPicker()">
+                    <mat-icon>add_a_photo</mat-icon>
                 </button>
+                <img *ngIf="photoShow" [src]="photoShow" class="userPhoto" (click)="openPhotoPicker()">
             </div>
 
         </mat-card-header>
@@ -53,11 +51,12 @@
             </form>
         </mat-card-content>
         <mat-card-actions class="actions">
-            <button mat-raised-button color="primary" [disabled]="form.invalid || saving" (click)="onSave()">
+            <button mat-raised-button color="primary" [disabled]="form.invalid || !photo || saving" (click)="onSave()">
                 <span *ngIf="!saving">SAVE</span>
                 <span *ngIf="saving">... SAVING</span>
             </button>
             <button *ngIf="!saving" mat-button (click)="onReset()">RESET</button>
+            <button mat-button (click)="log()">Values</button>
         </mat-card-actions>
     </mat-card>
 

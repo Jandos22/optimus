@@ -15,10 +15,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row" fxLayoutAlign="start start" class="actions">
-    <button mat-raised-button color="primary" *ngIf="!photoState.photoSelected">
-        <label for="photo">BROWSE</label>
-        <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
-    </button>
+
+    <label for="photo">
+        <button mat-raised-button color="primary" *ngIf="!photoState.photoSelected">BROWSE</button>
+    </label>
+    <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
 
     <button mat-raised-button color="primary" (click)="doCrop()" *ngIf="photoState.photoSelected && !photoState.photoCropped">
         CROP

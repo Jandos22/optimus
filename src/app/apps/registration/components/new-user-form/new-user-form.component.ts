@@ -177,6 +177,11 @@ export class NewUserFormComponent implements OnInit, OnChanges {
       });
   }
 
+  log() {
+    console.log(this.form);
+    console.log(this.photoForm);
+  }
+
   // getters
 
   get photo() {
