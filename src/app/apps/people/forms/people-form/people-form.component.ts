@@ -55,7 +55,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
 
         <div fxFlex fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
 
-            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
+            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form" [mode]="mode"></app-people-form-name>
             <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
             <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
             <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
@@ -74,7 +74,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
 
-      <button mat-button tabindex="-1" color="primary" [disabled]="form.invalid"
+      <button mat-raised-button tabindex="-1" color="primary" [disabled]="form.invalid"
         *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
 
     </mat-dialog-actions>

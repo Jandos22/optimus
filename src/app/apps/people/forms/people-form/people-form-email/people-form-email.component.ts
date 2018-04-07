@@ -6,10 +6,10 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['people-form-email.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <div [formGroup]="parent" fxFlex>
+    <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
         <mat-form-field fxFlex>
             <input matInput placeholder="Email" formControlName="Email" autocomplete="off">
-            <mat-error *ngIf="parent.get('Email').invalid"></mat-error>
+            <mat-error *ngIf="parent.get('Email').invalid">{{ errorMessage}}</mat-error>
         </mat-form-field>
     </div>
     `
@@ -21,5 +21,17 @@ export class PeopleFormEmailComponent implements OnInit {
 
   ngOnInit() {
     this.parent.controls;
+  }
+
+  get hasError() {
+    return this.parent.get('Email').invalid;
+  }
+
+  get errorMessage() {
+    const required = this.parent.controls['Email'].hasError('required');
+
+    return this.parent.controls['Email'].touched
+      ? required ? 'Email is required' : ''
+      : '';
   }
 }
