@@ -1,6 +1,6 @@
 {
   "siteUrl": "https://slb001.sharepoint.com/sites/wireline",
-  "strategy": "UserCredentials",
-  "username": "zombayev@slb.com",
-  "password": "21003be7fe4c044f88ac18f4a5be8881ab8516afc6df2525d650412e58608960153530f8fec39e9a39c75a5d92e5c893aiYVXJbFaZ/xBdw3Vf3RVA=="
+  "strategy": "OnlineAddinCredentials",
+  "clientId": "597a1503-397d-437d-b4ba-fe9066a4ecb5",
+  "clientSecret": "f2ea94c05fe491e3e8470896853135ce520c2987b17f0bec5343f33b7b3092864f760e8941cfc73d12a1ff99d95c639bzYuLLiHiuW3TCY13ZldFuoMynqKF7BmHf92Nc7yUBq3XmMgjBlrFJvDPswKbm0IR"
 }

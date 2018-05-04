@@ -1,26 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
-body {
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    font-family: 'Roboto', sans-serif;
-    vertical-align: baseline;
-}
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 /* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+/* You can add global styles to this file, and also import other style files */
+html {
+  -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-family: 'Roboto', sans-serif;
+  vertical-align: baseline;
+}
 
 .loading {
-    margin: 0;
-    height: 100vh;
-    background-color: #673ab7;
+  margin: 0;
+  height: 100vh;
+  background-color: #673ab7;
 }
 
 .loadingOptimus {
-    display: block;
-    margin: auto;
-    width: 216px;
-    padding: calc(100vh - 50vh) 0 0 0;
+  display: block;
+  margin: auto;
+  width: 216px;
+  padding: calc(100vh - 50vh) 0 0 0;
 }
 
 /* mat-sidenav-container {
@@ -29,5 +36,55 @@ body {
 } */
 
 .optimus-sidebar {
-    width: 200px;
+  width: 200px;
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+.flexToolbar {
+  flex: 0 0 auto;
+  flex-basis: 64px;
+}
+
+.flexContent {
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+}
+
+.flexFooter {
+  flex: 0 0 auto;
+  flex-basis: 56px;
+}
+
+/* to fix zooming input fields on mobile devices */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px !important;
+  }
+}
+
+.mat-dialog-container {
+  background-color: #f6f5f4 !important;
+}
+
+.mat-dialog-content {
+  padding-top: 20px !important;
+  background-color: #ffffff !important;
+}
+
+.mat-dialog-title {
+  margin-bottom: 5px !important;
 }

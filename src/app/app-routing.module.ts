@@ -2,21 +2,29 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './guards/auth.guard';
+
 export const appRoutes: Routes = [
-  { path: 'home', loadChildren: './apps/home/home.module#HomeModule' },
-  { path: 'people', loadChildren: './apps/people/people.module#PeopleModule' },
-  { path: 'harcs', loadChildren: './apps/harcs/harcs.module#HarcsModule' },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: 'home',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/home/home.module#HomeModule'
+  },
+  {
+    path: 'people',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/people/people.module#PeopleModule'
+  },
+  {
+    path: 'registration',
+    loadChildren: './apps/registration/registration.module#RegistrationModule'
+  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(appRoutes, { useHash: true })
-  ],
-  exports: [
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule.forRoot(appRoutes, { useHash: true })],
+  exports: [RouterModule],
   declarations: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

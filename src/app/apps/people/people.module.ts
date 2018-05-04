@@ -1,46 +1,61 @@
-import { ImageCropperModule } from 'ng2-img-cropper/src/imageCropperModule';
-// import { ImageCropperComponent } from 'ng2-img-cropper';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialDesignModule } from './../../shared/libraries/material-design.module';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+// 3rd party
+import { MaterialModule } from '../../libraries/material.module';
+import { ImageCropperModule } from 'ngx-img-cropper';
+
+// angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PeopleComponent } from './people.component';
-import { reducer } from './store/people.reducer';
-import { PeopleEffects } from './store/people.effects';
-import { PeopleToolbarComponent } from './people-toolbar/people-toolbar.component';
-import { PeopleListComponent } from './people-list/people-list.component';
-import { PeopleFormComponent } from './people-form/people-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
+// ngrx
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, effects } from './store';
+
+// containers
+import * as fromContainers from './containers';
+
+// components
+import * as fromComponents from './components';
+
+// forms
+import * as fromForms from './forms';
+
+// form components
+import * as fromFormComponents from './forms/people-form';
+
+// services
+import * as fromServices from './services';
+
+// routes
 export const peopleRoutes: Routes = [
-  { path: '', component: PeopleComponent},
+  { path: '', component: fromContainers.PeopleComponent }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialDesignModule,
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
-    StoreModule.forFeature('people', reducer),
-    EffectsModule.forFeature([PeopleEffects]),
-    ImageCropperModule
+    StoreModule.forFeature('people', reducers),
+    EffectsModule.forFeature(effects),
+    ImageCropperModule,
+    MaterialModule
   ],
+  providers: [...fromServices.services],
+  declarations: [
+    ...fromContainers.containers,
+    ...fromComponents.components,
+    ...fromForms.forms,
+    ...fromFormComponents.forms_components
+  ],
+  entryComponents: [...fromForms.forms],
   exports: [
     RouterModule,
-    ReactiveFormsModule
-  ],
-  entryComponents: [
-    PeopleFormComponent
-  ],
-  declarations: [
-    PeopleComponent,
-    PeopleToolbarComponent,
-    PeopleListComponent,
-    PeopleFormComponent,
-    // ImageCropperComponent
+    ReactiveFormsModule,
+    ...fromContainers.containers,
+    ...fromComponents.components
   ]
 })
-export class PeopleModule { }
+export class PeopleModule {}

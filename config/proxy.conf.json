@@ -1,12 +1,12 @@
 {
-    "*/_api/**": {
-        "target": "http://localhost:8080",
-        "secure": false,
-        "changeOrigin": true
-    },
-    "*/NgPhotos/**": {
-        "target": "http://localhost:8080/NgPhotos",
-        "secure": false,
-        "changeOrigin": true
-    }
+  "/_api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "*/NgPhotos/**": {
+    "target": "http://localhost:8080/NgPhotos",
+    "secure": false,
+    "changeOrigin": true
+  }
 }

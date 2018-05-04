@@ -1,0 +1,63 @@
+<div class="container" fxLayout="column" fxFlex.xs="100" fxFlex="400px">
+
+    <mat-card>
+        <mat-card-header [ngClass]="photoShow ? 'withPhoto' : 'noPhoto'">
+
+            <div mat-card-avatar>
+                <button mat-icon-button color="warn" *ngIf="!photoShow" (click)="openPhotoPicker()">
+                    <mat-icon>add_a_photo</mat-icon>
+                </button>
+                <img *ngIf="photoShow" [src]="photoShow" class="userPhoto" (click)="openPhotoPicker()">
+            </div>
+
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form" fxLayout="row" fxLayout.xs="column">
+
+                <div fxLayout="column" fxFlex="100">
+                    <mat-form-field>
+                        <input matInput placeholder="Name" formControlName="Name" autocomplete="off">
+                        <mat-error *ngIf="form.get('Name').invalid">{{ getError_Name() }}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Surname" formControlName="Surname" autocomplete="off">
+                        <mat-error *ngIf="form.get('Surname').invalid">{{ getError_Surname() }}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Alias" formControlName="Alias" autocomplete="off">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Email" formControlName="Email" autocomplete="off">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="GIN" formControlName="Gin" autocomplete="off">
+                        <mat-error *ngIf="form.get('Gin').invalid">{{ getError_Gin() }}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-select placeholder="Location" formControlName="Location">
+                            <mat-option *ngFor="let item of locations" [value]="item.Location">
+                                {{ item.Location }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('Location').invalid">{{ getError_Location() }}</mat-error>
+                    </mat-form-field>
+
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions class="actions">
+            <button mat-raised-button color="primary" [disabled]="form.invalid || !photo || saving" (click)="onSave()">
+                <span *ngIf="!saving">SAVE</span>
+                <span *ngIf="saving">... SAVING</span>
+            </button>
+            <button *ngIf="!saving" mat-button (click)="onReset()">RESET</button>
+            <button mat-button (click)="log()">Values</button>
+        </mat-card-actions>
+    </mat-card>
+
+</div>

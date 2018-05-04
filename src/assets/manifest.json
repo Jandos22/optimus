@@ -1,0 +1,14 @@
+{
+  "short_name": "Optimus",
+  "name": "Optimus",
+  "icons": [
+    {
+      "src": "favicon_iphone.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.aspx",
+  "display": "standalone",
+  "orientation": "portrait"
+}
