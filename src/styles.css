@@ -67,15 +67,6 @@ body {
   flex-basis: 56px;
 }
 
-/* to fix zooming input fields on mobile devices */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  select,
-  textarea,
-  input {
-    font-size: 16px !important;
-  }
-}
-
 .mat-dialog-container {
   background-color: #f6f5f4 !important;
 }
@@ -87,4 +78,13 @@ body {
 
 .mat-dialog-title {
   margin-bottom: 5px !important;
+}
+
+/* to fix zooming input fields on mobile devices */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px !important;
+  }
 }
