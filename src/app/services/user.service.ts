@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-
-import * as sprLib from 'sprestlib';
+// rxjs
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { ApiPath, WirelinePath, ProxyPath } from './../constants';
-
-import { map, switchMap } from 'rxjs/operators';
 
 // data models
 import { Photo } from './../models/photo.model';
@@ -17,10 +15,11 @@ import { CurrentUser } from '../models/current-user.m';
 
 @Injectable()
 export class UserService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getCurrentUser(): Observable<CurrentUser> {
-    return sprLib.user().info();
+  getCurrentUser() {
+    // return sprLib.user().info();
+    return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
   getLoggedInUser() {
@@ -76,7 +75,7 @@ export class UserService {
       switchMap((fdv: FDV) => {
         const url = `${ApiPath}web/lists/getbytitle('NgPhotos')/rootfolder/files/add(url='${
           photo.Filename
-          }',overwrite='true')`;
+        }',overwrite='true')`;
 
         return this.http.post(url, photo.ArrayBuffer, {
           headers: new HttpHeaders()
@@ -90,12 +89,13 @@ export class UserService {
   }
 
   prepCurrentUserObject(user: CurrentUser) {
-
     let loginName = user.LoginName;
     let spId = user.Id;
 
     // used only in development mode, on my Mac
-    if (loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint') {
+    if (
+      loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint'
+    ) {
       loginName = 'zombayev@slb.com';
       spId = 9;
     }
@@ -103,7 +103,6 @@ export class UserService {
     const email = loginName.replace('i:0#.f|membership|', '');
     const username = email.replace('@slb.com', '');
     const initials = username.substring(0, 2).toUpperCase();
-
 
     return {
       username,

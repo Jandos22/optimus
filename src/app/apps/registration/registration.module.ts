@@ -6,14 +6,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../libraries/material.module';
 
-import { ImageCropperModule } from 'ng2-img-cropper/src/imageCropperModule';
-
 // containers
 import * as fromContainers from './containers';
 
 // components
 import * as fromComponents from './components';
 import { NewUserFormPhotoComponent } from './components';
+
+import { ImageCropperModule } from 'ngx-img-cropper';
 
 // routes
 export const ROUTES: Routes = [

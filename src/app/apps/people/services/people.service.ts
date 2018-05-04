@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable } from 'rxjs/Observable';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
 
 // constants
 import { ApiPath } from '../../../constants';
@@ -29,7 +28,7 @@ export class PeopleService {
             return response;
           }
         }),
-        catchError((error: any) => Observable.throw(error.json()))
+        catchError((error: any) => throwError(error.json()))
       );
   }
 

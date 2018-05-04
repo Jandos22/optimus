@@ -1,6 +1,6 @@
 // 3rd party
-import { ImageCropperModule } from 'ng2-img-cropper/src/imageCropperModule';
 import { MaterialModule } from '../../libraries/material.module';
+import { ImageCropperModule } from 'ngx-img-cropper';
 
 // angular
 import { NgModule } from '@angular/core';
@@ -40,8 +40,8 @@ export const peopleRoutes: Routes = [
     RouterModule.forChild(peopleRoutes),
     StoreModule.forFeature('people', reducers),
     EffectsModule.forFeature(effects),
-    MaterialModule,
-    ImageCropperModule
+    ImageCropperModule,
+    MaterialModule
   ],
   providers: [...fromServices.services],
   declarations: [

@@ -1,11 +1,8 @@
-import { Subscription } from 'rxjs/Subscription';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { tap, map, switchMap } from 'rxjs/operators';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+// rxjs 6
+import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../store';

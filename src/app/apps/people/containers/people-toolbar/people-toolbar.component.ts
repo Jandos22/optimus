@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromPeople from '../../store';
 
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+// rxjs 6
+import { Subscription, Observable } from 'rxjs';
 import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
 @Component({
@@ -33,13 +33,6 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
             </app-people-search>
 
             <span fxFlex></span>
-
-            <!--
-            <app-people-top-select
-              [top]="paramsForm.get('top').value"
-              (onSelectTop)="onSelectTop($event)">
-            </app-people-top-select>
-            -->
 
             <span>
                 <button mat-icon-button (click)="onOpenForm('new')" color="warn">

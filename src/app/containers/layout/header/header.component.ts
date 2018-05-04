@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-
+// rxjs
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+// ngrx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store';
 import * as application from '../../../store/actions/application.action';
@@ -87,10 +87,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.user$ = this.store
       .select(fromRoot.getUser)
-      .map((user: UserState) => {
-        const photo = `${user.photo}?v=${new Date().getTime()}`;
-        return { ...user, photo };
-      })
+      .pipe(
+        map((user: UserState) => {
+          const photo = `${user.photo}?v=${new Date().getTime()}`;
+          return { ...user, photo };
+        })
+      )
       .subscribe(user => {
         this.user = user;
       });

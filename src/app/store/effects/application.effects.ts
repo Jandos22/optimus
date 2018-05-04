@@ -1,16 +1,15 @@
+import { ApiPath } from './../../constants/index';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
-import { of } from 'rxjs/observable/of';
+// rxjs
+import { throwError } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
 
 import * as fromApplication from '../actions/application.action';
-
-import * as sprLib from 'sprestlib';
 
 import { Locations } from './../../models/locations.m';
 
@@ -36,10 +35,14 @@ export class ApplicationEffects {
   @Effect()
   getLocations = this.actions$.ofType(fromApplication.GET_LOCATIONS).pipe(
     switchMap((action: fromApplication.GetLocations) => {
-      return sprLib.list('NgLocations').getItems(['Id', 'Location']);
+      return this.http.get(
+        `${ApiPath}web/lists/getbytitle('NgLocations')/items`
+      );
+      // return sprLib.list('NgLocations').getItems(['Id', 'Location']);
     }),
-    map((data: Locations[]) => {
-      return new fromApplication.SetLocations(data);
-    })
+    map((data: any) => {
+      return new fromApplication.SetLocations(data.value);
+    }),
+    catchError((error: any) => throwError(error.json()))
   );
 }

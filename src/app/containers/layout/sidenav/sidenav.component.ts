@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+// rxjs
+import { Observable } from 'rxjs';
 
+// ngrx
 import { Store } from '@ngrx/store';
-
 import * as fromRoot from '../../../store';
 import * as layout from '../../../store/actions/layout.action';
 
@@ -31,9 +32,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
   onSidenavClick() {
     this.store.dispatch(new layout.ClickSidenav());

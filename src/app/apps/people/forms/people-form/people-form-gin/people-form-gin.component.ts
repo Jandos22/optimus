@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   ViewEncapsulation,
   ChangeDetectionStrategy
@@ -26,10 +25,6 @@ export class PeopleFormGinComponent {
 
   constructor() {}
 
-  ngOnInit() {
-    // this.parent.controls;
-  }
-
   get hasError() {
     return this.parent.get('Gin').invalid;
   }
@@ -45,7 +40,9 @@ export class PeopleFormGinComponent {
         ? 'GIN number is required'
         : onlyNumbers
           ? 'Only numbers allowed'
-          : min || max ? '8 digits required' : ''
+          : min || max
+            ? '8 digits required'
+            : ''
       : '';
   }
 }

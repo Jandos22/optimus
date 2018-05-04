@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-people-top-select',
@@ -14,7 +14,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     </mat-menu>
   `
 })
-export class PeopleTopSelectComponent implements OnInit {
+export class PeopleTopSelectComponent {
   @Input() top: number;
 
   topOptions = [5, 10, 25, 50, 100];
@@ -22,8 +22,6 @@ export class PeopleTopSelectComponent implements OnInit {
   @Output() onSelectTop = new EventEmitter<number>();
 
   constructor() {}
-
-  ngOnInit() {}
 
   onSelect(top) {
     // console.log(top);

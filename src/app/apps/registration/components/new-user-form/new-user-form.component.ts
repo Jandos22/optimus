@@ -23,8 +23,6 @@ import {
 
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/take';
-
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ValidationService } from './../../../../validators/validation.service';
@@ -128,7 +126,7 @@ export class NewUserFormComponent implements OnInit, OnChanges {
   }
 
   openPhotoPicker(): void {
-    let dialogRef = this.dialog.open(NewUserFormPhotoComponent, {
+    const dialogRef = this.dialog.open(NewUserFormPhotoComponent, {
       data: {
         photo: this.photoShow,
         arrayBuffer: this.photoForm.get('ArrayBuffer').value
@@ -196,7 +194,9 @@ export class NewUserFormComponent implements OnInit, OnChanges {
     const required = this.form.controls['Name'].hasError('required');
 
     return this.form.controls['Name'].touched
-      ? required ? 'Name is required' : ''
+      ? required
+        ? 'Name is required'
+        : ''
       : '';
   }
 
@@ -204,7 +204,9 @@ export class NewUserFormComponent implements OnInit, OnChanges {
     const required = this.form.controls['Surname'].hasError('required');
 
     return this.form.controls['Surname'].touched
-      ? required ? 'Surname is required' : ''
+      ? required
+        ? 'Surname is required'
+        : ''
       : '';
   }
 
@@ -219,14 +221,18 @@ export class NewUserFormComponent implements OnInit, OnChanges {
         ? 'GIN number is required'
         : onlyNumbers
           ? 'Only numbers allowed'
-          : min || max ? '8 digits required' : ''
+          : min || max
+            ? '8 digits required'
+            : ''
       : '';
   }
 
   getError_Location() {
     const required = this.form.controls['Location'].hasError('required');
     return this.form.controls['Location'].touched
-      ? required ? 'Location is required' : ''
+      ? required
+        ? 'Location is required'
+        : ''
       : '';
   }
 }

@@ -26,7 +26,7 @@ import { PeopleItem } from '../../models/people-item.model';
         </span>
 
       </div>
-          
+
       <mat-divider *ngIf="!last"></mat-divider>
 
     </div>

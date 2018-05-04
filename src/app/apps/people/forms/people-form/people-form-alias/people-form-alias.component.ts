@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -14,14 +14,10 @@ import { FormGroup } from '@angular/forms';
     </div>
     `
 })
-export class PeopleFormAliasComponent implements OnInit {
+export class PeopleFormAliasComponent {
   @Input() parent: FormGroup;
 
   constructor() {}
-
-  ngOnInit() {
-    this.parent.controls;
-  }
 
   get hasError() {
     return this.parent.get('Alias').invalid;
@@ -31,7 +27,9 @@ export class PeopleFormAliasComponent implements OnInit {
     const required = this.parent.controls['Alias'].hasError('required');
 
     return this.parent.controls['Alias'].touched
-      ? required ? 'Alias is required' : ''
+      ? required
+        ? 'Alias is required'
+        : ''
       : '';
   }
 }

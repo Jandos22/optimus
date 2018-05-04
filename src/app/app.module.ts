@@ -1,5 +1,4 @@
 // 3rd Party Modules
-import { SidebarModule } from 'ng-sidebar';
 import { MaterialModule } from './libraries/material.module';
 
 // My Modules & Components
@@ -56,7 +55,6 @@ import { AuthGuard } from './guards/auth.guard';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    SidebarModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,

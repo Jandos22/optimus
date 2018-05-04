@@ -1,12 +1,19 @@
-import { Subscription } from 'rxjs/Subscription';
 import {
   Component,
   OnInit,
   ViewEncapsulation,
   HostListener
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+
+// rxjs
+import { Observable, Subscription } from 'rxjs';
+import * as fromRoot from '../../store';
+import * as layout from '../../store/actions/layout.action';
+
+// ngrx
 import { Store } from '@ngrx/store';
+
+// material
 import {
   MatSidenavContainer,
   MatSidenav,
@@ -15,8 +22,6 @@ import {
   MatDrawerContainer
 } from '@angular/material';
 
-import * as fromRoot from '../../store';
-import * as layout from '../../store/actions/layout.action';
 import { SidenavProperties } from '../../models/sidenav-properties.m';
 import { WindowProperties } from '../../models/window-properties.m';
 

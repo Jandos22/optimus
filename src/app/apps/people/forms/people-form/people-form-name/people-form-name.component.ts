@@ -1,16 +1,10 @@
 import {
   Component,
-  OnInit,
   Input,
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-
-// rxjs
-import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 // interfaces
 import { FormMode } from './../../../../../models/form-mode.model';
@@ -29,13 +23,11 @@ import { FormMode } from './../../../../../models/form-mode.model';
   </div>
   `
 })
-export class PeopleFormNameComponent implements OnInit {
+export class PeopleFormNameComponent {
   @Input() parent: FormGroup;
   @Input() mode: FormMode;
 
   constructor() {}
-
-  ngOnInit() {}
 
   get hasError() {
     return this.parent.get('Name').invalid;
@@ -45,7 +37,9 @@ export class PeopleFormNameComponent implements OnInit {
     const required = this.parent.get('Name').hasError('required');
 
     return this.parent.get('Name').touched
-      ? required ? 'Name is required' : ''
+      ? required
+        ? 'Name is required'
+        : ''
       : '';
   }
 }

@@ -9,8 +9,7 @@ import {
 } from '@angular/forms';
 
 // rxjs
-import { Subscription } from 'rxjs/Subscription';
-import { map, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -117,7 +116,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
           ? (width = '80%')
           : window.isS
             ? (width = '440px')
-            : window.isM ? (width = '652px') : (width = '832px');
+            : window.isM
+              ? (width = '652px')
+              : (width = '832px');
 
         console.log(width);
         this.dialogRef.updateSize(width);
@@ -130,7 +131,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   openPhotoPicker() {
     // you can't open photo picker when mode is view
-    let dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
+    const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
       data: {
         photo: this.photo,
         arrayBuffer: this.photoForm.get('ArrayBuffer').value
@@ -265,7 +266,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   get locationInput() {
     return this.mode.isNew
       ? ''
-      : this.mode.isView || this.mode.isEdit ? this.user.Location : '';
+      : this.mode.isView || this.mode.isEdit
+        ? this.user.Location
+        : '';
   }
   get locationDisabled() {
     return this.mode.isNew ? false : this.mode.isView ? true : false;
@@ -273,7 +276,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   get photoInput() {
     return this.mode.isNew
       ? ''
-      : this.mode.isView ? { ...this.user.Photo } : { ...this.user.Photo };
+      : this.mode.isView
+        ? { ...this.user.Photo }
+        : { ...this.user.Photo };
   }
 
   ngOnDestroy() {

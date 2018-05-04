@@ -4,14 +4,11 @@ import { Effect, Actions } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
-import { of } from 'rxjs/observable/of';
-import { map, switchMap, catchError, mergeMap } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
+// rxjs
+import { map, switchMap, mergeMap } from 'rxjs/operators';
 
 import * as fromUser from '../actions/user.action';
 import * as fromApplication from '../actions/application.action';
-
-import * as sprLib from 'sprestlib';
 
 import { ApiPath, WirelinePath, ProxyPath } from '../../constants';
 
@@ -27,7 +24,6 @@ export class UserEffects {
 
   @Effect()
   getCurrentUser$ = this.actions$.ofType(fromUser.GET_CURRENT_USER).pipe(
-    // switchMap(() => sprLib.user().info()),
     switchMap(() => this.userService.getCurrentUser()),
     mergeMap((data: any) => {
       const currentUser = this.userService.prepCurrentUserObject(data);
@@ -42,18 +38,25 @@ export class UserEffects {
   checkCurrentUser$ = this.actions$.ofType(fromUser.CHECK_CURRENT_USER).pipe(
     switchMap((action: fromUser.CheckCurrentUser) => {
       const alias = '%27' + action.payload + '%27';
-      return sprLib.list('NgPeople').getItems({
-        listCols: [
-          'Id',
-          'Name',
-          'Surname',
-          'Alias',
-          'Email',
-          'Photo',
-          'Location'
-        ],
-        queryFilter: 'Alias eq ' + alias
-      });
+
+      let url = `${ApiPath}Web/lists/getbytitle('NgPeople')/items?`;
+      url += '$selec=Id,Name,Surname,Alias,Email,Photo,Location';
+      url += `&$filter=Alias eq ${alias}`;
+
+      return this.http.get(url);
+
+      // return sprLib.list('NgPeople').getItems({
+      //   listCols: [
+      //     'Id',
+      //     'Name',
+      //     'Surname',
+      //     'Alias',
+      //     'Email',
+      //     'Photo',
+      //     'Location'
+      //   ],
+      //   queryFilter: 'Alias eq ' + alias
+      // });
     }),
     mergeMap((data: any) => {
       if (data.length > 0) {

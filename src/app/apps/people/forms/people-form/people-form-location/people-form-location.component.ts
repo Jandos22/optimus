@@ -1,7 +1,6 @@
 import { Locations } from './../../../../../models/locations.m';
 import {
   Component,
-  OnInit,
   Input,
   ViewEncapsulation,
   ChangeDetectionStrategy
@@ -33,10 +32,6 @@ export class PeopleFormLocationComponent {
 
   constructor() {}
 
-  ngOnInit() {
-    this.parent.controls;
-  }
-
   get hasError() {
     return this.parent.get('Gin').invalid;
   }
@@ -44,7 +39,9 @@ export class PeopleFormLocationComponent {
   get errorMessage() {
     const required = this.parent.controls['Location'].hasError('required');
     return this.parent.controls['Location'].touched
-      ? required ? 'Location is required' : ''
+      ? required
+        ? 'Location is required'
+        : ''
       : '';
   }
 }

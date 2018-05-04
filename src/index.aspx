@@ -9,8 +9,16 @@
 
 
 <head>
+
+  <title>Optimus</title>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> -->
+
+  <!-- Material Icons need to be tested in Wimax Network, they might not work there -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!--
     this meta tags added for mobile FULLSCREEN experience
@@ -21,36 +29,19 @@
   -->
   <!-- this metatag doesn't let camera to shoot on iOS devices in Safari and Chrome -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-
   <meta name="mobile-web-app-capable" content="yes">
-
-  <!--
-
-    Optimus stands for Optimization Suite
-    current production name
-
-    other names:
-    xTen, referring to x10 fold increase in productivity, as well as wordplay for EXTEND
-
-  -->
-  <title>Optimus</title>
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
 
   <!-- rename index.html to index.aspx to host on Sharepoint Library -->
 
-  <!-- production mode -->
-  <!-- <base href="/sites/wireline/optimus/index.aspx"> -->
-  <!-- <base href="/sites/wireline/x10/index.aspx"> -->
-
-  <!-- development mode -->
-  <base href="/">
+  <!-- 
+    prod or dev mode 
+  -->
+  <base href="/sites/wireline/optimus/index.aspx">
+  <!-- <base href="/"> -->
 
   <link rel="icon" type="image/x-icon" href="assets/favicon6_32p.png">
-
-  <!-- Material Icons need to be tested in Wimax Network, they might not work there -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 
   <!-- iOS homescreen web app, need to prepare best looking icons -->
   <!-- tested, it works -->

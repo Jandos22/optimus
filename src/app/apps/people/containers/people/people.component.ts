@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromPeople from '../../store';
@@ -22,7 +22,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
   styleUrls: ['./people.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <mat-progress-bar *ngIf="searching" 
+    <mat-progress-bar *ngIf="searching"
       class="workingOnRequest" color="warn" mode="indeterminate">
     </mat-progress-bar>
 
@@ -154,7 +154,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   openForm(mode, item?): void {
     const data = { mode, item };
-    let formRef = this.form.open(PeopleFormComponent, { data });
+    const formRef = this.form.open(PeopleFormComponent, { data });
   }
 
   ngOnDestroy() {
