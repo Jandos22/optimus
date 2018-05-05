@@ -17,7 +17,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "showCircularDependencies": false,
             "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/assets/favicon6_32p.png"],
+            "assets": ["src/assets", "src/assets/icons/favicon8_32p.png"],
             "styles": ["src/styles__theme.scss", "src/styles.css"],
             "scripts": []
           },

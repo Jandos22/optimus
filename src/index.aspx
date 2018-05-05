@@ -12,8 +12,9 @@
 
   <title>Optimus</title>
 
-  <!-- <base href="/sites/wireline/optimus/index.aspx"> -->
-  <base href="/">
+  <base href="/sites/wireline/optimus/index.aspx">
+  <!-- <base href="/sites/wireline/x10/index.aspx"> -->
+  <!-- <base href="/"> -->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,11 +34,11 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
-  <link rel="icon" type="image/x-icon" href="assets/favicon7_32p.png">
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png">
 
   <!-- iOS homescreen web app, need to prepare best looking icons -->
   <!-- tested, it works -->
-  <link rel="apple-touch-icon" href="assets/favicon_iphone.png">
+  <link rel="apple-touch-icon" href="assets/icons/favicon8_iphone.png">
 
   <!-- Manifest
     experiment with manifest didn't succeed, need to investigate this topic more
