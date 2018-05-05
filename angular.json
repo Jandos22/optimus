@@ -18,7 +18,7 @@
             "showCircularDependencies": false,
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/assets/favicon6_32p.png"],
-            "styles": ["src/styles.css"],
+            "styles": ["src/styles__theme.scss", "src/styles.css"],
             "scripts": []
           },
           "configurations": {

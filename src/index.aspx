@@ -12,6 +12,9 @@
 
   <title>Optimus</title>
 
+  <!-- <base href="/sites/wireline/optimus/index.aspx"> -->
+  <base href="/">
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -30,16 +33,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
-
-  <!-- rename index.html to index.aspx to host on Sharepoint Library -->
-
-  <!-- 
-    prod or dev mode 
-  -->
-  <base href="/sites/wireline/optimus/index.aspx">
-  <!-- <base href="/"> -->
-
-  <link rel="icon" type="image/x-icon" href="assets/favicon6_32p.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon7_32p.png">
 
   <!-- iOS homescreen web app, need to prepare best looking icons -->
   <!-- tested, it works -->
