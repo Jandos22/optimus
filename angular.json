@@ -18,7 +18,11 @@
             "showCircularDependencies": false,
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/assets/icons/favicon8_32p.png"],
-            "styles": ["src/styles__theme.scss", "src/styles.css"],
+            "styles": [
+              "src/styles__theme.scss",
+              "src/styles.css",
+              "src/assets/material-icons/material-icons.css"
+            ],
             "scripts": []
           },
           "configurations": {
