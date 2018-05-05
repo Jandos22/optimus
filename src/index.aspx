@@ -19,31 +19,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Material Icons need to be tested in Wimax Network, they might not work there -->
-  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <!-- material icons are self-hosted and import via css in angular.json -->
+  <!-- roboto font is self-hosted and imported via styles.css -->
+  <!-- material design theme is customized via styles__theme.scss -->
 
-  <!--
-    this meta tags added for mobile FULLSCREEN experience
-    - user needs to add web app to Home Screen
-    - on iOS Safari, web app always gets reloaded when visibility changes
-    - everything else works just great, feels like native app
-    - think about design of Server State Store for every user
-  -->
-  <!-- this metatag doesn't let camera to shoot on iOS devices in Safari and Chrome -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- MOBILE -->
+  <!-- don't use apple-mobile meta tag, it always reloads app on visibility change -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
+  <!-- browser, pc desktop and android icon -->
   <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png">
 
-  <!-- iOS homescreen web app, need to prepare best looking icons -->
-  <!-- tested, it works -->
+  <!-- iOS homescreen icon -->
   <link rel="apple-touch-icon" href="assets/icons/favicon8_iphone.png">
 
   <!-- Manifest
     experiment with manifest didn't succeed, need to investigate this topic more
   -->
-  <link rel="manifest" href="assets/manifest.json">
+  <!-- <link rel="manifest" href="assets/manifest.json"> -->
 
 </head>
 
