@@ -40,10 +40,12 @@
     "jquery": "^3.3.1",
     "ngrx-store-freeze": "^0.2.2",
     "ngx-img-cropper": "^0.10.2",
+    "normalize.css": "^8.0.0",
     "npm": "^5.8.0",
     "roboto-fontface": "^0.8.0",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",
+    "viewport-units-buggyfill": "^0.6.2",
     "web-animations-js": "^2.3.1",
     "webpack-validator": "^3.0.1",
     "zone.js": "^0.8.26"
@@ -57,7 +59,7 @@
     "@types/jasmine": "~2.8.7",
     "@types/jasminewd2": "~2.0.3",
     "@types/jquery": "^3.3.1",
-    "@types/node": "^8.9.4",
+    "@types/node": "^8.10.13",
     "angular-router-loader": "^0.6.0",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.5.0",
@@ -80,7 +82,7 @@
     "ts-node": "~5.0.0",
     "tslint": "^5.10.0",
     "typescript": "^2.7.2",
-    "webpack-dev-server": "^2.11.2",
+    "webpack-dev-server": "^3.0.0-alpha6",
     "webpack-merge": "^4.1.2"
   }
 }
