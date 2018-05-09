@@ -19,10 +19,9 @@
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/assets/icons/favicon8_32p.png"],
             "styles": [
-              "node_modules/normalize.css/normalize.css",
+              "src/assets/material-icons/material-icons.css",
               "src/styles__theme.scss",
-              "src/styles.css",
-              "src/assets/material-icons/material-icons.css"
+              "src/styles.css"
             ],
             "scripts": []
           },

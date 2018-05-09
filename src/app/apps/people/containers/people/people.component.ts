@@ -26,7 +26,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
       class="workingOnRequest" color="warn" mode="indeterminate">
     </mat-progress-bar>
 
-    <app-people-toolbar class="flexToolbar"
+    <app-people-toolbar
       (openForm)="openForm($event)">
     </app-people-toolbar>
 

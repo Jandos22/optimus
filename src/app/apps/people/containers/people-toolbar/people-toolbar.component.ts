@@ -19,26 +19,22 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
   selector: 'app-people-toolbar',
   styleUrls: ['people-toolbar.component.css'],
   template: `
-    <mat-toolbar class="toolbar">
-        <mat-toolbar-row class="customToolbarRowTop">
+    <mat-toolbar class="my-toolbar">
+        <mat-toolbar-row>
 
           <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
 
-            <button mat-icon-button>
-              <mat-icon>people</mat-icon>
-            </button>
+            <span>
+              <button mat-icon-button (click)="onOpenForm('new')" color="warn">
+                <mat-icon>add</mat-icon>
+              </button>
+            </span>
 
             <app-people-search
                 [parent]="paramsForm">
             </app-people-search>
 
             <span fxFlex></span>
-
-            <span>
-                <button mat-icon-button (click)="onOpenForm('new')" color="warn">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </span>
 
           </div>
 
