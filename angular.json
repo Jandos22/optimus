@@ -21,7 +21,7 @@
             "styles": [
               "src/assets/material-icons/material-icons.css",
               "src/styles__theme.scss",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

@@ -12,8 +12,8 @@ import { FormGroup } from '@angular/forms';
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
-        <mat-form-field fxFlex>
+    <div [formGroup]="parent" fxFlex class="my-form-field_container">
+        <mat-form-field fxFlexFill>
             <input matInput placeholder="Gin" formControlName="Gin" autocomplete="off">
             <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
         </mat-form-field>

@@ -6,8 +6,8 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['people-form-email.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
-        <mat-form-field fxFlex>
+    <div [formGroup]="parent" fxFlex class="my-form-field_container">
+        <mat-form-field fxFlexFill>
             <input matInput placeholder="Email" formControlName="Email" autocomplete="off">
             <mat-error *ngIf="parent.get('Email').invalid">{{ errorMessage}}</mat-error>
         </mat-form-field>
