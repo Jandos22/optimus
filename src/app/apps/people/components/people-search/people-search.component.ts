@@ -10,7 +10,7 @@ import * as fromPeople from '../../store';
   styleUrls: ['people-search.component.css'],
   template: `
     <span [formGroup]="parent" class="search__form">
-        <mat-form-field [floatLabel]="'never'" [color]="primary">
+        <mat-form-field [floatLabel]="'never'" [color]="'primary'">
             <input matInput
                 placeholder="Search"
                 formControlName="query"
