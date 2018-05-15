@@ -1,7 +1,4 @@
-.toolbarElement {
-  padding: 0 0 0 16px;
-}
-
-.inputElement {
+.search__form {
+  padding: 0 0 0 1rem;
   font-size: 0.875rem;
 }

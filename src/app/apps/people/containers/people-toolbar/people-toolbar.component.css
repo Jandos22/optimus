@@ -1,12 +1,12 @@
-.toolbar {
-  /* background-color: #e6e5e4; */
-  background-color: rgba(201, 205, 209, .25);
+.my-toolbar {
+  background-color: rgba(201, 205, 209, 0.25);
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
 }
 
 .customToolbarRowTop {
   height: 64px;
-}
-
-.customToolbarRow {
-  height: 52px;
+  height: 3.5rem;
 }

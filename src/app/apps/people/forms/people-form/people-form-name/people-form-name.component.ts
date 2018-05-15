@@ -12,11 +12,10 @@ import { FormMode } from './../../../../../models/form-mode.model';
 @Component({
   selector: 'app-people-form-name',
   styleUrls: ['people-form-name.component.css'],
-  encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
-    <mat-form-field fxFlex>
+  <div [formGroup]="parent" fxFlex class="my-form-field_container">
+    <mat-form-field fxFlexFill>
         <input matInput placeholder="Name" formControlName="Name" autocomplete="off">
         <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>

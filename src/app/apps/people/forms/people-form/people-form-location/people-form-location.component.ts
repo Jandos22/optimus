@@ -13,8 +13,8 @@ import { FormGroup } from '@angular/forms';
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
-        <mat-form-field fxFlex>
+    <div [formGroup]="parent" fxFlex class="my-form-field_container">
+        <mat-form-field fxFlexFill>
           <mat-select placeholder="Location" formControlName="Location" [disabled]="disabled">
             <mat-option *ngFor="let item of locations" [value]="item.Location">
                 {{ item.Location }}

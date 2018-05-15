@@ -10,11 +10,10 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-people-form-surname',
   styleUrls: ['people-form-surname.component.css'],
-  encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <div [formGroup]="parent" fxFlex [ngClass]="{ 'hasError': hasError }">
-    <mat-form-field fxFlex>
+  <div [formGroup]="parent" fxFlex class="my-form-field_container">
+    <mat-form-field fxFlexFill>
         <input matInput placeholder="Surname" formControlName="Surname" autocomplete="off">
         <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
@@ -38,7 +37,9 @@ export class PeopleFormSurnameComponent implements OnInit {
     const required = this.parent.controls['Surname'].hasError('required');
 
     return this.parent.controls['Surname'].touched
-      ? required ? 'Surname is required' : ''
+      ? required
+        ? 'Surname is required'
+        : ''
       : '';
   }
 }

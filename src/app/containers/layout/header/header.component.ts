@@ -124,8 +124,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    // this.router.navigateByUrl(WirelinePath + '/_layouts/15/SignOut.aspx');
-    // this.router.navigateByUrl('google.kz');
     window.location.href = WirelinePath + '/_layouts/15/SignOut.aspx';
   }
 

@@ -41,18 +41,15 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
   styleUrls: ['people-form.component.css'],
   template: `
     <span mat-dialog-title style="text-align: center;">{{ title }}</span>
-    <mat-dialog-content>
+    <mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
 
-      <!-- Common -->
-      <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start stretch">
-
-        <div fxLayout="row wrap" fxFlex.gt-xs="180px">
-          <app-people-form-photo fxFlex
+        <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
+          <app-people-form-photo
             [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
           </app-people-form-photo>
         </div>
 
-        <div fxFlex fxLayout="row wrap" fxLayoutGap.gt-sm="16px">
+        <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap.gt-xs="16px" fxFlex.gt-xs>
 
             <app-people-form-name fxFlex.gt-xs="180px" [parent]="form" [mode]="mode"></app-people-form-name>
             <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
@@ -65,7 +62,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
 
         </div>
 
-      </div>
+
 
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
