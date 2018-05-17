@@ -13,7 +13,13 @@ import * as fromPeople from '../../store';
 
 // rxjs 6
 import { Subscription, Observable } from 'rxjs';
-import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
+import {
+  debounceTime,
+  map,
+  tap,
+  skipWhile,
+  distinctUntilChanged
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-people-toolbar',
@@ -62,11 +68,13 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   params$: Subscription = this.paramsForm.valueChanges
     .pipe(
       debounceTime(600),
+      distinctUntilChanged(),
       skipWhile(_ => this.paramsForm.get('query').invalid === true)
     )
-    .subscribe(params =>
-      this.peopleStore.dispatch(new fromPeople.UpdateParams(params))
-    );
+    .subscribe(params => {
+      console.log('params updated');
+      this.peopleStore.dispatch(new fromPeople.UpdateParams(params));
+    });
 
   // comes from STORE.application.location
   // controlled from *HEADER select menu
@@ -77,11 +85,6 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
     private rootStore: Store<fromRoot.RootState>
   ) {}
 
-  onSelectTop(top) {
-    this.paramsForm.get('top').setValue(top);
-    console.log(this.paramsForm.get('top').value);
-  }
-
   ngOnInit() {
     // subscribe to store and update selected location on change
     this.selectedLocation$ = this.rootStore
@@ -89,6 +92,11 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
       .subscribe(location => {
         this.paramsForm.get('location').setValue(location);
       });
+  }
+
+  // triggered from child component
+  onSelectTop(top) {
+    this.paramsForm.get('top').setValue(top);
   }
 
   onOpenForm(state) {
