@@ -1,6 +1,9 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+// rxjs
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-people-form-alias',
   styleUrls: ['people-form-alias.component.css'],

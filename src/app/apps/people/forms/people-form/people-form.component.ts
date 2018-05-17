@@ -73,7 +73,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
 
-      <button mat-raised-button tabindex="-1" color="primary" [disabled]="form.invalid"
+      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid"
         *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
 
     </mat-dialog-actions>
@@ -92,6 +92,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   changesList: PeopleItemChanges;
 
   _name$: Subscription;
+
+  // react to value changes in form
+  alias$: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -112,7 +115,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
         let width: string;
-        // let height: string;
+
         window.isXS
           ? (width = '80%')
           : window.isS
@@ -125,9 +128,54 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         this.dialogRef.updateSize(width);
       });
 
+    // get locations list from store and update local locations list
     this.locations$ = this.fromRoot
       .select(fromRoot.getApplicationLocations)
       .subscribe(locations => (this.locations = locations));
+
+    this.alias$ = this.form
+      .get('Alias')
+      .valueChanges.subscribe((alias: string) => {
+        console.log(this.form);
+        this.form.get('Email').setValue(`${alias}@slb.com`);
+      });
+  }
+
+  // *** form group
+  initForm() {
+    this.form = this.fb.group({
+      Name: [this.nameInput, Validators.required],
+      Surname: [this.surnameInput, Validators.required],
+      Alias: [
+        this.aliasInput,
+        Validators.required,
+        this.uniqueAlias.bind(this)
+      ],
+      Email: [this.emailInput, Validators.required],
+      Gin: [
+        this.ginInput,
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(8),
+          ValidationService.onlyNumbers
+        ],
+        this.uniqueGin.bind(this)
+      ],
+      Location: [this.locationInput, Validators.required],
+      Photo: this.fb.group({
+        Url: [this.photoInput['Url']],
+        Description: [this.photoInput['Description']]
+      })
+    });
+  }
+
+  initPhotoForm() {
+    this.photoForm = this.fb.group({
+      Filename: ['', Validators.required],
+      ArrayBuffer: [new ArrayBuffer(0), Validators.required]
+    });
+    this.photo = this.form.get('Photo.Url').value;
   }
 
   openPhotoPicker() {
@@ -179,43 +227,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  //
-  initForm() {
-    this.form = this.fb.group({
-      Name: [this.nameInput, Validators.required],
-      Surname: [this.surnameInput, Validators.required],
-      Alias: [
-        this.aliasInput,
-        Validators.required,
-        this.uniqueAlias.bind(this)
-      ],
-      Email: [this.emailInput, Validators.required],
-      Gin: [
-        this.ginInput,
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(8),
-          ValidationService.onlyNumbers
-        ],
-        this.uniqueGin.bind(this)
-      ],
-      Location: [this.locationInput, Validators.required],
-      Photo: this.fb.group({
-        Url: [this.photoInput['Url']],
-        Description: [this.photoInput['Description']]
-      })
-    });
-  }
-
-  initPhotoForm() {
-    this.photoForm = this.fb.group({
-      Filename: ['', Validators.required],
-      ArrayBuffer: [new ArrayBuffer(0), Validators.required]
-    });
-    this.photo = this.form.get('Photo.Url').value;
-  }
-
   get title() {
     return this.mode.isNew
       ? 'New User'
@@ -257,7 +268,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   }
   get emailInput() {
     return this.mode.isNew
-      ? ''
+      ? { value: '@slb.com', disabled: true }
       : this.mode.isView
         ? { value: this.user.Email, disabled: true }
         : { value: this.user.Email, disabled: true };
@@ -319,5 +330,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.window$.unsubscribe();
     this.locations$.unsubscribe();
+    this.alias$.unsubscribe();
   }
 }

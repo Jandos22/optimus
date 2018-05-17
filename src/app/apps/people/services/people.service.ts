@@ -73,7 +73,7 @@ export class PeopleService {
     }
 
     // $orderby
-    url += `&$orderby=Name desc`;
+    url += `&$orderby=Name asc`;
 
     // $top
     url += `&$top=${top}`;
