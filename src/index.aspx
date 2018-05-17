@@ -13,8 +13,8 @@
   <title>Optimus</title>
 
   <!-- <base href="/sites/wireline/optimus/index.aspx"> -->
-  <base href="/sites/wireline/x10/index.aspx">
-  <!-- <base href="/"> -->
+  <!-- <base href="/sites/wireline/x10/index.aspx"> -->
+  <base href="/">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

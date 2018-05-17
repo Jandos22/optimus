@@ -113,8 +113,7 @@ export class UserService {
   }
 
   prepOptimusUserObject(userdata) {
-    const api = ApiPath;
-    if (api.startsWith('_api')) {
+    if (ApiPath.startsWith('_')) {
       // console.log(userdata);
       userdata.Photo.Url.replace(WirelinePath, ProxyPath);
     }

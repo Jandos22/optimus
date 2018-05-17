@@ -37,26 +37,13 @@ export class UserEffects {
   @Effect()
   checkCurrentUser$ = this.actions$.ofType(fromUser.CHECK_CURRENT_USER).pipe(
     switchMap((action: fromUser.CheckCurrentUser) => {
-      const alias = '%27' + action.payload + '%27';
+      const alias = action.payload;
 
       let url = `${ApiPath}Web/lists/getbytitle('NgPeople')/items?`;
       url += '$selec=Id,Name,Surname,Alias,Email,Photo,Location';
-      url += `&$filter=Alias eq ${alias}`;
+      url += `&$filter=Alias eq '${alias}'`;
 
       return this.http.get(url);
-
-      // return sprLib.list('NgPeople').getItems({
-      //   listCols: [
-      //     'Id',
-      //     'Name',
-      //     'Surname',
-      //     'Alias',
-      //     'Email',
-      //     'Photo',
-      //     'Location'
-      //   ],
-      //   queryFilter: 'Alias eq ' + alias
-      // });
     }),
     mergeMap((data: any) => {
       if (data.length > 0) {
