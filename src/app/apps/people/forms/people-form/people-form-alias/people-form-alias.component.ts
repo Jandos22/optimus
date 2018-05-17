@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
             <input matInput placeholder="Alias" formControlName="Alias" autocomplete="off">
-            <mat-error *ngIf="parent.get('Alias').invalid">{{ errorMessage }}</mat-error>
+            <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
         </mat-form-field>
     </div>
     `

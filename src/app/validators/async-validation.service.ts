@@ -27,4 +27,19 @@ export class AsyncValidationService {
         })
       );
   }
+
+  checkGinUnique(gin: number): Observable<boolean> {
+    const url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
+
+    return this.http
+      .get(url, {
+        params: new HttpParams().set('$filter', `Gin eq '${gin}'`)
+      })
+      .pipe(
+        map((response: { value: any[] }) => {
+          console.log(response);
+          return response.value.length ? false : true;
+        })
+      );
+  }
 }

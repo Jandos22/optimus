@@ -197,7 +197,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
           Validators.minLength(8),
           Validators.maxLength(8),
           ValidationService.onlyNumbers
-        ]
+        ],
+        this.uniqueGin.bind(this)
       ],
       Location: [this.locationInput, Validators.required],
       Photo: this.fb.group({
@@ -298,6 +299,18 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       }),
       map((response: boolean) => {
         return response ? null : { uniqueAlias: true };
+      })
+    );
+  }
+
+  uniqueGin(control: AbstractControl) {
+    return of(control.value).pipe(
+      take(1),
+      switchMap((gin: number) => {
+        return this.asyncValidators.checkGinUnique(gin);
+      }),
+      map((response: boolean) => {
+        return response ? null : { unique: true };
       })
     );
   }
