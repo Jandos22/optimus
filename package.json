@@ -41,7 +41,7 @@
     "ngrx-store-freeze": "^0.2.2",
     "ngx-img-cropper": "^0.10.2",
     "normalize.css": "^8.0.0",
-    "npm": "^5.8.0",
+    "npm": "^6.0.1",
     "roboto-fontface": "^0.8.0",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",

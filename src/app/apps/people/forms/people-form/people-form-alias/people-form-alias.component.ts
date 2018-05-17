@@ -24,12 +24,16 @@ export class PeopleFormAliasComponent {
   }
 
   get errorMessage() {
-    const required = this.parent.controls['Alias'].hasError('required');
+    const control = this.parent.controls['Alias'];
+    const required = control.hasError('required');
+    const uniqueAlias = control.hasError('uniqueAlias');
 
-    return this.parent.controls['Alias'].touched
+    return control.touched
       ? required
-        ? 'Alias is required'
-        : ''
+        ? '... is required'
+        : uniqueAlias
+          ? '... is already registered'
+          : ''
       : '';
   }
 }
