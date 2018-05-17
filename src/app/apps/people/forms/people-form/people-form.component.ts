@@ -73,7 +73,7 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
       <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
 
-      <button mat-raised-button tabindex="-1" color="primary" [disabled]="form.invalid"
+      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid"
         *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
 
     </mat-dialog-actions>
@@ -136,6 +136,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.alias$ = this.form
       .get('Alias')
       .valueChanges.subscribe((alias: string) => {
+        console.log(this.form);
         this.form.get('Email').setValue(`${alias}@slb.com`);
       });
   }
