@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'app-people-form-gin',
   styleUrls: ['people-form-gin.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
@@ -30,19 +30,24 @@ export class PeopleFormGinComponent {
   }
 
   get errorMessage() {
-    const required = this.parent.controls['Gin'].hasError('required');
-    const min = this.parent.controls['Gin'].hasError('minlength');
-    const max = this.parent.controls['Gin'].hasError('maxlength');
-    const onlyNumbers = this.parent.controls['Gin'].hasError('onlyNumbers');
+    const control = this.parent.controls['Gin'];
 
-    return this.parent.controls['Gin'].touched
+    const required = control.hasError('required');
+    const min = control.hasError('minlength');
+    const max = control.hasError('maxlength');
+    const onlyNumbers = control.hasError('onlyNumbers');
+    const unique = control.hasError('unique');
+
+    return control.touched
       ? required
-        ? 'GIN number is required'
+        ? '... number is required'
         : onlyNumbers
           ? 'Only numbers allowed'
           : min || max
             ? '8 digits required'
-            : ''
+            : unique
+              ? '... is already registered'
+              : ''
       : '';
   }
 }

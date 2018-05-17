@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
             <input matInput placeholder="Alias" formControlName="Alias" autocomplete="off">
-            <mat-error *ngIf="parent.get('Alias').invalid">{{ errorMessage }}</mat-error>
+            <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
         </mat-form-field>
     </div>
     `
@@ -24,12 +24,16 @@ export class PeopleFormAliasComponent {
   }
 
   get errorMessage() {
-    const required = this.parent.controls['Alias'].hasError('required');
+    const control = this.parent.controls['Alias'];
+    const required = control.hasError('required');
+    const uniqueAlias = control.hasError('uniqueAlias');
 
-    return this.parent.controls['Alias'].touched
+    return control.touched
       ? required
-        ? 'Alias is required'
-        : ''
+        ? '... is required'
+        : uniqueAlias
+          ? '... is already registered'
+          : ''
       : '';
   }
 }

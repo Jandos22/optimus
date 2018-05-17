@@ -1,3 +1,4 @@
+import { AsyncValidationService } from './../../../../validators/async-validation.service';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import {
@@ -5,11 +6,13 @@ import {
   FormGroup,
   FormBuilder,
   FormControl,
-  Validators
+  Validators,
+  AbstractControl
 } from '@angular/forms';
 
 // rxjs
-import { Subscription } from 'rxjs';
+import { Subscription, of, Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -93,6 +96,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private fromRoot: Store<fromRoot.RootState>,
+    private asyncValidators: AsyncValidationService,
     public dialogRef: MatDialogRef<PeopleFormComponent>,
     public photoDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -180,7 +184,11 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       Name: [this.nameInput, Validators.required],
       Surname: [this.surnameInput, Validators.required],
-      Alias: [this.aliasInput, Validators.required],
+      Alias: [
+        this.aliasInput,
+        Validators.required,
+        this.uniqueAlias.bind(this)
+      ],
       Email: [this.emailInput, Validators.required],
       Gin: [
         this.ginInput,
@@ -189,7 +197,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
           Validators.minLength(8),
           Validators.maxLength(8),
           ValidationService.onlyNumbers
-        ]
+        ],
+        this.uniqueGin.bind(this)
       ],
       Location: [this.locationInput, Validators.required],
       Photo: this.fb.group({
@@ -278,6 +287,35 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         : { ...this.user.Photo };
   }
 
+  // async validators
+
+  // takes 'alias' => checks database => return form error or null
+  // I couldn't integrate debounce time, now it just cancels http calls when typing
+  uniqueAlias(control: AbstractControl) {
+    return of(control.value).pipe(
+      take(1),
+      switchMap((alias: string) => {
+        return this.asyncValidators.checkAliasUnique(alias);
+      }),
+      map((response: boolean) => {
+        return response ? null : { uniqueAlias: true };
+      })
+    );
+  }
+
+  uniqueGin(control: AbstractControl) {
+    return of(control.value).pipe(
+      take(1),
+      switchMap((gin: number) => {
+        return this.asyncValidators.checkGinUnique(gin);
+      }),
+      map((response: boolean) => {
+        return response ? null : { unique: true };
+      })
+    );
+  }
+
+  // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
     this.window$.unsubscribe();
     this.locations$.unsubscribe();
