@@ -36,6 +36,11 @@ import { debounceTime, map, tap, skipWhile } from 'rxjs/operators';
 
             <span fxFlex></span>
 
+            <app-people-top-select
+              [top]="paramsForm.get('top').value"
+              (onSelectTop)="onSelectTop($event)">
+            </app-people-top-select>
+
           </div>
 
         </mat-toolbar-row>
@@ -46,7 +51,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   paramsForm = new FormGroup({
     query: new FormControl(''),
     location: new FormControl(''),
-    top: new FormControl(10)
+    top: new FormControl(25)
   });
 
   @Output() openForm = new EventEmitter<string>();
@@ -74,6 +79,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
 
   onSelectTop(top) {
     this.paramsForm.get('top').setValue(top);
+    console.log(this.paramsForm.get('top').value);
   }
 
   ngOnInit() {

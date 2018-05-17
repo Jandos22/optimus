@@ -24,7 +24,7 @@ export class PeopleTopSelectComponent {
   constructor() {}
 
   onSelect(top) {
-    // console.log(top);
+    console.log(top);
     this.onSelectTop.emit(top);
   }
 }
