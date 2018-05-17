@@ -1,3 +1,4 @@
+import { ApiPath, PathOptimus } from './../../../../../constants/index';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -31,6 +32,11 @@ export class PeopleFormPhotoComponent implements OnInit {
   }
 
   get getPhoto() {
-    return this.photo ? this.photo : '/assets/no_user_photo.jpg';
+    return this.photo ? this.photo : this.getNoPhotoUrl();
+  }
+
+  getNoPhotoUrl() {
+    const noPhoto = '/assets/no_user_photo.jpg';
+    return ApiPath.startsWith('_') ? noPhoto : `${PathOptimus}${noPhoto}`;
   }
 }
