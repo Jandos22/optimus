@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
@@ -79,7 +79,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     public form: MatDialog
   ) {
     this.list$ = this.peopleStore
-      .select(fromPeople.getPeopleList)
+      .pipe(select(fromPeople.getPeopleList))
       .subscribe(list => {
         // goes in people-list component
         this.list = list;
