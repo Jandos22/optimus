@@ -133,11 +133,12 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       .select(fromRoot.getApplicationLocations)
       .subscribe(locations => (this.locations = locations));
 
+    // when alias changed, also update email
     this.alias$ = this.form
       .get('Alias')
       .valueChanges.subscribe((alias: string) => {
-        console.log(this.form);
         this.form.get('Email').setValue(`${alias}@slb.com`);
+        this.updatePhotoFilename();
       });
   }
 
@@ -192,12 +193,17 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       if (result) {
         this.photo = result.photo;
         this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
-        this.photoForm
-          .get('Filename')
-          .setValue(this.form.get('Alias').value + '.jpg');
+        this.updatePhotoFilename();
       }
       console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
     });
+  }
+
+  // Utility Functions
+
+  updatePhotoFilename(): void {
+    const alias: string = this.form.get('Alias').value;
+    this.photoForm.get('Filename').setValue(alias ? `${alias}.jpg` : '');
   }
 
   // ACTION BUTTONS
@@ -205,6 +211,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   onSave() {
     console.log(this.form);
     console.log(this.photoForm);
+    console.log(this.photo);
   }
 
   onClose() {
@@ -244,7 +251,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     return !this.mode.isNew ? this.data.item : '';
   }
 
-  // form values
+  // *** form values getters
+  // need to outsource them when have chance
   get nameInput() {
     return this.mode.isNew
       ? ''
@@ -278,7 +286,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       ? ''
       : this.mode.isView
         ? { value: this.user.Gin, disabled: true }
-        : this.user.Gin;
+        : { value: this.user.Gin, disabled: true };
   }
   get locationInput() {
     return this.mode.isNew
