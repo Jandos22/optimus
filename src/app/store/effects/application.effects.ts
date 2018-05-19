@@ -1,6 +1,6 @@
 import { ApiPath } from './../../constants/index';
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
@@ -22,7 +22,8 @@ export class ApplicationEffects {
   ) {}
 
   @Effect()
-  setTitle = this.actions$.ofType(fromApplication.CHANGE_APP_NAME).pipe(
+  setTitle = this.actions$.pipe(
+    ofType(fromApplication.CHANGE_APP_NAME),
     map((action: fromApplication.ChangeAppName) => {
       const title = action.payload;
       title === 'Home'

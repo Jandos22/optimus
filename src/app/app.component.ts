@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+// this fix is only required in iOS Safari
 import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';
 viewportUnitsBuggyfill.init({
   refreshDebounceWait: 50,
