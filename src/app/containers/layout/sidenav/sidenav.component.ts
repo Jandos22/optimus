@@ -18,6 +18,9 @@ import * as layout from '../../../store/actions/layout.action';
     <li *ngIf="isRegistered$ | async">
         <a routerLink="/people" class="noSelect" (click)="onSidenavClick()">People</a>
     </li>
+    <li *ngIf="isRegistered$ | async">
+        <a routerLink="/exemptions" class="noSelect" (click)="onSidenavClick()">Exemptions</a>
+    </li>
     <li *ngIf="(isRegistered$ | async) === false">
           <a routerLink="/registration" class="noSelect" (click)="onSidenavClick()">Registration</a>
       </li>
