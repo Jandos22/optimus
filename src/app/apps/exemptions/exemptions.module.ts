@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 // ngrx
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-// import { reducers, effects } from './store';
+import { reducers, effects } from './store';
 
 // containers
 import * as fromContainers from './containers';
@@ -17,9 +17,7 @@ import * as fromComponents from './components';
 
 // forms
 import * as fromForms from './forms';
-
-// services
-import * as fromServices from './services';
+import { ExemptionsService } from './services/exemptions.service';
 
 // routes
 export const exemptionsRoutes: Routes = [
@@ -30,8 +28,11 @@ export const exemptionsRoutes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(exemptionsRoutes)
+    RouterModule.forChild(exemptionsRoutes),
+    StoreModule.forFeature('exemptions', reducers),
+    EffectsModule.forFeature(effects)
   ],
+  providers: [ExemptionsService],
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
