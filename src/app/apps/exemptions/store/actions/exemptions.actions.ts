@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 
 export enum ExemptionsActionTypes {
   GET_EXEMPTIONS = '[Exemptions] Get Exemptions',
-  UPDATE_LIST = '[Exemptions] Update List'
+  UPDATE_EXEMPTIONS_LIST = '[Exemptions] Update Exemptions List'
 }
 
 export class GetExemptions implements Action {
@@ -10,9 +10,9 @@ export class GetExemptions implements Action {
   constructor(public payload: any) {}
 }
 
-export class UpdateList implements Action {
-  readonly type = ExemptionsActionTypes.UPDATE_LIST;
+export class UpdateExemptionsList implements Action {
+  readonly type = ExemptionsActionTypes.UPDATE_EXEMPTIONS_LIST;
   constructor(public payload: any) {}
 }
 
-export type ExemptionsActionsUnion = GetExemptions | UpdateList;
+export type ExemptionsActionsUnion = GetExemptions | UpdateExemptionsList;

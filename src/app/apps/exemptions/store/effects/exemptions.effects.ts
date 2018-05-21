@@ -1,11 +1,11 @@
-import { ExemptionsModule } from './../../exemptions.module';
 import { Injectable } from '@angular/core';
 
 // ngrx
+import { Action } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 
 // rxjs
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import {
   map,
   switchMap,
@@ -21,6 +21,8 @@ import {
   ExemptionsActionsUnion
 } from '../actions/exemptions.actions';
 
+import * as ActionsInExemptions from '../actions/exemptions.actions';
+
 // services
 import { ExemptionsService } from './../../services/exemptions.service';
 
@@ -28,7 +30,7 @@ import { ExemptionsService } from './../../services/exemptions.service';
 export class ExemptionsEffects {
   constructor(private actions$: Actions, private service: ExemptionsService) {}
 
-  @Effect({ dispatch: false })
+  @Effect()
   getExemptions$ = this.actions$.pipe(
     ofType(ExemptionsActionTypes.GET_EXEMPTIONS),
     map((action: ExemptionsActionsUnion) => action.payload),
@@ -37,6 +39,7 @@ export class ExemptionsEffects {
     }),
     map(exemptions => {
       console.log(exemptions);
+      return new ActionsInExemptions.UpdateExemptionsList(exemptions);
     })
   );
 }

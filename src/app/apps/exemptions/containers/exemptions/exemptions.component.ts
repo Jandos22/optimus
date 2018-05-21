@@ -15,15 +15,16 @@ import * as fromExemptionsActions from '../../store/actions/exemptions.actions';
 @Component({
   selector: 'app-exemptions',
   template: `
-    <h1 (click)="get()">Exemptions</h1>
-    <p *ngFor="let item of (list | async)">{{ item }}</p>
+    <app-exemptions-list
+      [exemptions]="exemptions">
+    </app-exemptions-list>
   `,
   styleUrls: ['./exemptions.component.scss']
 })
 export class ExemptionsComponent implements OnInit {
   // title in header
   appName = 'Exemptions';
-  list: Observable<any>;
+  exemptions: Observable<any>;
 
   constructor(
     private rootStore: Store<fromRoot.RootState>,
@@ -33,10 +34,16 @@ export class ExemptionsComponent implements OnInit {
   ngOnInit() {
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
-    this.list = this.featureStore.pipe(select(fromFeature.getExemptionsList));
+    this.exemptions = this.featureStore.pipe(
+      select(fromFeature.getExemptionsList)
+    );
+
+    // when component starts
+    // request exemptions from server
+    this.getExemptions();
   }
 
-  get() {
+  getExemptions() {
     this.featureStore.dispatch(new fromExemptionsActions.GetExemptions('KZTZ'));
   }
 }

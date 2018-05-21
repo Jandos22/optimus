@@ -8,7 +8,7 @@ export interface ExemptionsState {
 }
 
 export const initialState: ExemptionsState = {
-  list: ['Exemption1', 'Exemption2']
+  list: []
 };
 
 export function reducer(
@@ -17,7 +17,7 @@ export function reducer(
 ): ExemptionsState {
   switch (action.type) {
     // update list of exemptions
-    case ExemptionsActionTypes.UPDATE_LIST: {
+    case ExemptionsActionTypes.UPDATE_EXEMPTIONS_LIST: {
       return {
         ...state,
         list: action.payload

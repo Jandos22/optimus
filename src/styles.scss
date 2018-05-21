@@ -111,3 +111,46 @@ app-layout {
     font-size: 16px !important;
   }
 }
+
+// list items
+.my-item-container {
+  min-height: 3.5rem;
+  padding: 0 1rem;
+}
+
+.my-progress__container {
+  position: relative;
+}
+
+// .my-progress__spinner {
+//   position: absolute;
+// }
+
+.my-progress__value {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+}
+
+.my-item__title--container {
+  overflow: hidden;
+}
+
+.my-title__clipped {
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-item__secondrow {
+  font-size: 0.875rem;
+  a {
+    color: #1976d2;
+    text-decoration: none;
+  }
+}

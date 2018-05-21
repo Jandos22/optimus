@@ -11,7 +11,7 @@ import { PeopleItem } from '../../models/people-item.model';
 
       <div fxLayout="row" fxLayoutAlign="space-between center" class="itemContainer">
 
-        <button mat-icon-button fxFLex="40px" (click)="onOpenItem(user)">
+        <button mat-icon-button fxFlex="40px" (click)="onOpenItem(user)">
           <img [src]="user.Photo?.Url" [alt]="user.Photo?.Description" class="peopleAvatar">
         </button>
 

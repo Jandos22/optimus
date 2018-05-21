@@ -22,9 +22,8 @@ export class ExemptionsService {
         params: new HttpParams().set('$filter', `Location eq '${location}'`)
       })
       .pipe(
-        map(response => {
-          console.log(response);
-          return true;
+        map((response: { value: any[] }) => {
+          return response.value;
         })
       );
   }
