@@ -23,34 +23,40 @@ import { ExemptionsRaw } from './../../../../shared/interface/exemptions.model';
             fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
 
             <!-- Spinner Container -->
-            <div class="my-progress__container">
-                <mat-progress-spinner
-                    class="my-progress__spinner"
-                    [mode]="'determinate'"
-                    [value]="10"
-                    [diameter]="40">
-                </mat-progress-spinner>
-
-                <span class="my-progress__value"
-                    title="{{ countDays(exemption.ValidTo) }} days left">
-                        {{ countDays(exemption.ValidTo) }}
-                </span>
-            </div>
+            <app-exemptions-days-left
+              [validTo]="exemption.ValidTo">
+            </app-exemptions-days-left>
 
             <!-- Item Body Container -->
             <div class="my-item__title--container"
                 fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: hidden;" fxLayoutGap="5px">
-                <span class="my-title__clipped" [title]="exemption.Title">{{ exemption.Title }}</span>
 
-                <span class="my-item__secondrow">
+                <!-- title container -->
+                <div fxLayout="row" fxLayoutGap="8px">
+                  <span fxFlex class="my-title__clipped" [title]="exemption.Title">{{ exemption.Title }}</span>
+                  <span *ngIf="window.isXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
+                </div>
+
+                <span class="my-item__secondrow" [class.textXXS]="window.isXXS"
+                  fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px">
                   <!-- show link with exemption number if ID was provided -->
                   <a *ngIf="exemption.Exemption_ID; else noId" [href]="composeLink(exemption.Exemption_ID)" target="_blank">
                       {{ exemption.Exemption_Number }}
                   </a>
                   <!-- show just exemption number if no ID provided -->
-                  <ng-template #noId><span>{{ exemption.Exemption_Number }}</span></ng-template>
+                  <ng-template #noId>
+                    <span>{{ exemption.Exemption_Number }}</span>
+                  </ng-template>
+
                   <!-- always show exemption validity date -->
-                  <span> - {{ exemption.ValidTo | date }}</span>
+                  <span *ngIf="!window.isXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
+
+                  <!-- spacer -->
+                  <span fxFlex></span>
+
+                  <app-exemptions-status *ngIf="window.isXXS" fxFlex="0 0 auto"
+                    [validTo]="exemption.ValidTo" [isXXS]="window.isXXS">
+                  </app-exemptions-status>
 
                 </span>
 
@@ -73,15 +79,13 @@ export class ExemptionsListComponent implements OnDestroy {
   window: WindowProperties;
 
   constructor(private rootStore: Store<fromRoot.RootState>) {
+    // subscription to window layout
     this.breakpoints$ = this.rootStore
       .pipe(select(fromRoot.getLayoutWindow))
-      .subscribe((window: WindowProperties) => {
-        console.log(window);
-        this.window = window;
-      });
+      .subscribe((window: WindowProperties) => (this.window = window));
   }
 
-  // not used
+  // if exemption id is present, we can compose a link to quest
   composeLink(id) {
     return id
       ? `https://quest.slb.com/quest/Exemption/ExemptionView.asp?Online=0&ID=${id}`
@@ -96,5 +100,7 @@ export class ExemptionsListComponent implements OnDestroy {
     );
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.breakpoints$.unsubscribe();
+  }
 }

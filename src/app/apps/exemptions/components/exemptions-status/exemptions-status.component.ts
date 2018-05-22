@@ -6,13 +6,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['exemptions-status.component.scss'],
   template: `
     <mat-chip-list>
-      <mat-chip *ngIf="moreThan30days" color="primary" selected="true">VALID</mat-chip>
-      <mat-chip *ngIf="lessThan30days" color="warn" selected="true">SOON EXPIRES</mat-chip>
+      <mat-chip *ngIf="!isXXS" [color]="color" selected="true" selectable="false">{{ status }}</mat-chip>
+      <mat-basic-chip *ngIf="isXXS" [color]="color" selected="true" selectable="false">{{ status }}</mat-basic-chip>
     </mat-chip-list>
     `
 })
 export class ExemptionsStatusComponent {
   @Input() validTo: string;
+  @Input() isXXS: boolean;
   constructor() {}
 
   //   validTo: string;
@@ -23,17 +24,34 @@ export class ExemptionsStatusComponent {
     const daysLeft = Number(
       ((validToDate.getTime() - today.getTime()) / 86400000).toFixed(0)
     );
-    return daysLeft;
+    return daysLeft <= 0 ? 0 : daysLeft;
   }
 
   get moreThan30days() {
     const left = this.daysLeft(this.validTo);
-    console.log(left + ': ' + (left >= 30));
     return left >= 30 ? true : false;
   }
 
   get lessThan30days() {
     const left = this.daysLeft(this.validTo);
-    return left < 30 ? true : false;
+    return left < 30 && left > 0 ? true : false;
+  }
+
+  get status() {
+    return this.moreThan30days
+      ? 'VALID'
+      : this.lessThan30days
+        ? 'SOON EXPIRES'
+        : 'EXPIRED';
+  }
+
+  get color() {
+    return this.status === 'VALID'
+      ? 'primary'
+      : this.status === 'SOON EXPIRES'
+        ? 'accent'
+        : this.status === 'EXPIRED'
+          ? 'warn'
+          : '';
   }
 }
