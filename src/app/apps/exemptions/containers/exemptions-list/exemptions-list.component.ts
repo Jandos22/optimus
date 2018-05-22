@@ -1,4 +1,8 @@
+import { WindowProperties } from './../../../../models/window-properties.m';
 import { Component, Input, OnDestroy } from '@angular/core';
+
+import { Store, select } from '@ngrx/store';
+import * as fromRoot from '../../../../store';
 
 // rxjs
 import { Observable, Subscription, from } from 'rxjs';
@@ -53,6 +57,7 @@ import { ExemptionsRaw } from './../../../../shared/interface/exemptions.model';
             </div>
 
             <app-exemptions-status fxFlex="0 0 auto"
+                *ngIf="!window.isXXS"
                 [validTo]="exemption.ValidTo"></app-exemptions-status>
 
         </div>
@@ -63,10 +68,18 @@ import { ExemptionsRaw } from './../../../../shared/interface/exemptions.model';
 })
 export class ExemptionsListComponent implements OnDestroy {
   @Input() exemptions: Observable<ExemptionsRaw[]>;
+  breakpoints$: Subscription;
 
-  constructor() {}
+  window: WindowProperties;
 
-  ngOnDestroy() {}
+  constructor(private rootStore: Store<fromRoot.RootState>) {
+    this.breakpoints$ = this.rootStore
+      .pipe(select(fromRoot.getLayoutWindow))
+      .subscribe((window: WindowProperties) => {
+        console.log(window);
+        this.window = window;
+      });
+  }
 
   // not used
   composeLink(id) {
@@ -82,4 +95,6 @@ export class ExemptionsListComponent implements OnDestroy {
       ((validTo.getTime() - today.getTime()) / 86400000).toFixed(0)
     );
   }
+
+  ngOnDestroy() {}
 }

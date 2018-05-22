@@ -25,7 +25,7 @@
     for registered users only
     -->
   <span *ngIf="isRegistered$ | async">
-    <button mat-button [matMenuTriggerFor]="locationsMenu" [class.smallButton]="window.isXS">
+    <button mat-button [matMenuTriggerFor]="locationsMenu" [class.smallButton]="window.isXS || window.isXXS">
       {{ selectedLocation$ | async }}
       <mat-icon fxHide.xs>keyboard_arrow_down</mat-icon>
     </button>

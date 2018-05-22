@@ -10,6 +10,7 @@ export interface LayoutState {
 
 const initialState: LayoutState = {
   window: {
+    isXXS: false,
     isXS: false,
     isS: false,
     isM: false,
@@ -81,6 +82,7 @@ export function reducer(
 }
 
 export const getLayoutWindow = (state: LayoutState) => state.window;
+export const getIsXXS = (state: LayoutState) => state.window.isXXS;
 export const getIsXS = (state: LayoutState) => state.window.isXS;
 
 export const getSidenavState = (state: LayoutState) => state.sidenav;
