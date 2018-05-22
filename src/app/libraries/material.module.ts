@@ -14,46 +14,31 @@ import {
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatProgressBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatChipsModule
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
+const matModules: any[] = [
+  MatSelectModule,
+  MatToolbarModule,
+  MatButtonModule,
+  MatIconModule,
+  MatMenuModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatListModule,
+  MatCardModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatProgressBarModule,
+  MatDialogModule,
+  MatChipsModule
+];
+
 @NgModule({
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    FlexLayoutModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatListModule,
-    MatCardModule,
-    LayoutModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatProgressBarModule,
-    MatDialogModule
-  ],
-  exports: [
-    MatSelectModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    FlexLayoutModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatListModule,
-    MatCardModule,
-    LayoutModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatProgressBarModule,
-    MatDialogModule
-  ],
+  imports: [CommonModule, FlexLayoutModule, LayoutModule, ...matModules],
+  exports: [FlexLayoutModule, LayoutModule, ...matModules],
   declarations: []
 })
 export class MaterialModule {}
