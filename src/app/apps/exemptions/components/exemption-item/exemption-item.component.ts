@@ -61,6 +61,7 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
             [status]="status" [isXXS]="window.isXXS" [color]="color"></app-exemptions-status>
 
       </div>
+      <mat-divider></mat-divider>
     `
 })
 export class ExemptionItemComponent implements OnDestroy {
