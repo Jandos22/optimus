@@ -15,16 +15,14 @@ import * as fromExemptionsActions from '../../store/actions/exemptions.actions';
 @Component({
   selector: 'app-exemptions',
   template: `
-    <app-exemptions-list
-      [exemptions]="exemptions">
-    </app-exemptions-list>
+    <app-exemptions-groups [groups]="groups"></app-exemptions-groups>
   `,
   styleUrls: ['./exemptions.component.scss']
 })
 export class ExemptionsComponent implements OnInit {
   // title in header
   appName = 'Exemptions';
-  exemptions: Observable<any>;
+  groups: Observable<any>;
 
   constructor(
     private rootStore: Store<fromRoot.RootState>,
@@ -34,9 +32,7 @@ export class ExemptionsComponent implements OnInit {
   ngOnInit() {
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
-    this.exemptions = this.featureStore.pipe(
-      select(fromFeature.getExemptionsList)
-    );
+    this.groups = this.featureStore.pipe(select(fromFeature.getExemptionsList));
 
     // when component starts
     // request exemptions from server

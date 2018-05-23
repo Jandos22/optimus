@@ -27,4 +27,18 @@ export class ExemptionsService {
         })
       );
   }
+
+  // returns all exemption groups for a given location
+  getExemptionsGroupsOfLocation(location: string) {
+    const url = `${ApiPath}web/lists/getbytitle('NgExemptionGroups')/items?`;
+    return this.http
+      .get(url, {
+        params: new HttpParams().set('$filter', `Location eq '${location}'`)
+      })
+      .pipe(
+        map((response: { value: any[] }) => {
+          return response.value;
+        })
+      );
+  }
 }

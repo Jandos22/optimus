@@ -191,3 +191,12 @@ app-layout {
   color: white;
   background-color: $my-accent;
 }
+
+.my-section__text {
+  line-height: 1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 16px;
+}
