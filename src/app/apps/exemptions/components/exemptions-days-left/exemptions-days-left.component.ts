@@ -15,13 +15,17 @@ import { Component, Input } from '@angular/core';
 
     <span class="my-progress__value"
       title="{{ days }} days left">
-          {{ days }}
+          {{ displayDays }}
     </span>
   </div>
     `
 })
 export class ExemptionsDaysLeftComponent {
-  @Input() days: string;
+  @Input() days: number;
   @Input() color: string;
   constructor() {}
+
+  get displayDays() {
+    return this.days > 100 ? '' : this.days;
+  }
 }

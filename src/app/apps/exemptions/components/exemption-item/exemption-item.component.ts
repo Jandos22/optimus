@@ -15,28 +15,28 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
   selector: 'app-exemption-item',
   styleUrls: ['exemption-item.component.scss'],
   template: `
-        <div class="my-item-container"
-            fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+      <div class="my-item-container" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
-          <!-- Spinner Container -->
-          <app-exemptions-days-left
-            [days]="daysLeft()" [color]="color">
-          </app-exemptions-days-left>
+        <!-- Spinner Container -->
+        <app-exemptions-days-left
+          [days]="daysLeft()" [color]="color">
+        </app-exemptions-days-left>
 
-          <!-- Item Body Container -->
-          <div class="my-item__title--container"
-          fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: hidden;" fxLayoutGap="5px">
+        <!-- Item Body Container -->
+        <div class="my-item__title--container"
+        fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: hidden;" fxLayoutGap="2px">
 
           <!-- title container -->
           <div fxLayout="row" fxLayoutGap="8px">
             <span fxFlex class="my-title__clipped" [title]="exemption.Title">{{ exemption.Title }}</span>
-            <span *ngIf="window.isXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
+            <span *ngIf="window.isXXS" class="textXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
           </div>
 
           <span class="my-item__secondrow" [class.textXXS]="window.isXXS"
             fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px">
             <!-- show link with exemption number if ID was provided -->
-            <a *ngIf="exemption.Exemption_ID; else noId" [href]="composeLink(exemption.Exemption_ID)" target="_blank">
+            <a *ngIf="exemption.Exemption_ID; else noId" [href]="composeLink(exemption.Exemption_ID)" target="_blank"
+              [class.text--accent]="lessThan30days">
                 {{ exemption.Exemption_Number }}
             </a>
             <!-- show just exemption number if no ID provided -->
@@ -55,10 +55,11 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
             </app-exemptions-status>
 
           </span>
-          </div>
+        </div>
 
-          <app-exemptions-status fxFlex="0 0 auto" *ngIf="!window.isXXS"
-            [status]="status" [isXXS]="window.isXXS" [color]="color"></app-exemptions-status>
+        <app-exemptions-status fxFlex="0 0 auto" *ngIf="!window.isXXS"
+          [status]="status" [isXXS]="window.isXXS" [color]="color">
+        </app-exemptions-status>
 
       </div>
       <mat-divider></mat-divider>
