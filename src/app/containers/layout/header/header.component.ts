@@ -82,7 +82,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.forWindowState$$ = this.window$.subscribe(window => {
       this.window = window;
-      // console.log(this.window.isXS);
     });
 
     this.user$ = this.store

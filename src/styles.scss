@@ -11,6 +11,11 @@
   font-style: italic;
 }
 
+$my-primary: #2196f3;
+$my-primary-light: #9be7ff;
+$my-primary-dark: #0069c0;
+$my-accent: #ffc107;
+
 /* You can add global styles to this file, and also import other style files */
 html {
   -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
@@ -56,6 +61,11 @@ app-layout {
 
 .optimus-sidebar {
   width: 200px;
+}
+
+// my-content
+div.my-content {
+  background: #eee;
 }
 
 .flexContainer {
@@ -110,4 +120,97 @@ app-layout {
   input {
     font-size: 16px !important;
   }
+}
+
+// list items
+.my-item-container {
+  background: white;
+  height: 4rem;
+  min-height: 4rem;
+  padding: 0 1rem;
+}
+
+.my-progress__container {
+  position: relative;
+  // z-index: 1;
+}
+
+.my-progress__spinner {
+  z-index: 1;
+}
+
+.my-progress__value {
+  box-sizing: border-box;
+  position: absolute;
+  font-size: 0.875rem;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  // background: #9be7ff;
+  // border: 4px solid $my-primary-light;
+  border: 4px solid #ddd;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 34px;
+  // z-index: -1;
+}
+
+.my-item__title--container {
+  overflow: hidden;
+}
+
+.my-title__clipped {
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-item__secondrow {
+  font-size: 0.875rem;
+  a {
+    color: #1976d2;
+    text-decoration: none;
+  }
+  a.text--accent {
+    text-decoration: underline;
+    text-decoration-color: $my-accent;
+  }
+  app-exemptions-status {
+    margin: 6px 4px 4px 4px;
+    // padding: 4px;
+  }
+}
+
+.textXXS {
+  font-size: 13px;
+}
+
+.mat-chip.mat-basic-chip {
+  line-height: 15px;
+  padding: 0px 4px;
+  border-radius: 4px;
+  color: black;
+  background-color: #ddd;
+}
+
+.mat-chip.mat-basic-chip.mat-primary {
+  color: white;
+  background-color: $my-primary;
+}
+
+.mat-chip.mat-basic-chip.mat-accent {
+  color: black;
+  background-color: $my-accent;
+}
+
+.my-section__text {
+  line-height: 1rem;
+  font-weight: 600;
+  background-color: #eee;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 20px 16px 12px 16px;
 }

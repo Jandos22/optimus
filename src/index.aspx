@@ -12,9 +12,9 @@
 
   <title>Optimus</title>
 
-  <!-- <base href="/sites/wireline/optimus/index.aspx"> -->
+  <base href="/sites/wireline/optimus/index.aspx">
   <!-- <base href="/sites/wireline/x10/index.aspx"> -->
-  <base href="/">
+  <!-- <base href="/"> -->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
   <!-- browser, pc desktop and android icon -->
-  <!-- <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png"> -->
-  <link rel="icon" type="image/x-icon" href="assets/icons/favicon8x10_32p.png">
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png">
+  <!-- <link rel="icon" type="image/x-icon" href="assets/icons/favicon8x10_32p.png"> -->
 
   <!-- iOS homescreen icon -->
   <link rel="apple-touch-icon" href="assets/icons/favicon8_iphone.png">

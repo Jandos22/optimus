@@ -1,5 +1,5 @@
 // 3rd Party Modules
-import { MaterialModule } from './libraries/material.module';
+import { MaterialModule } from './shared/libraries/material.module';
 
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';

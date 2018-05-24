@@ -1,5 +1,5 @@
 // 3rd party
-import { MaterialModule } from '../../libraries/material.module';
+import { MaterialModule } from '../../shared/libraries/material.module';
 import { ImageCropperModule } from 'ngx-img-cropper';
 
 // angular

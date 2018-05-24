@@ -116,7 +116,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       .subscribe(window => {
         let width: string;
 
-        window.isXS
+        window.isXXS || window.isXS
           ? (width = '80%')
           : window.isS
             ? (width = '440px')
