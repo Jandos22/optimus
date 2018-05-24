@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // ui components
-import { MaterialModule } from '../../libraries/material.module';
+import { MaterialModule } from '../../shared/libraries/material.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';

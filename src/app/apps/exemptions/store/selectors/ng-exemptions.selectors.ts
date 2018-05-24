@@ -17,3 +17,8 @@ export const getExemptionsList = createSelector(
   getNgExemptionsState,
   fromNgExemptions.getExemptionsList
 );
+
+export const getGroupedExemptionsList = createSelector(
+  getNgExemptionsState,
+  fromNgExemptions.getGroupedExemptionsList
+);

@@ -5,10 +5,12 @@ import {
 
 export interface ExemptionsState {
   list: any[];
+  groups: any[];
 }
 
 export const initialState: ExemptionsState = {
-  list: []
+  list: [],
+  groups: []
 };
 
 export function reducer(
@@ -23,6 +25,13 @@ export function reducer(
         list: action.payload
       };
     }
+    // update list of exemptions
+    case ExemptionsActionTypes.UPDATE_GROUPED_EXEMPTIONS_LIST: {
+      return {
+        ...state,
+        groups: action.payload
+      };
+    }
 
     default:
       return state;
@@ -30,3 +39,5 @@ export function reducer(
 }
 
 export const getExemptionsList = (state: ExemptionsState) => state.list;
+export const getGroupedExemptionsList = (state: ExemptionsState) =>
+  state.groups;

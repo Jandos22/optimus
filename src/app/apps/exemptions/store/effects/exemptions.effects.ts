@@ -51,16 +51,19 @@ export class ExemptionsEffects {
       const exemptions$ = this.service.getExemptionsOfLocation(location);
       return forkJoin(exemption_groups$, exemptions$);
     }),
-    map((data: any[]) => {
+    mergeMap((data: [ExemptionGroup[], Exemption[]]) => {
       console.log(data);
-      return new ActionsInExemptions.MapExemptions(data);
+      return [
+        new ActionsInExemptions.UpdateExemptionsList(data[1]),
+        new ActionsInExemptions.GroupExemptions(data)
+      ];
     })
   );
 
   @Effect()
   // @Effect({ dispatch: false })
   mapExemptions$ = this.actions$.pipe(
-    ofType(ExemptionsActionTypes.MAP_EXEMPTIONS),
+    ofType(ExemptionsActionTypes.GROUP_EXEMPTIONS),
     map((action: ExemptionsActionsUnion) => action.payload),
     map((data: [ExemptionGroup[], Exemption[]]) => {
       const groups$: Observable<ExemptionGroup> = from(data[0]);
@@ -102,7 +105,7 @@ export class ExemptionsEffects {
         )
         .subscribe(x => (results = x));
 
-      return new ActionsInExemptions.UpdateExemptionsList(results);
+      return new ActionsInExemptions.UpdateGroupedExemptionsList(results);
     })
   );
 }

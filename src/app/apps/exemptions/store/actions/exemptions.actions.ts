@@ -1,13 +1,14 @@
 import { Action } from '@ngrx/store';
 import {
-  ExemptionsRaw,
+  Exemption,
   ExemptionsGrouped
 } from './../../../../shared/interface/exemptions.model';
 
 export enum ExemptionsActionTypes {
   GET_EXEMPTIONS = '[Exemptions] Get Exemptions',
-  MAP_EXEMPTIONS = '[Exemptions] Map Exemptions',
-  UPDATE_EXEMPTIONS_LIST = '[Exemptions] Update Exemptions List'
+  GROUP_EXEMPTIONS = '[Exemptions] Group Exemptions',
+  UPDATE_EXEMPTIONS_LIST = '[Exemptions] Update Exemptions List',
+  UPDATE_GROUPED_EXEMPTIONS_LIST = '[Exemptions] Update Grouped Exemptions List'
 }
 
 export class GetExemptions implements Action {
@@ -15,17 +16,23 @@ export class GetExemptions implements Action {
   constructor(public payload: any) {}
 }
 
-export class MapExemptions implements Action {
-  readonly type = ExemptionsActionTypes.MAP_EXEMPTIONS;
+export class GroupExemptions implements Action {
+  readonly type = ExemptionsActionTypes.GROUP_EXEMPTIONS;
   constructor(public payload: any[]) {}
 }
 
 export class UpdateExemptionsList implements Action {
   readonly type = ExemptionsActionTypes.UPDATE_EXEMPTIONS_LIST;
+  constructor(public payload: Exemption[]) {}
+}
+
+export class UpdateGroupedExemptionsList implements Action {
+  readonly type = ExemptionsActionTypes.UPDATE_GROUPED_EXEMPTIONS_LIST;
   constructor(public payload: ExemptionsGrouped[]) {}
 }
 
 export type ExemptionsActionsUnion =
   | GetExemptions
-  | MapExemptions
-  | UpdateExemptionsList;
+  | GroupExemptions
+  | UpdateExemptionsList
+  | UpdateGroupedExemptionsList;

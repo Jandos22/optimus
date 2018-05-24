@@ -9,19 +9,29 @@ import { Store, select } from '@ngrx/store';
 // state
 import * as fromRoot from '../../../../store';
 import * as fromFeature from '../../store';
-
 import * as fromExemptionsActions from '../../store/actions/exemptions.actions';
+
+// interfaces
+import { Exemption } from '../../../../shared/interface/exemptions.model';
 
 @Component({
   selector: 'app-exemptions',
   template: `
-    <app-exemptions-groups [groups]="groups"></app-exemptions-groups>
+    <mat-tab-group>
+      <mat-tab label="Exemptions ({{ (exemptions | async).length }})">
+        <app-exemptions-list [exemptions]="exemptions | async"></app-exemptions-list>
+      </mat-tab>
+      <mat-tab label="Groups ({{ (groups | async).length }})">
+        <app-exemptions-groups [groups]="groups"></app-exemptions-groups>
+      </mat-tab>
+    </mat-tab-group>
   `,
   styleUrls: ['./exemptions.component.scss']
 })
 export class ExemptionsComponent implements OnInit {
   // title in header
   appName = 'Exemptions';
+  exemptions: Observable<Exemption[]>;
   groups: Observable<any>;
 
   constructor(
@@ -32,7 +42,16 @@ export class ExemptionsComponent implements OnInit {
   ngOnInit() {
     // update html page title
     this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
-    this.groups = this.featureStore.pipe(select(fromFeature.getExemptionsList));
+
+    // get exemptions list from store
+    this.exemptions = this.featureStore.pipe(
+      select(fromFeature.getExemptionsList)
+    );
+
+    // get grouped exemptions list from store
+    this.groups = this.featureStore.pipe(
+      select(fromFeature.getGroupedExemptionsList)
+    );
 
     // when component starts
     // request exemptions from server

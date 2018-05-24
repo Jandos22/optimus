@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '../../libraries/material.module';
+import { MaterialModule } from '../../shared/libraries/material.module';
 
 // containers
 import * as fromContainers from './containers';
