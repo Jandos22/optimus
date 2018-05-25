@@ -128,6 +128,7 @@ app-layout {
 
 .my-progress__container {
   position: relative;
+  top: 16px;
   // z-index: 1;
 }
 
@@ -156,13 +157,6 @@ app-layout {
   overflow: hidden;
 }
 
-.my-title__clipped {
-  font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .my-item__secondrow {
   font-size: 0.875rem;
   a {
@@ -184,8 +178,9 @@ app-layout {
 }
 
 .mat-chip.mat-basic-chip {
+  margin: 0px 0px;
   line-height: 15px;
-  padding: 0px 4px;
+  padding: 4px 8px;
   border-radius: 4px;
   color: black;
   background-color: #ddd;
@@ -213,20 +208,31 @@ app-layout {
 
 // #MYMDC
 
-.my-mdc-card {
-  margin: 16px;
-  // padding: 8px;
-}
+// .my-mdc-card {
+//   margin: 0 16px;
+//   // padding: 8px;
+// }
 
 .my-padding_8 {
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .my-section {
-  line-height: 1rem;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.875);
+  line-height: 0.875rem;
+  color: #999;
   font-size: 0.875rem;
   margin: 1rem;
-  padding: 0.5rem;
+  padding: 0;
+}
+
+// clipped text, 'I am a sentence with clipped...'
+// depends on parent width value
+.txt__clipped {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-card--container {
+  margin: 8px 16px;
 }

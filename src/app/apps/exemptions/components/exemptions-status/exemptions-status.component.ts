@@ -6,8 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['exemptions-status.component.scss'],
   template: `
     <mat-chip-list>
-      <mat-chip *ngIf="!isXXS" [color]="color" selected="true" selectable="false">{{ status }}</mat-chip>
-      <mat-basic-chip *ngIf="isXXS" [color]="color" selected="true" selectable="false">{{ status }}</mat-basic-chip>
+      <!-- <mat-chip *ngIf="!isXXS" [color]="color" selected="true" selectable="false">{{ status }}</mat-chip> -->
+      <mat-basic-chip [color]="color" selected="true" selectable="false">{{ status }}</mat-basic-chip>
     </mat-chip-list>
     `
 })
