@@ -15,53 +15,47 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
   selector: 'app-exemption-item-card',
   styleUrls: ['exemption-item-card.component.scss'],
   template: `
-      <mdc-card class="my-mdc-card">
-        <mdc-card-primary-action class="my-padding_8" mdc-ripple fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="0.5rem">
-        <!-- Spinner Container -->
-        <app-exemptions-days-left
-          [days]="daysLeft()" [color]="color">
-        </app-exemptions-days-left>
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="16px"
+      style="margin: 8px 16px;">
 
-        <!-- Item Body Container -->
-        <div class="my-item__title--container" fxFlex
-          fxLayout="column" fxLayoutAlign="start stretch" style="overflow: hidden;" fxLayoutGap="2px">
+        <mdc-card class="my-mdc-card" fxFlex>
+          <mdc-card-primary-action fxFlex class="my-padding_8" mdc-ripple
+            fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
 
-          <!-- title container -->
-          <div fxLayout="row" fxLayoutGap="8px">
-            <span fxFlex class="my-title__clipped" [title]="exemption.Title">{{ exemption.Title }}</span>
-            <span *ngIf="window.isXXS" class="textXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
-          </div>
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <span style="font-size: 0.875rem; color: #999">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
+                <span fxFlex></span>
+                <app-exemptions-status
+                  [status]="status" [isXXS]="window.isXXS" [color]="color">
+                </app-exemptions-status>
+              </div>
 
-          <span class="my-item__secondrow" [class.textXXS]="window.isXXS"
-            fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px">
-            <!-- show link with exemption number if ID was provided -->
-            <a *ngIf="exemption.Exemption_ID; else noId" [href]="composeLink(exemption.Exemption_ID)" target="_blank"
-              [class.text--accent]="lessThan30days">
-                {{ exemption.Exemption_Number }}
-            </a>
-            <!-- show just exemption number if no ID provided -->
-            <ng-template #noId>
-              <span>{{ exemption.Exemption_Number }}</span>
-            </ng-template>
 
-            <!-- always show exemption validity date -->
-            <span *ngIf="!window.isXXS">{{ exemption.ValidTo | date: 'dd.MM.yyyy' }}</span>
+              <span [title]="exemption.Title">{{ exemption.Title }}</span>
 
-            <!-- spacer -->
-            <span fxFlex></span>
+              <span class="my-item__secondrow" [class.textXXS]="window.isXXS"
+                fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <!-- show link with exemption number if ID was provided -->
+                <a *ngIf="exemption.Exemption_ID; else noId" [href]="composeLink(exemption.Exemption_ID)" target="_blank"
+                  [class.text--accent]="lessThan30days">
+                    {{ exemption.Exemption_Number }}
+                </a>
+                <!-- show just exemption number if no ID provided -->
+                <ng-template #noId>
+                  <span>{{ exemption.Exemption_Number }}</span>
+                </ng-template>
 
-            <app-exemptions-status *ngIf="window.isXXS" fxFlex="0 0 auto"
-              [status]="status" [isXXS]="window.isXXS" [color]="color">
-            </app-exemptions-status>
+              </span>
 
-          </span>
-        </div>
-
-        <app-exemptions-status fxFlex="0 0 auto" *ngIf="!window.isXXS"
-          [status]="status" [isXXS]="window.isXXS" [color]="color">
-        </app-exemptions-status>
-        </mdc-card-primary-action>
+          </mdc-card-primary-action>
       </mdc-card>
+
+      <!-- Spinner Container -->
+      <app-exemptions-days-left fxFlex="40px" *ngIf="!moreThan100days"
+        [days]="daysLeft()" [color]="color">
+      </app-exemptions-days-left>
+
+    </div>
     `
 })
 export class ExemptionItemCardComponent implements OnDestroy {
@@ -95,6 +89,11 @@ export class ExemptionItemCardComponent implements OnDestroy {
   get moreThan30days() {
     const left = this.daysLeft();
     return left >= 30 ? true : false;
+  }
+
+  get moreThan100days() {
+    const left = this.daysLeft();
+    return left >= 100 ? true : false;
   }
 
   get lessThan30days() {

@@ -39,7 +39,7 @@ const matModules: any[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, LayoutModule, ...matModules],
+  imports: [CommonModule, FlexLayoutModule, LayoutModule],
   exports: [FlexLayoutModule, LayoutModule, ...matModules],
   declarations: []
 })

@@ -7,7 +7,7 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
   selector: 'app-exemptions-list',
   styleUrls: ['exemptions-list.component.scss'],
   template: `
-    <app-exemption-item-card *ngFor="let exemption of exemptions" [exemption]="exemption"></app-exemption-item-card>
+    <app-exemption-item-card fxLayout="row" *ngFor="let exemption of exemptions" [exemption]="exemption"></app-exemption-item-card>
   `
 })
 export class ExemptionsListComponent {
