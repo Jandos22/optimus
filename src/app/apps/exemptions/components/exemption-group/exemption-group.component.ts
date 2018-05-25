@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
   selector: 'app-exemption-group',
   styleUrls: ['exemption-group.component.scss'],
   template: `
-        <h3 class="my-section__text">{{ group.group }} [{{ numberOfExemptions }}]</h3>
-        <app-exemption-item *ngFor="let exemption of group.exemptions; last as last" [exemption]="exemption"></app-exemption-item>
+        <h3 class="my-section">{{ group.group }} [{{ numberOfExemptions }}]</h3>
+        <app-exemption-item-card *ngFor="let exemption of group.exemptions; last as last" [exemption]="exemption"></app-exemption-item-card>
     `
 })
 export class ExemptionGroupComponent {
