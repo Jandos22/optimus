@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // ui components
 import { MaterialModule } from '../../shared/libraries/material.module';
+import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';
@@ -34,7 +35,8 @@ export const exemptionsRoutes: Routes = [
     RouterModule.forChild(exemptionsRoutes),
     StoreModule.forFeature('exemptions', reducers),
     EffectsModule.forFeature(effects),
-    MaterialModule
+    MaterialModule,
+    MaterialDesignComponentsModule
   ],
   providers: [ExemptionsService],
   declarations: [

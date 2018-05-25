@@ -16,6 +16,12 @@ $my-primary-light: #9be7ff;
 $my-primary-dark: #0069c0;
 $my-accent: #ffc107;
 
+$mdc-theme-primary: #2196f3; // primary color
+$mdc-theme-secondary: #ffc107; // secondary color
+$mdc-theme-background: #fff;
+
+@import '~@angular-mdc/theme/material';
+
 /* You can add global styles to this file, and also import other style files */
 html {
   -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
@@ -54,18 +60,8 @@ app-layout {
   padding: calc(100vh - 50vh) 0 0 0;
 }
 
-/* mat-sidenav-container {
-    height: calc(100vh - 56px) !important;
-    width: 100%;
-} */
-
 .optimus-sidebar {
   width: 200px;
-}
-
-// my-content
-div.my-content {
-  background: #eee;
 }
 
 .flexContainer {
@@ -213,4 +209,24 @@ div.my-content {
   font-size: 0.875rem;
   margin: 0;
   padding: 20px 16px 12px 16px;
+}
+
+// #MYMDC
+
+.my-mdc-card {
+  margin: 16px;
+  // padding: 8px;
+}
+
+.my-padding_8 {
+  padding: 0.5rem;
+}
+
+.my-section {
+  line-height: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.875);
+  font-size: 0.875rem;
+  margin: 1rem;
+  padding: 0.5rem;
 }

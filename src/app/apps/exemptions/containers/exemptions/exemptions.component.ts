@@ -19,10 +19,10 @@ import { Exemption } from '../../../../shared/interface/exemptions.model';
   template: `
     <mat-tab-group>
       <mat-tab label="Exemptions ({{ (exemptions | async).length }})">
-        <app-exemptions-list [exemptions]="exemptions | async"></app-exemptions-list>
+        <app-exemptions-list [exemptions]="exemptions | async" class="flexContent"></app-exemptions-list>
       </mat-tab>
       <mat-tab label="Groups ({{ (groups | async).length }})">
-        <app-exemptions-groups [groups]="groups"></app-exemptions-groups>
+        <app-exemptions-groups [groups]="groups" class="flexContent"></app-exemptions-groups>
       </mat-tab>
     </mat-tab-group>
   `,
