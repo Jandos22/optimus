@@ -128,7 +128,8 @@ app-layout {
 
 .my-progress__container {
   position: relative;
-  top: 16px;
+  // top: 16px;
+  top: 2px;
   // z-index: 1;
 }
 
@@ -231,8 +232,4 @@ app-layout {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.my-card--container {
-  margin: 8px 16px;
 }

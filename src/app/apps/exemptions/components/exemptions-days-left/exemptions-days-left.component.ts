@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-exemptions-days-left',
   styleUrls: ['exemptions-days-left.component.scss'],
   template: `
-  <div class="my-progress__container" *ngIf="displayDays">
+  <div class="my-progress__container">
     <mat-progress-spinner
       class="my-progress__spinner"
       mode="determinate"

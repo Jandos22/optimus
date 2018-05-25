@@ -16,12 +16,7 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
   styleUrls: ['exemption-item-card.component.scss'],
   template: `
     <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="16px"
-      class="my-card--container">
-
-        <!-- Spinner Container -->
-        <app-exemptions-days-left fxFlex="40px" fxFlexAlign
-          [days]="daysLeft()" [color]="color">
-        </app-exemptions-days-left>
+      style="margin: 8px 16px;">
 
         <mdc-card class="my-mdc-card" fxFlex>
           <mdc-card-primary-action fxFlex class="my-padding_8" mdc-ripple
@@ -54,6 +49,12 @@ import { Exemption } from './../../../../shared/interface/exemptions.model';
 
           </mdc-card-primary-action>
       </mdc-card>
+
+      <!-- Spinner Container -->
+      <app-exemptions-days-left fxFlex="40px" *ngIf="!moreThan100days"
+        [days]="daysLeft()" [color]="color">
+      </app-exemptions-days-left>
+
     </div>
     `
 })
