@@ -16,6 +16,11 @@ export const appRoutes: Routes = [
     loadChildren: './apps/people/people.module#PeopleModule'
   },
   {
+    path: 'ppe',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/ppe/ppe.module#PpeModule'
+  },
+  {
     path: 'exemptions',
     canActivate: [AuthGuard],
     loadChildren: './apps/exemptions/exemptions.module#ExemptionsModule'
