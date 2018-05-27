@@ -16,7 +16,8 @@ import {
   MatProgressBarModule,
   MatDialogModule,
   MatChipsModule,
-  MatTabsModule
+  MatTabsModule,
+  MatExpansionModule
 } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -35,7 +36,8 @@ const matModules: any[] = [
   MatProgressBarModule,
   MatDialogModule,
   MatChipsModule,
-  MatTabsModule
+  MatTabsModule,
+  MatExpansionModule
 ];
 
 @NgModule({

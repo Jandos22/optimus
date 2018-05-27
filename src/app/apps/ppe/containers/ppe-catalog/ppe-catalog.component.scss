@@ -1,0 +1,20 @@
+.app-ppe-catalog__flex {
+  // define properties as flex child
+  flex: 1 1 auto;
+  height: 100%;
+  max-width: 100%;
+  width: 100%;
+  background: #eaeaea;
+  overflow-x: hidden;
+  overflow-y: auto;
+  // define properties as flex container
+  display: flex;
+  flex-flow: column;
+}
+
+.ppe-catalog-list__flex {
+  margin: 16px;
+  // define properties as flex child
+  flex: 1 1 auto;
+  align-self: stretch;
+}

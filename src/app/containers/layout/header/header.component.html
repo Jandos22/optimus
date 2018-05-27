@@ -33,10 +33,6 @@
       <button mat-menu-item *ngFor="let location of locations$ | async" (click)="onSelectLocation(location.Location)">
         <span>{{ location.Location }}</span>
       </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item>
-        <span>manage</span>
-      </button>
     </mat-menu>
   </span>
 

@@ -68,7 +68,11 @@ import { AuthGuard } from './guards/auth.guard';
     ...fromServices.services,
     AuthGuard
   ],
-  exports: [...fromContainers.containers, MaterialModule, ReactiveFormsModule],
+  exports: [
+    // ...fromContainers.containers,
+    // MaterialModule,
+    // ReactiveFormsModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
