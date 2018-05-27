@@ -28,8 +28,8 @@ export class PpeService {
   getPPEItems() {
     const url = `${ApiPath}web/lists/getbytitle('NgPPEItems')/items?`;
 
-    const select = `$select=Id,Title,Price,CategoryId,Supplier/Title,Attachments,AttachmentFiles`;
-    const expand = `&$expand=AttachmentFiles,Supplier`;
+    const select = `$select=Id,Title,Price,CategoryId,Supplier/Title,Attachments,AttachmentFiles,LocationId,Location/Location`;
+    const expand = `&$expand=AttachmentFiles,Supplier,Location`;
 
     return this.http.get(url + select + expand).pipe(
       map((response: { value: any[] }) => {
