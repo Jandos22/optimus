@@ -13,7 +13,7 @@ import * as fromPpeActions from '../../store/actions/ppe.actions';
 import { PpeService } from './../../services/ppe.service';
 
 @Component({
-  selector: 'app-ppe-catalog.flex-container.app-ppe-catalog__container',
+  selector: 'app-ppe-catalog.app-ppe-catalog__flex',
   styleUrls: ['ppe-catalog.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -21,7 +21,7 @@ import { PpeService } from './../../services/ppe.service';
       [ppe_categories]="ppe_categories | async"
       [ppe_items]="ppe_items | async"
       [ppe_items_by_category]="ppe_items_by_category | async"
-      class="ppe-catalog-list__container">
+      class="ppe-catalog-list__flex">
     </app-ppe-catalog-list>
     `
 })

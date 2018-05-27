@@ -13,11 +13,12 @@ import {
   encapsulation: ViewEncapsulation.None,
   template: `
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let cat of ppe_items_by_category">
+      <mat-expansion-panel *ngFor="let cat of ppe_items_by_category"
+        class="ppe-catalog-list__expansionpanel">
         <mat-expansion-panel-header>
           <mat-panel-title>{{ cat.category }}</mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="ppe-item-card__container"
+        <div class="ppe-item-card__items--container"
           fxLayout="row nowrap" fxLayoutAlign="start start" fxLayoutGap="16px">
           <app-ppe-item-card
             *ngFor="let item of cat.items"

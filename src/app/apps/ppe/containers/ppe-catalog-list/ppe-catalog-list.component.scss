@@ -1,3 +1,9 @@
-.ppe-item-card__container {
-  // background: pink;
+.ppe-catalog-list__expansionpanel.mat-expanded {
+  background-color: #eee;
+}
+
+.ppe-item-card__items--container {
+  padding: 8px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

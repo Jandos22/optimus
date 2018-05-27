@@ -11,7 +11,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 
 @Component({
-  selector: 'app-ppe.flex-container',
+  selector: 'app-ppe.ppe-flex-container',
   styleUrls: ['ppe.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
