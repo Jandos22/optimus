@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // constants
-import { ApiPath } from './../../../constants/index';
+import { ApiPath } from './../../../shared/constants/index';
 
 // service provided in
 import { PpeModule } from '../ppe.module';

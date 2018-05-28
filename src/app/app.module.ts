@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -40,14 +40,23 @@ import { RegistrationModule } from './apps/registration/registration.module';
 import { AppComponent } from './app.component';
 import * as fromLayout from './layout';
 
+// components
+import * as fromComponents from './shared/components';
+
 // services
 import * as fromServices from './services';
 
 // guards
 import { AuthGuard } from './guards/auth.guard';
+import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 
 @NgModule({
-  declarations: [AppComponent, ...fromLayout.containers],
+  declarations: [
+    AppComponent,
+    ...fromLayout.containers,
+    ...fromComponents.components
+  ],
+  entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -67,7 +76,11 @@ import { AuthGuard } from './guards/auth.guard';
     Title,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
     ...fromServices.services,
-    AuthGuard
+    AuthGuard,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandlerService
+    }
   ],
   exports: [
     // ...fromContainers.containers,

@@ -7,8 +7,8 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from '../../../constants';
-import { hk_accept, hv_appjson } from '../../../constants/headers';
+import { ApiPath } from '../../../shared/constants';
+import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
 import { PeopleParams } from './../models/people-params.model';

@@ -10,7 +10,7 @@ import { map, switchMap, mergeMap } from 'rxjs/operators';
 import * as fromUser from '../actions/user.actions';
 import * as a_in_app from '../actions/app.actions';
 
-import { ApiPath, WirelinePath, ProxyPath } from '../../constants';
+import { ApiPath, WirelinePath, ProxyPath } from '../../shared/constants';
 
 import { UserService } from '../../services/index';
 

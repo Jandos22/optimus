@@ -5,10 +5,12 @@ import { Locations } from './../../models/locations.m';
 export const CHANGE_APP_NAME = '[Application] Change App Name';
 export const SET_APP_NAME = '[Application] Set App Name';
 
+// get actions
+export const GET_LOCATIONS = '[App] Get Locations [req -> NgLocation]';
+
 export const SET_LOCATION = '[Application] Set Location';
 export const SET_SELECTED_LOCATION = '[Application] Set Selected Location';
 
-export const GET_LOCATIONS = '[Application] Get Locations';
 export const SET_LOCATIONS = '[Application] Set Locations';
 
 export const START_WORKING = '[Application] Started Working';

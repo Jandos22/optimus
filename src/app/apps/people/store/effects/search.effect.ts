@@ -17,7 +17,7 @@ import * as fromNgPeople from '../actions/ng-people.action';
 import { PeopleService } from '../../services/people.service';
 
 // constants
-import { WirelinePath, ApiPath } from './../../../../constants/index';
+import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
 
 // interfaces
 import { SearchUsers } from '../../models/search-users.m';

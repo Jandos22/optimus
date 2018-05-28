@@ -14,7 +14,7 @@ import * as a_in_app from './../../store/actions/app.actions';
 import * as layout from './../../store/actions/layout.actions';
 
 // constants
-import { WirelinePath } from './../../constants/index';
+import { WirelinePath } from './../../shared/constants/index';
 
 // models
 import { UserState } from './../../ngrx-state-models/user-state.model';

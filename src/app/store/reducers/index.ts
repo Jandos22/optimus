@@ -10,6 +10,7 @@ import * as fromRouter from '@ngrx/router-store';
 import * as fromApp from './app.reducer';
 import * as fromLayout from './layout.reducer';
 import * as fromUser from './user.reducer';
+import * as fromErrors from './errors.reducer';
 
 // models
 import { UserState } from './../../ngrx-state-models/user-state.model';
@@ -28,6 +29,7 @@ export interface RootState {
   app: fromApp.AppState;
   user: UserState;
   layout: fromLayout.LayoutState;
+  errors: fromErrors.ErrorsState;
 }
 
 export const reducers: ActionReducerMap<RouterState> = {
@@ -37,7 +39,8 @@ export const reducers: ActionReducerMap<RouterState> = {
 export const root: ActionReducerMap<RootState> = {
   app: fromApp.reducer,
   user: fromUser.reducer,
-  layout: fromLayout.reducer
+  layout: fromLayout.reducer,
+  errors: fromErrors.reducer
 };
 
 // feature selectors

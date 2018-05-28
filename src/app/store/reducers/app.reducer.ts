@@ -1,4 +1,4 @@
-import * as a_in_fromApp from '../actions/app.actions';
+import * as a_in_app from '../actions/app.actions';
 
 import { Locations } from './../../models/locations.m';
 
@@ -18,34 +18,34 @@ const initialState: AppState = {
 
 export function reducer(
   state = initialState,
-  action: a_in_fromApp.ApplicationActions
+  action: a_in_app.ApplicationActions
 ): AppState {
   switch (action.type) {
-    case a_in_fromApp.SET_APP_NAME:
+    case a_in_app.SET_APP_NAME:
       return {
         ...state,
         name: action.payload
       };
 
-    case a_in_fromApp.SET_LOCATION:
+    case a_in_app.SET_LOCATION:
       return {
         ...state,
         location: action.payload
       };
 
-    case a_in_fromApp.SET_LOCATIONS:
+    case a_in_app.SET_LOCATIONS:
       return {
         ...state,
         locations: action.payload
       };
 
-    case a_in_fromApp.SET_SELECTED_LOCATION:
+    case a_in_app.SET_SELECTED_LOCATION:
       return {
         ...state,
         location: action.payload
       };
 
-    case a_in_fromApp.START_WORKING:
+    case a_in_app.START_WORKING:
       if (state.working === false) {
         return {
           ...state,
@@ -57,7 +57,7 @@ export function reducer(
         return state;
       }
 
-    case a_in_fromApp.FINISH_WORKING:
+    case a_in_app.FINISH_WORKING:
       if (state.working === true) {
         return {
           ...state,

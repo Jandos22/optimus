@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 export const ApiPath = environment.production
   ? 'https://slb001.sharepoint.com/sites/wireline/_api/'

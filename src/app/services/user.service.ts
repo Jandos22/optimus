@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ApiPath, WirelinePath, ProxyPath } from './../constants';
+import { ApiPath, WirelinePath, ProxyPath } from './../shared/constants';
 
 // data models
 import { Photo } from './../models/photo.model';
