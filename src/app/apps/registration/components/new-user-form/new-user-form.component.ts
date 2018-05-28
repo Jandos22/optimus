@@ -1,4 +1,4 @@
-import { UserService } from './../../../../services/user.service';
+import { UserService } from './../../../../shared/services/user.service';
 import { WirelinePath } from './../../../../shared/constants/index';
 
 import {

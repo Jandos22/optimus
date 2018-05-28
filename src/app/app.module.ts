@@ -44,7 +44,7 @@ import * as fromLayout from './layout';
 import * as fromComponents from './shared/components';
 
 // services
-import * as fromServices from './services';
+import * as fromServices from './shared/services';
 
 // guards
 import { AuthGuard } from './guards/auth.guard';

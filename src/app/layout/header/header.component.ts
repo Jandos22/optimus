@@ -17,7 +17,7 @@ import * as layout from './../../store/actions/layout.actions';
 import { WirelinePath } from './../../shared/constants/index';
 
 // models
-import { UserState } from './../../ngrx-state-models/user-state.model';
+import { UserState } from './../../shared/interface/user.model';
 import { Locations } from './../../models/locations.m';
 import { SidenavProperties } from './../../models/sidenav-properties.m';
 import { WindowProperties } from './../../models/window-properties.m';
@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.user$ = this.store
       .select(fromRoot.getUserState)
       .pipe(
-        map((user: UserState) => {
+        map((user: UserSta) => {
           const photo = `${user.photo}?v=${new Date().getTime()}`;
           return { ...user, photo };
         })

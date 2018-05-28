@@ -33,7 +33,6 @@ export class PpeService {
 
     return this.http.get(url + select + expand).pipe(
       map((response: { value: any[] }) => {
-        console.log(response.value);
         return response.value;
       })
     );

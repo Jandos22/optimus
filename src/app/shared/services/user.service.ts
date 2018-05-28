@@ -5,20 +5,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ApiPath, WirelinePath, ProxyPath } from './../shared/constants';
+import { ApiPath, WirelinePath, ProxyPath } from './../constants';
 
 // data models
-import { Photo } from './../models/photo.model';
-import { FDV } from './../models/fdv.model';
-import { FormDigestValue } from '../models/index';
-import { CurrentUser } from '../models/current-user.m';
+import { Photo } from '../../models/photo.model';
+import { FDV } from '../../models/fdv.model';
+import { FormDigestValue } from '../../models/index';
+import { CurrentUser } from '../../models/current-user.m';
 
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient) {}
 
   getCurrentUser() {
-    // return sprLib.user().info();
     return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 

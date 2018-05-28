@@ -44,7 +44,7 @@ export class AppEffects {
     ofType(a_in_app.GET_LOCATIONS),
     switchMap((action: a_in_app.GetLocations) => {
       return this.http
-        .get(`${ApiPath}web/lists/getbytitle('NgLocations1')/items`)
+        .get(`${ApiPath}web/lists/getbytitle('NgLocations')/items`)
         .pipe(
           map((data: any) => {
             return new a_in_app.SetLocations(data.value);

@@ -1,5 +1,3 @@
-import { ErrorDialogBoxComponent } from './shared/components/error-dialog-box/error-dialog-box.component';
-import { MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
@@ -24,28 +22,10 @@ viewportUnitsBuggyfill.init({
   styles: []
 })
 export class AppComponent implements OnInit {
-  errors$: Subscription;
-  error: boolean;
-
-  constructor(
-    private s_in_root: Store<fromRoot.RootState>,
-    public dialog: MatDialog
-  ) {
-    this.errors$ = this.s_in_root
-      .pipe(select(fromRoot.getErrorsList))
-      .subscribe(x => {
-        console.log(x);
-        // x.length ? this.openErrorDialogBox(x) : (this.error = false);
-      });
-  }
+  constructor(private s_in_root: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
+    // get locations, then write in root > app > locations
     this.s_in_root.dispatch(new a_in_app.GetLocations());
-  }
-
-  openErrorDialogBox(error: any[]) {
-    this.dialog.open(ErrorDialogBoxComponent, {
-      data: error
-    });
   }
 }

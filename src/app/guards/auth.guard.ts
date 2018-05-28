@@ -9,7 +9,7 @@ import * as fromRoot from '../store';
 import * as userActions from '../store/actions/user.actions';
 import * as a_in_app from '../store/actions/app.actions';
 
-import { UserService } from '../services/user.service';
+import { UserService } from '../shared/services/user.service';
 
 // interfaces
 import { CurrentUser } from './../models/current-user.m';

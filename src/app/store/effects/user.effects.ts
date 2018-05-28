@@ -12,7 +12,7 @@ import * as a_in_app from '../actions/app.actions';
 
 import { ApiPath, WirelinePath, ProxyPath } from '../../shared/constants';
 
-import { UserService } from '../../services/index';
+import { UserService } from '../../shared/services';
 
 @Injectable()
 export class UserEffects {
