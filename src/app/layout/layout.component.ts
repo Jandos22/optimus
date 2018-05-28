@@ -7,9 +7,8 @@ import {
 
 // rxjs
 import { Observable, Subscription } from 'rxjs';
-import * as fromRoot from '../../store';
-import * as fromLayout from '../../store/reducers/layout.reducer';
-import * as layout from '../../store/actions/layout.action';
+import * as fromRoot from './../store';
+import * as a__layout from './../store/actions/layout.action';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -23,8 +22,8 @@ import {
   MatDrawerContainer
 } from '@angular/material';
 
-import { SidenavProperties } from '../../models/sidenav-properties.m';
-import { WindowProperties } from '../../models/window-properties.m';
+import { SidenavProperties } from './../models/sidenav-properties.m';
+import { WindowProperties } from './../models/window-properties.m';
 
 @Component({
   selector: 'app-layout',
@@ -57,11 +56,8 @@ export class LayoutComponent implements OnInit {
   innerWidth: number;
   innerHeight: number;
 
-  constructor(
-    private store: Store<fromRoot.RootState>,
-    private rootLayout: Store<fromLayout.LayoutState>
-  ) {
-    this.sidenavOpened$ = this.rootLayout.select(fromRoot.getSidenavOpened);
+  constructor(private store: Store<fromRoot.RootState>) {
+    this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
 
     this.working$ = this.store.select(fromRoot.getApplicationWorking);
@@ -92,10 +88,13 @@ export class LayoutComponent implements OnInit {
 
   onSidenavClose() {
     if (this.sidenavState.opened === true) {
-      this.store.dispatch(new layout.CloseSidenav());
+      this.store.dispatch(new a__layout.CloseSidenav());
     }
   }
 
+  // listen to window size changes
+  // update local vars for width and height
+  // run updateLayout whenever window size changed
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = event.target.innerWidth;
@@ -156,7 +155,9 @@ export class LayoutComponent implements OnInit {
       currentWindowState.isXL !== this.windowState.isXL
     ) {
       this.store.dispatch(
-        new layout.UpdateLayout(currentWindowState, curretSidenavState)
+        // if local layout state differs from root state
+        // then update root layout state
+        new a__layout.UpdateLayout(currentWindowState, curretSidenavState)
       );
     }
   }

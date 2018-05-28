@@ -38,7 +38,7 @@ import { RegistrationModule } from './apps/registration/registration.module';
 
 // containers
 import { AppComponent } from './app.component';
-import * as fromContainers from './containers';
+import * as fromLayout from './layout';
 
 // services
 import * as fromServices from './services';
@@ -47,7 +47,7 @@ import * as fromServices from './services';
 import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
-  declarations: [AppComponent, ...fromContainers.containers],
+  declarations: [AppComponent, ...fromLayout.containers],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

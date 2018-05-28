@@ -8,20 +8,20 @@ import { map } from 'rxjs/operators';
 
 // ngrx
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../store';
-import * as fromRootUser from '../../../store/reducers/user.reducer';
-import * as application from '../../../store/actions/application.action';
-import * as layout from '../../../store/actions/layout.action';
+import * as fromRoot from './../../store';
+import * as fromRootUser from './../../store/reducers/user.reducer';
+import * as application from './../../store/actions/application.action';
+import * as layout from './../../store/actions/layout.action';
 
 // constants
-import { WirelinePath } from './../../../constants/index';
+import { WirelinePath } from './../../constants/index';
 
 // models
-import { UserState } from './../../../ngrx-state-models/user-state.model';
-import { Locations } from '../../../models/locations.m';
-import { SidenavProperties } from '../../../models/sidenav-properties.m';
-import { WindowProperties } from '../../../models/window-properties.m';
-import { HeaderProperties } from '../../../models/header-properties.m';
+import { UserState } from './../../ngrx-state-models/user-state.model';
+import { Locations } from './../../models/locations.m';
+import { SidenavProperties } from './../../models/sidenav-properties.m';
+import { WindowProperties } from './../../models/window-properties.m';
+import { HeaderProperties } from './../../models/header-properties.m';
 
 @Component({
   selector: 'app-header',
