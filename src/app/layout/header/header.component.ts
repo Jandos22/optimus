@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.user$ = this.store
       .select(fromRoot.getUserState)
       .pipe(
-        map((user: UserSta) => {
+        map((user: UserState) => {
           const photo = `${user.photo}?v=${new Date().getTime()}`;
           return { ...user, photo };
         })
