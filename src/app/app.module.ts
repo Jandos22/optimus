@@ -23,7 +23,7 @@ import {
   RouterStateSerializer
 } from '@ngrx/router-store';
 
-import { reducers, effects, CustomSerializer } from './store';
+import { reducers, root, effects, CustomSerializer } from './store';
 
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -56,6 +56,7 @@ import { AuthGuard } from './guards/auth.guard';
     ReactiveFormsModule,
     MaterialModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forFeature('root', root),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     AppRoutingModule,

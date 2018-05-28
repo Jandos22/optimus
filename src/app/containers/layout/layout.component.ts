@@ -8,6 +8,7 @@ import {
 // rxjs
 import { Observable, Subscription } from 'rxjs';
 import * as fromRoot from '../../store';
+import * as fromLayout from '../../store/reducers/layout.reducer';
 import * as layout from '../../store/actions/layout.action';
 
 // ngrx
@@ -56,8 +57,11 @@ export class LayoutComponent implements OnInit {
   innerWidth: number;
   innerHeight: number;
 
-  constructor(private store: Store<fromRoot.RootState>) {
-    this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
+  constructor(
+    private store: Store<fromRoot.RootState>,
+    private rootLayout: Store<fromLayout.LayoutState>
+  ) {
+    this.sidenavOpened$ = this.rootLayout.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
 
     this.working$ = this.store.select(fromRoot.getApplicationWorking);

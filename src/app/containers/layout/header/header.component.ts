@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 // ngrx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store';
+import * as fromRootUser from '../../../store/reducers/user.reducer';
 import * as application from '../../../store/actions/application.action';
 import * as layout from '../../../store/actions/layout.action';
 
@@ -85,7 +86,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this.user$ = this.store
-      .select(fromRoot.getUser)
+      .select(fromRoot.getUserState)
       .pipe(
         map((user: UserState) => {
           const photo = `${user.photo}?v=${new Date().getTime()}`;

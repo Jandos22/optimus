@@ -20,15 +20,21 @@ export interface RouterStateUrl {
   params: Params;
 }
 
-export interface RootState {
+export interface RouterState {
   routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
+}
+
+export interface RootState {
   application: fromApplication.ApplicationState;
   user: UserState;
   layout: fromLayout.LayoutState;
 }
 
-export const reducers: ActionReducerMap<RootState> = {
-  routerReducer: fromRouter.routerReducer,
+export const reducers: ActionReducerMap<RouterState> = {
+  routerReducer: fromRouter.routerReducer
+};
+
+export const root: ActionReducerMap<RootState> = {
   application: fromApplication.reducer,
   user: fromUser.reducer,
   layout: fromLayout.reducer
@@ -39,15 +45,7 @@ export const getRouterState = createFeatureSelector<
   fromRouter.RouterReducerState<RouterStateUrl>
 >('routerReducer');
 
-export const getApplicationState = createFeatureSelector<
-  fromApplication.ApplicationState
->('application');
-
-export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>(
-  'layout'
-);
-
-export const getUserState = createFeatureSelector<UserState>('user');
+export const getRootState = createFeatureSelector<RootState>('root');
 
 // custom router serializer
 export class CustomSerializer

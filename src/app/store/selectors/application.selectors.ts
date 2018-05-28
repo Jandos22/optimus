@@ -3,22 +3,27 @@ import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../';
 import * as fromApplication from '../reducers/application.reducer';
 
+export const getAppState = createSelector(
+  fromRoot.getRootState,
+  (state: fromRoot.RootState) => state.application
+);
+
 export const getApplicationName = createSelector(
-  fromRoot.getApplicationState,
+  getAppState,
   fromApplication.getApplicationName
 );
 
 export const getApplicationLocation = createSelector(
-  fromRoot.getApplicationState,
+  getAppState,
   fromApplication.getApplicationLocation
 );
 
 export const getApplicationLocations = createSelector(
-  fromRoot.getApplicationState,
+  getAppState,
   fromApplication.getApplicationLocations
 );
 
 export const getApplicationWorking = createSelector(
-  fromRoot.getApplicationState,
+  getAppState,
   fromApplication.getApplicationWorking
 );
