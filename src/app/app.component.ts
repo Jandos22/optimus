@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+// ngrx
+import { Store } from '@ngrx/store';
+import * as fromRoot from './store';
+import * as a_in_app from './store/actions/app.actions';
+
 // this fix is only required in iOS Safari
 import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';
 viewportUnitsBuggyfill.init({
@@ -13,7 +18,9 @@ viewportUnitsBuggyfill.init({
   styles: []
 })
 export class AppComponent implements OnInit {
-  constructor() {}
+  constructor(private s_in_root: Store<fromRoot.RootState>) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.s_in_root.dispatch(new a_in_app.GetLocations());
+  }
 }

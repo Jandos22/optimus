@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from './../../store';
 import * as fromRootUser from './../../store/reducers/user.reducer';
-import * as application from './../../store/actions/application.action';
-import * as layout from './../../store/actions/layout.action';
+import * as a_in_app from './../../store/actions/app.actions';
+import * as layout from './../../store/actions/layout.actions';
 
 // constants
 import { WirelinePath } from './../../constants/index';
@@ -63,9 +63,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       appNameClass: null
     };
 
-    this.locations$ = this.store.select(fromRoot.getApplicationLocations);
-    this.selectedLocation$ = this.store.select(fromRoot.getApplicationLocation);
-    this.appName$ = this.store.select(fromRoot.getApplicationName);
+    this.locations$ = this.store.select(fromRoot.getAppLocations);
+    this.selectedLocation$ = this.store.select(fromRoot.getAppLocation);
+    this.appName$ = this.store.select(fromRoot.getAppName);
 
     this.window$ = this.store.select(fromRoot.getLayoutWindow);
     this.sidenav$ = this.store.select(fromRoot.getSidenavState);
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new application.GetLocations());
+    // this.store.dispatch(new application.GetLocations());
 
     this.sidenav$.subscribe(sidenav => {
       this.recalculateHeader(sidenav.opened, sidenav.mode);
@@ -103,7 +103,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSelectLocation(location) {
-    this.store.dispatch(new application.SetSelectedLocation(location));
+    this.store.dispatch(new a_in_app.SetSelectedLocation(location));
   }
 
   recalculateHeader(opened, mode) {

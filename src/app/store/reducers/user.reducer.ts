@@ -1,5 +1,5 @@
 import { UserState } from './../../ngrx-state-models/user-state.model';
-import * as fromUser from '../actions/user.action';
+import * as fromUser from '../actions/user.actions';
 
 const initialState: UserState = {
   username: null,

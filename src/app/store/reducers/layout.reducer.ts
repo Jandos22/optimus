@@ -1,7 +1,7 @@
 import { SidenavProperties } from './../../models/sidenav-properties.m';
 import { WindowProperties } from './../../models/window-properties.m';
 
-import * as fromLayout from '../actions/layout.action';
+import * as fromLayout from '../actions/layout.actions';
 
 export interface LayoutState {
   window: WindowProperties;

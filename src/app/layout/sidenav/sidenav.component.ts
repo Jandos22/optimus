@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 // ngrx
 import { Store } from '@ngrx/store';
 import * as fromRoot from './../../store';
-import * as layout from './../../store/actions/layout.action';
+import * as layout from './../../store/actions/layout.actions';
 
 @Component({
   selector: 'app-sidenav',

@@ -6,8 +6,8 @@ import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../store';
-import * as userActions from '../store/actions/user.action';
-import * as applicationActions from '../store/actions/application.action';
+import * as userActions from '../store/actions/user.actions';
+import * as a_in_app from '../store/actions/app.actions';
 
 import { UserService } from '../services/user.service';
 
@@ -82,9 +82,7 @@ export class AuthGuard implements OnDestroy {
   userIsRegistered(optimusUser) {
     const payload = this.userService.prepOptimusUserObject(optimusUser);
     this.store.dispatch(new userActions.SetOptimusUser(payload));
-    this.store.dispatch(
-      new applicationActions.SetSelectedLocation(payload.location)
-    );
+    this.store.dispatch(new a_in_app.SetSelectedLocation(payload.location));
     return true;
   }
 

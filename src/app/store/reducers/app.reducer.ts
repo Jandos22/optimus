@@ -1,15 +1,15 @@
-import * as fromApplication from '../actions/application.action';
+import * as a_in_fromApp from '../actions/app.actions';
 
 import { Locations } from './../../models/locations.m';
 
-export interface ApplicationState {
+export interface AppState {
   name: string;
   location: string;
   locations: Locations[];
   working: boolean;
 }
 
-const initialState: ApplicationState = {
+const initialState: AppState = {
   name: null,
   location: null,
   locations: null,
@@ -18,34 +18,34 @@ const initialState: ApplicationState = {
 
 export function reducer(
   state = initialState,
-  action: fromApplication.ApplicationActions
-): ApplicationState {
+  action: a_in_fromApp.ApplicationActions
+): AppState {
   switch (action.type) {
-    case fromApplication.SET_APP_NAME:
+    case a_in_fromApp.SET_APP_NAME:
       return {
         ...state,
         name: action.payload
       };
 
-    case fromApplication.SET_LOCATION:
+    case a_in_fromApp.SET_LOCATION:
       return {
         ...state,
         location: action.payload
       };
 
-    case fromApplication.SET_LOCATIONS:
+    case a_in_fromApp.SET_LOCATIONS:
       return {
         ...state,
         locations: action.payload
       };
 
-    case fromApplication.SET_SELECTED_LOCATION:
+    case a_in_fromApp.SET_SELECTED_LOCATION:
       return {
         ...state,
         location: action.payload
       };
 
-    case fromApplication.START_WORKING:
+    case a_in_fromApp.START_WORKING:
       if (state.working === false) {
         return {
           ...state,
@@ -57,7 +57,7 @@ export function reducer(
         return state;
       }
 
-    case fromApplication.FINISH_WORKING:
+    case a_in_fromApp.FINISH_WORKING:
       if (state.working === true) {
         return {
           ...state,
@@ -76,9 +76,7 @@ export function reducer(
 
 // selectors
 
-export const getApplicationName = (state: ApplicationState) => state.name;
-export const getApplicationLocation = (state: ApplicationState) =>
-  state.location;
-export const getApplicationLocations = (state: ApplicationState) =>
-  state.locations;
-export const getApplicationWorking = (state: ApplicationState) => state.working;
+export const getAppName = (state: AppState) => state.name;
+export const getAppLocation = (state: AppState) => state.location;
+export const getAppLocations = (state: AppState) => state.locations;
+export const getAppWorking = (state: AppState) => state.working;

@@ -7,8 +7,8 @@ import { Title } from '@angular/platform-browser';
 // rxjs
 import { map, switchMap, mergeMap } from 'rxjs/operators';
 
-import * as fromUser from '../actions/user.action';
-import * as fromApplication from '../actions/application.action';
+import * as fromUser from '../actions/user.actions';
+import * as a_in_app from '../actions/app.actions';
 
 import { ApiPath, WirelinePath, ProxyPath } from '../../constants';
 
@@ -63,7 +63,7 @@ export class UserEffects {
 
         return [
           new fromUser.SetOptimusUser(optimusUserData),
-          new fromApplication.SetSelectedLocation(userdata.Location)
+          new a_in_app.SetSelectedLocation(userdata.Location)
         ];
       } else {
         console.log(false);

@@ -8,7 +8,7 @@ import {
 // rxjs
 import { Observable, Subscription } from 'rxjs';
 import * as fromRoot from './../store';
-import * as a__layout from './../store/actions/layout.action';
+import * as a_in_layout from './../store/actions/layout.actions';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -60,7 +60,7 @@ export class LayoutComponent implements OnInit {
     this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
 
-    this.working$ = this.store.select(fromRoot.getApplicationWorking);
+    this.working$ = this.store.select(fromRoot.getAppWorking);
 
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -88,7 +88,7 @@ export class LayoutComponent implements OnInit {
 
   onSidenavClose() {
     if (this.sidenavState.opened === true) {
-      this.store.dispatch(new a__layout.CloseSidenav());
+      this.store.dispatch(new a_in_layout.CloseSidenav());
     }
   }
 
@@ -157,7 +157,7 @@ export class LayoutComponent implements OnInit {
       this.store.dispatch(
         // if local layout state differs from root state
         // then update root layout state
-        new a__layout.UpdateLayout(currentWindowState, curretSidenavState)
+        new a_in_layout.UpdateLayout(currentWindowState, curretSidenavState)
       );
     }
   }

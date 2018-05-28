@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
-import * as fromApplication from '../actions/application.action';
+import * as fromApplication from '../actions/app.actions';
 
 import { Locations } from './../../models/locations.m';
 
