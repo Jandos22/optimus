@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .select(fromRoot.getUserState)
       .pipe(
         map((user: UserState) => {
-          const photo = `${user.photo}?v=${new Date().getTime()}`;
+          const photo = `${user.optimus.photo}?v=${new Date().getTime()}`;
           return { ...user, photo };
         })
       )
@@ -107,7 +107,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   recalculateHeader(opened, mode) {
-    // console.log(opened, mode);
     if (opened && mode === 'side') {
       this.header.title = true;
       this.header.appNameClass = 'both';
@@ -120,7 +119,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       console.log('recalculate header: no match');
     }
-    // console.log(this.header);
   }
 
   logout() {

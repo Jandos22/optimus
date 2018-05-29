@@ -11,7 +11,7 @@ export const GET_LOCATIONS = '[App] Get Locations [req -> NgLocation]';
 export const SET_LOCATION = '[Application] Set Location';
 export const SET_SELECTED_LOCATION = '[Application] Set Selected Location';
 
-export const SET_LOCATIONS = '[Application] Set Locations';
+export const WRITE_LOCATIONS = '[App] Write Locations';
 
 export const START_WORKING = '[Application] Started Working';
 export const FINISH_WORKING = '[Application] Finished Working';
@@ -40,8 +40,8 @@ export class GetLocations implements Action {
   readonly type = GET_LOCATIONS;
 }
 
-export class SetLocations implements Action {
-  readonly type = SET_LOCATIONS;
+export class WriteLocations implements Action {
+  readonly type = WRITE_LOCATIONS;
   constructor(public payload: Locations[]) {}
 }
 
@@ -59,6 +59,6 @@ export type ApplicationActions =
   | SetLocation
   | SetSelectedLocation
   | GetLocations
-  | SetLocations
+  | WriteLocations
   | StartWorking
   | FinishWorking;

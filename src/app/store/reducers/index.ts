@@ -13,7 +13,7 @@ import * as fromUser from './user.reducer';
 import * as fromErrors from './errors.reducer';
 
 // models
-import { UserState } from './../../ngrx-state-models/user-state.model';
+import { UserState } from '../../shared/interface/user.model';
 
 export interface RouterStateUrl {
   url: string;

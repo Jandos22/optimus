@@ -82,7 +82,9 @@ export class AuthGuard implements OnDestroy {
   userIsRegistered(optimusUser) {
     const payload = this.userService.prepOptimusUserObject(optimusUser);
     this.store.dispatch(new userActions.SetOptimusUser(payload));
-    this.store.dispatch(new a_in_app.SetSelectedLocation(payload.location));
+    this.store.dispatch(
+      new a_in_app.SetSelectedLocation(payload.locationsOfInterest)
+    );
     return true;
   }
 

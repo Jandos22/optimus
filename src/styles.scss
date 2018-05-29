@@ -248,3 +248,12 @@ app-layout {
   min-width: 100%;
   overflow: hidden;
 }
+
+.my-hint__multiline {
+  margin: -13.5px 0 0 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 13.5px;
+  color: rgba(0, 0, 0, 0.54);
+}

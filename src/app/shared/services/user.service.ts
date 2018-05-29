@@ -17,10 +17,6 @@ import { CurrentUser } from '../../models/current-user.m';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getCurrentUser() {
-    return this.http.get(`${ApiPath}Web/CurrentUser`);
-  }
-
   getLoggedInUser() {
     return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
@@ -29,12 +25,6 @@ export class UserService {
     return this.http.get(
       `${ApiPath}Web/lists/getbytitle('NgPeople')/items?$filter=Alias eq '${alias}'`
     );
-  }
-
-  fdv() {
-    return this.http.post(`${ApiPath}contextinfo`, {
-      headers: new HttpHeaders().set('accept', 'application/json;odata=verbose')
-    });
   }
 
   listitem(list) {
@@ -50,8 +40,8 @@ export class UserService {
         type: this.listitem('NgPeople')
       }
     };
-    return this.fdv().pipe(
-      switchMap((v: FormDigestValue) => {
+    return this.getFDV().pipe(
+      switchMap((fdv: FDV) => {
         return this.http.post(
           `${ApiPath}web/lists/getbytitle('NgPeople')/items`,
           JSON.stringify(user),
@@ -59,7 +49,7 @@ export class UserService {
             headers: new HttpHeaders()
               .set('accept', 'application/json;odata=verbose')
               .append('content-type', 'application/json;odata=verbose')
-              .append('X-RequestDigest', v.FormDigestValue)
+              .append('X-RequestDigest', fdv.FormDigestValue)
           }
         );
       }),
@@ -112,8 +102,8 @@ export class UserService {
   }
 
   prepOptimusUserObject(userdata) {
+    console.log(userdata);
     if (ApiPath.startsWith('_')) {
-      // console.log(userdata);
       userdata.Photo.Url.replace(WirelinePath, ProxyPath);
     }
     return {
@@ -121,7 +111,8 @@ export class UserService {
       name: userdata.Name,
       surname: userdata.Surname,
       photo: userdata.Photo.Url,
-      location: userdata.Location
+      locationAssigned: userdata.LocationAssignedId,
+      locationsOfInterest: userdata.LocationsOfInterestId
     };
   }
 

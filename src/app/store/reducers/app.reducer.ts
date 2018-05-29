@@ -33,7 +33,7 @@ export function reducer(
         location: action.payload
       };
 
-    case a_in_app.SET_LOCATIONS:
+    case a_in_app.WRITE_LOCATIONS:
       return {
         ...state,
         locations: action.payload

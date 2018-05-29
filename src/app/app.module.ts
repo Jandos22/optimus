@@ -56,7 +56,10 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     ...fromLayout.containers,
     ...fromComponents.components
   ],
-  entryComponents: [fromComponents.ErrorDialogBoxComponent],
+  entryComponents: [
+    fromComponents.ErrorDialogBoxComponent,
+    fromLayout.HeaderLocationSelectorComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -47,7 +47,7 @@ export class AppEffects {
         .get(`${ApiPath}web/lists/getbytitle('NgLocations')/items`)
         .pipe(
           map((data: any) => {
-            return new a_in_app.SetLocations(data.value);
+            return new a_in_app.WriteLocations(data.value);
           }),
           catchError((error: any) => of(new a_in_errors.DisplayError(error)))
         );

@@ -1,16 +1,23 @@
-import { UserState } from './../../ngrx-state-models/user-state.model';
 import * as fromUser from '../actions/user.actions';
 
+// interfaces
+import { UserState } from '../../shared/interface/user.model';
+
 const initialState: UserState = {
-  username: null,
-  email: null,
-  initials: null,
-  spId: null,
-  isRegistered: null,
-  name: null,
-  surname: null,
-  photo: null,
-  location: null
+  sharepoint: {
+    username: null,
+    email: null,
+    initials: null,
+    spId: null
+  },
+  optimus: {
+    isRegistered: null,
+    name: null,
+    surname: null,
+    photo: null,
+    locationAssigned: null,
+    locationsOfInterest: []
+  }
 };
 
 export function reducer(
@@ -21,19 +28,28 @@ export function reducer(
     case fromUser.SET_CURRENT_USER:
       return {
         ...state,
-        ...action.payload
+        sharepoint: {
+          ...state.sharepoint,
+          ...action.payload
+        }
       };
 
     case fromUser.SET_OPTIMUS_USER:
       return {
         ...state,
-        ...action.payload
+        optimus: {
+          ...state.optimus,
+          ...action.payload
+        }
       };
 
     case fromUser.SET_USER_NOT_REGISTERED:
       return {
         ...state,
-        isRegistered: action.payload
+        optimus: {
+          ...state.optimus,
+          isRegistered: action.payload
+        }
       };
 
     default:
@@ -43,8 +59,8 @@ export function reducer(
 
 // state selectors
 export const getUser = (state: UserState) => state;
-export const getUsername = (state: UserState) => state.username;
-export const getEmail = (state: UserState) => state.email;
-export const getIsRegistered = (state: UserState) => state.isRegistered;
-export const getInitials = (state: UserState) => state.initials;
-export const getPhoto = (state: UserState) => state.photo;
+export const getUsername = (state: UserState) => state.sharepoint.username;
+export const getEmail = (state: UserState) => state.sharepoint.email;
+export const getIsRegistered = (state: UserState) => state.optimus.isRegistered;
+export const getInitials = (state: UserState) => state.sharepoint.initials;
+export const getPhoto = (state: UserState) => state.optimus.photo;

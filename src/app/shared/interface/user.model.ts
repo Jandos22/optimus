@@ -1,11 +1,18 @@
 export interface UserState {
-  username: string;
-  email: string;
-  initials: string;
-  spId: number;
+  sharepoint: {
+    username: string;
+    email: string;
+    initials: string;
+    spId: number;
+  };
+  optimus: OptimusUser;
+}
+
+export interface OptimusUser {
   isRegistered: boolean;
   name: string;
   surname: string;
   photo: string;
-  location: string;
+  locationAssigned: number;
+  locationsOfInterest: number[];
 }
