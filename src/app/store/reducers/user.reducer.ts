@@ -11,6 +11,7 @@ const initialState: UserState = {
     spId: null
   },
   optimus: {
+    Id: null,
     isRegistered: null,
     name: null,
     surname: null,

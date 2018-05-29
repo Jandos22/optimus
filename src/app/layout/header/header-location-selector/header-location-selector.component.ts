@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 
 // ngrx
@@ -6,12 +6,15 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '../../../store';
 
+import * as a_in_locations from '../../../store/actions/locations.actions';
+
 // rxjs
 import { Observable, Subscription } from 'rxjs';
 
 // interfaces
 import { WindowProperties } from './../../../models/window-properties.m';
 import { OptimusUser, UserState } from '../../../shared/interface/user.model';
+import { pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-location-selector',
@@ -21,18 +24,23 @@ import { OptimusUser, UserState } from '../../../shared/interface/user.model';
     <div mat-dialog-content [fxLayout]="layout" fxLayoutGap="16px">
       <div fxFlex fxLayout="column">
         <mat-form-field>
-          <mat-select placeholder="Locations of interest" [formControl]="locations" [value]="locations" multiple>
-            <mat-option *ngFor="let location of (locations_list$ | async)" [value]="location.Id">{{ location.Title }}</mat-option>
+          <mat-select placeholder="Locations of interest" [formControl]="fc_locations" [value]="locations" multiple>
+            <!-- if only one option selected,
+                 then disable it, so that at least one option always selected -->
+            <mat-option *ngFor="let location of (locations_list$ | async)" [value]="location.Id"
+              [disabled]="(isSingle && (selectedId === location.Id))"
+              >
+              {{ location.Title }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <p class="my-hint__multiline">
           You will view data from these currently selected locations
         </p>
-        <pre>{{locations.value | json}}</pre>
       </div>
       <div fxFlex fxLayout="column">
         <mat-form-field>
-          <mat-select placeholder="Location of assignment" [formControl]="location" [value]="location">
+          <mat-select placeholder="Location of assignment" [formControl]="fc_location" [value]="location">
             <mat-option *ngFor="let location of (locations_list$ | async)" [value]="location.Id">{{ location.Title }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -43,11 +51,11 @@ import { OptimusUser, UserState } from '../../../shared/interface/user.model';
     </div>
     `
 })
-export class HeaderLocationSelectorComponent implements OnDestroy {
+export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
   // location of assignment
-  location: FormControl;
+  fc_location: FormControl;
   // locations of interest
-  locations: FormControl;
+  fc_locations: FormControl;
 
   // observe list from store
   locations_list$: Observable<any[]>;
@@ -62,6 +70,10 @@ export class HeaderLocationSelectorComponent implements OnDestroy {
   user$: Subscription;
   user: OptimusUser;
 
+  // subscriptions to react on form control value changes
+  fc_locations$: Subscription;
+  fc_locations_previous = [];
+
   constructor(
     private fb: FormBuilder,
     private s_in_root: Store<fromRoot.RootState>
@@ -69,7 +81,7 @@ export class HeaderLocationSelectorComponent implements OnDestroy {
     this.initForm();
 
     this.locations_list$ = this.s_in_root.pipe(
-      select(fromRoot.getAppLocations)
+      select(fromRoot.selectAllLocations)
     );
 
     this.window$ = this.s_in_root
@@ -80,22 +92,48 @@ export class HeaderLocationSelectorComponent implements OnDestroy {
       .pipe(select(fromRoot.getUserState))
       .subscribe((user: UserState) => {
         this.user = user.optimus;
-        this.location.setValue(this.user.locationAssigned);
-        this.locations.setValue(this.user.locationsOfInterest);
+        this.fc_location.setValue(this.user.locationAssigned);
+        this.fc_locations.setValue(this.user.locationsOfInterest);
       });
+
+    // update selected locations in store whenever form control changes
+    this.fc_locations$ = this.fc_locations.valueChanges.subscribe(ids => {
+      this.s_in_root.dispatch(new a_in_locations.UpdateSelected(ids));
+    });
   }
+
+  ngOnInit() {}
 
   get layout() {
     return this.window.isXS || this.window.isXXS ? 'column' : 'row';
   }
 
+  get n_of_selected() {
+    const n: number = this.fc_locations.value.length;
+    return n;
+  }
+
+  // isSingle and selectedId are used to disable mat-option
+  //
+
+  get isSingle() {
+    const n_of_selected = this.fc_locations.value.length;
+    return n_of_selected === 1 ? true : false;
+  }
+
+  get selectedId() {
+    const n_of_selected = this.fc_locations.value.length;
+    return n_of_selected === 1 ? this.fc_locations.value[0] : 0;
+  }
+
   initForm() {
-    this.location = this.fb.control('');
-    this.locations = this.fb.control([]);
+    this.fc_location = this.fb.control('');
+    this.fc_locations = this.fb.control([]);
   }
 
   ngOnDestroy() {
     this.window$.unsubscribe();
     this.user$.unsubscribe();
+    this.fc_locations$.unsubscribe();
   }
 }

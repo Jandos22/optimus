@@ -1,11 +1,11 @@
-export interface Location {
+import { SpListItemField } from './sp-list-item-field.model';
+
+export interface LocationSp extends SpListItemField {
   Id: number;
+  ID: number;
   Title: string;
 }
 
-export interface LocationsEntity {
-  ids: string[];
-  entities: {
-    [id: string]: Location;
-  };
+export interface LocationEnt extends LocationSp, SpListItemField {
+  id: number;
 }

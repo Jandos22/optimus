@@ -9,6 +9,7 @@ export interface UserState {
 }
 
 export interface OptimusUser {
+  Id: number;
   isRegistered: boolean;
   name: string;
   surname: string;

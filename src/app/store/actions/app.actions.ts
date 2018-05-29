@@ -6,8 +6,6 @@ export const CHANGE_APP_NAME = '[Application] Change App Name';
 export const SET_APP_NAME = '[Application] Set App Name';
 
 // get actions
-export const GET_LOCATIONS = '[App] Get Locations [req -> NgLocation]';
-
 export const SET_LOCATION = '[Application] Set Location';
 export const SET_SELECTED_LOCATION = '[Application] Set Selected Location';
 
@@ -36,10 +34,6 @@ export class SetSelectedLocation implements Action {
   constructor(public payload: string) {}
 }
 
-export class GetLocations implements Action {
-  readonly type = GET_LOCATIONS;
-}
-
 export class WriteLocations implements Action {
   readonly type = WRITE_LOCATIONS;
   constructor(public payload: Locations[]) {}
@@ -58,7 +52,6 @@ export type ApplicationActions =
   | SetAppName
   | SetLocation
   | SetSelectedLocation
-  | GetLocations
   | WriteLocations
   | StartWorking
   | FinishWorking;

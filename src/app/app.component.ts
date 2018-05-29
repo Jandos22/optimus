@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from './store';
-import * as a_in_app from './store/actions/app.actions';
+import * as a_in_locations from './store/actions/locations.actions';
 
 // this fix is only required in iOS Safari
 import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   constructor(private s_in_root: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
-    // get locations, then write in root > app > locations
-    this.s_in_root.dispatch(new a_in_app.GetLocations());
+    // get locations, then write in root > locations
+    this.s_in_root.dispatch(new a_in_locations.GetLocations());
   }
 }

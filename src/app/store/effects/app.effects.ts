@@ -8,23 +8,39 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import * as a_in_app from '../actions/app.actions';
 import * as a_in_errors from '../actions/errors.actions';
+import * as a_in_locations from './../actions/locations.actions';
 
 // rxjs
-import { throwError, of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { throwError, of, from } from 'rxjs';
+import {
+  map,
+  mergeMap,
+  reduce,
+  switchMap,
+  catchError,
+  take
+} from 'rxjs/operators';
+
+// services
+import { LocationsService } from './../../shared/services/locations.service';
 
 // constants
 import { ApiPath } from './../../shared/constants/index';
 
 // interfaces
 import { Locations } from './../../models/locations.m';
+import {
+  LocationSp,
+  LocationEnt
+} from '../../shared/interface/locations.model';
 
 @Injectable()
 export class AppEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private _title: Title
+    private _title: Title,
+    private locationsService: LocationsService
   ) {}
 
   @Effect()
@@ -36,21 +52,6 @@ export class AppEffects {
         ? this._title.setTitle('Optimus')
         : this._title.setTitle(title + ' - Optimus');
       return new a_in_app.SetAppName(title);
-    })
-  );
-
-  @Effect()
-  getLocations = this.actions$.pipe(
-    ofType(a_in_app.GET_LOCATIONS),
-    switchMap((action: a_in_app.GetLocations) => {
-      return this.http
-        .get(`${ApiPath}web/lists/getbytitle('NgLocations')/items`)
-        .pipe(
-          map((data: any) => {
-            return new a_in_app.WriteLocations(data.value);
-          }),
-          catchError((error: any) => of(new a_in_errors.DisplayError(error)))
-        );
     })
   );
 }
