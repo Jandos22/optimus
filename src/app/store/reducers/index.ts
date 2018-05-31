@@ -7,10 +7,12 @@ import {
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
 
 import * as fromRouter from '@ngrx/router-store';
+
 import * as fromApp from './app.reducer';
 import * as fromLayout from './layout.reducer';
 import * as fromUser from './user.reducer';
 import * as fromErrors from './errors.reducer';
+import * as fromLocations from './locations.reducer';
 
 // models
 import { UserState } from '../../shared/interface/user.model';
@@ -30,6 +32,7 @@ export interface RootState {
   user: UserState;
   layout: fromLayout.LayoutState;
   errors: fromErrors.ErrorsState;
+  locations: fromLocations.State;
 }
 
 export const reducers: ActionReducerMap<RouterState> = {
@@ -40,7 +43,8 @@ export const root: ActionReducerMap<RootState> = {
   app: fromApp.reducer,
   user: fromUser.reducer,
   layout: fromLayout.reducer,
-  errors: fromErrors.reducer
+  errors: fromErrors.reducer,
+  locations: fromLocations.reducer
 };
 
 // feature selectors

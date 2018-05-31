@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { ApiPath, WirelinePath, ProxyPath } from './../constants';
@@ -13,12 +13,18 @@ import { FDV } from '../../models/fdv.model';
 import { FormDigestValue } from '../../models/index';
 import { CurrentUser } from '../../models/current-user.m';
 
+// services
+import { SharepointService } from '../services/sharepoint.service';
+
+// import { sprLib } from '../../../typings';
+
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient) {}
 
   getLoggedInUser() {
-    return this.http.get(`${ApiPath}Web/CurrentUser`);
+    return sprLib.user().info();
+    // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
   checkLoggedInUserRegistered(alias) {
@@ -107,6 +113,7 @@ export class UserService {
       userdata.Photo.Url.replace(WirelinePath, ProxyPath);
     }
     return {
+      Id: userdata.Id,
       isRegistered: true,
       name: userdata.Name,
       surname: userdata.Surname,

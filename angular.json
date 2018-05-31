@@ -23,7 +23,7 @@
               "src/styles__theme.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": ["./node_modules/sprestlib/dist/sprestlib.min.js"]
           },
           "configurations": {
             "production": {
