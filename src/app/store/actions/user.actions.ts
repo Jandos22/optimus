@@ -10,6 +10,8 @@ export const SET_OPTIMUS_USER = '[User] Set Optimus User';
 
 // in effects
 export const CHECK_CURRENT_USER = '[User] Check Current User';
+export const UPDATE_USER_LOCATIONS_OF_INTEREST =
+  '[User] Update User Locations Of Interest';
 
 export class GetCurrentUser implements Action {
   readonly type = GET_CURRENT_USER;
@@ -35,9 +37,15 @@ export class SetOptimusUser implements Action {
   constructor(public payload: any) {}
 }
 
+export class UpdateUserLocationsOfInterest implements Action {
+  readonly type = UPDATE_USER_LOCATIONS_OF_INTEREST;
+  constructor(public payload: number[]) {}
+}
+
 export type UserActions =
   | GetCurrentUser
   | SetCurrentUser
   | CheckCurrentUser
   | SetUserNotRegistered
-  | SetOptimusUser;
+  | SetOptimusUser
+  | UpdateUserLocationsOfInterest;

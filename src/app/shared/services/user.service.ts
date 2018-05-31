@@ -16,14 +16,14 @@ import { CurrentUser } from '../../models/current-user.m';
 // services
 import { SharepointService } from '../services/sharepoint.service';
 
-import * as spRestLib from 'sprestlib';
+// import { sprLib } from '../../../typings';
 
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient) {}
 
   getLoggedInUser() {
-    return spRestLib.user().info();
+    return sprLib.user().info();
     // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 

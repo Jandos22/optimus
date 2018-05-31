@@ -54,8 +54,7 @@ export class HeaderLocationComponent implements OnDestroy {
 
   openLocationSelector() {
     this.dialog.open(HeaderLocationSelectorComponent, {
-      minWidth: '80%',
-      minHeight: '60%'
+      maxWidth: '464'
     });
   }
 

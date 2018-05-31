@@ -96,19 +96,6 @@ app-layout {
   margin-bottom: 0.5rem;
 }
 
-.mat-dialog-container {
-  background-color: #f6f5f4 !important;
-}
-
-.mat-dialog-content {
-  padding-top: 20px !important;
-  background-color: #ffffff !important;
-}
-
-.mat-dialog-title {
-  margin-bottom: 5px !important;
-}
-
 /* to fix zooming input fields on mobile devices */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   select,

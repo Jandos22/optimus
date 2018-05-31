@@ -8,7 +8,8 @@ export enum LocationsActionTypes {
   GET_LOCATIONS = '[Location] Get Locations',
   ADD_LOCATIONS = '[Location] Add Locations',
   UPDATE_LOCATIONS = '[Location] Update Locations',
-  UPDATE_SELECTED = '[Location] Update Selected Locations'
+  UPDATE_SELECTED = '[Location] Update Selected Locations',
+  UPDATE_SELECTED_SUCCESS = '[Location] Update Selected Locations Success'
 }
 
 export class GetLocations implements Action {
@@ -30,8 +31,13 @@ export class UpdateSelected implements Action {
   constructor(public payload: number[]) {}
 }
 
+export class UpdateSelectedSuccess implements Action {
+  readonly type = LocationsActionTypes.UPDATE_SELECTED_SUCCESS;
+}
+
 export type LocationsActionsUnion =
   | GetLocations
   | AddLocations
   | UpdateLocations
-  | UpdateSelected;
+  | UpdateSelected
+  | UpdateSelectedSuccess;

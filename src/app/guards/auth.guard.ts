@@ -49,29 +49,31 @@ export class AuthGuard implements OnDestroy {
   // if not registered, then navigate to Registration page
   checkRegistration() {
     console.log('checkRegistration');
-    return this.userService
-      .getLoggedInUser()
-      .toPromise()
-      .then((loggedInUser: CurrentUser) => {
-        // console.log(loggedInUser);
-        const user = this.userService.prepCurrentUserObject(loggedInUser);
-        this.store.dispatch(new userActions.SetCurrentUser(user));
-        return user.username;
-      })
-      .then(alias => {
-        console.log('checkUser');
-        return this.userService
-          .checkLoggedInUserRegistered(alias)
-          .toPromise()
-          .then((response: any) => {
-            // if no user found in NgPeople
-            // then response.value will be empty
-            const data = response.value[0];
-            return data
-              ? this.userIsRegistered(data)
-              : this.navigateToRegistration();
-          });
-      });
+    return (
+      this.userService
+        .getLoggedInUser()
+        // .toPromise()
+        .then((loggedInUser: CurrentUser) => {
+          console.log(loggedInUser);
+          const user = this.userService.prepCurrentUserObject(loggedInUser);
+          this.store.dispatch(new userActions.SetCurrentUser(user));
+          return user.username;
+        })
+        .then(alias => {
+          console.log('checkUser');
+          return this.userService
+            .checkLoggedInUserRegistered(alias)
+            .toPromise()
+            .then((response: any) => {
+              // if no user found in NgPeople
+              // then response.value will be empty
+              const data = response.value[0];
+              return data
+                ? this.userIsRegistered(data)
+                : this.navigateToRegistration();
+            });
+        })
+    );
   }
 
   navigateToRegistration() {

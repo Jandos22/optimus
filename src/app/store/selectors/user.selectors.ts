@@ -16,5 +16,6 @@ export const getIsRegistered = createSelector(
   getUserState,
   fromUser.getIsRegistered
 );
+export const getUserId = createSelector(getUserState, fromUser.getUserId);
 export const getInitials = createSelector(getUserState, fromUser.getInitials);
 export const getPhoto = createSelector(getUserState, fromUser.getPhoto);

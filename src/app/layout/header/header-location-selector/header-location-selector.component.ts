@@ -7,14 +7,15 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../store';
 
 import * as a_in_locations from '../../../store/actions/locations.actions';
+import * as a_in_user from '../../../store/actions/user.actions';
 
 // rxjs
 import { Observable, Subscription } from 'rxjs';
+import { take, pairwise } from 'rxjs/operators';
 
 // interfaces
 import { WindowProperties } from './../../../models/window-properties.m';
 import { OptimusUser, UserState } from '../../../shared/interface/user.model';
-import { pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-location-selector',
@@ -24,7 +25,7 @@ import { pairwise } from 'rxjs/operators';
     <div mat-dialog-content [fxLayout]="layout" fxLayoutGap="16px">
       <div fxFlex fxLayout="column">
         <mat-form-field>
-          <mat-select placeholder="Locations of interest" [formControl]="fc_locations" [value]="locations" multiple>
+          <mat-select placeholder="Locations of interest" [formControl]="fc_locations" [value]="fc_locations.value" multiple>
             <!-- if only one option selected,
                  then disable it, so that at least one option always selected -->
             <mat-option *ngFor="let location of (locations_list$ | async)" [value]="location.Id"
@@ -72,7 +73,6 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
 
   // subscriptions to react on form control value changes
   fc_locations$: Subscription;
-  fc_locations_previous = [];
 
   constructor(
     private fb: FormBuilder,
@@ -89,9 +89,10 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
       .subscribe((window: WindowProperties) => (this.window = window));
 
     this.user$ = this.s_in_root
-      .pipe(select(fromRoot.getUserState))
+      .pipe(take(1), select(fromRoot.getUserState))
       .subscribe((user: UserState) => {
         this.user = user.optimus;
+        console.log(user);
         this.fc_location.setValue(this.user.locationAssigned);
         this.fc_locations.setValue(this.user.locationsOfInterest);
       });
@@ -99,6 +100,7 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
     // update selected locations in store whenever form control changes
     this.fc_locations$ = this.fc_locations.valueChanges.subscribe(ids => {
       this.s_in_root.dispatch(new a_in_locations.UpdateSelected(ids));
+      this.s_in_root.dispatch(new a_in_user.UpdateUserLocationsOfInterest(ids));
     });
   }
 
@@ -127,7 +129,7 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-    this.fc_location = this.fb.control('');
+    this.fc_location = this.fb.control({ value: '', disabled: true });
     this.fc_locations = this.fb.control([]);
   }
 

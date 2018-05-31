@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
 // ngrx
-import { Action } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import * as a_in_errors from '../actions/errors.actions';
 import * as a_in_locations from './../actions/locations.actions';
+
+import * as fromRoot from '../index';
 
 // rxjs
 import { throwError, of, from } from 'rxjs';
@@ -17,7 +19,8 @@ import {
   reduce,
   switchMap,
   catchError,
-  take
+  take,
+  skip
 } from 'rxjs/operators';
 
 // services
@@ -36,6 +39,7 @@ import {
 export class LocationsEffects {
   constructor(
     private actions$: Actions,
+    private store: Store<fromRoot.RootState>,
     private http: HttpClient,
     private locationsService: LocationsService
   ) {}
@@ -72,12 +76,28 @@ export class LocationsEffects {
     })
   );
 
-  // @Effect()
-  // updateSelected$ = this.actions$.pipe(
-  //   ofType(a_in_locations.LocationsActionTypes.UPDATE_SELECTED),
-  //   map((action: a_in_locations.UpdateSelected) => action.payload),
-  //   switchMap((selectedLocations: number[]) => {
-
-  //   })
-  // );
+  // mirroring effect
+  @Effect()
+  updateSelected$ = this.actions$.pipe(
+    ofType(a_in_locations.LocationsActionTypes.UPDATE_SELECTED),
+    skip(1),
+    map((action: a_in_locations.UpdateSelected) => {
+      let ID;
+      this.store
+        .pipe(take(1), select(fromRoot.getUserId))
+        .subscribe((Id: number) => {
+          ID = Id;
+        });
+      return { ID, LocationsOfInterestId: { results: action.payload } };
+    }),
+    switchMap((FKP: any) => {
+      console.log(FKP);
+      return from(this.locationsService.updateLocationsOfInterest(FKP));
+    }),
+    map((object: any) => {
+      console.log(object);
+      return new a_in_locations.UpdateSelectedSuccess();
+    }),
+    catchError((error: any) => of(new a_in_errors.DisplayError(error)))
+  );
 }

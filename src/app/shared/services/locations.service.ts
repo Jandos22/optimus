@@ -27,5 +27,7 @@ export class LocationsService {
 
   // method updates only LocationsOfInterest field
   // of a given user (item) in NgPeople list
-  updateLocationsOfInterest() {}
+  updateLocationsOfInterest(object): Promise<any> {
+    return sprLib.list('NgPeople').update(object);
+  }
 }
