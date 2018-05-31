@@ -6,10 +6,11 @@ import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../store';
-import * as userActions from '../store/actions/user.action';
-import * as applicationActions from '../store/actions/application.action';
+import * as userActions from '../store/actions/user.actions';
+import * as a_in_app from '../store/actions/app.actions';
+import * as a_in_locations from '../store/actions/locations.actions';
 
-import { UserService } from '../services/user.service';
+import { UserService } from '../shared/services/user.service';
 
 // interfaces
 import { CurrentUser } from './../models/current-user.m';
@@ -48,29 +49,31 @@ export class AuthGuard implements OnDestroy {
   // if not registered, then navigate to Registration page
   checkRegistration() {
     console.log('checkRegistration');
-    return this.userService
-      .getLoggedInUser()
-      .toPromise()
-      .then((loggedInUser: CurrentUser) => {
-        // console.log(loggedInUser);
-        const user = this.userService.prepCurrentUserObject(loggedInUser);
-        this.store.dispatch(new userActions.SetCurrentUser(user));
-        return user.username;
-      })
-      .then(alias => {
-        console.log('checkUser');
-        return this.userService
-          .checkLoggedInUserRegistered(alias)
-          .toPromise()
-          .then((response: any) => {
-            // if no user found in NgPeople
-            // then response.value will be empty
-            const data = response.value[0];
-            return data
-              ? this.userIsRegistered(data)
-              : this.navigateToRegistration();
-          });
-      });
+    return (
+      this.userService
+        .getLoggedInUser()
+        // .toPromise()
+        .then((loggedInUser: CurrentUser) => {
+          console.log(loggedInUser);
+          const user = this.userService.prepCurrentUserObject(loggedInUser);
+          this.store.dispatch(new userActions.SetCurrentUser(user));
+          return user.username;
+        })
+        .then(alias => {
+          console.log('checkUser');
+          return this.userService
+            .checkLoggedInUserRegistered(alias)
+            .toPromise()
+            .then((response: any) => {
+              // if no user found in NgPeople
+              // then response.value will be empty
+              const data = response.value[0];
+              return data
+                ? this.userIsRegistered(data)
+                : this.navigateToRegistration();
+            });
+        })
+    );
   }
 
   navigateToRegistration() {
@@ -83,7 +86,7 @@ export class AuthGuard implements OnDestroy {
     const payload = this.userService.prepOptimusUserObject(optimusUser);
     this.store.dispatch(new userActions.SetOptimusUser(payload));
     this.store.dispatch(
-      new applicationActions.SetSelectedLocation(payload.location)
+      new a_in_locations.UpdateSelected(payload.locationsOfInterest)
     );
     return true;
   }

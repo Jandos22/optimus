@@ -7,7 +7,6 @@ import * as fromPpeCatalog from '../reducers/ppe-catalog.reducer';
 export const getPpeCatalogState = createSelector(
   fromFeature.getPpeState,
   (state: fromFeature.PpeState) => {
-    console.log(state);
     return state.catalog;
   }
 );

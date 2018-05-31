@@ -130,7 +130,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     // get locations list from store and update local locations list
     this.locations$ = this.fromRoot
-      .select(fromRoot.getApplicationLocations)
+      .select(fromRoot.getAppLocations)
       .subscribe(locations => (this.locations = locations));
 
     // when alias changed, also update email

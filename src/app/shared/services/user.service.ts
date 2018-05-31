@@ -2,40 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { ApiPath, WirelinePath, ProxyPath } from './../constants';
 
 // data models
-import { Photo } from './../models/photo.model';
-import { FDV } from './../models/fdv.model';
-import { FormDigestValue } from '../models/index';
-import { CurrentUser } from '../models/current-user.m';
+import { Photo } from '../../models/photo.model';
+import { FDV } from '../../models/fdv.model';
+import { FormDigestValue } from '../../models/index';
+import { CurrentUser } from '../../models/current-user.m';
+
+// services
+import { SharepointService } from '../services/sharepoint.service';
+
+// import { sprLib } from '../../../typings';
 
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getCurrentUser() {
-    // return sprLib.user().info();
-    return this.http.get(`${ApiPath}Web/CurrentUser`);
-  }
-
   getLoggedInUser() {
-    return this.http.get(`${ApiPath}Web/CurrentUser`);
+    return sprLib.user().info();
+    // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
   checkLoggedInUserRegistered(alias) {
     return this.http.get(
       `${ApiPath}Web/lists/getbytitle('NgPeople')/items?$filter=Alias eq '${alias}'`
     );
-  }
-
-  fdv() {
-    return this.http.post(`${ApiPath}contextinfo`, {
-      headers: new HttpHeaders().set('accept', 'application/json;odata=verbose')
-    });
   }
 
   listitem(list) {
@@ -51,8 +46,8 @@ export class UserService {
         type: this.listitem('NgPeople')
       }
     };
-    return this.fdv().pipe(
-      switchMap((v: FormDigestValue) => {
+    return this.getFDV().pipe(
+      switchMap((fdv: FDV) => {
         return this.http.post(
           `${ApiPath}web/lists/getbytitle('NgPeople')/items`,
           JSON.stringify(user),
@@ -60,7 +55,7 @@ export class UserService {
             headers: new HttpHeaders()
               .set('accept', 'application/json;odata=verbose')
               .append('content-type', 'application/json;odata=verbose')
-              .append('X-RequestDigest', v.FormDigestValue)
+              .append('X-RequestDigest', fdv.FormDigestValue)
           }
         );
       }),
@@ -113,16 +108,18 @@ export class UserService {
   }
 
   prepOptimusUserObject(userdata) {
+    console.log(userdata);
     if (ApiPath.startsWith('_')) {
-      // console.log(userdata);
       userdata.Photo.Url.replace(WirelinePath, ProxyPath);
     }
     return {
+      Id: userdata.Id,
       isRegistered: true,
       name: userdata.Name,
       surname: userdata.Surname,
       photo: userdata.Photo.Url,
-      location: userdata.Location
+      locationAssigned: userdata.LocationAssignedId,
+      locationsOfInterest: userdata.LocationsOfInterestId
     };
   }
 

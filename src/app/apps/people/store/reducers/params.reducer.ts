@@ -1,7 +1,7 @@
 import * as fromParams from '../actions/params.action';
 
 // constants
-import { WirelinePath, ApiPath } from './../../../../constants/index';
+import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
 
 export interface ParamsState {
   location: string;

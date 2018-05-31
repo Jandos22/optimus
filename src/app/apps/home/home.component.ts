@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 // ngrx
 import * as fromRoot from '../../store';
-import * as application from '../../store/actions/application.action';
+import * as application from '../../store/actions/app.actions';
 
 @Component({
   selector: 'app-home',

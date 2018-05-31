@@ -5,11 +5,11 @@ import { Locations } from './../../models/locations.m';
 export const CHANGE_APP_NAME = '[Application] Change App Name';
 export const SET_APP_NAME = '[Application] Set App Name';
 
+// get actions
 export const SET_LOCATION = '[Application] Set Location';
 export const SET_SELECTED_LOCATION = '[Application] Set Selected Location';
 
-export const GET_LOCATIONS = '[Application] Get Locations';
-export const SET_LOCATIONS = '[Application] Set Locations';
+export const WRITE_LOCATIONS = '[App] Write Locations';
 
 export const START_WORKING = '[Application] Started Working';
 export const FINISH_WORKING = '[Application] Finished Working';
@@ -34,12 +34,8 @@ export class SetSelectedLocation implements Action {
   constructor(public payload: string) {}
 }
 
-export class GetLocations implements Action {
-  readonly type = GET_LOCATIONS;
-}
-
-export class SetLocations implements Action {
-  readonly type = SET_LOCATIONS;
+export class WriteLocations implements Action {
+  readonly type = WRITE_LOCATIONS;
   constructor(public payload: Locations[]) {}
 }
 
@@ -56,7 +52,6 @@ export type ApplicationActions =
   | SetAppName
   | SetLocation
   | SetSelectedLocation
-  | GetLocations
-  | SetLocations
+  | WriteLocations
   | StartWorking
   | FinishWorking;

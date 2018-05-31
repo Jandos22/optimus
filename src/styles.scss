@@ -96,19 +96,6 @@ app-layout {
   margin-bottom: 0.5rem;
 }
 
-.mat-dialog-container {
-  background-color: #f6f5f4 !important;
-}
-
-.mat-dialog-content {
-  padding-top: 20px !important;
-  background-color: #ffffff !important;
-}
-
-.mat-dialog-title {
-  margin-bottom: 5px !important;
-}
-
 /* to fix zooming input fields on mobile devices */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   select,
@@ -247,4 +234,13 @@ app-layout {
   width: 100%;
   min-width: 100%;
   overflow: hidden;
+}
+
+.my-hint__multiline {
+  margin: -13.5px 0 0 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 13.5px;
+  color: rgba(0, 0, 0, 0.54);
 }

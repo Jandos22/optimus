@@ -7,12 +7,15 @@ import {
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
 
 import * as fromRouter from '@ngrx/router-store';
-import * as fromApplication from './application.reducer';
+
+import * as fromApp from './app.reducer';
 import * as fromLayout from './layout.reducer';
 import * as fromUser from './user.reducer';
+import * as fromErrors from './errors.reducer';
+import * as fromLocations from './locations.reducer';
 
 // models
-import { UserState } from './../../ngrx-state-models/user-state.model';
+import { UserState } from '../../shared/interface/user.model';
 
 export interface RouterStateUrl {
   url: string;
@@ -20,18 +23,28 @@ export interface RouterStateUrl {
   params: Params;
 }
 
-export interface RootState {
+export interface RouterState {
   routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
-  application: fromApplication.ApplicationState;
-  user: UserState;
-  layout: fromLayout.LayoutState;
 }
 
-export const reducers: ActionReducerMap<RootState> = {
-  routerReducer: fromRouter.routerReducer,
-  application: fromApplication.reducer,
+export interface RootState {
+  app: fromApp.AppState;
+  user: UserState;
+  layout: fromLayout.LayoutState;
+  errors: fromErrors.ErrorsState;
+  locations: fromLocations.State;
+}
+
+export const reducers: ActionReducerMap<RouterState> = {
+  routerReducer: fromRouter.routerReducer
+};
+
+export const root: ActionReducerMap<RootState> = {
+  app: fromApp.reducer,
   user: fromUser.reducer,
-  layout: fromLayout.reducer
+  layout: fromLayout.reducer,
+  errors: fromErrors.reducer,
+  locations: fromLocations.reducer
 };
 
 // feature selectors
@@ -39,15 +52,7 @@ export const getRouterState = createFeatureSelector<
   fromRouter.RouterReducerState<RouterStateUrl>
 >('routerReducer');
 
-export const getApplicationState = createFeatureSelector<
-  fromApplication.ApplicationState
->('application');
-
-export const getLayoutState = createFeatureSelector<fromLayout.LayoutState>(
-  'layout'
-);
-
-export const getUserState = createFeatureSelector<UserState>('user');
+export const getRootState = createFeatureSelector<RootState>('root');
 
 // custom router serializer
 export class CustomSerializer

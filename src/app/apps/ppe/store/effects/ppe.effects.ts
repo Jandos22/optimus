@@ -45,7 +45,6 @@ export class PpeEffects {
       return forkJoin(ppe_categories$, ppe_items$);
     }),
     mergeMap((catalog: [PpeCategory[], PpeItem[]]) => {
-      console.log(catalog);
       return [
         new ActionsInPpe.WritePpeCategories(catalog[0]),
         new ActionsInPpe.WritePpeItems(catalog[1]),

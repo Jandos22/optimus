@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // constants
-import { ApiPath } from './../../../constants/index';
+import { ApiPath } from './../../../shared/constants/index';
 
 // service provided in
 import { PpeModule } from '../ppe.module';
@@ -28,12 +28,11 @@ export class PpeService {
   getPPEItems() {
     const url = `${ApiPath}web/lists/getbytitle('NgPPEItems')/items?`;
 
-    const select = `$select=Id,Title,Price,CategoryId,Supplier/Title,Attachments,AttachmentFiles,LocationId,Location/Location`;
-    const expand = `&$expand=AttachmentFiles,Supplier,Location`;
+    const select = `$select=Id,Title,Price,CategoryId,Supplier/Title,Attachments,AttachmentFiles,LocationId`;
+    const expand = `&$expand=AttachmentFiles,Supplier`;
 
     return this.http.get(url + select + expand).pipe(
       map((response: { value: any[] }) => {
-        console.log(response.value);
         return response.value;
       })
     );

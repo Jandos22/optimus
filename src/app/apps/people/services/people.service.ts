@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, throwError, of } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from '../../../constants';
-import { hk_accept, hv_appjson } from '../../../constants/headers';
+import { ApiPath } from '../../../shared/constants';
+import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
 import { PeopleParams } from './../models/people-params.model';
@@ -23,9 +23,10 @@ export class PeopleService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
-        map((response: SpResponse) => {
+        switchMap((response: SpResponse) => {
+          console.log(response.d.results);
           if (response.d.results) {
-            return response;
+            return of(response);
           }
         }),
         catchError((error: any) => throwError(error.json()))
@@ -37,7 +38,8 @@ export class PeopleService {
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
 
     // select only following fields
-    let select = '?$select=Id,Alias,Name,Surname,Email,Gin,Location,Photo';
+    let select =
+      '?$select=Id,Alias,Name,Surname,Email,Gin,LocationAssignedId,Photo';
 
     // parameters
     const query = params.query;

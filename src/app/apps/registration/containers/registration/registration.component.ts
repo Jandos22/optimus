@@ -2,8 +2,8 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as fromApplicationActions from './../../../../store/actions/application.action';
-import * as fromLayoutActions from '../../../../store/actions/layout.action';
+import * as a_in_app from './../../../../store/actions/app.actions';
+import * as fromLayoutActions from '../../../../store/actions/layout.actions';
 
 import { Locations } from './../../../../models/locations.m';
 
@@ -27,7 +27,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new fromApplicationActions.ChangeAppName(this.appName));
+    this.store.dispatch(new a_in_app.ChangeAppName(this.appName));
 
     // don't even show sidenav when self-registration is opened [pending]
     // this.store.dispatch(new fromLayoutActions.CloseSidenav());
@@ -40,7 +40,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       this.email = value;
     });
 
-    this.store.select(fromRoot.getApplicationLocations).subscribe(array => {
+    this.store.select(fromRoot.getAppLocations).subscribe(array => {
       console.log(array);
       this.locations = array;
     });

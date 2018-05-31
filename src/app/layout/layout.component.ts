@@ -7,8 +7,8 @@ import {
 
 // rxjs
 import { Observable, Subscription } from 'rxjs';
-import * as fromRoot from '../../store';
-import * as layout from '../../store/actions/layout.action';
+import * as fromRoot from './../store';
+import * as a_in_layout from './../store/actions/layout.actions';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -22,8 +22,8 @@ import {
   MatDrawerContainer
 } from '@angular/material';
 
-import { SidenavProperties } from '../../models/sidenav-properties.m';
-import { WindowProperties } from '../../models/window-properties.m';
+import { SidenavProperties } from './../models/sidenav-properties.m';
+import { WindowProperties } from './../models/window-properties.m';
 
 @Component({
   selector: 'app-layout',
@@ -60,7 +60,7 @@ export class LayoutComponent implements OnInit {
     this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
 
-    this.working$ = this.store.select(fromRoot.getApplicationWorking);
+    this.working$ = this.store.select(fromRoot.getAppWorking);
 
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -88,10 +88,13 @@ export class LayoutComponent implements OnInit {
 
   onSidenavClose() {
     if (this.sidenavState.opened === true) {
-      this.store.dispatch(new layout.CloseSidenav());
+      this.store.dispatch(new a_in_layout.CloseSidenav());
     }
   }
 
+  // listen to window size changes
+  // update local vars for width and height
+  // run updateLayout whenever window size changed
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = event.target.innerWidth;
@@ -152,7 +155,9 @@ export class LayoutComponent implements OnInit {
       currentWindowState.isXL !== this.windowState.isXL
     ) {
       this.store.dispatch(
-        new layout.UpdateLayout(currentWindowState, curretSidenavState)
+        // if local layout state differs from root state
+        // then update root layout state
+        new a_in_layout.UpdateLayout(currentWindowState, curretSidenavState)
       );
     }
   }

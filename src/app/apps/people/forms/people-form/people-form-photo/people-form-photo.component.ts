@@ -1,4 +1,4 @@
-import { ApiPath, PathOptimus } from './../../../../../constants/index';
+import { ApiPath, PathOptimus } from './../../../../../shared/constants/index';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 

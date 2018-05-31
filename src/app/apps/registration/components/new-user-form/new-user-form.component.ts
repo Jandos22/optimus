@@ -1,5 +1,5 @@
-import { UserService } from './../../../../services/user.service';
-import { WirelinePath } from './../../../../constants/index';
+import { UserService } from './../../../../shared/services/user.service';
+import { WirelinePath } from './../../../../shared/constants/index';
 
 import {
   Component,

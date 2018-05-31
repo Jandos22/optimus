@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -23,7 +23,7 @@ import {
   RouterStateSerializer
 } from '@ngrx/router-store';
 
-import { reducers, effects, CustomSerializer } from './store';
+import { reducers, root, effects, CustomSerializer } from './store';
 
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -38,16 +38,28 @@ import { RegistrationModule } from './apps/registration/registration.module';
 
 // containers
 import { AppComponent } from './app.component';
-import * as fromContainers from './containers';
+import * as fromLayout from './layout';
+
+// components
+import * as fromComponents from './shared/components';
 
 // services
-import * as fromServices from './services';
+import * as fromServices from './shared/services';
 
 // guards
 import { AuthGuard } from './guards/auth.guard';
+import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 
 @NgModule({
-  declarations: [AppComponent, ...fromContainers.containers],
+  declarations: [
+    AppComponent,
+    ...fromLayout.containers,
+    ...fromComponents.components
+  ],
+  entryComponents: [
+    fromComponents.ErrorDialogBoxComponent,
+    fromLayout.HeaderLocationSelectorComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -56,6 +68,7 @@ import { AuthGuard } from './guards/auth.guard';
     ReactiveFormsModule,
     MaterialModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forFeature('root', root),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     AppRoutingModule,
@@ -66,7 +79,11 @@ import { AuthGuard } from './guards/auth.guard';
     Title,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
     ...fromServices.services,
-    AuthGuard
+    AuthGuard,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandlerService
+    }
   ],
   exports: [
     // ...fromContainers.containers,

@@ -3,27 +3,32 @@ import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../';
 import * as fromLayout from '../reducers/layout.reducer';
 
+export const getLayoutState = createSelector(
+  fromRoot.getRootState,
+  (state: fromRoot.RootState) => state.layout
+);
+
 export const getLayoutWindow = createSelector(
-  fromRoot.getLayoutState,
+  getLayoutState,
   fromLayout.getLayoutWindow
 );
 
 export const getSidenavState = createSelector(
-  fromRoot.getLayoutState,
+  getLayoutState,
   fromLayout.getSidenavState
 );
 
 export const getSidenavOpened = createSelector(
-  fromRoot.getLayoutState,
+  getLayoutState,
   fromLayout.getSidenavOpened
 );
 
 export const getSidenavMode = createSelector(
-  fromRoot.getLayoutState,
+  getLayoutState,
   fromLayout.getSidenavMode
 );
 
 export const getLockedInClosed = createSelector(
-  fromRoot.getLayoutState,
+  getLayoutState,
   fromLayout.getLockedInClosed
 );
