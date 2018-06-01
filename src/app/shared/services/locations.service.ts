@@ -3,13 +3,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { map } from 'rxjs/operators';
+import { of, from } from 'rxjs';
+import { map, tap, take, concatMap } from 'rxjs/operators';
+
+import { SharepointService } from './sharepoint.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sp: SharepointService) {}
 
   // returns all exemptions for a given location
   getLocations() {
@@ -27,7 +30,23 @@ export class LocationsService {
 
   // method updates only LocationsOfInterest field
   // of a given user (item) in NgPeople list
-  updateLocationsOfInterest(object): Promise<any> {
-    return sprLib.list('NgPeople').update(object);
+  // updateLocationsOfInterest(object): Promise<any> {
+  //   return sprLib.list('NgPeople').update(object);
+  // }
+
+  updateLocationsOfInterest(object) {
+    const fdv$ = this.sp.getFDV();
+    return fdv$.pipe(
+      take(1),
+      concatMap(fdv => {
+        console.log(fdv);
+
+        const update$: Promise<any> = sprLib
+          .list({ name: 'NgPeople', ...fdv })
+          .update(object);
+
+        return from(update$.then(response => response));
+      })
+    );
   }
 }

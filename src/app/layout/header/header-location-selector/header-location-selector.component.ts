@@ -41,7 +41,7 @@ import { OptimusUser, UserState } from '../../../shared/interface/user.model';
       </div>
       <div fxFlex fxLayout="column">
         <mat-form-field>
-          <mat-select placeholder="Location of assignment" [formControl]="fc_location" [value]="location">
+          <mat-select placeholder="Location of assignment" [formControl]="fc_location">
             <mat-option *ngFor="let location of (locations_list$ | async)" [value]="location.Id">{{ location.Title }}</mat-option>
           </mat-select>
         </mat-form-field>

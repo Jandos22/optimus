@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 
 import { ApiPath } from './../constants';
+import { FDV } from '../interface/form-digest-value.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class SharepointService {
       'accept',
       'application/json;odata=verbose'
     );
-    return this.http.post(url, { headers }).pipe(tap(v => console.log(v)));
+    return this.http.post(url, { headers }).pipe(
+      map((fdv: FDV) => {
+        return { requestDigest: fdv.FormDigestValue };
+      })
+    );
   }
 }

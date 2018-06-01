@@ -9,7 +9,7 @@ import { ApiPath, WirelinePath, ProxyPath } from './../constants';
 
 // data models
 import { Photo } from '../../models/photo.model';
-import { FDV } from '../../models/fdv.model';
+import { FDV } from './../interface/form-digest-value.model';
 import { FormDigestValue } from '../../models/index';
 import { CurrentUser } from '../../models/current-user.m';
 
