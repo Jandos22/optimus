@@ -1,4 +1,4 @@
-import { Locations } from './../../../../../models/locations.m';
+// import { Locations } from './../../../../../models/locations.m';
 import {
   Component,
   Input,
@@ -6,6 +6,9 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+// interfaces
+import { LocationEnt } from './../../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-people-form-location',
@@ -16,8 +19,8 @@ import { FormGroup } from '@angular/forms';
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
           <mat-select placeholder="Location" formControlName="Location" [disabled]="disabled">
-            <mat-option *ngFor="let item of locations" [value]="item.Location">
-                {{ item.Location }}
+            <mat-option *ngFor="let item of locations" [value]="item.Title">
+                {{ item.Title }}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
@@ -27,7 +30,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class PeopleFormLocationComponent {
   @Input() parent: FormGroup;
-  @Input() locations: Locations;
+  @Input() locations: LocationEnt[];
   @Input() disabled: boolean;
 
   constructor() {}

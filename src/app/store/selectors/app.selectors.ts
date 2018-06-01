@@ -15,9 +15,9 @@ export const getAppLocation = createSelector(
   fromApp.getAppLocation
 );
 
-export const getAppLocations = createSelector(
-  getAppState,
-  fromApp.getAppLocations
-);
+// export const getAppLocations = createSelector(
+//   getAppState,
+//   fromApp.getAppLocations
+// );
 
 export const getAppWorking = createSelector(getAppState, fromApp.getAppWorking);

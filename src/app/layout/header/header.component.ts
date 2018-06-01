@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       appNameClass: null
     };
 
-    this.locations$ = this.store.select(fromRoot.getAppLocations);
+    // this.locations$ = this.store.select(fromRoot.getAppLocations);
     this.selectedLocation$ = this.store.select(fromRoot.getAppLocation);
     this.appName$ = this.store.select(fromRoot.getAppName);
 

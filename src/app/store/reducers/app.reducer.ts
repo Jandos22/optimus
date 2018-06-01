@@ -78,5 +78,5 @@ export function reducer(
 
 export const getAppName = (state: AppState) => state.name;
 export const getAppLocation = (state: AppState) => state.location;
-export const getAppLocations = (state: AppState) => state.locations;
+// export const getAppLocations = (state: AppState) => state.locations;
 export const getAppWorking = (state: AppState) => state.working;

@@ -50,12 +50,6 @@ export const peopleRoutes: Routes = [
     ...fromForms.forms,
     ...fromFormComponents.forms_components
   ],
-  entryComponents: [...fromForms.forms],
-  exports: [
-    RouterModule,
-    ReactiveFormsModule,
-    ...fromContainers.containers,
-    ...fromComponents.components
-  ]
+  entryComponents: [...fromForms.forms]
 })
 export class PeopleModule {}

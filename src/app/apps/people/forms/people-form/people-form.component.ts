@@ -26,7 +26,8 @@ import { ValidationService } from '../../../../validators/validation.service';
 
 // interfaces
 import { PeopleItem, PeopleItemChanges } from '../../models/people-item.model';
-import { Locations } from './../../../../models/locations.m';
+// import { Locations } from './../../../../models/locations.m';
+import { LocationEnt } from '../../../../shared/interface/locations.model';
 
 export interface Photo {
   photoExists: boolean;
@@ -65,8 +66,6 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
 
         </div>
 
-
-
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
@@ -86,7 +85,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   window$: Subscription;
   locations$: Subscription;
 
-  locations: Locations[];
+  locations: LocationEnt[];
   photo: string;
 
   changesList: PeopleItemChanges;
@@ -130,7 +129,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     // get locations list from store and update local locations list
     this.locations$ = this.store
-      .select(fromRoot.getAppLocations)
+      .select(fromRoot.selectAllLocations)
       .subscribe(locations => (this.locations = locations));
 
     // when alias changed, also update email
