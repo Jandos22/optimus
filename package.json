@@ -6,7 +6,8 @@
     "ng": "ng",
     "start": "ng serve --proxy-config ./config/proxy.conf.json",
     "serve": "node ./config/server.js",
-    "build": "ng build --prod",
+    "build": "ng build --prod --base-href /sites/wireline/optimus/index.aspx",
+    "build-dev": "ng build --prod --base-href /sites/wireline/x10/index.aspx",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

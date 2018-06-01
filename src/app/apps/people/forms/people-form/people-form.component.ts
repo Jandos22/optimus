@@ -98,7 +98,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private fromRoot: Store<fromRoot.RootState>,
+    private store: Store<fromRoot.RootState>,
     private asyncValidators: AsyncValidationService,
     public dialogRef: MatDialogRef<PeopleFormComponent>,
     public photoDialog: MatDialog,
@@ -111,7 +111,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.initPhotoForm();
 
     // on each breakpoint change, update size of form dialog
-    this.window$ = this.fromRoot
+    this.window$ = this.store
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
         let width: string;
@@ -129,7 +129,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       });
 
     // get locations list from store and update local locations list
-    this.locations$ = this.fromRoot
+    this.locations$ = this.store
       .select(fromRoot.getAppLocations)
       .subscribe(locations => (this.locations = locations));
 

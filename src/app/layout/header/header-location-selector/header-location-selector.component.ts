@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 
+// material
+import { MatDialogRef } from '@angular/material';
+
 // ngrx
 import { Store, select } from '@ngrx/store';
 
@@ -76,7 +79,8 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private s_in_root: Store<fromRoot.RootState>
+    private s_in_root: Store<fromRoot.RootState>,
+    private dialogRef: MatDialogRef<HeaderLocationSelectorComponent>
   ) {
     this.initForm();
 
@@ -86,7 +90,10 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
 
     this.window$ = this.s_in_root
       .pipe(select(fromRoot.getLayoutWindow))
-      .subscribe((window: WindowProperties) => (this.window = window));
+      .subscribe((window: WindowProperties) => {
+        this.window = window;
+        this.resizeDialog(window);
+      });
 
     this.user$ = this.s_in_root
       .pipe(take(1), select(fromRoot.getUserState))
@@ -131,6 +138,12 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
   initForm() {
     this.fc_location = this.fb.control({ value: '', disabled: true });
     this.fc_locations = this.fb.control([]);
+  }
+
+  resizeDialog(window: WindowProperties) {
+    let width: string;
+    window.isXXS || window.isXS ? (width = '80%') : (width = '464px');
+    this.dialogRef.updateSize(width);
   }
 
   ngOnDestroy() {

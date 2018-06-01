@@ -2,19 +2,19 @@
 <html lang="en">
 
 <!--
-  Zhandos Ombayev, Founder & CEO :)
+  Zhandos Ombayev, Founder & CEO
   - zombayev@slb.com, ombayev@gmail.com
-  - +7 705 773 73 66 (KZ)
+  - +7 771 177 83 33 (cell phone)
+  - +7 705 773 73 66 (whatsapp, telegram)
 -->
-
 
 <head>
 
   <title>Optimus</title>
 
-  <base href="/sites/wireline/optimus/index.aspx">
-  <!-- <base href="/sites/wireline/x10/index.aspx"> -->
-  <!-- <base href="/"> -->
+  <!-- base href is dynamically assigned according to development environment
+       with angular-cli, check package.json -->
+  <base href="/">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
