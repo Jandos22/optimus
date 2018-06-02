@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, throwError, of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { Observable, throwError, of, from } from 'rxjs';
+import { map, catchError, switchMap, concatMap, take } from 'rxjs/operators';
 
 // constants
 import { ApiPath } from '../../../shared/constants';
@@ -13,9 +13,12 @@ import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 // interfaces
 import { PeopleParams } from './../models/people-params.model';
 
+// services
+import { SharepointService } from './../../../shared/services/sharepoint.service';
+
 @Injectable()
 export class PeopleService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sp: SharepointService) {}
 
   getPeopleWithGivenUrl(url) {
     return this.http
@@ -31,6 +34,20 @@ export class PeopleService {
         }),
         catchError((error: any) => throwError(error.json()))
       );
+  }
+
+  updatePeopleItem(updatedFields) {
+    console.log(updatedFields);
+    const fdv$ = this.sp.getFDV();
+    return fdv$.pipe(
+      take(1),
+      concatMap(fdv => {
+        const update$: Promise<any> = sprLib
+          .list({ name: 'NgPeople', ...fdv })
+          .update(updatedFields);
+        return from(update$.then(response => response));
+      })
+    );
   }
 
   buildUrlToGetPeople(params: PeopleParams, counter?: boolean) {

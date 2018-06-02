@@ -37,6 +37,7 @@ import * as fromRoot from '../../../../store';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // services
+import { PeopleService } from './../../services/people.service';
 import { ValidationService } from '../../../../validators/validation.service';
 import { AsyncValidationService } from './../../../../validators/async-validation.service';
 import { PeopleFormValueService } from './../../services/people-form-value.service';
@@ -104,8 +105,11 @@ import { FormMode } from '../../../../models/form-mode.model';
       <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid"
         *ngIf="mode.isNew" (click)="onSave()">SAVE</button>
 
+      <!-- btn for saving changes in edit mode -->
       <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields"
-        *ngIf="mode.isEdit" (click)="onSaveChanges()">SAVE</button>
+        *ngIf="mode.isEdit" (click)="onSaveChanges()">
+        SAVE
+      </button>
 
     </mat-dialog-actions>
     `,
@@ -147,12 +151,16 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   fc_gin$: Observable<string>;
   fc_location_assigned$: Observable<string>;
 
+  // button state properties
+  onSaveChangesActive = false;
+
   constructor(
     private fb: FormBuilder,
     private store: Store<fromRoot.RootState>,
     private asyncValidators: AsyncValidationService,
     public dialogRef: MatDialogRef<PeopleFormComponent>,
     public photoDialog: MatDialog,
+    private peopleService: PeopleService,
     private formValueService: PeopleFormValueService,
     private formSizeService: PeopleFormSizeService,
     @Inject(MAT_DIALOG_DATA) public data: { mode: string; item?: PeopleItem }
@@ -277,7 +285,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.$acceptOnlyNewValues = this.fc_changes$
       .pipe(
         filter((keyValuePair: Object) => {
-          console.log(keyValuePair);
           const key = Object.keys(keyValuePair).toString();
           return this.data.item[key] !== keyValuePair[key];
         }),
@@ -285,6 +292,12 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(updatedField => {
         this.updatedFields = { ...this.updatedFields, ...updatedField };
+        if (!this.updatedFields.hasOwnProperty('ID')) {
+          this.updatedFields = {
+            ...this.updatedFields,
+            ID: this.data.item['ID']
+          };
+        }
         console.log(this.updatedFields);
       });
 
@@ -298,6 +311,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(initial => {
         delete this.updatedFields[Object.keys(initial).toString()];
+        if (Object.keys(this.updatedFields).length === 1) {
+          delete this.updatedFields['ID'];
+        }
         console.log(this.updatedFields);
       });
   }
@@ -345,7 +361,25 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     // console.log(this.photo);
   }
 
-  onSaveChanges() {}
+  onSaveChanges() {
+    console.log(this.updatedFields);
+    this.onSaveChangesActive = true;
+    return this.peopleService
+      .updatePeopleItem(this.updatedFields)
+      .subscribe(
+        success => this.onSaveChangesSuccess(success),
+        error => this.onSaveChangesError(error)
+      );
+  }
+
+  onSaveChangesSuccess(success) {
+    console.log(success);
+    // this.dialogRef.close();
+  }
+
+  onSaveChangesError(error) {
+    console.log(error);
+  }
 
   onClose() {
     this.dialogRef.close();
