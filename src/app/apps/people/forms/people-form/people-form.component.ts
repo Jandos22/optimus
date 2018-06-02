@@ -79,21 +79,21 @@ import { FormMode } from '../../../../models/form-mode.model';
         </div>
         -->
 
-        <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap.gt-xs="16px" fxFlex.gt-xs>
+        <div fxLayout="column" fxLayoutAlign.gt-xs="space-between start" fxLayout.gt-xs="row wrap" fxFlex.gt-xs>
 
-            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form" [mode]="mode"></app-people-form-name>
-            <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
-            <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
-            <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
-            <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
-            <app-people-form-location fxFlex.gt-xs="180px"
+            <app-people-form-name fxFlex.gt-xs="196px" [parent]="form" [mode]="mode"></app-people-form-name>
+            <app-people-form-surname fxFlex.gt-xs="196px" [parent]="form"></app-people-form-surname>
+            <app-people-form-alias fxFlex.gt-xs="196px" [parent]="form"></app-people-form-alias>
+            <app-people-form-email fxFlex.gt-xs="196px" [parent]="form"></app-people-form-email>
+            <app-people-form-gin fxFlex.gt-xs="196px" [parent]="form"></app-people-form-gin>
+            <app-people-form-location fxFlex.gt-xs="196px"
               [parent]="form" [locations]="locations" [disabled]="locationDisabled">
             </app-people-form-location>
 
         </div>
 
     </mat-dialog-content>
-    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
+    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
 
       <button mat-button tabindex="-1"
@@ -108,7 +108,10 @@ import { FormMode } from '../../../../models/form-mode.model';
       <!-- btn for saving changes in edit mode -->
       <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields"
         *ngIf="mode.isEdit" (click)="onSaveChanges()">
-        SAVE
+        <span *ngIf="onSaveChangesActive">
+         <i class="fas fa-spinner fa-spin"></i>
+        </span>
+        <span> SAVE</span>
       </button>
 
     </mat-dialog-actions>
@@ -373,8 +376,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesSuccess(success) {
-    console.log(success);
-    // this.dialogRef.close();
+    // when success object return, close form dialog
+    this.dialogRef.close();
   }
 
   onSaveChangesError(error) {

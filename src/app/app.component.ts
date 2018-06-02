@@ -7,6 +7,10 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from './store';
 import * as a_in_locations from './store/actions/locations.actions';
 
+// font-awesome
+import fontawesome from '@fortawesome/fontawesome';
+import { faSpinner } from '@fortawesome/fontawesome-free-solid';
+
 // this fix is only required in iOS Safari
 import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';
 viewportUnitsBuggyfill.init({
@@ -22,7 +26,10 @@ viewportUnitsBuggyfill.init({
   styles: []
 })
 export class AppComponent implements OnInit {
-  constructor(private s_in_root: Store<fromRoot.RootState>) {}
+  constructor(private s_in_root: Store<fromRoot.RootState>) {
+    // font-awesome imports
+    fontawesome.library.add(faSpinner);
+  }
 
   ngOnInit() {
     // get locations, then write in root > locations

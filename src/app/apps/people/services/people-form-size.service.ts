@@ -13,7 +13,7 @@ export class PeopleFormSizeService {
     window.isXXS || window.isXS
       ? (width = '80%')
       : window.isS
-        ? (width = '440px')
+        ? (width = '456px')
         : window.isM
           ? (width = '652px')
           : (width = '832px');
