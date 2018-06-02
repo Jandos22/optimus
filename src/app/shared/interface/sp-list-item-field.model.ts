@@ -1,5 +1,5 @@
 export interface SpListItemField {
-  ID: number;
+  ID?: number;
   ['odata.type']: string;
   ['odata.id']: string;
   ['odata.etag']: string;

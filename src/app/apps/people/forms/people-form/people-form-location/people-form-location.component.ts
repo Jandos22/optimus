@@ -18,8 +18,8 @@ import { LocationEnt } from './../../../../../shared/interface/locations.model';
   template: `
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
-          <mat-select placeholder="Location" formControlName="Location" [disabled]="disabled">
-            <mat-option *ngFor="let item of locations" [value]="item.Title">
+          <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId" [disabled]="disabled">
+            <mat-option *ngFor="let item of locations" [value]="item.id">
                 {{ item.Title }}
             </mat-option>
           </mat-select>
@@ -36,14 +36,16 @@ export class PeopleFormLocationComponent {
   constructor() {}
 
   get hasError() {
-    return this.parent.get('Gin').invalid;
+    return this.parent.get('LocationAssignedId').invalid;
   }
 
   get errorMessage() {
-    const required = this.parent.controls['Location'].hasError('required');
-    return this.parent.controls['Location'].touched
+    const required = this.parent.controls['LocationAssignedId'].hasError(
+      'required'
+    );
+    return this.parent.controls['LocationAssignedId'].touched
       ? required
-        ? 'Location is required'
+        ? '... is required'
         : ''
       : '';
   }

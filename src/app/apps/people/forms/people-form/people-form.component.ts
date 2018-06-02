@@ -1,4 +1,3 @@
-import { AsyncValidationService } from './../../../../validators/async-validation.service';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import {
@@ -11,8 +10,24 @@ import {
 } from '@angular/forms';
 
 // rxjs
-import { Subscription, of, Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import {
+  Subscription,
+  Observable,
+  of,
+  from,
+  merge,
+  fromEvent,
+  Subject
+} from 'rxjs';
+import {
+  map,
+  tap,
+  switchMap,
+  take,
+  filter,
+  pluck,
+  takeUntil
+} from 'rxjs/operators';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -23,11 +38,18 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // services
 import { ValidationService } from '../../../../validators/validation.service';
+import { AsyncValidationService } from './../../../../validators/async-validation.service';
+import { PeopleFormValueService } from './../../services/people-form-value.service';
+import { PeopleFormSizeService } from '../../services/people-form-size.service';
 
 // interfaces
-import { PeopleItem, PeopleItemChanges } from '../../models/people-item.model';
+import { PeopleItemChanges } from '../../models/people-item.model';
 // import { Locations } from './../../../../models/locations.m';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
+import {
+  PeopleItem,
+  PeopleItemObject
+} from './../../../../shared/interface/people.model';
 
 export interface Photo {
   photoExists: boolean;
@@ -39,6 +61,7 @@ export interface Photo {
 
 // dialog components
 import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/people-form-photo-picker.component';
+import { FormMode } from '../../../../models/form-mode.model';
 
 @Component({
   selector: 'app-people-form',
@@ -47,11 +70,13 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
     <span mat-dialog-title style="text-align: center;">{{ title }}</span>
     <mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
 
+        <!--
         <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
           <app-people-form-photo
             [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
           </app-people-form-photo>
         </div>
+        -->
 
         <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap.gt-xs="16px" fxFlex.gt-xs>
 
@@ -69,24 +94,32 @@ import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/peopl
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end" class="headerfooter">
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
-      <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()">CANCEL</button>
+
+      <button mat-button tabindex="-1"
+        *ngIf="mode.isEdit || mode.isNew"
+        (click)="onCancel()" class="people-form__btn--cancel">CANCEL</button>
+
       <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
 
       <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid"
-        *ngIf="mode.isEdit || mode.isNew" (click)="onSave()">SAVE</button>
+        *ngIf="mode.isNew" (click)="onSave()">SAVE</button>
+
+      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields"
+        *ngIf="mode.isEdit" (click)="onSaveChanges()">SAVE</button>
 
     </mat-dialog-actions>
-    `
+    `,
+  providers: [PeopleFormValueService, PeopleFormSizeService]
 })
 export class PeopleFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  photoForm: FormGroup;
+  // photoForm: FormGroup;
 
   window$: Subscription;
   locations$: Subscription;
 
   locations: LocationEnt[];
-  photo: string;
+  // photo: string;
 
   changesList: PeopleItemChanges;
 
@@ -95,36 +128,48 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // react to value changes in form
   alias$: Subscription;
 
+  user: PeopleItem;
+
+  updatedFields: Object;
+
+  formEditingCancelled$: Subject<void>;
+
+  $acceptOnlyNewValues: Subscription;
+  $acceptOnlyInitialValues: Subscription;
+
+  fc_changes$: Observable<Object>;
+
+  // observables /to/ form control changes
+  fc_name$: Observable<string>;
+  fc_surname$: Observable<string>;
+  fc_alias$: Observable<string>;
+  fc_email$: Observable<string>;
+  fc_gin$: Observable<string>;
+  fc_location_assigned$: Observable<string>;
+
   constructor(
     private fb: FormBuilder,
     private store: Store<fromRoot.RootState>,
     private asyncValidators: AsyncValidationService,
     public dialogRef: MatDialogRef<PeopleFormComponent>,
     public photoDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    private formValueService: PeopleFormValueService,
+    private formSizeService: PeopleFormSizeService,
+    @Inject(MAT_DIALOG_DATA) public data: { mode: string; item?: PeopleItem }
+  ) {
+    this.initForm(this.formValueService.itemValue(this.data));
+  }
 
   ngOnInit() {
     // initialize form when component instantiated
-    this.initForm();
-    this.initPhotoForm();
+    // this.initForm(this.formValueService.itemValue(this.data));
+    // this.initPhotoForm();
 
     // on each breakpoint change, update size of form dialog
     this.window$ = this.store
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
-        let width: string;
-
-        window.isXXS || window.isXS
-          ? (width = '80%')
-          : window.isS
-            ? (width = '440px')
-            : window.isM
-              ? (width = '652px')
-              : (width = '832px');
-
-        console.log(width);
-        this.dialogRef.updateSize(width);
+        this.dialogRef.updateSize(this.formSizeService.width(window));
       });
 
     // get locations list from store and update local locations list
@@ -137,23 +182,34 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       .get('Alias')
       .valueChanges.subscribe((alias: string) => {
         this.form.get('Email').setValue(`${alias}@slb.com`);
-        this.updatePhotoFilename();
+        // this.updatePhotoFilename();
       });
   }
 
   // *** form group
-  initForm() {
+  // values assigned depending on mode (new, view or edit)
+  initForm(item: PeopleItem) {
+    console.log(item);
     this.form = this.fb.group({
-      Name: [this.nameInput, Validators.required],
-      Surname: [this.surnameInput, Validators.required],
+      Name: [
+        this.formValueService.initNameValue(this.mode, item.Name),
+        Validators.required
+      ],
+      Surname: [
+        this.formValueService.initSurnameValue(this.mode, item.Surname),
+        Validators.required
+      ],
       Alias: [
-        this.aliasInput,
+        this.formValueService.initAliasValue(this.mode, item.Alias),
         Validators.required,
         this.uniqueAlias.bind(this)
       ],
-      Email: [this.emailInput, Validators.required],
+      Email: [
+        this.formValueService.initEmailValue(this.mode, item.Email),
+        Validators.required
+      ],
       Gin: [
-        this.ginInput,
+        this.formValueService.initGinValue(this.mode, item.Gin),
         [
           Validators.required,
           Validators.minLength(8),
@@ -162,56 +218,134 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         ],
         this.uniqueGin.bind(this)
       ],
-      Location: [this.locationInput, Validators.required],
-      Photo: this.fb.group({
-        Url: [this.photoInput['Url']],
-        Description: [this.photoInput['Description']]
-      })
-    });
-  }
-
-  initPhotoForm() {
-    this.photoForm = this.fb.group({
-      Filename: ['', Validators.required],
-      ArrayBuffer: [new ArrayBuffer(0), Validators.required]
-    });
-    this.photo = this.form.get('Photo.Url').value;
-  }
-
-  openPhotoPicker() {
-    // you can't open photo picker when mode is view
-    const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
-      data: {
-        photo: this.photo,
-        arrayBuffer: this.photoForm.get('ArrayBuffer').value
-      }
+      LocationAssignedId: [
+        this.formValueService.initLocationAssignedIdValue(
+          this.mode,
+          item.LocationAssignedId
+        ),
+        Validators.required
+      ]
+      // Photo: this.fb.group({
+      //   Url: [this.photoInput['Url']],
+      //   Description: [this.photoInput['Description']]
+      // })
     });
 
-    dialogRef.afterClosed().subscribe((result: Photo) => {
-      console.log(result);
-      if (result) {
-        this.photo = result.photo;
-        this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
-        this.updatePhotoFilename();
-      }
-      console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
-    });
+    if (this.data.mode === 'edit') {
+      this.StartEditingForm();
+    }
   }
+
+  StartEditingForm() {
+    // collection of updated form control values
+    // start with empty object
+    this.updatedFields = {};
+
+    // create new subject and then send notification
+    // for unsubscribe observable
+    this.formEditingCancelled$ = new Subject();
+
+    // when observable notified it cancels subscription
+    const unsubscribe$ = this.formEditingCancelled$.pipe(
+      tap(v => console.log('editing cancelled & subscription completed'))
+    );
+
+    // register observables to listen for form control changes
+    this.fc_name$ = this.form.get('Name').valueChanges;
+    this.fc_surname$ = this.form.get('Surname').valueChanges;
+    this.fc_alias$ = this.form.get('Alias').valueChanges;
+    this.fc_email$ = this.form.get('Email').valueChanges;
+    this.fc_gin$ = this.form.get('Gin').valueChanges;
+    this.fc_location_assigned$ = this.form.get(
+      'LocationAssignedId'
+    ).valueChanges;
+
+    // merge all form control listeners and emit one object at a time
+    this.fc_changes$ = merge(
+      this.fc_name$.pipe(map(Name => ({ Name }))),
+      this.fc_surname$.pipe(map(Surname => ({ Surname }))),
+      this.fc_alias$.pipe(map(Alias => ({ Alias }))),
+      this.fc_email$.pipe(map(Email => ({ Email }))),
+      this.fc_gin$.pipe(map(Gin => ({ Gin }))),
+      this.fc_location_assigned$.pipe(
+        map(LocationAssignedId => ({ LocationAssignedId }))
+      )
+    );
+
+    // subscription that get values only if they differ from initial
+    // then new value added into collection of updated values
+    this.$acceptOnlyNewValues = this.fc_changes$
+      .pipe(
+        filter((keyValuePair: Object) => {
+          console.log(keyValuePair);
+          const key = Object.keys(keyValuePair).toString();
+          return this.data.item[key] !== keyValuePair[key];
+        }),
+        takeUntil(unsubscribe$)
+      )
+      .subscribe(updatedField => {
+        this.updatedFields = { ...this.updatedFields, ...updatedField };
+        console.log(this.updatedFields);
+      });
+
+    this.$acceptOnlyInitialValues = this.fc_changes$
+      .pipe(
+        filter((keyValuePair: Object) => {
+          const key = Object.keys(keyValuePair).toString();
+          return this.data.item[key] === keyValuePair[key];
+        }),
+        takeUntil(unsubscribe$)
+      )
+      .subscribe(initial => {
+        delete this.updatedFields[Object.keys(initial).toString()];
+        console.log(this.updatedFields);
+      });
+  }
+
+  // initPhotoForm() {
+  //   this.photoForm = this.fb.group({
+  //     Filename: ['', Validators.required],
+  //     ArrayBuffer: [new ArrayBuffer(0), Validators.required]
+  //   });
+  //   this.photo = this.form.get('Photo.Url').value;
+  // }
+
+  // openPhotoPicker() {
+  //   // you can't open photo picker when mode is view
+  //   const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
+  //     data: {
+  //       photo: this.photo,
+  //       arrayBuffer: this.photoForm.get('ArrayBuffer').value
+  //     }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((result: Photo) => {
+  //     console.log(result);
+  //     if (result) {
+  //       this.photo = result.photo;
+  //       this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
+  //       this.updatePhotoFilename();
+  //     }
+  //     console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
+  //   });
+  // }
 
   // Utility Functions
 
-  updatePhotoFilename(): void {
-    const alias: string = this.form.get('Alias').value;
-    this.photoForm.get('Filename').setValue(alias ? `${alias}.jpg` : '');
-  }
+  // updatePhotoFilename(): void {
+  //   const alias: string = this.form.get('Alias').value;
+  //   this.photoForm.get('Filename').setValue(alias ? `${alias}.jpg` : '');
+  // }
 
   // ACTION BUTTONS
 
   onSave() {
     console.log(this.form);
-    console.log(this.photoForm);
-    console.log(this.photo);
+    // console.log(this.photoForm);
+    // console.log(this.photo);
   }
+
+  onSaveChanges() {}
 
   onClose() {
     this.dialogRef.close();
@@ -219,14 +353,16 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   onEdit() {
     this.data.mode = 'edit';
-    this.initForm();
+    this.initForm(this.formValueService.itemValue(this.data));
   }
 
   onCancel() {
     if (this.mode.isEdit) {
       this.data.mode = 'view';
-      this.initForm();
-      this.initPhotoForm();
+      this.formEditingCancelled$.next();
+      this.formEditingCancelled$.complete();
+      this.initForm(this.formValueService.itemValue(this.data));
+      // this.initPhotoForm();
     }
     if (this.mode.isNew) {
       this.onClose();
@@ -236,7 +372,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   get title() {
     return this.mode.isNew
       ? 'New User'
-      : this.user.Name + ' ' + this.user.Surname;
+      : this.data.item.Name + ' ' + this.data.item.Surname;
   }
 
   get mode() {
@@ -246,64 +382,28 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     return { isNew, isView, isEdit };
   }
 
-  get user(): PeopleItem {
-    return !this.mode.isNew ? this.data.item : '';
+  // used to enable/disable save changes button
+  get hasUpdatedFields() {
+    return Object.keys(this.updatedFields).length === 0 &&
+      this.updatedFields.constructor === Object
+      ? false
+      : true;
   }
 
-  // *** form values getters
-  // need to outsource them when have chance
-  get nameInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView
-        ? { value: this.user.Name, disabled: true }
-        : { value: this.user.Name, disabled: false };
-  }
-  get surnameInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView
-        ? { value: this.user.Surname, disabled: true }
-        : this.user.Surname;
-  }
-  get aliasInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView
-        ? { value: this.user.Alias, disabled: true }
-        : { value: this.user.Alias, disabled: true };
-  }
-  get emailInput() {
-    return this.mode.isNew
-      ? { value: '@slb.com', disabled: true }
-      : this.mode.isView
-        ? { value: this.user.Email, disabled: true }
-        : { value: this.user.Email, disabled: true };
-  }
-  get ginInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView
-        ? { value: this.user.Gin, disabled: true }
-        : { value: this.user.Gin, disabled: true };
-  }
-  get locationInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView || this.mode.isEdit
-        ? this.user.Location
-        : '';
-  }
+  // get user(): PeopleItem | null {
+  //   return !this.mode.isNew ? this.data.item : null;
+  // }
+
   get locationDisabled() {
     return this.mode.isNew ? false : this.mode.isView ? true : false;
   }
-  get photoInput() {
-    return this.mode.isNew
-      ? ''
-      : this.mode.isView
-        ? { ...this.user.Photo }
-        : { ...this.user.Photo };
-  }
+  // get photoInput() {
+  //   return this.mode.isNew
+  //     ? ''
+  //     : this.mode.isView
+  //       ? { ...this.user.Photo }
+  //       : { ...this.user.Photo };
+  // }
 
   // async validators
 
