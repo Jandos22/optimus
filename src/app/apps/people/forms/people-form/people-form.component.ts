@@ -33,6 +33,8 @@ import {
 // ngrx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
+// ngrx actions
+import * as a_in_errors from '../../../../store/actions/errors.actions';
 
 // material
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -68,56 +70,7 @@ import { FormMode } from '../../../../models/form-mode.model';
 @Component({
   selector: 'app-people-form',
   styleUrls: ['people-form.component.css'],
-  template: `
-    <span mat-dialog-title style="text-align: center;">{{ title }}</span>
-    <mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
-
-        <!--
-        <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-          <app-people-form-photo
-            [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
-          </app-people-form-photo>
-        </div>
-        -->
-
-        <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px"
-          class="people-form__items--center">
-
-            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
-            <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
-            <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
-            <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
-            <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
-            <app-people-form-location fxFlex.gt-xs="180px"
-              [parent]="form" [locations]="locations" [disabled]="locationDisabled">
-            </app-people-form-location>
-
-        </div>
-
-    </mat-dialog-content>
-    <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-      <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
-
-      <button mat-button tabindex="-1"
-        *ngIf="mode.isEdit || mode.isNew"
-        (click)="onCancel()" class="people-form__btn--cancel">CANCEL</button>
-
-      <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
-
-      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid"
-        *ngIf="mode.isNew" (click)="onSave()">SAVE</button>
-
-      <!-- btn for saving changes in edit mode -->
-      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields || onSaveChangesActive"
-        *ngIf="mode.isEdit" (click)="onSaveChanges()">
-        <span *ngIf="onSaveChangesActive" class="form-button__text">
-         <i class="fas fa-spinner fa-spin"></i>
-        </span>
-        <span class="form-button__text"> SAVE</span>
-      </button>
-
-    </mat-dialog-actions>
-    `,
+  templateUrl: './people-form.component.html',
   providers: [PeopleFormValueService, PeopleFormSizeService]
 })
 export class PeopleFormComponent implements OnInit, OnDestroy {
@@ -160,6 +113,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // button state properties
   onSaveChangesActive = false;
+  onSaveActive = false;
 
   constructor(
     private fb: FormBuilder,
@@ -362,11 +316,63 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // ACTION BUTTONS
 
-  onSave() {
+  onLogForm() {
     console.log(this.form);
+    console.log(this.form.getRawValue());
     // console.log(this.photoForm);
     // console.log(this.photo);
   }
+
+  // BUTTON in ACTIONS
+  // SAVE to ADD user item in 'NgPeople' Sharepoint List
+  // ************************************************
+
+  onSave() {
+    // spinner icon activates inside save button
+    this.onSaveActive = true;
+    // observables that gets success or error object
+    const create$ = this.peopleService.createNewUser(this.form.getRawValue());
+    // subscription for success or error, if error then unsubscribe
+    // because user clicks onSave() again to retry (memory leak defense)
+    const handler$ = create$.subscribe(
+      success => this.onSaveSuccess(success),
+      error => {
+        this.onSaveError(error);
+        handler$.unsubscribe();
+      },
+      () => this.onSaveComplete()
+    );
+  }
+
+  onSaveSuccess(success) {
+    console.log('on save success');
+    console.log(success);
+    // after successfully saving item, we get it back
+    // update current item, then change mode to view
+    // and re-init form with new item & mode
+    this.onSaveActive = false;
+    this.data.item = { ...this.data.item, ...success };
+    this.data.mode = 'view';
+    this.initForm(this.formValueService.itemValue(this.data));
+  }
+
+  onSaveError(error) {
+    console.log('on save error');
+    console.log(error);
+    // errors are caught in subscribe(), then dialog box opens
+    // also disable spinner, because saving sequence didn't succeed
+    this.store.dispatch(new a_in_errors.DisplayError(error));
+    this.onSaveActive = false;
+  }
+
+  // indicates completion of on save observables chain
+  onSaveComplete() {
+    console.log('on save complete');
+  }
+
+  // BUTTON in ACTIONS
+  // SAVE CHANGES to UPDATE user item in 'NgPeople' Sharepoint List
+  // ************************************************
 
   onSaveChanges() {
     console.log(this.updatedFields);
@@ -381,8 +387,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   onSaveChangesSuccess(success) {
     // when success object return, close form dialog
-    // this.dialogRef.close();
-    // console.log(success);
+    console.log(success);
     this.onSaveChangesActive = false;
     this.data.item = { ...this.data.item, ...success };
     this.data.mode = 'view';

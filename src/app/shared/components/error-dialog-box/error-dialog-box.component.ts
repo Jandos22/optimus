@@ -5,10 +5,9 @@ import { Component, Inject } from '@angular/core';
   selector: 'app-error-dialog-box',
   styleUrls: ['error-dialog-box.component.scss'],
   template: `
-    <h2>{{ data.name }}, status: {{ data.status }}</h2>
+    <h2 matDialogTitle>Error</h2>
     <mat-dialog-content>
-      <div>{{ data.message }}</div>
-      <pre>{{ data.error | json }}</pre>
+      <p>{{ data | json }}</p>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button (click)="closeError()" color="primary">CLOSE</button>

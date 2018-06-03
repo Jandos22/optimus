@@ -4,7 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { Observable, throwError, of, from } from 'rxjs';
-import { map, catchError, switchMap, concatMap, take } from 'rxjs/operators';
+import {
+  map,
+  catchError,
+  switchMap,
+  concatMap,
+  take,
+  retry
+} from 'rxjs/operators';
 
 // constants
 import { ApiPath } from '../../../shared/constants';
@@ -41,11 +48,25 @@ export class PeopleService {
     const fdv$ = this.sp.getFDV();
     return fdv$.pipe(
       take(1),
-      concatMap(fdv => {
+      switchMap(fdv => {
         const update$: Promise<any> = sprLib
           .list({ name: 'NgPeople', ...fdv })
           .update(updatedFields);
         return from(update$.then(response => response));
+      })
+    );
+  }
+
+  createNewUser(userData) {
+    const fdv$ = this.sp.getFDV();
+
+    return fdv$.pipe(
+      take(1),
+      switchMap(fdv => {
+        const create$: Observable<any> = sprLib
+          .list({ name: 'NgPeople', ...fdv })
+          .create(userData);
+        return create$;
       })
     );
   }

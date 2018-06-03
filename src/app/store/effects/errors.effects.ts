@@ -23,7 +23,7 @@ export class ErrorsEffects {
   @Effect({
     dispatch: false
   })
-  setTitle = this.actions$.pipe(
+  displayError = this.actions$.pipe(
     ofType(a_in_errors.DISPLAY_ERROR),
     map((action: a_in_errors.DisplayError) => action.payload),
     tap(error => {
