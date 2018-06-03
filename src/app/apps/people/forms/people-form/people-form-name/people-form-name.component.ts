@@ -7,7 +7,7 @@ import {
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 // interfaces
-import { FormMode } from './../../../../../models/form-mode.model';
+// import { FormMode } from './../../../../../models/form-mode.model';
 
 @Component({
   selector: 'app-people-form-name',
@@ -24,7 +24,7 @@ import { FormMode } from './../../../../../models/form-mode.model';
 })
 export class PeopleFormNameComponent {
   @Input() parent: FormGroup;
-  @Input() mode: FormMode;
+  // @Input() mode: FormMode;
 
   constructor() {}
 

@@ -1,3 +1,4 @@
+import { WindowProperties } from './../../../../models/window-properties.m';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import {
@@ -79,14 +80,15 @@ import { FormMode } from '../../../../models/form-mode.model';
         </div>
         -->
 
-        <div fxLayout="column" fxLayoutAlign.gt-xs="space-between start" fxLayout.gt-xs="row wrap" fxFlex.gt-xs>
+        <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px"
+          class="people-form__items--center">
 
-            <app-people-form-name fxFlex.gt-xs="196px" [parent]="form" [mode]="mode"></app-people-form-name>
-            <app-people-form-surname fxFlex.gt-xs="196px" [parent]="form"></app-people-form-surname>
-            <app-people-form-alias fxFlex.gt-xs="196px" [parent]="form"></app-people-form-alias>
-            <app-people-form-email fxFlex.gt-xs="196px" [parent]="form"></app-people-form-email>
-            <app-people-form-gin fxFlex.gt-xs="196px" [parent]="form"></app-people-form-gin>
-            <app-people-form-location fxFlex.gt-xs="196px"
+            <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
+            <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
+            <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
+            <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
+            <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
+            <app-people-form-location fxFlex.gt-xs="180px"
               [parent]="form" [locations]="locations" [disabled]="locationDisabled">
             </app-people-form-location>
 
@@ -106,12 +108,12 @@ import { FormMode } from '../../../../models/form-mode.model';
         *ngIf="mode.isNew" (click)="onSave()">SAVE</button>
 
       <!-- btn for saving changes in edit mode -->
-      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields"
+      <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields || onSaveChangesActive"
         *ngIf="mode.isEdit" (click)="onSaveChanges()">
-        <span *ngIf="onSaveChangesActive">
+        <span *ngIf="onSaveChangesActive" class="form-button__text">
          <i class="fas fa-spinner fa-spin"></i>
         </span>
-        <span> SAVE</span>
+        <span class="form-button__text"> SAVE</span>
       </button>
 
     </mat-dialog-actions>
@@ -123,6 +125,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // photoForm: FormGroup;
 
   window$: Subscription;
+  window: WindowProperties;
+
   locations$: Subscription;
 
   locations: LocationEnt[];
@@ -173,13 +177,13 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // initialize form when component instantiated
-    // this.initForm(this.formValueService.itemValue(this.data));
     // this.initPhotoForm();
 
     // on each breakpoint change, update size of form dialog
     this.window$ = this.store
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
+        this.window = window;
         this.dialogRef.updateSize(this.formSizeService.width(window));
       });
 
@@ -377,7 +381,12 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   onSaveChangesSuccess(success) {
     // when success object return, close form dialog
-    this.dialogRef.close();
+    // this.dialogRef.close();
+    // console.log(success);
+    this.onSaveChangesActive = false;
+    this.data.item = { ...this.data.item, ...success };
+    this.data.mode = 'view';
+    this.initForm(this.formValueService.itemValue(this.data));
   }
 
   onSaveChangesError(error) {

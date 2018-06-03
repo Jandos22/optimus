@@ -16,7 +16,7 @@ export class PeopleFormSizeService {
         ? (width = '456px')
         : window.isM
           ? (width = '652px')
-          : (width = '832px');
+          : (width = '848px');
 
     return width;
   }

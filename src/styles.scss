@@ -236,6 +236,8 @@ app-layout {
   overflow: hidden;
 }
 
+// duplicates the style of mat-hint
+// but is also multiline and may wrap
 .my-hint__multiline {
   margin: -13.5px 0 0 0;
   padding: 0;
@@ -243,4 +245,10 @@ app-layout {
   font-size: 12px;
   line-height: 13.5px;
   color: rgba(0, 0, 0, 0.54);
+}
+
+// fixes height of button with text in span container
+// in mat-dialog-options
+span.form-button__text {
+  line-height: 15px;
 }
