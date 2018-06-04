@@ -27,7 +27,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
     </mat-progress-bar>
 
     <app-people-toolbar
-      (openForm)="openForm($event)">
+      (openForm)="openForm('new', $event)">
     </app-people-toolbar>
 
     <app-people-list class="flexContent" style="padding: 8px 0;"

@@ -9,10 +9,11 @@ import * as a_in_locations from './store/actions/locations.actions';
 
 // font-awesome
 import fontawesome from '@fortawesome/fontawesome';
-import faSpinner from '@fortawesome/fontawesome-free-solid';
+import { faSpinner } from '@fortawesome/fontawesome-free-solid';
+import { faUserCircle } from '@fortawesome/fontawesome-free-regular';
 
 // font-awesome imports
-fontawesome.library.add(faSpinner);
+fontawesome.library.add(faSpinner, faUserCircle);
 
 // this fix is only required in iOS Safari
 import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';

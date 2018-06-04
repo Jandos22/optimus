@@ -1,4 +1,8 @@
-import { WindowProperties } from './../../../../models/window-properties.m';
+import {
+  PathSlbSp,
+  WirelinePath,
+  PathOptimus
+} from './../../../../shared/constants/index';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import {
@@ -45,11 +49,13 @@ import { ValidationService } from '../../../../validators/validation.service';
 import { AsyncValidationService } from './../../../../validators/async-validation.service';
 import { PeopleFormValueService } from './../../services/people-form-value.service';
 import { PeopleFormSizeService } from '../../services/people-form-size.service';
+import { PeopleFormPhotoService } from './../../services/people-form-photo.service';
 
 // interfaces
 import { PeopleItemChanges } from '../../models/people-item.model';
 // import { Locations } from './../../../../models/locations.m';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
+import { WindowProperties } from './../../../../models/window-properties.m';
 import {
   PeopleItem,
   PeopleItemObject
@@ -64,7 +70,10 @@ export interface Photo {
 }
 
 // dialog components
-import { PeopleFormPhotoPickerComponent } from './people-form-photo-picker/people-form-photo-picker.component';
+import {
+  PeopleFormPhotoPickerComponent,
+  UserPhotoState
+} from './people-form-photo-picker/people-form-photo-picker.component';
 import { FormMode } from '../../../../models/form-mode.model';
 
 @Component({
@@ -75,7 +84,7 @@ import { FormMode } from '../../../../models/form-mode.model';
 })
 export class PeopleFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  // photoForm: FormGroup;
+  fg_photo: FormGroup;
 
   window$: Subscription;
   window: WindowProperties;
@@ -92,16 +101,20 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // react to value changes in form
   alias$: Subscription;
 
-  user: PeopleItem;
-
   updatedFields: Object;
+
+  initialPhoto: Object;
+  updatedPhoto: Object;
 
   formEditingCancelled$: Subject<void>;
 
   $acceptOnlyNewValues: Subscription;
   $acceptOnlyInitialValues: Subscription;
-
   fc_changes$: Observable<Object>;
+
+  $acceptOnlyNewPhotoValues: Subscription;
+  $acceptOnlyInitialPhotoValues: Subscription;
+  fg_photo_changes$: Observable<Object>;
 
   // observables /to/ form control changes
   fc_name$: Observable<string>;
@@ -110,6 +123,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   fc_email$: Observable<string>;
   fc_gin$: Observable<string>;
   fc_location_assigned$: Observable<string>;
+
+  fc_arraybuffer: Observable<ArrayBuffer>;
+  fc_filename: Observable<string>;
 
   // button state properties
   onSaveChangesActive = false;
@@ -122,11 +138,13 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PeopleFormComponent>,
     public photoDialog: MatDialog,
     private peopleService: PeopleService,
+    private formPhotoService: PeopleFormPhotoService,
     private formValueService: PeopleFormValueService,
     private formSizeService: PeopleFormSizeService,
     @Inject(MAT_DIALOG_DATA) public data: { mode: string; item?: PeopleItem }
   ) {
     this.initForm(this.formValueService.itemValue(this.data));
+    this.initFgPhoto();
   }
 
   ngOnInit() {
@@ -151,13 +169,15 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       .get('Alias')
       .valueChanges.subscribe((alias: string) => {
         this.form.get('Email').setValue(`${alias}@slb.com`);
-        // this.updatePhotoFilename();
+        this.updatePhotoFilename();
       });
   }
 
   // *** form group
   // values assigned depending on mode (new, view or edit)
   initForm(item: PeopleItem) {
+    this.initialPhoto = { ...this.initialPhoto, ...item.Photo };
+
     console.log(item);
     this.form = this.fb.group({
       Name: [
@@ -209,6 +229,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     // collection of updated form control values
     // start with empty object
     this.updatedFields = {};
+    // this.updatedPhoto = {};
 
     // create new subject and then send notification
     // for unsubscribe observable
@@ -216,7 +237,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     // when observable notified it cancels subscription
     const unsubscribe$ = this.formEditingCancelled$.pipe(
-      tap(v => console.log('editing cancelled & subscription completed'))
+      tap(_ => console.log('editing cancelled & subscription completed'))
     );
 
     // register observables to listen for form control changes
@@ -277,24 +298,137 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         }
         console.log(this.updatedFields);
       });
+
+    // register observables to listen for photo form control changes
+    this.fc_arraybuffer = this.fg_photo.get('ArrayBuffer').valueChanges;
+    this.fc_filename = this.fg_photo.get('Filename').valueChanges;
+
+    this.fg_photo_changes$ = merge(
+      this.fc_arraybuffer.pipe(map(ArrayBuffer => ({ ArrayBuffer }))),
+      this.fc_filename.pipe(map(Filename => ({ Filename })))
+    );
+
+    this.$acceptOnlyNewPhotoValues = this.fg_photo_changes$
+      .pipe(
+        filter((keyValuePair: Object) => {
+          const key = Object.keys(keyValuePair).toString();
+          return this.initialPhoto[key] !== keyValuePair[key];
+        }),
+        takeUntil(unsubscribe$)
+      )
+      .subscribe(updated => {
+        this.updatedPhoto = { ...this.updatedPhoto, ...updated };
+        if (!this.updatedPhoto.hasOwnProperty('ID')) {
+          this.updatedPhoto = {
+            ...this.updatedPhoto,
+            ID: this.data.item['ID']
+          };
+        }
+        if (!this.updatedPhoto.hasOwnProperty('Filename')) {
+          this.updatedPhoto = {
+            ...this.updatedPhoto,
+            Filename: this.fg_photo.get('Filename').value
+          };
+        }
+        console.log(this.updatedPhoto);
+      });
+
+    this.$acceptOnlyInitialPhotoValues = this.fg_photo_changes$
+      .pipe(
+        filter((keyValuePair: Object) => {
+          const key = Object.keys(keyValuePair).toString();
+          return this.initialPhoto[key] === keyValuePair[key];
+        }),
+        takeUntil(unsubscribe$)
+      )
+      .subscribe(initial => {
+        const key = Object.keys(initial).toString();
+        // if arraybuffer value is same as initial
+        // then delete all properties in updatedPhoto object
+        if (key === 'ArrayBuffer') {
+          delete this.updatedPhoto[key];
+          delete this.updatedPhoto['ID'];
+          delete this.updatedPhoto['Filename'];
+        }
+        // if new Filename value is same as initial
+        // need to check if arraybuffer is there
+        // if ArrayBuffer is present it means that new photo is present
+        // then updatedPhoto object shall receive this Filename value anyway
+        if (
+          key === 'Filename' &&
+          this.updatedPhoto.hasOwnProperty('ArrayBuffer')
+        ) {
+          this.updatedPhoto = {
+            ...this.updatedPhoto,
+            Filename: this.fg_photo.get('Filename').value
+          };
+        }
+        console.log(this.updatedPhoto);
+      });
   }
 
-  // initPhotoForm() {
-  //   this.photoForm = this.fb.group({
-  //     Filename: ['', Validators.required],
-  //     ArrayBuffer: [new ArrayBuffer(0), Validators.required]
-  //   });
-  //   this.photo = this.form.get('Photo.Url').value;
-  // }
+  initFgPhoto() {
+    this.updatedPhoto = {};
+    this.fg_photo = this.fb.group({
+      Filename: '',
+      ArrayBuffer: new ArrayBuffer(0),
+      PhotoUrl: ''
+    });
+  }
 
-  // openPhotoPicker() {
-  //   // you can't open photo picker when mode is view
-  //   const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
-  //     data: {
-  //       photo: this.photo,
-  //       arrayBuffer: this.photoForm.get('ArrayBuffer').value
-  //     }
-  //   });
+  openPhotoPicker() {
+    let dataForPhotoDialogBox;
+    if (this.hasUpdatedPhoto) {
+      console.log(this.updatedPhoto);
+      dataForPhotoDialogBox = {
+        hasPhoto: true,
+        photoUrl: this.fg_photo.get('PhotoUrl').value
+      };
+    } else {
+      dataForPhotoDialogBox = this.formPhotoService.getDataForPhotoDialogBox(
+        this.data.item
+      );
+    }
+
+    // you can't open photo picker when mode is view
+    const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
+      data: {
+        ...dataForPhotoDialogBox
+        // arrayBuffer: this.photoForm.get('ArrayBuffer').value
+      }
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        take(1),
+        map((data: UserPhotoState) => {
+          if (data) {
+            return {
+              ArrayBuffer: data.new.PhotoArrayBuffer,
+              PhotoUrl: data.new.PhotoAfterCrop
+            };
+          } else {
+            return false;
+          }
+        })
+      )
+      .subscribe((outcome: any) => {
+        if (outcome) {
+          this.onReceiveNewPhoto(outcome);
+        } else {
+          console.log('no photo');
+          console.log(this.fg_photo);
+        }
+      });
+  }
+
+  onReceiveNewPhoto(data: { ArrayBuffer: ArrayBuffer; PhotoUrl: string }) {
+    this.fg_photo.get('ArrayBuffer').setValue(data.ArrayBuffer);
+    this.fg_photo.get('PhotoUrl').setValue(data.PhotoUrl);
+    this.updatePhotoFilename();
+    console.log(this.fg_photo);
+  }
 
   //   dialogRef.afterClosed().subscribe((result: Photo) => {
   //     console.log(result);
@@ -309,10 +443,10 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // Utility Functions
 
-  // updatePhotoFilename(): void {
-  //   const alias: string = this.form.get('Alias').value;
-  //   this.photoForm.get('Filename').setValue(alias ? `${alias}.jpg` : '');
-  // }
+  updatePhotoFilename(): void {
+    const alias: string = this.form.get('Alias').value;
+    this.fg_photo.get('Filename').setValue(alias ? `${alias}.jpg` : '');
+  }
 
   // ACTION BUTTONS
 
@@ -340,7 +474,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         this.onSaveError(error);
         handler$.unsubscribe();
       },
-      () => this.onSaveComplete()
+      () => console.log('on save complete')
     );
   }
 
@@ -365,11 +499,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.onSaveActive = false;
   }
 
-  // indicates completion of on save observables chain
-  onSaveComplete() {
-    console.log('on save complete');
-  }
-
   // BUTTON in ACTIONS
   // SAVE CHANGES to UPDATE user item in 'NgPeople' Sharepoint List
   // ************************************************
@@ -384,6 +513,12 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         error => this.onSaveChangesError(error)
       );
   }
+
+  onSaveChangesFields() {}
+
+  onSaveChangesPhoto() {}
+
+  onSaveChangesFieldsPhoto() {}
 
   onSaveChangesSuccess(success) {
     // when success object return, close form dialog
@@ -413,10 +548,10 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       this.formEditingCancelled$.next();
       this.formEditingCancelled$.complete();
       this.initForm(this.formValueService.itemValue(this.data));
-      // this.initPhotoForm();
+      this.initFgPhoto();
     }
     if (this.mode.isNew) {
-      this.onClose();
+      this.dialogRef.close();
     }
   }
 
@@ -433,10 +568,35 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     return { isNew, isView, isEdit };
   }
 
+  get userPhoto() {
+    if (this.updatedPhoto.hasOwnProperty('ArrayBuffer')) {
+      return this.fg_photo.get('PhotoUrl').value;
+    } else {
+      if (this.data.item.Attachments) {
+        // this.noUserPhoto = false;
+        return (
+          `${PathSlbSp}` +
+          this.data.item.AttachmentFiles.results[0].ServerRelativeUrl
+        );
+      } else {
+        // this.noUserPhoto = true;
+        return `${PathOptimus}` + '/assets/no_user_photo.jpg';
+      }
+    }
+  }
+
   // used to enable/disable save changes button
   get hasUpdatedFields() {
     return Object.keys(this.updatedFields).length === 0 &&
       this.updatedFields.constructor === Object
+      ? false
+      : true;
+  }
+
+  // used to enable/disable save changes button
+  get hasUpdatedPhoto() {
+    return Object.keys(this.updatedPhoto).length === 0 &&
+      this.updatedPhoto.constructor === Object
       ? false
       : true;
   }

@@ -1,3 +1,4 @@
+import { PeopleFormPhotoService } from './../../../services/people-form-photo.service';
 import { Component, Inject, ViewChild } from '@angular/core';
 
 import {
@@ -13,12 +14,31 @@ import {
   MAT_DIALOG_DATA
 } from '@angular/material';
 
+export interface UserPhotoInitial {
+  hasPhoto: boolean;
+  photoUrl: string;
+}
+
+export interface UserPhotoNew {
+  PhotoBeforeCrop: any;
+  PhotoAfterCrop: any;
+  PhotoFilename: string;
+  PhotoArrayBuffer: ArrayBuffer;
+}
+
+export interface UserPhotoPicker {
+  showInitial: boolean;
+  showNew: boolean;
+  showNoPhoto: boolean;
+  showCropper: boolean;
+  selected: boolean;
+  cropped: boolean;
+}
+
 export interface UserPhotoState {
-  photoExists: boolean;
-  photoSelected: boolean;
-  photoCropped: boolean;
-  photo: string;
-  arrayBuffer: ArrayBuffer;
+  initial: UserPhotoInitial;
+  new: UserPhotoNew;
+  picker: UserPhotoPicker;
 }
 
 @Component({
@@ -28,50 +48,91 @@ export interface UserPhotoState {
     <h3 mat-dialog-title>User Photo</h3>
     <mat-dialog-content>
       <div fxFlex="180px" style="padding-bottom: 16px;">
-        <!-- Ready Photo -->
-        <img [src]="data.image" class="userPhoto" *ngIf="photoState.photoCropped">
+
+        <!-- when user does not have photo -->
+        <img *ngIf="state.picker.showNoPhoto"
+          [src]="photoService.getNoPhotoUrl()">
+
+        <!-- when user has photo and didn't select any new photo -->
+        <img *ngIf="state.picker.showInitial"
+          [src]="state.initial.photoUrl">
+
+        <!-- when user selected & cropped photo -->
+        <img *ngIf="state.picker.cropped"
+          [src]="data.image" class="userPhoto">
+
         <!-- Image Cropper -->
-        <img-cropper [hidden]="photoState.photoCropped" #cropper
-        [image]="data" [settings]="cropperSettings" (onCrop)="onCrop(data)">
+        <img-cropper [hidden]="!state.picker.showCropper" #cropper
+          [image]="data" [settings]="cropperSettings" (onCrop)="onCrop(data)">
         </img-cropper>
+
       </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row" fxLayoutAlign="start start" class="actions">
 
-      <label for="photo" *ngIf="!photoState.photoSelected" >
+      <!-- when user didn't select photo yet-->
+      <label for="photo" *ngIf="!state.picker.selected" >
         <div class="fileBrowseButton" fxLayout="row" fxLayoutAlign="center center">
           <span class="mat-button-wrapper">BROWSE</span>
         </div>
       </label>
       <input id="photo" type="file" style="display: none;" (change)="fileChangeListener($event)" />
 
-      <button mat-raised-button color="primary" (click)="doCrop()" *ngIf="photoState.photoSelected && !photoState.photoCropped">
-          CROP
+      <!-- when user selected photo file and ready to crop it -->
+      <button *ngIf="state.picker.selected && !state.picker.cropped"
+        mat-raised-button color="primary" (click)="doCrop()">
+        CROP
       </button>
-      <button mat-raised-button color="primary" (click)="onOk()" *ngIf="photoState.photoSelected && photoState.photoCropped">
-          OK
+
+      <!-- when user selected photo and cropped it -->
+      <button *ngIf="state.picker.selected && state.picker.cropped"
+        mat-raised-button color="primary" (click)="onAcceptCropped()">
+        ACCEPT
       </button>
-      <button mat-button (click)="onCancel()" *ngIf="photoState.photoSelected || photoState.photoExists">
-          CANCEL
+
+      <!-- when user selected photo and cropped it -->
+      <button *ngIf="state.picker.selected && state.picker.cropped"
+        mat-raised-button (click)="onBackToCrop()">
+        BACK
+      </button>
+
+      <!-- when user wants to discard any changes and close dialog box -->
+      <button *ngIf="(state.picker.selected && !state.picker.cropped)"
+        mat-button (click)="onCancelSelected()">
+        CANCEL
       </button>
     </mat-dialog-actions>
   `
 })
 export class PeopleFormPhotoPickerComponent {
   cropperSettings: CropperSettings;
+
+  // used by img-cropper component
   data: any;
+
+  // file object that accomodate uploaded photo
   file: File;
-  photoState: UserPhotoState;
+
+  // photo state object to deal with different stages
+  state: UserPhotoState;
 
   @ViewChild('cropper', undefined)
   cropper: ImageCropperComponent;
 
   constructor(
     public dialogRef: MatDialogRef<PeopleFormPhotoPickerComponent>,
-    @Inject(MAT_DIALOG_DATA) public input: any
+    @Inject(MAT_DIALOG_DATA) public incoming: UserPhotoInitial,
+    private photoService: PeopleFormPhotoService
   ) {
     this.initCropperSettings();
     this.onDialogOpen();
+  }
+
+  onDialogOpen() {
+    // initialize PhotoState
+    console.log(this.incoming);
+    this.resetPhotoState(this.incoming);
+    this.data.image = this.state.initial.photoUrl;
   }
 
   initCropperSettings() {
@@ -85,41 +146,54 @@ export class PeopleFormPhotoPickerComponent {
     this.cropperSettings.canvasHeight = 180;
     this.cropperSettings.fileType = 'image/jpeg';
     this.cropperSettings.cropOnResize = true;
-    this.cropperSettings.cropperDrawSettings.strokeColor = 'rgb(103, 58, 183)';
-  }
+    this.cropperSettings.cropperDrawSettings.strokeColor = '#2196f3';
 
-  onDialogOpen() {
-    this.resetPhotoState();
+    // start with blank data object
+    // data has image property, which initialy can be url
     this.data = {};
-    console.log(this.input.photo);
-    if (this.input.photo) {
-      this.photoState = {
-        photoExists: true,
-        photoSelected: false,
-        photoCropped: true,
-        photo: this.input.photo,
-        arrayBuffer: this.input.arrayBuffer
-      };
-      this.data.image = this.input.photo;
-    }
   }
 
-  resetPhotoState() {
-    this.photoState = {
-      photoExists: false,
-      photoSelected: false,
-      photoCropped: false,
-      photo: '',
-      arrayBuffer: new ArrayBuffer(0)
+  resetPhotoState(incoming: UserPhotoInitial) {
+    this.state = {
+      initial: { ...incoming },
+      new: {
+        PhotoBeforeCrop: '',
+        PhotoAfterCrop: '',
+        PhotoFilename: '',
+        PhotoArrayBuffer: new ArrayBuffer(0)
+      },
+      picker: {
+        showInitial: incoming.hasPhoto,
+        showNew: false,
+        showNoPhoto: !incoming.hasPhoto,
+        showCropper: false,
+        selected: false,
+        cropped: false
+      }
     };
+
+    // this.photoState = {
+    //   photoExists: incoming.hasPhoto,
+    //   photoSelected: false,
+    //   photoCropped: false,
+    //   photoUrl: '',
+    //   arrayBuffer: new ArrayBuffer(0)
+    // };
   }
 
   fileChangeListener($event) {
+    // runs when user clicks browse and selects photo
     console.log($event);
 
     // reset cropped to false, when photo selected
-    this.photoState.photoCropped = false;
-    this.photoState.photoSelected = true;
+    this.state.picker = {
+      ...this.state.picker,
+      cropped: false,
+      showInitial: false,
+      showNoPhoto: false,
+      selected: true,
+      showCropper: true
+    };
 
     const image: any = new Image();
     const file: File = $event.target.files[0];
@@ -130,6 +204,7 @@ export class PeopleFormPhotoPickerComponent {
     myReader.onloadend = function(loadEvent: any) {
       image.src = loadEvent.target.result;
       console.log(image);
+      that.state.new.PhotoBeforeCrop = image.src;
       that.cropper.setImage(image);
     };
 
@@ -137,32 +212,55 @@ export class PeopleFormPhotoPickerComponent {
   }
 
   doCrop() {
-    this.photoState.photoCropped = true;
-    console.log(this.photoState);
+    this.state.new.PhotoAfterCrop = this.data.image;
+    this.state.picker = {
+      ...this.state.picker,
+      cropped: true,
+      showInitial: false,
+      showNew: true,
+      showCropper: false
+    };
+    console.log(this.state);
   }
 
   onCrop(file) {
     const myReader: FileReader = new FileReader();
     const that = this;
     myReader.onloadend = function(loadEvent: any) {
-      that.photoState.arrayBuffer = loadEvent.target.result;
+      that.state.new.PhotoArrayBuffer = loadEvent.target.result;
     };
     const blob = this.dataURItoBlob(file.image);
-    this.photoState.photo = file.image;
+    // this.state.new.PhotoDataUrl = file.image;
     myReader.readAsArrayBuffer(blob);
   }
 
-  onOk() {
-    this.dialogRef.close(this.photoState);
+  onAcceptCropped() {
+    // accept cropped photo & close form
+    // send new photo to the people form
+    console.log(this.state);
+    this.dialogRef.close(this.state);
   }
 
-  onCancel() {
-    if (this.photoState.photoExists) {
-      this.dialogRef.close();
-    } else {
-      this.resetPhotoState();
-      this.dialogRef.close(this.photoState);
-    }
+  onBackToCrop() {
+    // go back if user wants to re-crop photo
+    this.state.new.PhotoAfterCrop = '';
+
+    // don't reset array buffer,
+    // because if user don't recrop it will stay 0
+    // this.state.new.PhotoArrayBuffer = new ArrayBuffer(0);
+
+    this.state.picker = {
+      ...this.state.picker,
+      cropped: false,
+      showNew: false,
+      showCropper: true
+    };
+    console.log(this.state);
+  }
+
+  onCancelSelected() {
+    console.log(this.state);
+    this.dialogRef.close();
   }
 
   // Transform dataUrl to Blob

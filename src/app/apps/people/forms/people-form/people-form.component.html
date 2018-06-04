@@ -1,13 +1,12 @@
 <span mat-dialog-title style="text-align: center;">{{ title }}</span>
 <mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
 
-    <!--
-        <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-          <app-people-form-photo
-            [photo]="photo" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
-          </app-people-form-photo>
-        </div>
-        -->
+
+    <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
+        <app-people-form-photo [photo]="userPhoto" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
+        </app-people-form-photo>
+    </div>
+
 
     <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px" class="people-form__items--center">
 
@@ -28,8 +27,9 @@
     <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()" class="people-form__btn--cancel">CANCEL</button>
 
     <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
-
+    <!--
     <button mat-raised-button tabindex="-1" color="primary" *ngIf="mode.isNew" (click)="onLogForm()">LOG</button>
+    -->
     <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || onSaveActive" *ngIf="mode.isNew" (click)="onSave()">
         <span *ngIf="onSaveActive" class="form-button__text">
             <i class="fas fa-spinner fa-spin"></i>
@@ -38,7 +38,7 @@
     </button>
 
     <!-- btn for saving changes in edit mode -->
-    <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || !hasUpdatedFields || onSaveChangesActive"
+    <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || (!hasUpdatedFields && !hasUpdatedPhoto) || onSaveChangesActive"
         *ngIf="mode.isEdit" (click)="onSaveChanges()">
         <!-- two span els needed to have right vertical alignment -->
         <span *ngIf="onSaveChangesActive" class="form-button__text">

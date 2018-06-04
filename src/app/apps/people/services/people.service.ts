@@ -73,11 +73,11 @@ export class PeopleService {
 
   buildUrlToGetPeople(params: PeopleParams, counter?: boolean) {
     // api url for NgPeople
-    let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items`;
+    let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
 
     // select only following fields
-    let select =
-      '?$select=Id,Alias,Name,Surname,Email,Gin,LocationAssignedId,Photo';
+    let select = '$select=' + this.getSelectFields().toString();
+    // let select;
 
     // parameters
     const query = params.query;
@@ -88,6 +88,14 @@ export class PeopleService {
     counter ? ((top = 500), (select = `?$select=Alias`)) : '';
 
     url += select;
+
+    // $expand
+    const expand = '$expand=' + this.getExpandsFields().toString();
+    if (url.endsWith('?')) {
+      url += expand;
+    } else {
+      url += '&' + expand;
+    }
 
     // $filter by following specific query
     if (query || location) {
@@ -119,5 +127,27 @@ export class PeopleService {
     url += `&$top=${top}`;
 
     return url;
+  }
+
+  getSelectFields() {
+    const $select = [
+      'Id',
+      'ID',
+      'Alias',
+      'Name',
+      'Surname',
+      'Email',
+      'Gin',
+      'LocationAssignedId',
+      'Photo',
+      'Attachments',
+      'AttachmentFiles'
+    ];
+    return $select.toString();
+  }
+
+  getExpandsFields() {
+    const $expand = ['AttachmentFiles'];
+    return $expand.toString();
   }
 }
