@@ -21,3 +21,7 @@ export interface SpListItemAttachmentFiles {
   };
   ServerRelativeUrl: string;
 }
+
+export interface SpGetListItemResult {
+  d: SpListItemField;
+}

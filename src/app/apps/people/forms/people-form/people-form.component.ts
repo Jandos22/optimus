@@ -58,16 +58,9 @@ import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { WindowProperties } from './../../../../models/window-properties.m';
 import {
   PeopleItem,
-  PeopleItemObject
+  PeopleItemObject,
+  PeopleUpdatedPhoto
 } from './../../../../shared/interface/people.model';
-
-export interface Photo {
-  photoExists: boolean;
-  photoSelected: boolean;
-  photoCropped: boolean;
-  photo: string;
-  arrayBuffer: ArrayBuffer;
-}
 
 // dialog components
 import {
@@ -75,6 +68,7 @@ import {
   UserPhotoState
 } from './people-form-photo-picker/people-form-photo-picker.component';
 import { FormMode } from '../../../../models/form-mode.model';
+import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item-field.model';
 
 @Component({
   selector: 'app-people-form',
@@ -104,7 +98,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   updatedFields: Object;
 
   initialPhoto: Object;
-  updatedPhoto: Object;
+  updatedPhoto: PeopleUpdatedPhoto;
 
   formEditingCancelled$: Subject<void>;
 
@@ -316,7 +310,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
         }),
         takeUntil(unsubscribe$)
       )
-      .subscribe(updated => {
+      .subscribe((updated: PeopleUpdatedPhoto) => {
         this.updatedPhoto = { ...this.updatedPhoto, ...updated };
         if (!this.updatedPhoto.hasOwnProperty('ID')) {
           this.updatedPhoto = {
@@ -394,7 +388,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     const dialogRef = this.photoDialog.open(PeopleFormPhotoPickerComponent, {
       data: {
         ...dataForPhotoDialogBox
-        // arrayBuffer: this.photoForm.get('ArrayBuffer').value
       }
     });
 
@@ -429,17 +422,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.updatePhotoFilename();
     console.log(this.fg_photo);
   }
-
-  //   dialogRef.afterClosed().subscribe((result: Photo) => {
-  //     console.log(result);
-  //     if (result) {
-  //       this.photo = result.photo;
-  //       this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
-  //       this.updatePhotoFilename();
-  //     }
-  //     console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
-  //   });
-  // }
 
   // Utility Functions
 
@@ -504,27 +486,76 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // ************************************************
 
   onSaveChanges() {
+    console.log('updatedFields:');
     console.log(this.updatedFields);
+    console.log('updatedPhoto:');
+    console.log(this.updatedPhoto);
+
     this.onSaveChangesActive = true;
+    if (
+      this.hasUpdatedFields ||
+      (this.hasUpdatedFields && this.hasUpdatedPhoto)
+    ) {
+      console.log('fields and/or photo updated');
+      return this.onSaveChangesFields();
+    } else if (this.hasUpdatedPhoto) {
+      console.log('only photo updated');
+      return this.onSaveChangesPhoto();
+    }
+  }
+
+  onSaveChangesFields() {
     return this.peopleService
       .updatePeopleItem(this.updatedFields)
       .subscribe(
-        success => this.onSaveChangesSuccess(success),
+        success => this.onSaveChangesFieldsSuccess(success),
         error => this.onSaveChangesError(error)
       );
   }
 
-  onSaveChangesFields() {}
+  onSaveChangesFieldsSuccess(success) {
+    this.data.item = { ...this.data.item, ...success };
+    if (this.hasUpdatedPhoto) {
+      console.log('also has updated photo');
+      this.onSaveChangesPhoto();
+    } else {
+      console.log('succes updating fields');
+      this.onSaveChangesSuccess(success);
+    }
+  }
 
-  onSaveChangesPhoto() {}
+  onSaveChangesPhoto() {
+    return this.peopleService
+      .uploadPeopleItemPhoto(this.updatedPhoto)
+      .subscribe(
+        success => this.onSaveChangesPhotoSuccess(success),
+        error => console.log(error)
+      );
+  }
 
-  onSaveChangesFieldsPhoto() {}
+  onSaveChangesPhotoSuccess(success: Observable<SpListItemAttachmentFiles[]>) {
+    success.subscribe(res => {
+      this.data.item = {
+        ...this.data.item,
+        Attachments: true,
+        AttachmentFiles: {
+          results: res
+        }
+      };
+      this.data.item.AttachmentFiles.results = [...res];
+      this.onSaveChangesSuccess(res);
+    });
+  }
 
   onSaveChangesSuccess(success) {
     // when success object return, close form dialog
     console.log(success);
     this.onSaveChangesActive = false;
-    this.data.item = { ...this.data.item, ...success };
+    if (this.hasUpdatedPhoto) {
+      delete this.updatedPhoto['ArrayBuffer'];
+      delete this.updatedPhoto['ID'];
+      delete this.updatedPhoto['Filename'];
+    }
     this.data.mode = 'view';
     this.initForm(this.formValueService.itemValue(this.data));
   }
@@ -601,20 +632,9 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       : true;
   }
 
-  // get user(): PeopleItem | null {
-  //   return !this.mode.isNew ? this.data.item : null;
-  // }
-
   get locationDisabled() {
     return this.mode.isNew ? false : this.mode.isView ? true : false;
   }
-  // get photoInput() {
-  //   return this.mode.isNew
-  //     ? ''
-  //     : this.mode.isView
-  //       ? { ...this.user.Photo }
-  //       : { ...this.user.Photo };
-  // }
 
   // async validators
 

@@ -14,11 +14,13 @@ import {
 } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from '../../../shared/constants';
+import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
 import { PeopleParams } from './../models/people-params.model';
+import { PeopleUpdatedPhoto } from './../../../shared/interface/people.model';
+import { SpGetListItemResult } from './../../../shared/interface/sp-list-item-field.model';
 
 // services
 import { SharepointService } from './../../../shared/services/sharepoint.service';
@@ -34,7 +36,7 @@ export class PeopleService {
       })
       .pipe(
         switchMap((response: SpResponse) => {
-          console.log(response.d.results);
+          // console.log(response.d.results);
           if (response.d.results) {
             return of(response);
           }
@@ -53,6 +55,123 @@ export class PeopleService {
           .list({ name: 'NgPeople', ...fdv })
           .update(updatedFields);
         return from(update$.then(response => response));
+      })
+    );
+  }
+
+  uploadPeopleItemPhoto(updatedPhoto: UpdatedPhoto) {
+    // observable that
+    // - receives true if user has file with given filename
+    // - receives false if user doesn't have a file with given filename
+    const checkByFilename$ = this.checkIfPhotoExists(updatedPhoto);
+    const upload$ = this.uploadPhoto(updatedPhoto);
+    const delete$ = this.deletePeopleItemPhoto(updatedPhoto);
+
+    // listen to checkIfPhotoExists() results
+    // - if user has file with given filename, then delete it
+    // - after deletion of file, upload new file
+    return checkByFilename$.pipe(
+      map(hasPhoto => {
+        console.log('has photo: ' + hasPhoto);
+        if (hasPhoto) {
+          // observable that
+          // - true if photo successfully been deleted
+          // - false if photo deletion thrown error
+          return delete$.pipe(
+            map(deleted => {
+              console.log('deleted: ' + deleted);
+              return upload$;
+            })
+            // last work here
+          );
+        } else {
+          return upload$;
+        }
+      })
+    );
+  }
+
+  checkIfPhotoExists(updatedPhoto: UpdatedPhoto) {
+    console.log('check if photo exists');
+    // url constructed to
+    // - get user with Attachments and AttachmentsList
+    let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
+    url += `/items(${updatedPhoto.ID})`;
+    url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
+
+    const getUserObject$ = this.http.get(url, {
+      headers: new HttpHeaders().set(hk_accept, hv_appjson)
+    });
+
+    return getUserObject$.pipe(
+      take(1),
+      map((result: SpGetListItemResult) => {
+        console.log(result);
+        let hasPhoto = false;
+        // check if user has attachments
+        if (result.d.Attachments) {
+          // check for same Filename
+          for (let file of result.d.AttachmentFiles.results) {
+            if (file.FileName === updatedPhoto.Filename) {
+              hasPhoto = true;
+            }
+          }
+        }
+        return hasPhoto;
+      }),
+      catchError(error => {
+        console.log(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  uploadPhoto(updatedPhoto) {
+    const fdv$ = this.sp.getFDV();
+    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${
+      updatedPhoto.ID
+    })`;
+    url += `/AttachmentFiles/add(FileName='${updatedPhoto.Filename}')`;
+    return fdv$.pipe(
+      take(1),
+      switchMap(fdv => {
+        const upload$: Promise<any> = sprLib.rest({
+          url: url,
+          type: 'POST',
+          ...fdv,
+          data: updatedPhoto.ArrayBuffer
+        });
+        return from(upload$.then(response => response));
+      })
+    );
+  }
+
+  deletePeopleItemPhoto(updatedPhoto: UpdatedPhoto) {
+    const fdv$ = this.sp.getFDV();
+
+    let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
+    url += `/getItemById(${updatedPhoto.ID})`;
+    url += `/AttachmentFiles/getByFileName('${updatedPhoto.Filename}')`;
+
+    return fdv$.pipe(
+      take(1),
+      switchMap(fdv => {
+        const deleted$: Promise<any> = sprLib.rest({
+          url: url,
+          type: 'POST',
+          headers: {
+            Accept: 'application/json;odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*',
+            'X-RequestDigest': fdv.requestDigest
+          }
+        });
+        return from(
+          deleted$.then(response => {
+            console.log(response);
+            return true;
+          })
+        );
       })
     );
   }

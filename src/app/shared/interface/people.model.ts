@@ -53,3 +53,9 @@ export class PeopleItemObject implements PeopleItem {
     }
   }
 }
+
+export interface PeopleUpdatedPhoto {
+  ID?: number;
+  Filename?: string;
+  ArrayBuffer?: ArrayBuffer;
+}
