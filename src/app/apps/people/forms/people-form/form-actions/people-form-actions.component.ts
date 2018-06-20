@@ -2,20 +2,21 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 // types
-import { FormMode } from './../../../../../../shared/interface/form.model';
+import { FormMode } from './../../../../../shared/interface/form.model';
 
 // interfaces
-import { PeopleItem } from './../../../../../../shared/interface/people.model';
+import { PeopleItem } from './../../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-people-form-actions',
   styleUrls: ['people-form-actions.component.scss'],
   template: `
 
-    <app-people-form-when-view-buttons
+    <app-people-form-actions-view
         *ngIf="mode === 'view'"
+        (closeUserForm)="closeUserForm.emit()"
         (switchFormMode)="switchFormMode.emit($event)">
-    </app-people-form-when-view-buttons>
+    </app-people-form-actions-view>
 
     <app-people-form-actions-edit
         *ngIf="mode === 'edit'"
@@ -38,6 +39,7 @@ export class PeopleFormActionsComponent {
 
   @Output() switchFormMode = new EventEmitter<any>();
   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+  @Output() closeUserForm = new EventEmitter();
 
   constructor() {}
 }

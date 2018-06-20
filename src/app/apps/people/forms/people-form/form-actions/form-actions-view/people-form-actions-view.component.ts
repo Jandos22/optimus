@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store';
 import * as fromPeople from '../../../../store';
 
 @Component({
-  selector: 'app-people-form-when-view-buttons',
-  styleUrls: ['people-form-when-view-buttons.component.scss'],
+  selector: 'app-people-form-actions-view',
+  styleUrls: ['people-form-actions-view.component.scss'],
   template: `
     <button mat-button tabindex="-1"
       (click)="switchFormMode.emit('edit')">
@@ -17,15 +17,14 @@ import * as fromPeople from '../../../../store';
     </button>
 
     <button mat-button tabindex="-1"
-      (click)="onCancel()"
+      (click)="closeUserForm.emit()"
       class="people-form__btn--cancel">
-      CANCEL
+      CLOSE
     </button>
     `
 })
-export class PeopleFormWhenViewButtonsComponent {
+export class PeopleFormActionsViewComponent {
   @Output() switchFormMode = new EventEmitter<FormMode>();
+  @Output() closeUserForm = new EventEmitter();
   constructor(private store: Store<fromPeople.PeopleState>) {}
-
-  onCancel() {}
 }

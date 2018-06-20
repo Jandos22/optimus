@@ -115,7 +115,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     private _people_store: Store<fromPeople.PeopleState>,
     private initFormService: PeopleFormInitService,
     private asyncValidators: AsyncValidationService,
-    public dialogRef: MatDialogRef<PeopleFormComponent>,
+    public formRef: MatDialogRef<PeopleFormComponent>,
     private peopleService: PeopleService,
     private formPhotoService: PeopleFormPhotoService,
     // private formValueService: PeopleFormValueService,
@@ -144,7 +144,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     this.$window = this._root_store
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
-        this.dialogRef.updateSize(this.formSizeService.width(window));
+        this.formRef.updateSize(this.formSizeService.width(window));
       });
 
     // when alias changed, also update email
@@ -192,6 +192,10 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   updateFormGroupFields(updatedFields: PeopleItem) {
     console.log(updatedFields);
     this.data.item = { ...this.data.item, ...updatedFields };
+  }
+
+  closeUserForm() {
+    this.formRef.close();
   }
 
   // get locationDisabled() {
