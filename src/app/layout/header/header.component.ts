@@ -13,14 +13,11 @@ import * as fromRootUser from './../../store/reducers/user.reducer';
 import * as a_in_app from './../../store/actions/app.actions';
 import * as layout from './../../store/actions/layout.actions';
 
-// constants
-import { WirelinePath } from './../../shared/constants/index';
-
 // models
 import { UserState } from './../../shared/interface/user.model';
 import { Locations } from './../../models/locations.m';
 import { SidenavProperties } from './../../models/sidenav-properties.m';
-import { WindowProperties } from './../../models/window-properties.m';
+import { WindowProperties } from '../../shared/interface/layout.model';
 import { HeaderProperties } from './../../models/header-properties.m';
 
 @Component({
@@ -31,8 +28,6 @@ import { HeaderProperties } from './../../models/header-properties.m';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   appName$: Observable<string>;
-  locations$: Observable<Locations[]>;
-  selectedLocation$: Observable<string>;
 
   window$: Observable<WindowProperties>;
   forWindowState$$: Subscription;
@@ -44,13 +39,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   window: WindowProperties;
 
   // Current User Information
-  isRegistered$: Observable<boolean>;
-  initials$: Observable<string>;
+  $isRegistered: Observable<boolean>;
+  // initials$: Observable<string>;
   // photo$: Subscription;
 
   // ngrx user slice
-  user$: Subscription;
-  user: UserState;
+  $user: Observable<UserState>;
 
   // photo: string;
 
@@ -63,15 +57,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       appNameClass: null
     };
 
-    // this.locations$ = this.store.select(fromRoot.getAppLocations);
-    this.selectedLocation$ = this.store.select(fromRoot.getAppLocation);
     this.appName$ = this.store.select(fromRoot.getAppName);
 
     this.window$ = this.store.select(fromRoot.getLayoutWindow);
     this.sidenav$ = this.store.select(fromRoot.getSidenavState);
 
-    this.isRegistered$ = this.store.select(fromRoot.getIsRegistered);
-    this.initials$ = this.store.select(fromRoot.getInitials);
+    this.$isRegistered = this.store.select(fromRoot.getIsRegistered);
+    // this.initials$ = this.store.select(fromRoot.getInitials);
   }
 
   ngOnInit() {
@@ -85,25 +77,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.window = window;
     });
 
-    this.user$ = this.store
-      .select(fromRoot.getUserState)
-      .pipe(
-        map((user: UserState) => {
-          const photo = `${user.optimus.photo}?v=${new Date().getTime()}`;
-          return { ...user, photo };
-        })
-      )
-      .subscribe(user => {
-        this.user = user;
-      });
+    this.$user = this.store.select(fromRoot.getUserState);
   }
 
   toggleSidenav() {
     this.store.dispatch(new layout.ToggleSidenav());
-  }
-
-  onSelectLocation(location) {
-    this.store.dispatch(new a_in_app.SetSelectedLocation(location));
   }
 
   recalculateHeader(opened, mode) {
@@ -121,11 +99,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  logout() {
-    window.location.href = WirelinePath + '/_layouts/15/SignOut.aspx';
-  }
-
-  ngOnDestroy() {
-    this.user$.unsubscribe();
-  }
+  ngOnDestroy() {}
 }

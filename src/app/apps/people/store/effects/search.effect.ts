@@ -4,14 +4,22 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
 // rxjs
-import { of } from 'rxjs';
-import { map, switchMap, mergeMap, catchError, tap } from 'rxjs/operators';
+import { of, from } from 'rxjs';
+import {
+  map,
+  switchMap,
+  mergeMap,
+  catchError,
+  tap,
+  take,
+  reduce
+} from 'rxjs/operators';
 
 // actions
 import * as fromSearch from '../actions/search.actions';
 import * as fromParams from '../actions/params.action';
 import * as fromPagination from '../actions/pagination.action';
-import * as fromNgPeople from '../actions/ng-people.action';
+import * as fromUsers from '../actions/users.action';
 
 // services
 import { PeopleService } from '../../services/people.service';
@@ -20,6 +28,7 @@ import { PeopleService } from '../../services/people.service';
 import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
 
 // interfaces
+import { PeopleItem } from './../../../../shared/interface/people.model';
 import { SearchUsers } from '../../models/search-users.m';
 import { SpResponse } from './../../../../models/sp-response.model';
 
@@ -57,7 +66,7 @@ export class SearchEffects {
       return [
         new fromPagination.StartNewPage(url),
         new fromSearch.BeginSearch(url),
-        new fromNgPeople.SearchTrue()
+        new fromUsers.SearchTrue()
       ];
     })
   );
@@ -74,8 +83,22 @@ export class SearchEffects {
 
           // if results are not empty, then update NgPeople list
           if (res.d.results) {
-            dispatch.push(new fromNgPeople.UpdatePeopleList(res.d.results));
-            dispatch.push(new fromNgPeople.SearchFalse());
+            let users: PeopleItem[] = [];
+            const users$ = from(res.d.results);
+            users$
+              .pipe(
+                take(res.d.results.length),
+                reduce((acc: PeopleItem[], curr: PeopleItem) => {
+                  return [...acc, { ...curr, id: curr.Id }];
+                }, [])
+              )
+              .subscribe((u: PeopleItem[]) => {
+                console.log(u);
+                users = [...u];
+              });
+
+            dispatch.push(new fromUsers.UpdatePeopleList(users));
+            dispatch.push(new fromUsers.SearchFalse());
           }
 
           // if results have next page, then add its url to links array
@@ -87,8 +110,8 @@ export class SearchEffects {
 
           // dispatched several actions using mergeMap
           return dispatch;
-        }),
-        catchError(error => of(new fromNgPeople.ErrorGetPeople(error)))
+        })
+        // catchError(error => of(new fromUsers.ErrorGetPeople(error)))
       );
     })
   );
@@ -116,11 +139,11 @@ export class SearchEffects {
       return this.peopleService.getPeopleWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
-            return new fromNgPeople.UpdateTotalItems(0);
+            return new fromUsers.UpdateTotalItems(0);
           } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromNgPeople.UpdateTotalItems(res.d.results.length);
+            return new fromUsers.UpdateTotalItems(res.d.results.length);
           } else {
-            return new fromNgPeople.UpdateTotalItems('500+');
+            return new fromUsers.UpdateTotalItems('500+');
           }
         })
       );

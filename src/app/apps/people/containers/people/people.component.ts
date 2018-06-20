@@ -10,7 +10,7 @@ import * as fromRoot from '../../../../store';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // interfaces
-import { PeopleItem } from './../../models/people-item.model';
+import { PeopleItem } from './../../../../shared/interface/people.model';
 import { PeopleParams } from './../../models/people-params.model';
 import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
@@ -79,7 +79,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     public form: MatDialog
   ) {
     this.list$ = this.peopleStore
-      .pipe(select(fromPeople.getPeopleList))
+      .pipe(select(fromPeople.selectAllUsers))
       .subscribe(list => {
         // goes in people-list component
         this.list = list;
@@ -96,13 +96,13 @@ export class PeopleComponent implements OnInit, OnDestroy {
       });
 
     this.total$ = this.peopleStore
-      .select(fromPeople.getPeopleTotal)
+      .select(fromPeople.getUsersTotal)
       .subscribe(total => {
         this.total = total;
       });
 
     this.searching$ = this.peopleStore
-      .select(fromPeople.getPeopleSearching)
+      .select(fromPeople.getUsersSearching)
       .subscribe(search => {
         this.searching = search;
       });

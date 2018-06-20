@@ -1,5 +1,5 @@
 export interface PeopleParams {
-  location: string;
+  location: number[];
   query: string;
   top: number;
 }

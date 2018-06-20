@@ -249,6 +249,10 @@ app-layout {
 
 // fixes height of button with text in span container
 // in mat-dialog-options
-span.form-button__text {
+span.g_form-button__text {
   line-height: 15px;
+}
+
+span.g_form-button__text.has-spinner {
+  padding-right: 4px;
 }

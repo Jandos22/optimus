@@ -11,8 +11,8 @@ import { PathSlbSp } from '../../../../shared/constants';
     <div fxLayout="row" fxLayoutAlign="space-between center" class="itemContainer">
 
         <button mat-icon-button fxFlex="40px" (click)="onOpenItem(user)">
-            <img *ngIf="!noUserPhoto" [src]="userPhoto" [alt]="user.Alias" class="peopleAvatar">
-            <span *ngIf="noUserPhoto" style="font-size: 36px;"><i class="far fa-user-circle"></i></span>
+            <img *ngIf="user.Attachments" [src]="userPhoto" [alt]="user.Alias" class="peopleAvatar">
+            <span *ngIf="!user.Attachments" style="font-size: 36px;"><i class="far fa-user-circle"></i></span>
         </button>
 
         <span fxFlex class="listItemMiddle">
@@ -34,18 +34,14 @@ export class PeopleItemComponent {
 
   @Output() openItem = new EventEmitter<any>();
 
-  noUserPhoto = false;
-
   constructor() {}
 
   get userPhoto() {
     if (this.user.Attachments) {
-      this.noUserPhoto = false;
       return (
         `${PathSlbSp}` + this.user.AttachmentFiles.results[0].ServerRelativeUrl
       );
     } else {
-      this.noUserPhoto = true;
       return null;
     }
   }

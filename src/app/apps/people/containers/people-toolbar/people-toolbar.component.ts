@@ -88,7 +88,7 @@ export class PeopleToolbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // subscribe to store and update selected location on change
     this.selectedLocation$ = this.rootStore
-      .select(fromRoot.getAppLocation)
+      .select(fromRoot.selectSelectedId)
       .subscribe(location => {
         this.paramsForm.get('location').setValue(location);
       });

@@ -1,4 +1,3 @@
-import { WindowProperties } from './../../../../models/window-properties.m';
 import { Component, Input, OnDestroy } from '@angular/core';
 
 // ngrx
@@ -10,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // interfaces
 import { Exemption } from './../../../../shared/interface/exemptions.model';
+import { WindowProperties } from './../../../../shared/interface/layout.model';
 
 @Component({
   selector: 'app-exemption-item-card',

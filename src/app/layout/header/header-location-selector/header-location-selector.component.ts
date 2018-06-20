@@ -17,7 +17,7 @@ import { Observable, Subscription } from 'rxjs';
 import { take, pairwise } from 'rxjs/operators';
 
 // interfaces
-import { WindowProperties } from './../../../models/window-properties.m';
+import { WindowProperties } from '../../../shared/interface/layout.model';
 import { OptimusUser, UserState } from '../../../shared/interface/user.model';
 
 @Component({
@@ -96,7 +96,10 @@ export class HeaderLocationSelectorComponent implements OnInit, OnDestroy {
       });
 
     this.user$ = this.s_in_root
-      .pipe(take(1), select(fromRoot.getUserState))
+      .pipe(
+        take(1),
+        select(fromRoot.getUserState)
+      )
       .subscribe((user: UserState) => {
         this.user = user.optimus;
         console.log(user);

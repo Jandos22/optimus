@@ -59,7 +59,7 @@ export class PeopleService {
     );
   }
 
-  uploadPeopleItemPhoto(updatedPhoto: UpdatedPhoto) {
+  uploadPeopleItemPhoto(updatedPhoto: PeopleUpdatedPhoto) {
     // observable that
     // - receives true if user has file with given filename
     // - receives false if user doesn't have a file with given filename
@@ -91,7 +91,7 @@ export class PeopleService {
     );
   }
 
-  checkIfPhotoExists(updatedPhoto: UpdatedPhoto) {
+  checkIfPhotoExists(updatedPhoto: PeopleUpdatedPhoto) {
     console.log('check if photo exists');
     // url constructed to
     // - get user with Attachments and AttachmentsList
@@ -146,7 +146,7 @@ export class PeopleService {
     );
   }
 
-  deletePeopleItemPhoto(updatedPhoto: UpdatedPhoto) {
+  deletePeopleItemPhoto(updatedPhoto: PeopleUpdatedPhoto) {
     const fdv$ = this.sp.getFDV();
 
     let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
@@ -194,57 +194,48 @@ export class PeopleService {
     // api url for NgPeople
     let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
 
-    // select only following fields
-    let select = '$select=' + this.getSelectFields().toString();
-    // let select;
-
     // parameters
     const query = params.query;
     const location = params.location;
     let top = params.top;
 
-    // to count total
-    counter ? ((top = 500), (select = `?$select=Alias`)) : '';
+    // $select & $expand
+    url += `$select=${this.getSelectFields().toString()}`;
+    url += `&$expand=${this.getExpandsFields().toString()}`;
 
-    url += select;
-
-    // $expand
-    const expand = '$expand=' + this.getExpandsFields().toString();
-    if (url.endsWith('?')) {
-      url += expand;
-    } else {
-      url += '&' + expand;
+    // $filter
+    if (query || location.length) {
+      url += `&$filter=`;
     }
 
-    // $filter by following specific query
-    if (query || location) {
-      if (query || location !== 'Global') {
-        url += `&$filter=`;
-      }
+    if (query) {
+      url += `((substringof('${query}',Name))`;
+      url += `or(substringof('${query}',Surname))`;
+      url += `or(substringof('${query}',Alias))`;
+      url += `or(substringof('${query}',Email))`;
+      url += `or(substringof('${query}',Gin)))`;
+    }
 
-      if (query) {
-        url += `((substringof('${query}',Name))`;
-        url += `or(substringof('${query}',Surname))`;
-        url += `or(substringof('${query}',Alias))`;
-        url += `or(substringof('${query}',Email))`;
-        url += `or(substringof('${query}',Gin)))`;
-      }
+    if (query && location.length) {
+      url += 'and';
+    }
 
-      if (query && location && location !== 'Global') {
-        url += `and`;
-      }
-
-      if (location && location !== 'Global') {
-        url += `(Location eq '${location}')`;
-      }
+    if (location.length) {
+      url += `${this.getFilterLocationAssigned(location)}`;
     }
 
     // $orderby
     url += `&$orderby=Name asc`;
 
     // $top
-    url += `&$top=${top}`;
+    if (top) {
+      if (counter) {
+        top = 500;
+      }
+      url += `&$top=${top}`;
+    }
 
+    // return combiner url string
     return url;
   }
 
@@ -257,6 +248,7 @@ export class PeopleService {
       'Surname',
       'Email',
       'Gin',
+      'LocationAssigned/Id',
       'LocationAssignedId',
       'Photo',
       'Attachments',
@@ -266,7 +258,38 @@ export class PeopleService {
   }
 
   getExpandsFields() {
-    const $expand = ['AttachmentFiles'];
+    const $expand = ['AttachmentFiles', 'LocationAssigned'];
     return $expand.toString();
+  }
+
+  getFilterLocationAssigned(locations: number[]) {
+    if (locations.length) {
+      let filter = '';
+      const n = locations.length;
+      let i = 1;
+
+      for (let location of locations) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(LocationAssigned/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
   }
 }

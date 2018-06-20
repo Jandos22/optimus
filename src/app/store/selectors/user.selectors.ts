@@ -19,3 +19,4 @@ export const getIsRegistered = createSelector(
 export const getUserId = createSelector(getUserState, fromUser.getUserId);
 export const getInitials = createSelector(getUserState, fromUser.getInitials);
 export const getPhoto = createSelector(getUserState, fromUser.getPhoto);
+export const getPhotoUrl = createSelector(getUserState, fromUser.getPhotoUrl);

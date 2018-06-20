@@ -1,50 +1,30 @@
-<span mat-dialog-title style="text-align: center;">{{ title }}</span>
+<span mat-dialog-title style="text-align: center;">{{ Title }}</span>
 <mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
 
 
     <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-        <app-people-form-photo [photo]="userPhoto" [mode]="mode" (onPhotoPicker)="openPhotoPicker()">
+        <app-people-form-photo [photo]="fg_photo.value" [mode]="$mode | async" (onPhotoPicker)="openPhotoPicker()">
         </app-people-form-photo>
     </div>
 
 
     <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px" class="people-form__items--center">
 
-        <app-people-form-name fxFlex.gt-xs="180px" [parent]="form"></app-people-form-name>
-        <app-people-form-surname fxFlex.gt-xs="180px" [parent]="form"></app-people-form-surname>
-        <app-people-form-alias fxFlex.gt-xs="180px" [parent]="form"></app-people-form-alias>
-        <app-people-form-email fxFlex.gt-xs="180px" [parent]="form"></app-people-form-email>
-        <app-people-form-gin fxFlex.gt-xs="180px" [parent]="form"></app-people-form-gin>
-        <app-people-form-location fxFlex.gt-xs="180px" [parent]="form" [locations]="locations" [disabled]="locationDisabled">
+        <app-people-form-name fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-name>
+        <app-people-form-surname fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-surname>
+        <app-people-form-alias fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-alias>
+        <app-people-form-email fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-email>
+        <app-people-form-gin fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-gin>
+        <!-- <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="locations" [disabled]="locationDisabled">
+        </app-people-form-location> -->
+        <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="$locations | async">
         </app-people-form-location>
 
     </div>
 
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onEdit()">EDIT</button>
-
-    <button mat-button tabindex="-1" *ngIf="mode.isEdit || mode.isNew" (click)="onCancel()" class="people-form__btn--cancel">CANCEL</button>
-
-    <button mat-button tabindex="-1" *ngIf="mode.isView" (click)="onClose()">CLOSE</button>
-    <!--
-    <button mat-raised-button tabindex="-1" color="primary" *ngIf="mode.isNew" (click)="onLogForm()">LOG</button>
-    -->
-    <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || onSaveActive" *ngIf="mode.isNew" (click)="onSave()">
-        <span *ngIf="onSaveActive" class="form-button__text">
-            <i class="fas fa-spinner fa-spin"></i>
-        </span>
-        <span class="form-button__text"> SAVE</span>
-    </button>
-
-    <!-- btn for saving changes in edit mode -->
-    <button mat-raised-button tabindex="-1" color="primary" [disabled]="!form.valid || (!hasUpdatedFields && !hasUpdatedPhoto) || onSaveChangesActive"
-        *ngIf="mode.isEdit" (click)="onSaveChanges()">
-        <!-- two span els needed to have right vertical alignment -->
-        <span *ngIf="onSaveChangesActive" class="form-button__text">
-            <i class="fas fa-spinner fa-spin"></i>
-        </span>
-        <span class="form-button__text"> SAVE</span>
-    </button>
-
+    <app-people-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (updateFormGroupFields)="updateFormGroupFields($event)"
+        (switchFormMode)="switchFormMode($event)">
+    </app-people-form-actions>
 </mat-dialog-actions>

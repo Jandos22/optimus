@@ -1,4 +1,4 @@
-import { PeopleFormPhotoService } from './../../../services/people-form-photo.service';
+import { PeopleFormPhotoService } from '../people-form/form-services/people-form-photo.service';
 import { Component, Inject, ViewChild } from '@angular/core';
 
 import {

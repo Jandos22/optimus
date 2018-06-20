@@ -9,15 +9,4 @@ export const getAppState = createSelector(
 );
 
 export const getAppName = createSelector(getAppState, fromApp.getAppName);
-
-export const getAppLocation = createSelector(
-  getAppState,
-  fromApp.getAppLocation
-);
-
-// export const getAppLocations = createSelector(
-//   getAppState,
-//   fromApp.getAppLocations
-// );
-
 export const getAppWorking = createSelector(getAppState, fromApp.getAppWorking);

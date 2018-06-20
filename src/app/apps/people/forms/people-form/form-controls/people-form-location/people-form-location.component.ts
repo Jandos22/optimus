@@ -1,4 +1,3 @@
-// import { Locations } from './../../../../../models/locations.m';
 import {
   Component,
   Input,
@@ -8,7 +7,7 @@ import {
 import { FormGroup } from '@angular/forms';
 
 // interfaces
-import { LocationEnt } from './../../../../../shared/interface/locations.model';
+import { LocationEnt } from '../../../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-people-form-location',
@@ -18,7 +17,7 @@ import { LocationEnt } from './../../../../../shared/interface/locations.model';
   template: `
     <div [formGroup]="parent" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
-          <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId" [disabled]="disabled">
+          <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId">
             <mat-option *ngFor="let item of locations" [value]="item.id">
                 {{ item.Title }}
             </mat-option>

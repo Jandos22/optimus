@@ -6,7 +6,7 @@ import { PeopleFormEmailComponent } from './people-form-email/people-form-email.
 import { PeopleFormGinComponent } from './people-form-gin/people-form-gin.component';
 import { PeopleFormLocationComponent } from './people-form-location/people-form-location.component';
 
-export const forms_components: any[] = [
+export const forms_controls: any[] = [
   PeopleFormNameComponent,
   PeopleFormSurnameComponent,
   PeopleFormAliasComponent,
