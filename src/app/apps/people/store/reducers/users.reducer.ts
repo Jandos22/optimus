@@ -41,6 +41,10 @@ export function reducer(
       return adapter.addAll(action.users, state);
     }
 
+    case UsersActionTypes.UPDATE_ONE_USER: {
+      return adapter.updateOne({ id: action.id, changes: action.user }, state);
+    }
+
     // case fromNgPeople.UPDATE_PEOPLE_LIST: {
     //   return {
     //     ...state,

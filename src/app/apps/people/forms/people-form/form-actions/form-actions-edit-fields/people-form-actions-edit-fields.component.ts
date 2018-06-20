@@ -67,7 +67,7 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         }, {}),
         map((fields: PeopleItem | {}) => {
           if (Object.keys(fields).length >= 1) {
-            return { ...fields, ID: this.initialFields['ID'] };
+            return { ...fields, id: this.initialFields['ID'] };
           } else {
             return fields;
           }

@@ -14,8 +14,12 @@ import { map, filter, take } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
+
 import * as fromRoot from '../../../../../../store';
 import * as a_in_errors from '../../../../../../store/actions/errors.actions';
+
+import * as fromPeople from '../../../../store';
+import * as a_in_users from '../../../../store/actions/users.action';
 
 // interfaces
 import { PeopleItem } from './../../../../../../shared/interface/people.model';
@@ -68,6 +72,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
+    private store_people: Store<fromPeople.PeopleState>,
     private httpService: PeopleFormHttpService
   ) {
     console.log('people-form-actions-edit: initialized');
@@ -103,11 +108,14 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
       .add(() => console.log('unsubscribed'));
   }
 
-  saveChangesSuccess(success) {
+  saveChangesSuccess(success: PeopleItem) {
     console.log('successfully updated people item');
     this.savingChanges = false;
     this.$onSaveChanges.unsubscribe();
     this.updateFormGroupFields.emit(success);
+    this.store_people.dispatch(
+      new a_in_users.UpdateOneUser(success.ID, success)
+    );
     this.switchFormMode.emit('view');
   }
 

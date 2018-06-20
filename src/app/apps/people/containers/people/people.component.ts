@@ -31,7 +31,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
     </app-people-toolbar>
 
     <app-people-list class="flexContent" style="padding: 8px 0;"
-      [list]="list" (openItem)="openForm('view', $event)">
+      [list]="list" (openUserForm)="openForm('view', $event)">
     </app-people-list>
 
     <app-people-toolbar-bottom class="flexFooter"
@@ -155,6 +155,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   openForm(mode, item?): void {
     const data = { mode, item };
     const formRef = this.form.open(PeopleFormComponent, { data });
+    // formRef.afterClosed();
   }
 
   ngOnDestroy() {

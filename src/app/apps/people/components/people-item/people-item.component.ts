@@ -10,7 +10,7 @@ import { PathSlbSp } from '../../../../shared/constants';
   template: `
     <div fxLayout="row" fxLayoutAlign="space-between center" class="itemContainer">
 
-        <button mat-icon-button fxFlex="40px" (click)="onOpenItem(user)">
+        <button mat-icon-button fxFlex="40px" (click)="openUserForm.emit(user)">
             <img *ngIf="user.Attachments" [src]="userPhoto" [alt]="user.Alias" class="peopleAvatar">
             <span *ngIf="!user.Attachments" style="font-size: 36px;"><i class="far fa-user-circle"></i></span>
         </button>
@@ -32,7 +32,7 @@ export class PeopleItemComponent {
   @Input() user: PeopleItem;
   @Input() last: boolean;
 
-  @Output() openItem = new EventEmitter<any>();
+  @Output() openUserForm = new EventEmitter<any>();
 
   constructor() {}
 
@@ -44,9 +44,5 @@ export class PeopleItemComponent {
     } else {
       return null;
     }
-  }
-
-  onOpenItem(user) {
-    this.openItem.emit(user);
   }
 }

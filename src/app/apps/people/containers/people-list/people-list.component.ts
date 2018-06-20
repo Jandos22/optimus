@@ -8,7 +8,7 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
   template: `
     <app-people-item fxLayout="column" fxLayoutAlign="start stretch"
       *ngFor="let user of list; last as last"
-      [user]="user" [last]="last" (openItem)="onOpenItem(user)">
+      [user]="user" [last]="last" (openUserForm)="openUserForm.emit($event)">
     </app-people-item>
   `,
   styleUrls: ['./people-list.component.css']
@@ -16,13 +16,9 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
 export class PeopleListComponent implements OnInit {
   @Input() list: PeopleItem[];
 
-  @Output() openItem = new EventEmitter<any>();
+  @Output() openUserForm = new EventEmitter<any>();
 
   constructor() {}
 
   ngOnInit() {}
-
-  onOpenItem(user) {
-    this.openItem.emit(user);
-  }
 }
