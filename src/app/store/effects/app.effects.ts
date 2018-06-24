@@ -48,7 +48,7 @@ export class AppEffects {
     ofType(a_in_app.CHANGE_APP_NAME),
     map((action: a_in_app.ChangeAppName) => {
       const title = action.payload;
-      title === 'Home'
+      title === 'Timeline'
         ? this._title.setTitle('Optimus')
         : this._title.setTitle(title + ' - Optimus');
       return new a_in_app.SetAppName(title);

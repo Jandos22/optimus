@@ -172,7 +172,7 @@ export class NewUserFormComponent implements OnInit, OnChanges {
       })
       .then((res: any) => {
         if (res.d) {
-          this.router.navigate(['home']);
+          this.router.navigate(['timeline']);
         }
       });
   }

@@ -18,7 +18,7 @@ import { ApiPath, PathSlbSp } from './../../../../shared/constants/index';
         </mdc-card-media>
         <div class="ppe-item-card__primary" fxLayout="column" fxLayoutGap="16px">
           <div>{{ item.Title }}</div>
-          <div class="ppe-item-card_secondary" fxLayout="row" fxLayoutAlign="space-between">
+          <div fxLayout="row" fxLayoutAlign="space-between">
             <span>{{ item.Price }}</span>
             <span>{{ item.Supplier.Title }}</span>
           </div>

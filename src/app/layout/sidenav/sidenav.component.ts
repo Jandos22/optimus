@@ -13,7 +13,7 @@ import * as layout from './../../store/actions/layout.actions';
   template: `
   <ul fxLayout="column" fxFlexFill >
     <li *ngIf="isRegistered$ | async">
-        <a routerLink="/" class="noSelect" (click)="onSidenavClick()">Home</a>
+        <a routerLink="/" class="noSelect" (click)="onSidenavClick()">Timeline</a>
     </li>
     <li *ngIf="isRegistered$ | async">
         <a routerLink="/people" class="noSelect" (click)="onSidenavClick()">People</a>

@@ -253,7 +253,7 @@ export class PeopleService {
       'Gin',
       'LocationAssigned/Id',
       'LocationAssignedId',
-      'Photo',
+      // 'Photo',
       'Attachments',
       'AttachmentFiles'
     ];
