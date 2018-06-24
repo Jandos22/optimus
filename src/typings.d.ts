@@ -1,6 +1,6 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
-declare var sprLib: any;
+// declare var sprLib: ;
 
 interface NodeModule {
   id: string;

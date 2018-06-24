@@ -25,7 +25,7 @@ export class UpdatePeopleList implements Action {
 
 export class UpdateOneUser implements Action {
   readonly type = UsersActionTypes.UPDATE_ONE_USER;
-  constructor(public id: number, public user: PeopleItem) {}
+  constructor(public id: number, public changes: PeopleItem) {}
 }
 
 export class UpdateTotalItems implements Action {

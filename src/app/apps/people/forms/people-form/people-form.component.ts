@@ -110,6 +110,12 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // react to value changes in form
   alias$: Subscription;
 
+  // unsavedPhoto = {
+  //   hasUnsavedPhoto: false,
+  //   ArrayBuffer: new ArrayBuffer(0),
+  //   PhotoUrl: ''
+  // };
+
   constructor(
     private _root_store: Store<fromRoot.RootState>,
     private _people_store: Store<fromPeople.PeopleState>,
@@ -192,6 +198,25 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   updateFormGroupFields(updatedFields: PeopleItem) {
     console.log(updatedFields);
     this.data.item = { ...this.data.item, ...updatedFields };
+  }
+
+  updateFormGroupPhoto(newPhoto: SpListItemAttachmentFiles[]) {
+    console.log(this.data.item);
+    console.log(newPhoto);
+    this.data.item = {
+      ...this.data.item,
+      Attachments: true,
+      AttachmentFiles: {
+        results: { ...newPhoto }
+      }
+    };
+  }
+
+  // triggered from PeopleFormPhoto component
+  photoChanged(newPhoto: { PhotoUrl: string; ArrayBuffer: ArrayBuffer }) {
+    this.fg_photo.get('PhotoUrl').patchValue(newPhoto.PhotoUrl);
+    this.fg_photo.get('ArrayBuffer').patchValue(newPhoto.ArrayBuffer);
+    // this.unsavedPhoto = { hasUnsavedPhoto: true, ...newPhoto };
   }
 
   closeUserForm() {

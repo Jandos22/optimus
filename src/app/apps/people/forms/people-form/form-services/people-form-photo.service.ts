@@ -35,7 +35,7 @@ export class PeopleFormPhotoService {
     if (item.Attachments) {
       return item.AttachmentFiles.results[0].FileName;
     } else {
-      return 'nophoto';
+      return item.Alias + '.jpg';
     }
   }
 

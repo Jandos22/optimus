@@ -89,7 +89,27 @@ export class SearchEffects {
               .pipe(
                 take(res.d.results.length),
                 reduce((acc: PeopleItem[], curr: PeopleItem) => {
-                  return [...acc, { ...curr, id: curr.Id }];
+                  const current: PeopleItem = { ...curr, id: curr.Id };
+
+                  // if (curr.Attachments) {
+                  //   const photoUrl =
+                  //     curr.AttachmentFiles.results[0].ServerRelativeUrl +
+                  //     '?time=' +
+                  //     Date.now();
+                  //   current = {
+                  //     ...current,
+                  //     AttachmentFiles: {
+                  //       results: [
+                  //         {
+                  //           ...current.AttachmentFiles.results[0],
+                  //           ServerRelativeUrl: photoUrl
+                  //         }
+                  //       ]
+                  //     }
+                  //   };
+                  // }
+
+                  return [...acc, { ...current }];
                 }, [])
               )
               .subscribe((u: PeopleItem[]) => {

@@ -68,8 +68,10 @@ export class PeopleFormInitService {
 
   create_FormGroup_Photo(mode: FormMode, item: PeopleItem) {
     return new FormGroup({
+      ID: new FormControl(item.ID),
       Filename: new FormControl(this.photoService.getFileName(mode, item)),
-      PhotoUrl: new FormControl(this.photoService.getPhotoUrl(mode, item))
+      PhotoUrl: new FormControl(this.photoService.getPhotoUrl(mode, item)),
+      ArrayBuffer: new FormControl(new ArrayBuffer(0))
     });
   }
 

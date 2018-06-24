@@ -25,7 +25,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getLoggedInUser() {
-    return sprLib.user().info();
+    return new sprLib.user().info();
     // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 

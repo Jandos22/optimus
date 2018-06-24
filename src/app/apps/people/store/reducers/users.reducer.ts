@@ -42,7 +42,10 @@ export function reducer(
     }
 
     case UsersActionTypes.UPDATE_ONE_USER: {
-      return adapter.updateOne({ id: action.id, changes: action.user }, state);
+      return adapter.updateOne(
+        { id: action.id, changes: action.changes },
+        state
+      );
     }
 
     // case fromNgPeople.UPDATE_PEOPLE_LIST: {

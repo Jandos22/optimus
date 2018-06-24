@@ -4,15 +4,15 @@ import {
 } from './sp-list-item-field.model';
 
 export interface PeopleItem extends SpListItemField {
-  id: number;
-  Name: string;
-  Surname: string;
-  Alias: string;
-  Email: string;
-  Gin: string;
-  LocationAssignedId: number;
+  id?: number;
+  Name?: string;
+  Surname?: string;
+  Alias?: string;
+  Email?: string;
+  Gin?: string;
+  LocationAssignedId?: number;
   LocationsOfInterestId?: number[];
-  Photo: {
+  Photo?: {
     Filename: string;
     ArrayBuffer: ArrayBuffer;
   };
@@ -58,6 +58,12 @@ export class PeopleItemObject implements PeopleItem {
 }
 
 export interface PeopleUpdatedPhoto {
+  ID?: number;
+  Filename?: string;
+  ArrayBuffer?: ArrayBuffer;
+}
+
+export interface ToSaveUserPhoto {
   ID?: number;
   Filename?: string;
   ArrayBuffer?: ArrayBuffer;

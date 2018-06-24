@@ -253,6 +253,18 @@ span.g_form-button__text {
   line-height: 15px;
 }
 
-span.g_form-button__text.has-spinner {
-  padding-right: 4px;
+// span.g_form-button__text.has-spinner {
+//   padding-right: 4px;
+// }
+
+// my customization of material and fontawesome icons
+
+button.mat-button__fa-icon.mat-button.mat-primary {
+  padding: 0;
+  min-width: 36px;
+  max-height: 36px;
+}
+
+.cta__fa-icon {
+  font-size: 20px;
 }

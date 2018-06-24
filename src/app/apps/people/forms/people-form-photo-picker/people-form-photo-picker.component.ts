@@ -1,4 +1,3 @@
-import { PeopleFormPhotoService } from '../people-form/form-services/people-form-photo.service';
 import { Component, Inject, ViewChild } from '@angular/core';
 
 import {
@@ -22,7 +21,7 @@ export interface UserPhotoInitial {
 export interface UserPhotoNew {
   PhotoBeforeCrop: any;
   PhotoAfterCrop: any;
-  PhotoFilename: string;
+  // PhotoFilename: string;
   PhotoArrayBuffer: ArrayBuffer;
 }
 
@@ -41,9 +40,13 @@ export interface UserPhotoState {
   picker: UserPhotoPicker;
 }
 
+// services
+import { PeopleFormPhotoService } from '../people-form/form-services/people-form-photo.service';
+
 @Component({
   selector: 'app-people-form-photo-picker',
   styleUrls: ['people-form-photo-picker.component.css'],
+  providers: [PeopleFormPhotoService],
   template: `
     <h3 mat-dialog-title>User Photo</h3>
     <mat-dialog-content>
@@ -159,7 +162,7 @@ export class PeopleFormPhotoPickerComponent {
       new: {
         PhotoBeforeCrop: '',
         PhotoAfterCrop: '',
-        PhotoFilename: '',
+        // PhotoFilename: '',
         PhotoArrayBuffer: new ArrayBuffer(0)
       },
       picker: {
@@ -171,14 +174,6 @@ export class PeopleFormPhotoPickerComponent {
         cropped: false
       }
     };
-
-    // this.photoState = {
-    //   photoExists: incoming.hasPhoto,
-    //   photoSelected: false,
-    //   photoCropped: false,
-    //   photoUrl: '',
-    //   arrayBuffer: new ArrayBuffer(0)
-    // };
   }
 
   fileChangeListener($event) {
@@ -220,7 +215,7 @@ export class PeopleFormPhotoPickerComponent {
       showNew: true,
       showCropper: false
     };
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   onCrop(file) {
@@ -238,7 +233,7 @@ export class PeopleFormPhotoPickerComponent {
     // accept cropped photo & close form
     // send new photo to the people form
     console.log(this.state);
-    this.dialogRef.close(this.state);
+    this.dialogRef.close(this.state.new);
   }
 
   onBackToCrop() {

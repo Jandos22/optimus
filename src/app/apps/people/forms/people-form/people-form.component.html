@@ -3,7 +3,7 @@
 
 
     <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-        <app-people-form-photo [photo]="fg_photo.value" [mode]="$mode | async" (onPhotoPicker)="openPhotoPicker()">
+        <app-people-form-photo [fg_photo]="fg_photo" [mode]="$mode | async" (photoChanged)="photoChanged($event)">
         </app-people-form-photo>
     </div>
 
@@ -24,7 +24,7 @@
 
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-people-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (updateFormGroupFields)="updateFormGroupFields($event)"
-        (switchFormMode)="switchFormMode($event)" (closeUserForm)="closeUserForm()">
+    <app-people-form-actions [fg_fields]="fg_fields" [fg_photo]="fg_photo" [initialFields]="data.item" [mode]="data.mode" (updateFormGroupFields)="updateFormGroupFields($event)"
+        (updateFormGroupPhoto)="updateFormGroupPhoto($event)" (switchFormMode)="switchFormMode($event)" (closeUserForm)="closeUserForm()">
     </app-people-form-actions>
 </mat-dialog-actions>

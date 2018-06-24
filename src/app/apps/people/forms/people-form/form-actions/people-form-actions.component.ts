@@ -6,6 +6,7 @@ import { FormMode } from './../../../../../shared/interface/form.model';
 
 // interfaces
 import { PeopleItem } from './../../../../../shared/interface/people.model';
+import { SpListItemAttachmentFiles } from './../../../../../shared/interface/sp-list-item-field.model';
 
 @Component({
   selector: 'app-people-form-actions',
@@ -21,8 +22,10 @@ import { PeopleItem } from './../../../../../shared/interface/people.model';
     <app-people-form-actions-edit
         *ngIf="mode === 'edit'"
         [fg_fields]="fg_fields"
+        [fg_photo]="fg_photo"
         [initialFields]="initialFields"
         (updateFormGroupFields)="updateFormGroupFields.emit($event)"
+        (updateFormGroupPhoto)="updateFormGroupPhoto.emit($event)"
         (switchFormMode)="switchFormMode.emit($event)">
     </app-people-form-actions-edit>
 
@@ -35,10 +38,13 @@ import { PeopleItem } from './../../../../../shared/interface/people.model';
 export class PeopleFormActionsComponent {
   @Input() mode: FormMode;
   @Input() fg_fields: FormGroup;
+  @Input() fg_photo: FormGroup;
   @Input() initialFields: PeopleItem;
 
   @Output() switchFormMode = new EventEmitter<any>();
   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+  @Output()
+  updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
   @Output() closeUserForm = new EventEmitter();
 
   constructor() {}

@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of, from } from 'rxjs';
 import {
   map,
+  mergeMap,
   catchError,
   switchMap,
   concatMap,
@@ -51,9 +52,11 @@ export class PeopleService {
     return fdv$.pipe(
       take(1),
       switchMap(fdv => {
-        const update$: Promise<any> = sprLib
-          .list({ name: 'NgPeople', ...fdv })
-          .update(updatedFields);
+        const update$ = new sprLib.list({
+          name: 'NgPeople',
+          ...fdv
+        }).update(updatedFields);
+
         return from(update$.then(response => response));
       })
     );
@@ -71,7 +74,7 @@ export class PeopleService {
     // - if user has file with given filename, then delete it
     // - after deletion of file, upload new file
     return checkByFilename$.pipe(
-      map(hasPhoto => {
+      mergeMap(hasPhoto => {
         console.log('has photo: ' + hasPhoto);
         if (hasPhoto) {
           // observable that
@@ -111,7 +114,7 @@ export class PeopleService {
         // check if user has attachments
         if (result.d.Attachments) {
           // check for same Filename
-          for (let file of result.d.AttachmentFiles.results) {
+          for (const file of result.d.AttachmentFiles.results) {
             if (file.FileName === updatedPhoto.Filename) {
               hasPhoto = true;
             }
@@ -182,10 +185,10 @@ export class PeopleService {
     return fdv$.pipe(
       take(1),
       switchMap(fdv => {
-        const create$: Observable<any> = sprLib
-          .list({ name: 'NgPeople', ...fdv })
-          .create(userData);
-        return create$;
+        const create$ = new sprLib.list({ name: 'NgPeople', ...fdv }).create(
+          userData
+        );
+        return from(create$);
       })
     );
   }
@@ -268,7 +271,7 @@ export class PeopleService {
       const n = locations.length;
       let i = 1;
 
-      for (let location of locations) {
+      for (const location of locations) {
         // if multiple locations then wrap them in brackets
         if (i === 1 && n > 1) {
           filter += `(`;

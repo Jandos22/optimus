@@ -5,10 +5,10 @@ export interface SpListItemField {
   AttachmentFiles?: {
     results?: SpListItemAttachmentFiles[];
   };
-  ['odata.type']: string;
-  ['odata.id']: string;
-  ['odata.etag']: string;
-  ['odata.editLink']: string;
+  ['odata.type']?: string;
+  ['odata.id']?: string;
+  ['odata.etag']?: string;
+  ['odata.editLink']?: string;
 }
 
 export interface SpListItemAttachmentFiles {
