@@ -30,20 +30,7 @@
     Show Current User Data
     for registered users only
     -->
-  <span *ngIf="isRegistered$ | async">
-    <button mat-icon-button [matMenuTriggerFor]="userMenu">
-      <img [src]="user.photo" [alt]="user.initials" class="userPhoto">
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
-        <!-- <mat-icon>dialpad</mat-icon> -->
-        <span>{{ user.optimus.name }} {{ user.optimus.surname }}</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <!-- <mat-icon>dialpad</mat-icon> -->
-        <span>Logout</span>
-      </button>
-    </mat-menu>
-  </span>
+  <app-header-user *ngIf="$isRegistered | async" [user]="$user | async">
+  </app-header-user>
 
 </mat-toolbar>

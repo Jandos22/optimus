@@ -27,7 +27,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ValidationService } from './../../../../validators/validation.service';
 
-import { Locations } from './../../../../models/locations.m';
+// interfaces
+import { LocationEnt } from './../../../../shared/interface/locations.model';
+// import { Locations } from './../../../../models/locations.m';
 
 import { NewUserFormPhotoComponent } from '../index';
 
@@ -50,7 +52,7 @@ export class NewUserFormComponent implements OnInit, OnChanges {
   // and prepopulate Alias form field
   @Input() alias: string;
   @Input() email: string;
-  @Input() locations: Locations[];
+  @Input() locations: LocationEnt[];
 
   form: FormGroup;
   photoForm: FormGroup;

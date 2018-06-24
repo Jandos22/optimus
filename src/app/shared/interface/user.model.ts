@@ -13,7 +13,8 @@ export interface OptimusUser {
   isRegistered: boolean;
   name: string;
   surname: string;
-  photo: string;
+  photo: boolean;
+  photoUrl: string;
   locationAssigned: number;
   locationsOfInterest: number[];
 }

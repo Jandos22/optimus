@@ -23,7 +23,7 @@ import {
 } from '@angular/material';
 
 import { SidenavProperties } from './../models/sidenav-properties.m';
-import { WindowProperties } from './../models/window-properties.m';
+import { WindowProperties } from '../shared/interface/layout.model';
 
 @Component({
   selector: 'app-layout',

@@ -41,7 +41,7 @@
                     <mat-form-field>
                         <mat-select placeholder="Location" formControlName="Location">
                             <mat-option *ngFor="let item of locations" [value]="item.Location">
-                                {{ item.Location }}
+                                {{ item.Title }}
                             </mat-option>
                         </mat-select>
                         <mat-error *ngIf="form.get('Location').invalid">{{ getError_Location() }}</mat-error>

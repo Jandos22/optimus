@@ -1,3 +1,4 @@
+import { PathSlbSp } from './../constants/index';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -15,6 +16,7 @@ import { CurrentUser } from '../../models/current-user.m';
 
 // services
 import { SharepointService } from '../services/sharepoint.service';
+import { PeopleItem } from '../interface/people.model';
 
 // import { sprLib } from '../../../typings';
 
@@ -23,14 +25,16 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getLoggedInUser() {
-    return sprLib.user().info();
+    return new sprLib.user().info();
     // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
   checkLoggedInUserRegistered(alias) {
-    return this.http.get(
-      `${ApiPath}Web/lists/getbytitle('NgPeople')/items?$filter=Alias eq '${alias}'`
-    );
+    let url = `${ApiPath}Web/lists/getbytitle('NgPeople')/items?`;
+    url += `$select=Id,Alias,Attachments,AttachmentFiles,LocationAssignedId,LocationsOfInterestId,Name,Surname`;
+    url += `&$expand=AttachmentFiles`;
+    url += `&$filter=Alias eq '${alias}'`;
+    return this.http.get(url);
   }
 
   listitem(list) {
@@ -107,17 +111,23 @@ export class UserService {
     };
   }
 
-  prepOptimusUserObject(userdata) {
+  prepOptimusUserObject(userdata: PeopleItem) {
     console.log(userdata);
-    if (ApiPath.startsWith('_')) {
-      userdata.Photo.Url.replace(WirelinePath, ProxyPath);
+    let photoUrl = '';
+    if (userdata.Attachments) {
+      photoUrl = userdata.AttachmentFiles[0].ServerRelativeUrl;
     }
+    if (ApiPath.startsWith('_')) {
+      photoUrl = PathSlbSp + photoUrl;
+    }
+
     return {
       Id: userdata.Id,
       isRegistered: true,
       name: userdata.Name,
       surname: userdata.Surname,
-      photo: userdata.Photo.Url,
+      photo: userdata.Attachments,
+      photoUrl,
       locationAssigned: userdata.LocationAssignedId,
       locationsOfInterest: userdata.LocationsOfInterestId
     };

@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { SidenavProperties } from './../../models/sidenav-properties.m';
-import { WindowProperties } from './../../models/window-properties.m';
+import { WindowProperties } from '../../shared/interface/layout.model';
 
 export const UPDATE_LAYOUT = '[Layout] Update Layout';
 export const TOGGLE_SIDENAV = '[Layout] Toggle Sidenav';

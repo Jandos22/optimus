@@ -1,0 +1,30 @@
+<span mat-dialog-title style="text-align: center;">{{ Title }}</span>
+<mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
+
+
+    <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
+        <app-people-form-photo [fg_photo]="fg_photo" [mode]="$mode | async" (photoChanged)="photoChanged($event)">
+        </app-people-form-photo>
+    </div>
+
+
+    <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px" class="people-form__items--center">
+
+        <app-people-form-name fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-name>
+        <app-people-form-surname fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-surname>
+        <app-people-form-alias fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-alias>
+        <app-people-form-email fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-email>
+        <app-people-form-gin fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-gin>
+        <!-- <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="locations" [disabled]="locationDisabled">
+        </app-people-form-location> -->
+        <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="$locations | async">
+        </app-people-form-location>
+
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-people-form-actions [fg_fields]="fg_fields" [fg_photo]="fg_photo" [initialFields]="data.item" [mode]="data.mode" (updateFormGroupFields)="updateFormGroupFields($event)"
+        (updateFormGroupPhoto)="updateFormGroupPhoto($event)" (switchFormMode)="switchFormMode($event)" (closeUserForm)="closeUserForm()">
+    </app-people-form-actions>
+</mat-dialog-actions>

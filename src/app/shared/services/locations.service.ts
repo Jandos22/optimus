@@ -41,9 +41,9 @@ export class LocationsService {
       concatMap(fdv => {
         console.log(fdv);
 
-        const update$: Promise<any> = sprLib
-          .list({ name: 'NgPeople', ...fdv })
-          .update(object);
+        const update$ = new sprLib.list({ name: 'NgPeople', ...fdv }).update(
+          object
+        );
 
         return from(update$.then(response => response));
       })

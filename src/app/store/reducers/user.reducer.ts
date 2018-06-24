@@ -16,6 +16,7 @@ const initialState: UserState = {
     name: null,
     surname: null,
     photo: null,
+    photoUrl: null,
     locationAssigned: null,
     locationsOfInterest: []
   }
@@ -75,3 +76,4 @@ export const getUserId = (state: UserState) => state.optimus.Id;
 export const getIsRegistered = (state: UserState) => state.optimus.isRegistered;
 export const getInitials = (state: UserState) => state.sharepoint.initials;
 export const getPhoto = (state: UserState) => state.optimus.photo;
+export const getPhotoUrl = (state: UserState) => state.optimus.photoUrl;

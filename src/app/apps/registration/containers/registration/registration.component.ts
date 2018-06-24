@@ -5,7 +5,9 @@ import * as fromRoot from '../../../../store';
 import * as a_in_app from './../../../../store/actions/app.actions';
 import * as fromLayoutActions from '../../../../store/actions/layout.actions';
 
-import { Locations } from './../../../../models/locations.m';
+// interfaces
+// import { Locations } from './../../../../models/locations.m';
+import { LocationEnt } from './../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-registration',
@@ -22,7 +24,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   appName = 'Registration';
   alias: string;
   email: string;
-  locations: Locations[];
+  locations: LocationEnt[];
 
   constructor(private store: Store<fromRoot.RootState>) {}
 
@@ -40,7 +42,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       this.email = value;
     });
 
-    this.store.select(fromRoot.getAppLocations).subscribe(array => {
+    this.store.select(fromRoot.selectAllLocations).subscribe(array => {
       console.log(array);
       this.locations = array;
     });

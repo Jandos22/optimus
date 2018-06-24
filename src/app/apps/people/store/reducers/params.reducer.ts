@@ -4,7 +4,7 @@ import * as fromParams from '../actions/params.action';
 import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
 
 export interface ParamsState {
-  location: string;
+  location: number[];
   query: string;
   top: number;
 }

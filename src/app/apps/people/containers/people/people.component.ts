@@ -10,7 +10,7 @@ import * as fromRoot from '../../../../store';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // interfaces
-import { PeopleItem } from './../../models/people-item.model';
+import { PeopleItem } from './../../../../shared/interface/people.model';
 import { PeopleParams } from './../../models/people-params.model';
 import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
@@ -27,11 +27,11 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
     </mat-progress-bar>
 
     <app-people-toolbar
-      (openForm)="openForm($event)">
+      (openForm)="openForm('new', $event)">
     </app-people-toolbar>
 
     <app-people-list class="flexContent" style="padding: 8px 0;"
-      [list]="list" (openItem)="openForm('view', $event)">
+      [list]="list" (openUserForm)="openForm('view', $event)">
     </app-people-list>
 
     <app-people-toolbar-bottom class="flexFooter"
@@ -79,7 +79,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     public form: MatDialog
   ) {
     this.list$ = this.peopleStore
-      .pipe(select(fromPeople.getPeopleList))
+      .pipe(select(fromPeople.selectAllUsers))
       .subscribe(list => {
         // goes in people-list component
         this.list = list;
@@ -96,13 +96,13 @@ export class PeopleComponent implements OnInit, OnDestroy {
       });
 
     this.total$ = this.peopleStore
-      .select(fromPeople.getPeopleTotal)
+      .select(fromPeople.getUsersTotal)
       .subscribe(total => {
         this.total = total;
       });
 
     this.searching$ = this.peopleStore
-      .select(fromPeople.getPeopleSearching)
+      .select(fromPeople.getUsersSearching)
       .subscribe(search => {
         this.searching = search;
       });
@@ -155,6 +155,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   openForm(mode, item?): void {
     const data = { mode, item };
     const formRef = this.form.open(PeopleFormComponent, { data });
+    // formRef.afterClosed();
   }
 
   ngOnDestroy() {

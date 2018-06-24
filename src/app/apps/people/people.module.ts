@@ -21,9 +21,8 @@ import * as fromComponents from './components';
 
 // forms
 import * as fromForms from './forms';
-
-// form components
-import * as fromFormComponents from './forms/people-form';
+import * as fromFormControls from './forms/people-form/form-controls';
+import * as fromFormActions from './forms/people-form/form-actions';
 
 // services
 import * as fromServices from './services';
@@ -47,15 +46,10 @@ export const peopleRoutes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
-    ...fromForms.forms,
-    ...fromFormComponents.forms_components
+    ...fromForms.form_dialogs,
+    ...fromFormControls.forms_controls,
+    ...fromFormActions.form_actions
   ],
-  entryComponents: [...fromForms.forms],
-  exports: [
-    RouterModule,
-    ReactiveFormsModule,
-    ...fromContainers.containers,
-    ...fromComponents.components
-  ]
+  entryComponents: [...fromForms.form_dialogs]
 })
 export class PeopleModule {}
