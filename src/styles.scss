@@ -15,6 +15,7 @@ $my-primary: #2196f3;
 $my-primary-light: #9be7ff;
 $my-primary-dark: #0069c0;
 $my-accent: #ffc107;
+$my-warn: #f44336;
 
 $mdc-theme-primary: #2196f3; // primary color
 $mdc-theme-secondary: #ffc107; // secondary color
@@ -267,4 +268,8 @@ button.mat-button__fa-icon.mat-button.mat-primary {
 
 .cta__fa-icon {
   font-size: 20px;
+}
+
+.inputquery__error--icon {
+  color: $my-warn;
 }

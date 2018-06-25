@@ -50,7 +50,7 @@ export class TimelineService {
     let url = `${ApiPath}web/lists/getbytitle('NgTimeline')/items?`;
 
     // parameters
-    const query = params.query;
+    const query = params.query.replace('#', '%23');
     const locations = params.locations;
     let top = params.top;
 

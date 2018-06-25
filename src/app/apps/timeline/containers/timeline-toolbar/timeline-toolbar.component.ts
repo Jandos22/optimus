@@ -17,14 +17,16 @@ import { Subscription, combineLatest } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
-  skipWhile,
-  startWith,
+  filter,
   map,
   tap
 } from 'rxjs/operators';
 
 // interfaces
 import { TimelineEventsParams } from './../../../../shared/interface/timeline.model';
+
+// validators
+import { ValidationService } from './../../../../validators/validation.service';
 
 @Component({
   selector: 'app-timeline-toolbar',
@@ -58,7 +60,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
-      query: [''],
+      query: ['', ValidationService.onlySearchable],
       locations: [''],
       top: []
     });
@@ -73,8 +75,9 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
     // don't pass value after each keystroke, but wait for 600ms
     // don't pass value if it didn't change
     const query$ = this.fg_params.get('query').valueChanges.pipe(
-      tap(v => console.log(this.fg_params.get('query').invalid)),
-      skipWhile(query => this.fg_params.get('query').invalid),
+      filter(query => {
+        return this.fg_params.get('query').valid;
+      }),
       debounceTime(600),
       distinctUntilChanged()
     );

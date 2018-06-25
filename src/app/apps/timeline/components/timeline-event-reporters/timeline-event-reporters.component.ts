@@ -114,8 +114,10 @@ export class TimelineEventReportersComponent
   }
 
   calcLeftDate() {
-    if (this.reps) {
+    if (this.reps && this.reps.length > 1) {
       return this.reps.length * 36 - 18 + 8 + 'px';
+    } else if (this.reps && this.reps.length === 1) {
+      return 36 + 8 + 'px';
     } else {
       return 0;
     }

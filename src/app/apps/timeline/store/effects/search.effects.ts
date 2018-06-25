@@ -21,6 +21,7 @@ import * as fromSearchActions from '../actions/search.actions';
 import * as fromParamsActions from '../actions/params.actions';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromEventsActions from '../actions/events.actions';
+import * as fromErrorActions from '../../../../store/actions/errors.actions';
 
 // services
 import { TimelineService } from '../../services/timeline.service';
@@ -38,7 +39,7 @@ export class SearchEffects {
 
   // when params change:
   // reset pagination and get new url
-  @Effect()
+  @Effect() // UPDATE PARAMS
   updateParams$ = this.actions$.pipe(
     ofType(fromParamsActions.ParamsActionTypes.UPDATE_PARAMS),
     map((action: fromParamsActions.UpdateParams) => {
@@ -55,7 +56,7 @@ export class SearchEffects {
   // when receive new url
   // start new page (index 0 and only one link)
   // start new search with new url
-  @Effect()
+  @Effect() // GET NEW URL
   getNewUrl$ = this.actions$.pipe(
     ofType(fromSearchActions.SearchActionTypes.GET_NEW_URL),
     map((action: fromSearchActions.GetNewUrl) => {
@@ -70,7 +71,7 @@ export class SearchEffects {
     })
   );
 
-  @Effect()
+  @Effect() // BEGIN SEARCH
   beginSearch$ = this.actions$.pipe(
     ofType(fromSearchActions.SearchActionTypes.BEGIN_SEARCH),
     map((action: fromSearchActions.BeginSearch) => action.url),
@@ -113,13 +114,15 @@ export class SearchEffects {
 
           // dispatched several actions using mergeMap
           return dispatch;
-        })
-        // catchError(error => of(new fromUsers.ErrorGetPeople(error)))
+        }),
+        // if http call returns error, then dialog box will pop up
+        // user can close and continue working with toolbar methods
+        catchError((error: any) => of(new fromErrorActions.DisplayError(error)))
       );
     })
   );
 
-  @Effect()
+  @Effect() // ON NEXT
   onNext$ = this.actions$.pipe(
     ofType(fromPaginationActions.PaginationActionTypes.ON_NEXT),
     map((action: fromPaginationActions.OnNext) => {
@@ -127,7 +130,7 @@ export class SearchEffects {
     })
   );
 
-  @Effect()
+  @Effect() // ON BACK
   onBack$ = this.actions$.pipe(
     ofType(fromPaginationActions.PaginationActionTypes.ON_BACK),
     map((action: fromPaginationActions.OnBack) => {
@@ -135,7 +138,7 @@ export class SearchEffects {
     })
   );
 
-  @Effect()
+  @Effect() // ON BEGIN COUNT
   onBeginCount$ = this.actions$.pipe(
     ofType(fromSearchActions.SearchActionTypes.BEGIN_COUNT),
     map((action: fromSearchActions.BeginCount) => {
