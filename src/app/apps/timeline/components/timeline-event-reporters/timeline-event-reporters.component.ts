@@ -75,9 +75,8 @@ export class TimelineEventReportersComponent
           }, [])
         )
         .subscribe(v => {
-          this.reps = v as PeopleItem[];
-          console.log(this.reps);
           console.log(v);
+          this.reps = v as PeopleItem[];
         });
     }
   }

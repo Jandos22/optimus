@@ -64,11 +64,10 @@ export class TimelineService {
     }
 
     if (query) {
-      url += `((substringof('${query}',Title))`;
+      url += `(`;
+      url += `(substringof('${query}',Title))`;
       url += `or(substringof('${query}',Summary))`;
-      //   url += `or(substringof('${query}',Alias))`;
-      //   url += `or(substringof('${query}',Email))`;
-      //   url += `or(substringof('${query}',Gin)))`;
+      url += `)`;
     }
 
     if (query && locations.length) {

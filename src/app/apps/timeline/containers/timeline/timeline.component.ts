@@ -10,7 +10,7 @@ import * as application from '../../../../store/actions/app.actions';
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-timeline-toolbar fxFlex="56px"></app-timeline-toolbar>
-    <app-timeline-events-list fxFlex></app-timeline-events-list>
+    <app-timeline-events-list fxFlex class="flexContent"></app-timeline-events-list>
     <app-timeline-footer fxFlex="56px"></app-timeline-footer>
   `,
   styleUrls: ['./timeline.component.scss']

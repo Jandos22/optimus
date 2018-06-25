@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 // ngrx
@@ -16,17 +16,21 @@ import { TimelineEventsParams } from './../../../../shared/interface/timeline.mo
 @Component({
   selector: 'app-timeline-toolbar',
   styleUrls: ['timeline-toolbar.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `
-        <div>
-            Toolbar
-        </div>
+    <div fxLayout="row" fxLayoutAlign="start center"
+      class="timeline__toolbar">
+        <app-timeline-toolbar-search
+          [fg_params]="fg_params">
+        </app-timeline-toolbar-search>
+    </div>
     `
 })
 export class TimelineToolbarComponent implements OnInit, OnDestroy {
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription;
+  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   constructor(
     private fb: FormBuilder,
@@ -80,5 +84,6 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
+    this.$selectedLocations.unsubscribe();
   }
 }
