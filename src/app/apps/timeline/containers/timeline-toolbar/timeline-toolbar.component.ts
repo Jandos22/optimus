@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 // ngrx
@@ -7,8 +13,15 @@ import * as fromRoot from '../../../../store';
 import * as fromTimeline from '../../store';
 
 // rxjs
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  skipWhile,
+  startWith,
+  map,
+  tap
+} from 'rxjs/operators';
 
 // interfaces
 import { TimelineEventsParams } from './../../../../shared/interface/timeline.model';
@@ -17,6 +30,7 @@ import { TimelineEventsParams } from './../../../../shared/interface/timeline.mo
   selector: 'app-timeline-toolbar',
   styleUrls: ['timeline-toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div fxLayout="row" fxLayoutAlign="start center"
       class="timeline__toolbar">
@@ -39,25 +53,52 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
   ) {
     this.initializeParamsFormGroup();
     this.subscribeToParamsFormGroup();
+    this.resetParamsFormGroup();
   }
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
       query: [''],
       locations: [''],
-      top: [25]
+      top: []
     });
   }
 
+  resetParamsFormGroup() {
+    this.fg_params.get('query').patchValue('');
+    this.fg_params.get('top').patchValue(25);
+  }
+
   subscribeToParamsFormGroup() {
-    // when params change,
-    // update store with new params values
-    // same action activates in search effects
-    this.$params = this.fg_params.valueChanges
+    // don't pass value after each keystroke, but wait for 600ms
+    // don't pass value if it didn't change
+    const query$ = this.fg_params.get('query').valueChanges.pipe(
+      tap(v => console.log(this.fg_params.get('query').invalid)),
+      skipWhile(query => this.fg_params.get('query').invalid),
+      debounceTime(600),
+      distinctUntilChanged()
+    );
+
+    const locations$ = this.fg_params
+      .get('locations')
+      .valueChanges.pipe(distinctUntilChanged());
+
+    const top$ = this.fg_params
+      .get('top')
+      .valueChanges.pipe(distinctUntilChanged());
+
+    const params$ = combineLatest(query$, locations$, top$);
+
+    this.$params = params$
       .pipe(
-        debounceTime(600),
-        distinctUntilChanged(),
-        skipWhile(_ => this.fg_params.get('query').invalid === true)
+        map(params => {
+          console.log(params);
+          return {
+            query: params[0],
+            locations: params[1],
+            top: params[2]
+          };
+        })
       )
       .subscribe((params: TimelineEventsParams) => {
         console.log('params updated');

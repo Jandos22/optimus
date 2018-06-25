@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
         <mat-form-field [floatLabel]="'never'" [color]="'primary'">
             <input matInput
                 type="text"
-                placeholder="Search"
+                [placeholder]="'Search'"
                 formControlName="query"
                 autocomplete="off">
             <button
