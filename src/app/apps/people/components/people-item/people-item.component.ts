@@ -12,7 +12,9 @@ import { PathSlbSp } from '../../../../shared/constants';
 
         <button mat-icon-button fxFlex="40px" (click)="openUserForm.emit(user)">
             <img *ngIf="user.Attachments" [src]="userPhoto" [alt]="user.Alias" class="peopleAvatar">
-            <span *ngIf="!user.Attachments" style="font-size: 36px;"><i class="far fa-user-circle"></i></span>
+            <span *ngIf="!user.Attachments" style="font-size: 36px;">
+              <fa-icon [icon]="['far', 'user-circle']"></fa-icon>
+            </span>
         </button>
 
         <span fxFlex class="listItemMiddle">

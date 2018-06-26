@@ -9,9 +9,6 @@ import { Store, select } from '@ngrx/store';
 import * as fromFeature from '../../store';
 import * as fromPpeActions from '../../store/actions/ppe.actions';
 
-// services
-import { PpeService } from './../../services/ppe.service';
-
 @Component({
   selector: 'app-ppe-catalog.app-ppe-catalog__flex',
   styleUrls: ['ppe-catalog.component.scss'],
@@ -30,10 +27,7 @@ export class PpeCatalogComponent implements OnInit {
   ppe_items: Observable<any[]>;
   ppe_items_by_category: Observable<any[]>;
 
-  constructor(
-    private featureStore: Store<fromFeature.PpeState>,
-    private ppeService: PpeService
-  ) {}
+  constructor(private featureStore: Store<fromFeature.PpeState>) {}
 
   ngOnInit() {
     this.featureStore.dispatch(new fromPpeActions.GetPpeCatalog());

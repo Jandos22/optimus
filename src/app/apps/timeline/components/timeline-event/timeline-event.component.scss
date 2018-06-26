@@ -1,0 +1,24 @@
+.event-card__container {
+  margin: 16px;
+}
+
+.event-card__content {
+  padding: 16px;
+}
+
+.event__type {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.event__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.875);
+}
+
+.event__summary {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.54);
+}

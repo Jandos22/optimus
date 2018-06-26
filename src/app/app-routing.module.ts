@@ -6,9 +6,9 @@ import { AuthGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
   {
-    path: 'home',
+    path: 'timeline',
     canActivate: [AuthGuard],
-    loadChildren: './apps/home/home.module#HomeModule'
+    loadChildren: './apps/timeline/timeline.module#TimelineModule'
   },
   {
     path: 'people',
@@ -29,7 +29,7 @@ export const appRoutes: Routes = [
     path: 'registration',
     loadChildren: './apps/registration/registration.module#RegistrationModule'
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: '', redirectTo: 'timeline', pathMatch: 'full' }
 ];
 
 @NgModule({

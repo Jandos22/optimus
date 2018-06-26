@@ -16,7 +16,7 @@ import * as fromPeople from '../../../../store';
 
       <!-- two span els needed to have right vertical alignment -->
       <span *ngIf="($spinner | async).onSaving" class="g_form-button__text">
-        <i class="fas fa-spinner fa-spin"></i>
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
       </span>
 
       <span class="g_form-button__text">SAVE</span>

@@ -5,7 +5,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['people-top-select.component.css'],
   template: `
     <button mat-icon-button [matMenuTriggerFor]="selectTop">
-      {{ top }}<mat-icon>keyboard_arrow_down</mat-icon>
+      {{ top }}
+      <!-- <mat-icon>keyboard_arrow_down</mat-icon> -->
+      <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
     </button>
     <mat-menu #selectTop="matMenu">
       <button mat-menu-item *ngFor="let item of topOptions" (click)="onSelect(item)">

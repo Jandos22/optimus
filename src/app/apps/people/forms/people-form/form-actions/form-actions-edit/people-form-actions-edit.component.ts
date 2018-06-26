@@ -43,9 +43,13 @@ import { PeopleFormHttpService } from './../../form-services/people-form-http.se
         [disabled]="!fg_fields.valid || (!hasUnsavedFields && !hasUnsavedPhoto) || savingChanges"
         (click)="onSaveChanges()">
         <!-- two span els needed to have right vertical alignment -->
-        <span *ngIf="savingChanges" class="cta__fa-icon" matTooltip="Saving changes"><i class="fas fa-spinner fa-spin"></i></span>
+        <span *ngIf="savingChanges" class="cta__fa-icon" matTooltip="Saving changes">
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+        </span>
         <!-- <span class="g_form-button__text">SAVE</span> -->
-        <span *ngIf="!savingChanges" class="cta__fa-icon" matTooltip="Save changes"><i class="far fa-save"></i></span>
+        <span *ngIf="!savingChanges" class="cta__fa-icon" matTooltip="Save changes">
+          <fa-icon [icon]="['far', 'save']"></fa-icon>
+        </span>
     </button>
 
     <button mat-button tabindex="-1"

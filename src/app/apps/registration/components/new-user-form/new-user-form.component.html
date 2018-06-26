@@ -5,7 +5,10 @@
 
             <div mat-card-avatar>
                 <button mat-icon-button color="warn" *ngIf="!photoShow" (click)="openPhotoPicker()">
-                    <mat-icon>add_a_photo</mat-icon>
+                    <!-- <mat-icon>add_a_photo</mat-icon> -->
+                    <span class="fa_regular">
+                        <fa-icon [icon]="['far', 'image']"></fa-icon>
+                    </span>
                 </button>
                 <img *ngIf="photoShow" [src]="photoShow" class="userPhoto" (click)="openPhotoPicker()">
             </div>

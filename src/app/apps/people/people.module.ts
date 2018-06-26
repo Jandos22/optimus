@@ -26,6 +26,7 @@ import * as fromFormActions from './forms/people-form/form-actions';
 
 // services
 import * as fromServices from './services';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // routes
 export const peopleRoutes: Routes = [
@@ -40,7 +41,8 @@ export const peopleRoutes: Routes = [
     StoreModule.forFeature('people', reducers),
     EffectsModule.forFeature(effects),
     ImageCropperModule,
-    MaterialModule
+    MaterialModule,
+    FontAwesomeModule
   ],
   providers: [...fromServices.services],
   declarations: [

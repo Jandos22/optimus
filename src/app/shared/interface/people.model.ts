@@ -12,6 +12,7 @@ export interface PeopleItem extends SpListItemField {
   Gin?: string;
   LocationAssignedId?: number;
   LocationsOfInterestId?: number[];
+  Fullname?: string;
   Photo?: {
     Filename: string;
     ArrayBuffer: ArrayBuffer;
@@ -27,6 +28,7 @@ export class PeopleItemObject implements PeopleItem {
   Email = '';
   Gin = '';
   LocationAssignedId: number = null;
+  Fullname: '';
   ['odata.type'];
   ['odata.id'];
   ['odata.etag'];
