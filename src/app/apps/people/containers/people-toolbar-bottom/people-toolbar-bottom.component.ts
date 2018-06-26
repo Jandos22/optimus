@@ -11,7 +11,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
         <span class="footerButton">
           <button mat-icon-button *ngIf="indexes?.previous || indexes?.previous === 0" (click)="onBackClick()">
-            <mat-icon>navigate_before</mat-icon>
+            <i class="fas fa-chevron-left"></i>
           </button>
         </span>
 
@@ -25,7 +25,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
         <span class="footerButton">
           <button mat-icon-button *ngIf="indexes?.next" (click)="onNextClick()">
-            <mat-icon>navigate_next</mat-icon>
+            <i class="fas fa-chevron-right"></i>
           </button>
         </span>
 
@@ -47,7 +47,7 @@ export class PeopleToolbarBottomComponent {
   @Output() onNext = new EventEmitter<any>();
   @Output() onBack = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
   onBackClick() {
     this.onBack.emit(this.indexes);

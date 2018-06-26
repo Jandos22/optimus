@@ -21,7 +21,8 @@ import { Component, Input } from '@angular/core';
                 mat-button *ngIf="fg_params.get('query').value"
                 matSuffix mat-icon-button aria-label="Clear"
                 (click)="clearQuery()">
-                <mat-icon>close</mat-icon>
+                <!-- <mat-icon>close</mat-icon> -->
+                <span class="fa_regular"><i class="fas fa-times"></i></span>
             </button>
         </mat-form-field>
     </div>
