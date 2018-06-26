@@ -1,6 +1,12 @@
 // 3rd Party Modules
 import { MaterialModule } from './shared/libraries/material.module';
 
+// font awesome icons
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import * as fromFontAwesome from './shared/libraries/fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+library.add(fromFontAwesome.fontawesome_icons);
+
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
 
@@ -67,6 +73,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    FontAwesomeModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreModule.forFeature('root', root),
     EffectsModule.forRoot(effects),
@@ -86,6 +93,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     }
   ],
   exports: [
+    FontAwesomeModule
     // ...fromContainers.containers,
     // MaterialModule,
     // ReactiveFormsModule

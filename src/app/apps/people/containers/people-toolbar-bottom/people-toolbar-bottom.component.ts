@@ -11,7 +11,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
         <span class="footerButton">
           <button mat-icon-button *ngIf="indexes?.previous || indexes?.previous === 0" (click)="onBackClick()">
-            <i class="fas fa-chevron-left"></i>
+            <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
           </button>
         </span>
 
@@ -25,7 +25,7 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
         <span class="footerButton">
           <button mat-icon-button *ngIf="indexes?.next" (click)="onNextClick()">
-            <i class="fas fa-chevron-right"></i>
+            <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
           </button>
         </span>
 

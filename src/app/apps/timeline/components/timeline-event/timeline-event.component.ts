@@ -19,8 +19,8 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
             </mdc-card-media>
             <div fxFlex class="event-card__content" fxLayout="column" fxLayoutGap="16px">
                 <div class="event__type" fxLayoutGap="8px">
-                    <span><i [className]="getFaIconName(event.EventType.Title)"></i></span>
-                    <span>{{ event.EventType.Title }}</span>
+                  <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
+                  <span>{{ event.EventType.Title }}</span>
                 </div>
                 <div class="event__title">{{ event.Title }}</div>
                 <div class="event__summary">{{ event.Summary }}</div>
@@ -47,10 +47,10 @@ export class TimelineEventComponent {
   getFaIconName(eventType: string) {
     switch (eventType) {
       case 'General':
-        return 'fas fa-bullhorn';
+        return 'bullhorn';
 
       default:
-        return 'fas fa-bullhorn';
+        return 'bullhorn';
     }
   }
 }

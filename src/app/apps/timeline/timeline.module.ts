@@ -13,6 +13,7 @@ import { reducers, effects } from './store';
 import { MaterialModule } from '../../shared/libraries/material.module';
 import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
 import { ImageCropperModule } from 'ngx-img-cropper';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // containers
 import * as fromContainers from './containers';
@@ -37,6 +38,7 @@ export const timelineRoutes: Routes = [
     EffectsModule.forFeature(effects),
     ImageCropperModule,
     MaterialModule,
+    FontAwesomeModule,
     MaterialDesignComponentsModule
   ],
   providers: [...fromServices.services],

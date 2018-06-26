@@ -32,7 +32,7 @@ import { PeopleLookupService } from '../../../../shared/services';
             [style.zIndex]="calcZindex(i)">
             <img [src]="getPhotoUrl(rep)" class="userPhoto" [matTooltip]="rep.Fullname">
         </span>
-        <span fxLayout="column"
+        <span fxLayout="column" fxLayoutAlign="center start"
             class="reporters_date_container"
             [style.left]="calcLeftDate()">
             <span class="reporter__container--authors">{{ getReportersName() }}</span>

@@ -10,6 +10,7 @@
 
 .reporters_date_container {
   position: relative;
+  height: 36px;
 }
 
 .my_stack {
@@ -20,14 +21,14 @@
 }
 
 .reporter__container--authors {
-  line-height: 18px;
+  line-height: 16px;
   color: rgba(0, 0, 0, 0.75);
   font-weight: 400;
   font-size: 0.75rem;
 }
 
 .reporter__container--eventdate {
-  line-height: 18px;
+  line-height: 14px;
   color: rgba(0, 0, 0, 0.54);
   font-weight: 300;
   font-size: 0.75rem;

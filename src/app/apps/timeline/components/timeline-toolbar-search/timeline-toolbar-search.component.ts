@@ -15,14 +15,16 @@ import { Component, Input } from '@angular/core';
             <button
                 mat-button *ngIf="fg_params.get('query').invalid"
                 matPrefix mat-icon-button [matTooltip]="errorMessage()">
-                <span class="inputquery__error--icon"><i class="fas fa-exclamation-circle"></i></span>
+                <span class="inputquery__error--icon">
+                    <fa-icon [icon]="['fas', 'exclamation-circle']"></fa-icon>
+                </span>
             </button>
             <button
                 mat-button *ngIf="fg_params.get('query').value"
                 matSuffix mat-icon-button aria-label="Clear"
                 (click)="clearQuery()">
                 <!-- <mat-icon>close</mat-icon> -->
-                <span class="fa_regular"><i class="fas fa-times"></i></span>
+                <fa-icon [icon]="['fas', 'times']"></fa-icon>
             </button>
         </mat-form-field>
     </div>

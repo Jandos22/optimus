@@ -33,7 +33,7 @@ import {
             <span>
               <button mat-icon-button (click)="onOpenForm('new')" color="warn">
                 <!-- <mat-icon>add</mat-icon> -->
-                <span class="fa_regular"><i class="fas fa-plus"></i></span>
+                <fa-icon [icon]="['fas', 'plus']"></fa-icon>
               </button>
             </span>
 

@@ -14,6 +14,7 @@ import * as fromComponents from './components';
 import { NewUserFormPhotoComponent } from './components';
 
 import { ImageCropperModule } from 'ngx-img-cropper';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // routes
 export const ROUTES: Routes = [
@@ -26,6 +27,7 @@ export const ROUTES: Routes = [
     RouterModule.forChild(ROUTES),
     ReactiveFormsModule,
     MaterialModule,
+    FontAwesomeModule,
     ImageCropperModule
   ],
   exports: [RouterModule, ReactiveFormsModule],
