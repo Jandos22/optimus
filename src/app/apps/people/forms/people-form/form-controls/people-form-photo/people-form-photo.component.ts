@@ -1,8 +1,15 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 import { PeopleFormPhotoPickerComponent } from './../../../people-form-photo-picker/people-form-photo-picker.component';
@@ -21,21 +28,20 @@ import { UserPhotoState } from './../../../../../registration/components/new-use
   template: `
     <div fxFlex fxLayout="row wrap" fxLayoutAlign="center">
       <!-- show when user doesn't have unsaved photo -->
-      <img *ngIf="!hasUnsavedPhoto"
-        [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()" (click)="openPhotoPicker()">
-      <!-- show when user has unsaved photo -->
-      <img *ngIf="hasUnsavedPhoto" [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()">
+      <img [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()" (click)="openPhotoPicker()">
+      <!-- show when user has unsaved photo
+      <img *ngIf="hasUnsavedPhoto"
+        [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()" (click)="openPhotoPicker()"> -->
     </div>
     `
 })
-export class PeopleFormPhotoComponent implements OnInit {
+export class PeopleFormPhotoComponent implements OnInit, OnDestroy {
   @Input() fg_photo: FormGroup;
   @Input() mode: FormMode;
-  // @Input() unsavedPhoto: any;
 
   @Output() photoChanged = new EventEmitter<any>();
 
-  arrayBuffer$: Observable<ArrayBuffer>;
+  $arrayBuffer: Subscription; // unsubscribed in onDestroy
   photoUrl: Observable<string>;
 
   hasUnsavedPhoto = false;
@@ -43,12 +49,13 @@ export class PeopleFormPhotoComponent implements OnInit {
   constructor(public photoDialog: MatDialog) {}
 
   ngOnInit() {
-    this.arrayBuffer$ = this.fg_photo.get('ArrayBuffer').valueChanges;
     this.photoUrl = this.fg_photo.get('PhotoUrl').valueChanges;
 
-    this.arrayBuffer$.subscribe(arrayBuffer =>
-      this.onArrayBufferChange(arrayBuffer)
-    );
+    this.$arrayBuffer = this.fg_photo
+      .get('ArrayBuffer')
+      .valueChanges.subscribe(arrayBuffer =>
+        this.onArrayBufferChange(arrayBuffer)
+      );
   }
 
   onArrayBufferChange(arrayBuffer: ArrayBuffer) {
@@ -117,5 +124,9 @@ export class PeopleFormPhotoComponent implements OnInit {
 
   getPhotoClass() {
     return this.mode === 'new' || this.mode === 'edit' ? 'modeNewOrEdit' : '';
+  }
+
+  ngOnDestroy() {
+    this.$arrayBuffer.unsubscribe();
   }
 }

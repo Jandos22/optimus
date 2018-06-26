@@ -1,4 +1,8 @@
-import { PathSlbSp, ApiPath } from './../../../../shared/constants/index';
+import {
+  PathSlbSp,
+  ApiPath,
+  PathOptimus
+} from './../../../../shared/constants/index';
 import {
   Component,
   Input,
@@ -30,7 +34,10 @@ import { PeopleLookupService } from '../../../../shared/services';
             *ngFor="let rep of reps; let i = index" class="my_stack"
             [style.left]="calcLeft(i)"
             [style.zIndex]="calcZindex(i)">
-            <img [src]="getPhotoUrl(rep)" class="userPhoto" [matTooltip]="rep.Fullname">
+            <img *ngIf="rep.Attachments" [src]="getPhotoUrl(rep)" class="userPhoto" [matTooltip]="rep.Fullname">
+            <div *ngIf="!rep.Attachments" class="reporters__user--icon" fxLayout="row" fxLayoutAlign="center center">
+              <fa-icon [icon]="['fas', 'user']"></fa-icon>
+            </div>
         </span>
         <span fxLayout="column" fxLayoutAlign="center start"
             class="reporters_date_container"
@@ -82,11 +89,7 @@ export class TimelineEventReportersComponent
   }
 
   getPhotoUrl(rep: PeopleItem) {
-    if (ApiPath.startsWith('_')) {
-      return PathSlbSp + rep.AttachmentFiles.results[0].ServerRelativeUrl;
-    } else {
-      return rep.AttachmentFiles.results[0].ServerRelativeUrl;
-    }
+    return PathSlbSp + rep.AttachmentFiles.results[0].ServerRelativeUrl;
   }
 
   getReportersName() {

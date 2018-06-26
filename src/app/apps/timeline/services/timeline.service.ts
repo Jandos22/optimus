@@ -79,7 +79,7 @@ export class TimelineService {
     }
 
     // $orderby
-    url += `&$orderby=EventDate asc`;
+    url += `&$orderby=EventDate desc`;
 
     // $top
     if (top) {

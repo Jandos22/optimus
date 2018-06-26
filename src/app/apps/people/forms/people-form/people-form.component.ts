@@ -122,9 +122,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     private initFormService: PeopleFormInitService,
     private asyncValidators: AsyncValidationService,
     public formRef: MatDialogRef<PeopleFormComponent>,
-    private peopleService: PeopleService,
-    private formPhotoService: PeopleFormPhotoService,
-    // private formValueService: PeopleFormValueService,
     private formSizeService: PeopleFormSizeService,
     @Inject(MAT_DIALOG_DATA) public data: { mode: FormMode; item?: PeopleItem }
   ) {
@@ -163,13 +160,13 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   }
 
   // *** form group for fields
-  initialize_FormGroup_Fields(mode, item) {
+  initialize_FormGroup_Fields(mode, item?) {
     this.fg_fields = this.initFormService.create_FormGroup_Fields(mode, item);
     console.log(this.fg_fields);
   }
 
   // *** form group for photo
-  initialize_FormGroup_Photo(mode, item) {
+  initialize_FormGroup_Photo(mode, item?) {
     this.fg_photo = this.initFormService.create_FormGroup_Photo(mode, item);
     console.log(this.fg_photo);
   }
@@ -219,8 +216,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     // this.unsavedPhoto = { hasUnsavedPhoto: true, ...newPhoto };
   }
 
-  closeUserForm() {
-    this.formRef.close();
+  closeUserForm($event) {
+    this.formRef.close($event);
   }
 
   // get locationDisabled() {

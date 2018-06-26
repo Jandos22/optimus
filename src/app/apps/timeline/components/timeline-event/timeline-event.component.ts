@@ -49,6 +49,9 @@ export class TimelineEventComponent {
       case 'General':
         return 'bullhorn';
 
+      case 'Equipment IN':
+        return 'plane-arrival';
+
       default:
         return 'bullhorn';
     }

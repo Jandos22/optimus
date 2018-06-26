@@ -60,13 +60,18 @@ export class HeaderLocationComponent implements OnDestroy {
 
   get displayLocation(): string | null {
     const n_of_locations = this.locations.length;
-    return n_of_locations === 0
-      ? null
-      : n_of_locations === 1
-        ? this.locations[0].Title
-        : n_of_locations > 1
-          ? `${this.locations[0].Title} ...`
-          : null;
+
+    if (this.locations) {
+      return n_of_locations === 0
+        ? null
+        : n_of_locations === 1
+          ? this.locations[0].Title
+          : n_of_locations > 1
+            ? `${this.locations[0].Title} ...`
+            : null;
+    } else {
+      return null;
+    }
   }
 
   ngOnDestroy() {

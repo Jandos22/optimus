@@ -27,15 +27,15 @@ export class PeopleFormPhotoService {
     }
   }
 
-  getNoPhotoUrl() {
-    return PathOptimus + '/assets/no_user_photo.jpg';
-  }
-
   getFileName(mode: FormMode, item: PeopleItem) {
-    if (item.Attachments) {
-      return item.AttachmentFiles.results[0].FileName;
+    if (mode === 'new') {
+      return 'nophoto.jpg';
     } else {
-      return item.Alias + '.jpg';
+      if (item.Attachments) {
+        return item.AttachmentFiles.results[0].FileName;
+      } else {
+        return item.Alias + '.jpg';
+      }
     }
   }
 
@@ -46,5 +46,9 @@ export class PeopleFormPhotoService {
     } else {
       return this.getNoPhotoUrl();
     }
+  }
+
+  getNoPhotoUrl() {
+    return PathOptimus + '/assets/no_user_photo.jpg';
   }
 }

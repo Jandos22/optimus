@@ -13,14 +13,15 @@ import { Component, Input } from '@angular/core';
                 formControlName="query"
                 autocomplete="off">
             <button
-                mat-button *ngIf="fg_params.get('query').invalid"
-                matPrefix mat-icon-button [matTooltip]="errorMessage()">
+                mat-button *ngIf="fg_params.get('query').invalid && fg_params.get('query').value"
+                matSuffix mat-icon-button [matTooltip]="errorMessage()"
+                (click)="clearQuery()">
                 <span class="inputquery__error--icon">
-                    <fa-icon [icon]="['fas', 'exclamation-circle']"></fa-icon>
+                    <fa-icon [icon]="['far', 'times-circle']"></fa-icon>
                 </span>
             </button>
             <button
-                mat-button *ngIf="fg_params.get('query').value"
+                mat-button *ngIf="fg_params.get('query').value && fg_params.get('query').valid"
                 matSuffix mat-icon-button aria-label="Clear"
                 (click)="clearQuery()">
                 <!-- <mat-icon>close</mat-icon> -->

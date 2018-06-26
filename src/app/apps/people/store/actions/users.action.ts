@@ -5,6 +5,7 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
 export enum UsersActionTypes {
   SEARCH_TRUE = '[People Users] Searching Started',
   SEARCH_FALSE = '[People Users] Searching Finished',
+  ADD_ONE_USER = '[People Users] Add One User',
   UPDATE_PEOPLE_LIST = '[People Users] Update People List',
   UPDATE_ONE_USER = '[People Users] Update One User',
   UPDATE_TOTAL_ITEMS = '[People Users] Update Total Items'
@@ -16,6 +17,11 @@ export class SearchTrue implements Action {
 
 export class SearchFalse implements Action {
   readonly type = UsersActionTypes.SEARCH_FALSE;
+}
+
+export class AddOneUser implements Action {
+  readonly type = UsersActionTypes.ADD_ONE_USER;
+  constructor(public user: PeopleItem) {}
 }
 
 export class UpdatePeopleList implements Action {
@@ -36,6 +42,7 @@ export class UpdateTotalItems implements Action {
 export type UsersActionsUnion =
   | SearchTrue
   | SearchFalse
+  | AddOneUser
   | UpdatePeopleList
   | UpdateOneUser
   | UpdateTotalItems;

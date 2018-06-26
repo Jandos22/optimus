@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
+// rxjs
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 import * as fromPeople from '../../store';
@@ -16,6 +18,8 @@ import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
 // form component
 import { PeopleFormComponent } from '../../forms/people-form/people-form.component';
+
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-people',
@@ -40,6 +44,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
       (onNext)="onNext($event)" (onBack)="onBack($event)">
     </app-people-toolbar-bottom>
 
+    <simple-notifications [options]="options"></simple-notifications>
   `
 })
 export class PeopleComponent implements OnInit, OnDestroy {
@@ -73,10 +78,17 @@ export class PeopleComponent implements OnInit, OnDestroy {
   indexes: PaginationIndexes;
   links: string[];
 
+  public options = {
+    position: ['middle', 'center'],
+    timeOut: 1500,
+    animate: 'scale'
+  };
+
   constructor(
     private peopleStore: Store<fromPeople.PeopleState>,
     private rootStore: Store<fromRoot.RootState>,
-    public form: MatDialog
+    public form: MatDialog,
+    private notify: NotificationsService
   ) {
     this.list$ = this.peopleStore
       .pipe(select(fromPeople.selectAllUsers))
@@ -155,7 +167,14 @@ export class PeopleComponent implements OnInit, OnDestroy {
   openForm(mode, item?): void {
     const data = { mode, item };
     const formRef = this.form.open(PeopleFormComponent, { data });
-    // formRef.afterClosed();
+    formRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(res => {
+        if (res.result === 'success') {
+          this.notify.create('Successfully added', res.data.Alias, 'success');
+        }
+      });
   }
 
   ngOnDestroy() {
