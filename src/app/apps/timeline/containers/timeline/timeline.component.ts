@@ -23,9 +23,7 @@ import {
   template: `
     <app-timeline-toolbar fxFlex="56px"></app-timeline-toolbar>
 
-    <app-timeline-events-list fxFlex class="flexContent"
-      fxLayout="column"
-      fxLayoutAlign="start center"
+    <app-timeline-events-list fxFlex
       [events]="events$ | async">
     </app-timeline-events-list>
 
