@@ -30,6 +30,10 @@ import { PeopleLookupService } from '../../../../shared/services';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="reporters_container" fxLayout="row">
+        <span *ngIf="reps?.length > 1" [style.zIndex]="reps.length + 1" class="reporters__users--icon"
+          fxLayout="row" fxLayoutAlign="center center">
+          <fa-icon [icon]="['fas', 'users']"></fa-icon>
+        </span>
         <span
             *ngFor="let rep of reps; let i = index" class="my_stack"
             [style.left]="calcLeft(i)"
@@ -66,7 +70,6 @@ export class TimelineEventReportersComponent
 
   handleReporters(reporters: SimpleChange) {
     const reps: any[] = reporters.currentValue;
-    // let results = [];
 
     if (reps.length) {
       const reps$: Observable<PeopleItem> = from(reps);
@@ -105,7 +108,11 @@ export class TimelineEventReportersComponent
   }
 
   calcLeft(i: number) {
-    return i * 16 + 'px';
+    if (this.reps.length > 1) {
+      return 18 + i * 18 + 'px';
+    } else {
+      return i * 18 + 'px';
+    }
   }
 
   calcZindex(i) {
@@ -118,7 +125,7 @@ export class TimelineEventReportersComponent
 
   calcLeftDate() {
     if (this.reps && this.reps.length > 1) {
-      return this.reps.length * 36 - 18 + 8 + 'px';
+      return this.reps.length * 18 + 8 + 'px';
     } else if (this.reps && this.reps.length === 1) {
       return 36 + 8 + 'px';
     } else {

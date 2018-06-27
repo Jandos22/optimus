@@ -21,6 +21,9 @@ $mdc-theme-primary: #2196f3; // primary color
 $mdc-theme-secondary: #ffc107; // secondary color
 $mdc-theme-background: #fff;
 
+// my color sets
+$my-blue-1: #e3f2fd;
+
 @import '~@angular-mdc/theme/material';
 
 /* You can add global styles to this file, and also import other style files */
@@ -276,4 +279,31 @@ button.mat-button__fa-icon.mat-button.mat-primary {
 
 .fa_regular {
   font-size: 1rem;
+}
+
+.my__footer--pagination {
+  height: 56px;
+  background: $my-blue-1;
+}
+
+.footerButton__container {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.footerButton__wrapper {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: #b3e5fc;
+  }
+}
+
+// USER PHOTO PICKER
+
+.userPhotoCropped {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
 }

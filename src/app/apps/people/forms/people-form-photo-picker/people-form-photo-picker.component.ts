@@ -62,7 +62,7 @@ import { PeopleFormPhotoService } from '../people-form/form-services/people-form
 
         <!-- when user selected & cropped photo -->
         <img *ngIf="state.picker.cropped"
-          [src]="data.image" class="userPhoto">
+          [src]="data.image" class="userPhotoCropped">
 
         <!-- Image Cropper -->
         <img-cropper [hidden]="!state.picker.showCropper" #cropper

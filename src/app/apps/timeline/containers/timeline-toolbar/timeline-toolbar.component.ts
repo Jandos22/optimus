@@ -68,7 +68,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
 
   resetParamsFormGroup() {
     this.fg_params.get('query').patchValue('');
-    this.fg_params.get('top').patchValue(25);
+    this.fg_params.get('top').patchValue(10);
   }
 
   subscribeToParamsFormGroup() {

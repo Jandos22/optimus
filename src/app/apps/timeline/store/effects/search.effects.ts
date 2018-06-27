@@ -48,7 +48,8 @@ export class SearchEffects {
     mergeMap(params => {
       return [
         new fromPaginationActions.ResetPagination(),
-        new fromSearchActions.GetNewUrl(params)
+        new fromSearchActions.GetNewUrl(params),
+        new fromSearchActions.BeginCount(params)
       ];
     })
   );
@@ -148,11 +149,13 @@ export class SearchEffects {
       return this.srv.getDataWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
-            return new fromEventsActions.UpdateTotalItems(0);
+            return new fromPaginationActions.UpdateTotalFound(0);
           } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromEventsActions.UpdateTotalItems(res.d.results.length);
+            return new fromPaginationActions.UpdateTotalFound(
+              res.d.results.length
+            );
           } else {
-            return new fromEventsActions.UpdateTotalItems('500+');
+            return new fromPaginationActions.UpdateTotalFound('500+');
           }
         })
       );

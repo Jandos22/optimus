@@ -21,6 +21,11 @@ export const selectAllEvents = createSelector(
   fromEvents.selectAllEvents
 );
 
+export const selectTotalDisplayedEvents = createSelector(
+  getEventsState,
+  fromEvents.selectEventsTotal
+);
+
 // export const getUsersTotal = createSelector(
 //     getEventsState,
 //   fromUsers.getUsersTotal

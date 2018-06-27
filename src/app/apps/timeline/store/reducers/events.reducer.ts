@@ -12,7 +12,6 @@ import { TimelineEventItem } from './../../../../shared/interface/timeline.model
 
 // compose reducer state shape here
 export interface EventsState extends EntityState<TimelineEventItem> {
-  total: any;
   searching: boolean;
 }
 
@@ -23,7 +22,6 @@ export const adapter: EntityAdapter<TimelineEventItem> = createEntityAdapter<
 
 // compose initial state here
 export const initialState: EventsState = adapter.getInitialState({
-  total: null,
   searching: false
 });
 
@@ -48,13 +46,6 @@ export function reducer(
       return {
         ...state,
         searching: false
-      };
-    }
-
-    case EventsActionTypes.UPDATE_TOTAL_ITEMS: {
-      return {
-        ...state,
-        total: action.total
       };
     }
 

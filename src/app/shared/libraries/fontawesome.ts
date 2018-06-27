@@ -9,7 +9,8 @@ import {
   faPlus,
   faSpinner,
   faTimes,
-  faUser
+  faUser,
+  faUsers
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -34,5 +35,6 @@ export const fontawesome_icons = {
   faTimes,
   faTimesCircle,
   faUser,
-  faUserCircle
+  faUserCircle,
+  faUsers
 };

@@ -13,18 +13,20 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
   template: `
     <mdc-card class="event-card__container">
         <mdc-card-primary-action fxLayout="column" fxLayout.gt-xs="row">
-            <mdc-card-media fxFlex="200px"
+            <mdc-card-media fxFlex="125px" fxFlex.gt-xs="200px"
               [square]="true" *ngIf="event.Attachments"
               [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
             </mdc-card-media>
-            <div fxFlex class="event-card__content" fxLayout="column" fxLayoutGap="16px">
+            <div fxLayout="column" fxLayoutGap="8px"
+              [className]="withOrwithoutPhoto()">
                 <div class="event__type" fxLayoutGap="8px">
                   <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
                   <span>{{ event.EventType.Title }}</span>
                 </div>
                 <div class="event__title">{{ event.Title }}</div>
-                <div class="event__summary">{{ event.Summary }}</div>
-                <app-timeline-event-reporters
+                <span class="event__summary">{{ event.Summary }}</span>
+                <span fxFlex></span>
+                <app-timeline-event-reporters class="event-card__reporters--container"
                     [reporters]="event.EventReporters.results" [eventDate]="event.EventDate">
                 </app-timeline-event-reporters>
             </div>
@@ -55,5 +57,11 @@ export class TimelineEventComponent {
       default:
         return 'bullhorn';
     }
+  }
+
+  withOrwithoutPhoto() {
+    return this.event.Attachments
+      ? 'event-card__withphoto'
+      : 'event-card__nophoto';
   }
 }

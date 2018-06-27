@@ -14,6 +14,7 @@ export interface PaginationState {
     next: number;
   };
   links: string[];
+  totalFound: number | string;
 }
 
 export const initialState: PaginationState = {
@@ -22,7 +23,8 @@ export const initialState: PaginationState = {
     current: null,
     next: null
   },
-  links: []
+  links: [],
+  totalFound: null
 };
 
 export function reducer(
@@ -42,6 +44,13 @@ export function reducer(
         indexes: { previous: null, current: 0, next: null },
         links: [checkUrl(action.url)]
       };
+
+    case PaginationActionTypes.UPDATE_TOTAL_FOUND: {
+      return {
+        ...state,
+        totalFound: action.total
+      };
+    }
 
     case PaginationActionTypes.ADD_NEXT_LINK:
       return {
@@ -90,6 +99,7 @@ export const getPageIndexes = (state: PaginationState) => state.indexes;
 export const getPageCurrentIndex = (state: PaginationState) =>
   state.indexes.current;
 export const getPageLinks = (state: PaginationState) => state.links;
+export const getTotalFound = (state: PaginationState) => state.totalFound;
 
 // help functions
 
