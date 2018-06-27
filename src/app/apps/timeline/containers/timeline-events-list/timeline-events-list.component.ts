@@ -8,8 +8,13 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
   styleUrls: ['timeline-events-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="timeline__events__list--container" fxFlex fxLayout="row wrap" fxLayoutAlign="start start">
-      <app-timeline-event *ngFor="let event of events" [event]="event"></app-timeline-event>
+    <div class="timeline__events__list--container" fxFlex
+      fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
+
+      <app-timeline-event *ngFor="let event of events; last as last" [event]="event"
+        [className]="last ? 'event-last' : ''">
+      </app-timeline-event>
+
     </div>
     `
 })

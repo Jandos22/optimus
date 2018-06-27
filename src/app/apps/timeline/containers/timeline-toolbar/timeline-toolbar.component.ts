@@ -34,11 +34,14 @@ import { ValidationService } from './../../../../validators/validation.service';
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div fxLayout="row" fxLayoutAlign="start center"
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
       class="timeline__toolbar">
+        <app-timeline-toolbar-add></app-timeline-toolbar-add>
         <app-timeline-toolbar-search
           [fg_params]="fg_params">
         </app-timeline-toolbar-search>
+        <span fxFlex></span> <!-- spacer -->
+        <app-timeline-toolbar-filters></app-timeline-toolbar-filters>
     </div>
     `
 })

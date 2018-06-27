@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['timeline-toolbar-search.component.scss'],
   template: `
     <div [formGroup]="fg_params" fxLayout="row" class="timeline__query--container">
-        <mat-form-field fxFlex="200px" [floatLabel]="'never'" [color]="'primary'">
+        <mat-form-field fxFlex="184px" [floatLabel]="'never'" [color]="'primary'">
             <input matInput
                 type="text"
                 [placeholder]="'Search'"

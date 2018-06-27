@@ -22,7 +22,9 @@ $mdc-theme-secondary: #ffc107; // secondary color
 $mdc-theme-background: #fff;
 
 // my color sets
-$my-blue-1: #e3f2fd;
+$my-blue-50: #e3f2fd;
+$my-blue-100: #bbdefb;
+$my-red-50: #ffebee;
 
 @import '~@angular-mdc/theme/material';
 
@@ -283,7 +285,7 @@ button.mat-button__fa-icon.mat-button.mat-primary {
 
 .my__footer--pagination {
   height: 56px;
-  background: $my-blue-1;
+  background: $my-blue-50;
 }
 
 .footerButton__container {
@@ -297,6 +299,26 @@ button.mat-button__fa-icon.mat-button.mat-primary {
   border-radius: 50%;
   :hover {
     background: #b3e5fc;
+  }
+}
+
+.toolbarButton__wrapper--primary {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+  :hover {
+    background: $my-blue-100;
+    color: rgba(0, 0, 0, 0.875);
+  }
+}
+
+.toolbarButton__wrapper--warn {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: $my-red-50;
   }
 }
 

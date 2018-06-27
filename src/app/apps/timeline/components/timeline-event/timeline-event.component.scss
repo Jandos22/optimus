@@ -1,21 +1,21 @@
 .event-card__container {
-  margin: 8px 16px;
+  margin: 8px 0;
 }
 
 .event-card__withphoto {
-  min-height: 200px;
+  min-height: 206px;
   padding: 16px;
   @media screen and (min-width: 600px) {
-    max-width: 400px;
+    max-width: 368px;
   }
 }
 
 .event-card__nophoto {
-  min-height: 200px;
+  min-height: 206px;
   padding: 16px;
   width: 100%;
   @media screen and (min-width: 600px) {
-    max-width: 292px;
+    max-width: 276px;
   }
 }
 
@@ -26,7 +26,7 @@
 
 .event__title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   color: rgba(0, 0, 0, 0.875);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -38,7 +38,7 @@
 }
 
 .event__summary {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   color: rgba(0, 0, 0, 0.54);
   overflow: hidden;
@@ -46,8 +46,8 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3; /* number of lines to show */
-  line-height: 14px; /* fallback */
-  max-height: 42px; /* fallback */
+  line-height: 16px; /* fallback */
+  max-height: 48px; /* fallback */
 }
 
 .event-card__reporters--container {
