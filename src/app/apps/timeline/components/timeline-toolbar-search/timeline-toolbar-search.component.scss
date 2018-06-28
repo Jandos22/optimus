@@ -1,0 +1,52 @@
+div.timeline-header__search--container {
+  height: 48px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: #bbdefb;
+  width: 232px;
+
+  &.focused {
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+    background: white;
+  }
+
+  &.invalid {
+    box-shadow: 0 0 0 0.1rem #f44336;
+  }
+}
+
+input.timeline-header__search--form {
+  margin: 0 4px;
+  //   min-width: 88px;
+  width: 88px;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+
+  &::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  &:focus {
+    color: rgba(0, 0, 0, 0.875);
+  }
+}
+
+.timeline__button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+
+  :hover {
+    color: rgba(0, 0, 0, 0.875);
+    background: #e3f2fd;
+  }
+
+  &.warn {
+    color: #f44336;
+  }
+}

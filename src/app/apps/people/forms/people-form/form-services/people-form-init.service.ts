@@ -1,4 +1,3 @@
-import { PeopleFormPhotoService } from './people-form-photo.service';
 import { Injectable } from '@angular/core';
 
 import {
@@ -16,6 +15,7 @@ import { take, switchMap, map } from 'rxjs/operators';
 import { ValidationService } from './../../../../../validators/validation.service';
 import { AsyncValidationService } from './../../../../../validators/async-validation.service';
 import { PeopleFormValueService } from './people-form-value.service';
+import { PeopleFormPhotoService } from './people-form-photo.service';
 
 // interfaces
 import { PeopleItem } from './../../../../../shared/interface/people.model';

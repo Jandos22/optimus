@@ -27,6 +27,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'registration',
+    canActivate: [AuthGuard],
     loadChildren: './apps/registration/registration.module#RegistrationModule'
   },
   { path: '', redirectTo: 'timeline', pathMatch: 'full' }

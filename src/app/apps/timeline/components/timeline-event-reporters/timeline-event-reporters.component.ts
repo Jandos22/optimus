@@ -1,4 +1,8 @@
-import { PathSlbSp, ApiPath } from './../../../../shared/constants/index';
+import {
+  PathSlbSp,
+  ApiPath,
+  PathOptimus
+} from './../../../../shared/constants/index';
 import {
   Component,
   Input,
@@ -26,11 +30,18 @@ import { PeopleLookupService } from '../../../../shared/services';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="reporters_container" fxLayout="row">
+        <span *ngIf="reps?.length > 1" [style.zIndex]="reps.length + 1" class="reporters__users--icon"
+          fxLayout="row" fxLayoutAlign="center center">
+          <fa-icon [icon]="['fas', 'users']"></fa-icon>
+        </span>
         <span
             *ngFor="let rep of reps; let i = index" class="my_stack"
             [style.left]="calcLeft(i)"
             [style.zIndex]="calcZindex(i)">
-            <img [src]="getPhotoUrl(rep)" class="userPhoto" [matTooltip]="rep.Fullname">
+            <img *ngIf="rep.Attachments" [src]="getPhotoUrl(rep)" class="userPhoto" [matTooltip]="rep.Fullname">
+            <div *ngIf="!rep.Attachments" class="reporters__user--icon" fxLayout="row" fxLayoutAlign="center center">
+              <fa-icon [icon]="['fas', 'user']"></fa-icon>
+            </div>
         </span>
         <span fxLayout="column" fxLayoutAlign="center start"
             class="reporters_date_container"
@@ -59,7 +70,6 @@ export class TimelineEventReportersComponent
 
   handleReporters(reporters: SimpleChange) {
     const reps: any[] = reporters.currentValue;
-    // let results = [];
 
     if (reps.length) {
       const reps$: Observable<PeopleItem> = from(reps);
@@ -82,11 +92,7 @@ export class TimelineEventReportersComponent
   }
 
   getPhotoUrl(rep: PeopleItem) {
-    if (ApiPath.startsWith('_')) {
-      return PathSlbSp + rep.AttachmentFiles.results[0].ServerRelativeUrl;
-    } else {
-      return rep.AttachmentFiles.results[0].ServerRelativeUrl;
-    }
+    return PathSlbSp + rep.AttachmentFiles.results[0].ServerRelativeUrl;
   }
 
   getReportersName() {
@@ -102,7 +108,11 @@ export class TimelineEventReportersComponent
   }
 
   calcLeft(i: number) {
-    return i * 16 + 'px';
+    if (this.reps.length > 1) {
+      return 18 + i * 18 + 'px';
+    } else {
+      return i * 18 + 'px';
+    }
   }
 
   calcZindex(i) {
@@ -115,7 +125,7 @@ export class TimelineEventReportersComponent
 
   calcLeftDate() {
     if (this.reps && this.reps.length > 1) {
-      return this.reps.length * 36 - 18 + 8 + 'px';
+      return this.reps.length * 18 + 8 + 'px';
     } else if (this.reps && this.reps.length === 1) {
       return 36 + 8 + 'px';
     } else {

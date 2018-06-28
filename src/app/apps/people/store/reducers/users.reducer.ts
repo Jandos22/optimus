@@ -37,6 +37,10 @@ export function reducer(
       };
     }
 
+    case UsersActionTypes.ADD_ONE_USER: {
+      return adapter.addOne(action.user, state);
+    }
+
     case UsersActionTypes.UPDATE_PEOPLE_LIST: {
       return adapter.addAll(action.users, state);
     }

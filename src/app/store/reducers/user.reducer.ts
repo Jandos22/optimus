@@ -70,6 +70,10 @@ export function reducer(
 
 // state selectors
 export const getUser = (state: UserState) => state;
+
+export const getUserSharepoint = (state: UserState) => state.sharepoint;
+export const getUserOptimus = (state: UserState) => state.optimus;
+
 export const getUsername = (state: UserState) => state.sharepoint.username;
 export const getEmail = (state: UserState) => state.sharepoint.email;
 export const getUserId = (state: UserState) => state.optimus.Id;

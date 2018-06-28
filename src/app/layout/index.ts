@@ -1,22 +1,19 @@
-import { HeaderUserComponent } from './header/header-user/header-user.component';
-import { HeaderLocationComponent } from './header/header-location/header-location.component';
 import { LayoutComponent } from './layout.component';
-import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { HeaderLocationSelectorComponent } from './header/header-location-selector/header-location-selector.component';
+import { SidenavHeaderComponent } from './sidenav/sidenav-header/sidenav-header.component';
+import { SidenavFooterComponent } from './sidenav/sidenav-footer/sidenav-footer.component';
+import { SidenavHeaderNoAccountComponent } from './sidenav/sidenav-header-no-account/sidenav-header-no-account.component';
 
 export const containers: any[] = [
   LayoutComponent,
-  HeaderComponent,
   SidenavComponent,
-  HeaderLocationComponent,
-  HeaderLocationSelectorComponent,
-  HeaderUserComponent
+  SidenavHeaderComponent,
+  SidenavHeaderNoAccountComponent,
+  SidenavFooterComponent
 ];
 
 export * from './layout.component';
-export * from './header/header.component';
 export * from './sidenav/sidenav.component';
-export * from './header/header-location-selector/header-location-selector.component';
-export * from './header/header-location/header-location.component';
-export * from './header/header-user/header-user.component';
+export * from './sidenav/sidenav-header/sidenav-header.component';
+export * from './sidenav/sidenav-footer/sidenav-footer.component';
+export * from './sidenav/sidenav-header-no-account/sidenav-header-no-account.component';

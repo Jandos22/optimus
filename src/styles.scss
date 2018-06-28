@@ -11,11 +11,7 @@
   font-style: italic;
 }
 
-$my-primary: #2196f3;
-$my-primary-light: #9be7ff;
-$my-primary-dark: #0069c0;
-$my-accent: #ffc107;
-$my-warn: #f44336;
+@import 'colors';
 
 $mdc-theme-primary: #2196f3; // primary color
 $mdc-theme-secondary: #ffc107; // secondary color
@@ -63,6 +59,46 @@ app-layout {
 
 .optimus-sidebar {
   width: 200px;
+}
+
+.common-flex-container {
+  // properties as flex container
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  // other styles
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #e3f2fd;
+}
+
+.common-header {
+  border-bottom: 1px solid $my-blue-100;
+}
+
+.common-content {
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.common-footer {
+  border-top: 1px solid $my-blue-100;
+}
+
+.common-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+
+  :hover {
+    color: rgba(0, 0, 0, 0.875);
+    background: $my-blue-100;
+  }
 }
 
 .flexContainer {
@@ -276,4 +312,63 @@ button.mat-button__fa-icon.mat-button.mat-primary {
 
 .fa_regular {
   font-size: 1rem;
+}
+
+.fa_userphoto {
+  font-size: 125px;
+}
+
+.my__footer--pagination {
+  height: 56px;
+  background: $my-blue-50;
+}
+
+.footerButton__container {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.footerButton__wrapper {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: #b3e5fc;
+  }
+}
+
+.toolbarButton__wrapper--primary {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+  :hover {
+    background: $my-blue-100;
+    color: rgba(0, 0, 0, 0.875);
+  }
+}
+
+.toolbarButton__wrapper--warn {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: $my-red-50;
+  }
+}
+
+// USER PHOTO PICKER
+
+.userPhotoCropped {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+input[type='text']::-ms-clear {
+  display: none;
+}
+
+::-ms-reveal {
+  display: none;
 }

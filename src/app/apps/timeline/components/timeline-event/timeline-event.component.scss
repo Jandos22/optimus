@@ -1,9 +1,22 @@
 .event-card__container {
-  margin: 16px;
+  margin: 8px 0;
 }
 
-.event-card__content {
+.event-card__withphoto {
+  min-height: 206px;
   padding: 16px;
+  @media screen and (min-width: 600px) {
+    max-width: 368px;
+  }
+}
+
+.event-card__nophoto {
+  min-height: 206px;
+  padding: 16px;
+  width: 100%;
+  @media screen and (min-width: 600px) {
+    max-width: 276px;
+  }
 }
 
 .event__type {
@@ -12,13 +25,34 @@
 }
 
 .event__title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 400;
   color: rgba(0, 0, 0, 0.875);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-height: 21px; /* fallback */
+  max-height: 42px; /* fallback */
 }
 
 .event__summary {
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 300;
   color: rgba(0, 0, 0, 0.54);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-height: 16px; /* fallback */
+  max-height: 48px; /* fallback */
+}
+
+.event-card__reporters--container {
+  position: relative;
+  height: 36px;
+  max-height: 36px;
+  bottom: 0;
 }

@@ -36,6 +36,7 @@
     "@ngrx/router-store": "^5.2.0",
     "@ngrx/store": "^5.2.0",
     "@ngrx/store-devtools": "^5.2.0",
+    "angular2-notifications": "^1.0.2",
     "base64-arraybuffer": "^0.1.5",
     "classlist-polyfill": "^1.2.0",
     "classlist.js": "^1.1.20150312",

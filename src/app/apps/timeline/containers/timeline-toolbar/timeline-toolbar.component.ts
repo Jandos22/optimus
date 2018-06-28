@@ -2,6 +2,7 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  Input,
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
@@ -34,15 +35,20 @@ import { ValidationService } from './../../../../validators/validation.service';
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div fxLayout="row" fxLayoutAlign="start center"
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
       class="timeline__toolbar">
         <app-timeline-toolbar-search
+          [appName]="appName"
           [fg_params]="fg_params">
         </app-timeline-toolbar-search>
+        <span fxFlex></span> <!-- spacer -->
+        <!-- <app-timeline-toolbar-filters></app-timeline-toolbar-filters> -->
+        <app-timeline-toolbar-add></app-timeline-toolbar-add>
     </div>
     `
 })
 export class TimelineToolbarComponent implements OnInit, OnDestroy {
+  @Input() appName: string;
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
@@ -68,7 +74,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
 
   resetParamsFormGroup() {
     this.fg_params.get('query').patchValue('');
-    this.fg_params.get('top').patchValue(25);
+    this.fg_params.get('top').patchValue(10);
   }
 
   subscribeToParamsFormGroup() {

@@ -27,6 +27,7 @@ import * as fromFormActions from './forms/people-form/form-actions';
 // services
 import * as fromServices from './services';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // routes
 export const peopleRoutes: Routes = [
@@ -42,7 +43,8 @@ export const peopleRoutes: Routes = [
     EffectsModule.forFeature(effects),
     ImageCropperModule,
     MaterialModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SimpleNotificationsModule
   ],
   providers: [...fromServices.services],
   declarations: [

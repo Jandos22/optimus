@@ -1,5 +1,6 @@
 // 3rd Party Modules
 import { MaterialModule } from './shared/libraries/material.module';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // font awesome icons
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -62,10 +63,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     ...fromLayout.containers,
     ...fromComponents.components
   ],
-  entryComponents: [
-    fromComponents.ErrorDialogBoxComponent,
-    fromLayout.HeaderLocationSelectorComponent
-  ],
+  entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -74,6 +72,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     ReactiveFormsModule,
     MaterialModule,
     FontAwesomeModule,
+    SimpleNotificationsModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreModule.forFeature('root', root),
     EffectsModule.forRoot(effects),
@@ -93,7 +92,8 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     }
   ],
   exports: [
-    FontAwesomeModule
+    FontAwesomeModule,
+    SimpleNotificationsModule
     // ...fromContainers.containers,
     // MaterialModule,
     // ReactiveFormsModule

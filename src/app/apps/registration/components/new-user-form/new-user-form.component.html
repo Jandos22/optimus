@@ -1,66 +1,34 @@
 <div class="container" fxLayout="column" fxFlex.xs="100" fxFlex="400px">
 
     <mat-card>
-        <mat-card-header [ngClass]="photoShow ? 'withPhoto' : 'noPhoto'">
+        <div class="photo__container" fxLayout="column" fxLayoutAlign="center center">
 
-            <div mat-card-avatar>
-                <button mat-icon-button color="warn" *ngIf="!photoShow" (click)="openPhotoPicker()">
-                    <!-- <mat-icon>add_a_photo</mat-icon> -->
-                    <span class="fa_regular">
-                        <fa-icon [icon]="['far', 'image']"></fa-icon>
-                    </span>
-                </button>
-                <img *ngIf="photoShow" [src]="photoShow" class="userPhoto" (click)="openPhotoPicker()">
-            </div>
+            <span class="noUserPhoto" *ngIf="!photoShow" (click)="openPhotoPicker()">
+                <fa-icon [icon]="['far', 'user-circle']"></fa-icon>
+            </span>
 
-        </mat-card-header>
+            <img *ngIf="photoShow" [src]="photoShow" class="userPhoto" (click)="openPhotoPicker()">
+        </div>
         <mat-card-content>
-            <form [formGroup]="form" fxLayout="row" fxLayout.xs="column">
+            <form [formGroup]="fg_fields" fxLayout="row" fxLayout.xs="column">
 
                 <div fxLayout="column" fxFlex="100">
-                    <mat-form-field>
-                        <input matInput placeholder="Name" formControlName="Name" autocomplete="off">
-                        <mat-error *ngIf="form.get('Name').invalid">{{ getError_Name() }}</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput placeholder="Surname" formControlName="Surname" autocomplete="off">
-                        <mat-error *ngIf="form.get('Surname').invalid">{{ getError_Surname() }}</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput placeholder="Alias" formControlName="Alias" autocomplete="off">
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput placeholder="Email" formControlName="Email" autocomplete="off">
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput placeholder="GIN" formControlName="Gin" autocomplete="off">
-                        <mat-error *ngIf="form.get('Gin').invalid">{{ getError_Gin() }}</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <mat-select placeholder="Location" formControlName="Location">
-                            <mat-option *ngFor="let item of locations" [value]="item.Location">
-                                {{ item.Title }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="form.get('Location').invalid">{{ getError_Location() }}</mat-error>
-                    </mat-form-field>
-
+                    <app-new-user-form-name [parent]="fg_fields"></app-new-user-form-name>
+                    <app-new-user-form-surname [parent]="fg_fields"></app-new-user-form-surname>
+                    <app-new-user-form-alias [parent]="fg_fields"></app-new-user-form-alias>
+                    <app-new-user-form-email [parent]="fg_fields"></app-new-user-form-email>
+                    <app-new-user-form-gin [parent]="fg_fields"></app-new-user-form-gin>
+                    <app-new-user-form-location [parent]="fg_fields" [locations]="locations"></app-new-user-form-location>
                 </div>
             </form>
         </mat-card-content>
+
         <mat-card-actions class="actions">
-            <button mat-raised-button color="primary" [disabled]="form.invalid || !photo || saving" (click)="onSave()">
-                <span *ngIf="!saving">SAVE</span>
-                <span *ngIf="saving">... SAVING</span>
-            </button>
-            <button *ngIf="!saving" mat-button (click)="onReset()">RESET</button>
-            <button mat-button (click)="log()">Values</button>
+            <app-new-user-form-actions class="actions__container" fxLayout="row" fxLayoutAlign="end center" [fg_fields]="fg_fields" [fg_photo]="fg_photo"
+                (onReset)="onReset()" (setFormPhotoID)="setFormPhotoID($event)" (resetArrayBuffer)="resetArrayBuffer()">
+            </app-new-user-form-actions>
         </mat-card-actions>
+
     </mat-card>
 
 </div>

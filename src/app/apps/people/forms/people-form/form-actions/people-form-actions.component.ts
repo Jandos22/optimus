@@ -19,6 +19,13 @@ import { SpListItemAttachmentFiles } from './../../../../../shared/interface/sp-
         (switchFormMode)="switchFormMode.emit($event)">
     </app-people-form-actions-view>
 
+    <app-people-form-actions-new
+        *ngIf="mode === 'new'"
+        (closeUserForm)="closeUserForm.emit($event)"
+        [fg_fields]="fg_fields"
+        [fg_photo]="fg_photo">
+    </app-people-form-actions-new>
+
     <app-people-form-actions-edit
         *ngIf="mode === 'edit'"
         [fg_fields]="fg_fields"
@@ -28,11 +35,6 @@ import { SpListItemAttachmentFiles } from './../../../../../shared/interface/sp-
         (updateFormGroupPhoto)="updateFormGroupPhoto.emit($event)"
         (switchFormMode)="switchFormMode.emit($event)">
     </app-people-form-actions-edit>
-
-    <app-people-form-when-new-buttons
-        *ngIf="mode === 'new'">
-    </app-people-form-when-new-buttons>
-
     `
 })
 export class PeopleFormActionsComponent {

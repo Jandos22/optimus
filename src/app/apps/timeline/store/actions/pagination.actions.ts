@@ -5,6 +5,9 @@ export enum PaginationActionTypes {
   // below actions caught only in reducers
   RESET_PAGINATION = '[Timeline] Reset Pagination',
   START_NEW_PAGE = '[Timeline] Start New Page',
+
+  UPDATE_TOTAL_FOUND = '[Timeline Pagination] Update Total Found',
+
   ADD_NEXT_LINK = '[Timeline] Add Next Link',
   NO_NEXT_LINK = '[Timeline] No Next Link',
   // below actions have side effects
@@ -22,6 +25,11 @@ export class ResetPagination implements Action {
 export class StartNewPage implements Action {
   readonly type = PaginationActionTypes.START_NEW_PAGE;
   constructor(public url: string) {}
+}
+
+export class UpdateTotalFound implements Action {
+  readonly type = PaginationActionTypes.UPDATE_TOTAL_FOUND;
+  constructor(public total: any) {}
 }
 
 export class AddNextLink implements Action {
@@ -46,6 +54,7 @@ export class OnBack implements Action {
 export type PaginationActionsUnion =
   | ResetPagination
   | StartNewPage
+  | UpdateTotalFound
   | AddNextLink
   | NoNextLink
   | OnNext

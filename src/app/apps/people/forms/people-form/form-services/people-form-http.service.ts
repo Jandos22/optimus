@@ -31,6 +31,12 @@ import { SharepointService } from './../../../../../shared/services/sharepoint.s
 export class PeopleFormHttpService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
+  // returns newly create PeopleItem object
+  addUser(newFields: PeopleItem) {
+    const create$ = new sprLib.list('NgPeople').create(newFields);
+    return from(create$.then(res => res));
+  }
+
   // receives unsavedFields and saves them in NgPeople list
   // returns object with saved fields or error
   updatePeopleItem(updatedFields): Observable<PeopleItem> {

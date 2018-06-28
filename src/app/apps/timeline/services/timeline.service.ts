@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, throwError, of, from } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
 import {
   map,
   mergeMap,
-  catchError,
   switchMap,
   concatMap,
   take,
@@ -41,7 +40,6 @@ export class TimelineService {
             return of(response);
           }
         })
-        // catchError((error: any) => throwError(error.json()))
       );
   }
 
@@ -79,7 +77,7 @@ export class TimelineService {
     }
 
     // $orderby
-    url += `&$orderby=EventDate asc`;
+    url += `&$orderby=EventDate desc`;
 
     // $top
     if (top) {

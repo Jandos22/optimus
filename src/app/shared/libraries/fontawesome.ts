@@ -5,15 +5,21 @@ import {
   faChevronLeft,
   faChevronRight,
   faExclamationCircle,
+  faFilter,
+  faPlaneArrival,
   faPlus,
+  faSearch,
   faSpinner,
-  faTimes
+  faTimes,
+  faUser,
+  faUsers
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
   faUserCircle,
   faSave,
-  faImage
+  faImage,
+  faTimesCircle
 } from '@fortawesome/free-regular-svg-icons';
 
 export const fontawesome_icons = {
@@ -23,10 +29,16 @@ export const fontawesome_icons = {
   faChevronLeft,
   faChevronRight,
   faExclamationCircle,
+  faFilter,
   faImage,
+  faPlaneArrival,
   faPlus,
   faSave,
+  faSearch,
   faSpinner,
   faTimes,
-  faUserCircle
+  faTimesCircle,
+  faUser,
+  faUserCircle,
+  faUsers
 };
