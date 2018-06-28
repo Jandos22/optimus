@@ -19,6 +19,7 @@
 
 app-timeline-events-list {
   overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 app-timeline-toolbar {

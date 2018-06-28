@@ -329,3 +329,11 @@ button.mat-button__fa-icon.mat-button.mat-primary {
   width: 150px;
   height: 150px;
 }
+
+input[type='text']::-ms-clear {
+  display: none;
+}
+
+::-ms-reveal {
+  display: none;
+}

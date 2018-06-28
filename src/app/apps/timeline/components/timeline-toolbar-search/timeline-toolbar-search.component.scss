@@ -1,6 +1,6 @@
 div.timeline-header__search--container {
   height: 48px;
-  //   border: 1px solid #bbdefb;
+  padding: 0 4px;
   border-radius: 4px;
   background: #bbdefb;
   width: 232px;
@@ -9,16 +9,29 @@ div.timeline-header__search--container {
     box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
     background: white;
   }
+
+  &.invalid {
+    box-shadow: 0 0 0 0.1rem #f44336;
+  }
 }
 
 input.timeline-header__search--form {
   margin: 0 4px;
-  min-width: 88px;
+  //   min-width: 88px;
+  width: 88px;
   border: 0;
   background: transparent;
   outline: none;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+
   &::-ms-clear {
     display: none;
+    width: 0;
+    height: 0;
+  }
+  &:focus {
+    color: rgba(0, 0, 0, 0.875);
   }
 }
 
@@ -35,47 +48,5 @@ input.timeline-header__search--form {
 
   &.warn {
     color: #f44336;
-  }
-
-  &.bars {
-    margin-left: 4px;
-  }
-
-  &.filter {
-    margin-right: 4px;
-  }
-}
-
-.timeline__bars--button {
-  margin-left: 4px;
-  height: 40px;
-  width: 40px;
-}
-
-.timeline__clear--button {
-  margin-right: 4px;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-
-  :hover {
-    background: #e3f2fd;
-  }
-
-  &.warn {
-    color: #f44336;
-  }
-}
-
-.timeline__filters--button {
-  margin-right: 4px;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  color: rgba(0, 0, 0, 0.5);
-
-  :hover {
-    color: rgba(0, 0, 0, 0.875);
-    background: #e3f2fd;
   }
 }

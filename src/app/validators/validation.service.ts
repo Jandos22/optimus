@@ -14,7 +14,7 @@ export class ValidationService {
     if (control.value === '') {
       return null;
     }
-    const regex = /^[a-z0-9#_\-]+$/i;
+    const regex = /^[a-z0-9 #_\-]+$/i;
     const valid = regex.test(control.value);
     return valid ? null : { onlySearchable: true };
   }

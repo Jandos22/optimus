@@ -14,38 +14,40 @@ import * as fromLayoutActions from '../../../../store/actions/layout.actions';
     <div [formGroup]="fg_params" fxLayout="row" fxLayoutAlign="start center"
         class="timeline-header__search--container"
         [ngClass]="{
-            focused: focus
+            focused: focus,
+            invalid: fg_params.get('query').invalid
         }">
+
+        <!-- opens and closes sidenav -->
         <span class="timeline__button bars">
             <button mat-icon-button (click)="toggleSidenav()">
                 <span class="fa_regular"><fa-icon [icon]="['fas', 'bars']"></fa-icon></span>
             </button>
         </span>
 
+        <!-- autofocus not added on purpose -->
         <input class="timeline-header__search--form"
-            autofocus
             type="text"
             [placeholder]="appName"
             formControlName="query"
             autocomplete="off"
             (focus)="onFocus()" (blur)="onBlur()">
 
-        <span *ngIf="fg_params.get('query').invalid && fg_params.get('query').value"
-            class="timeline__button clear warn">
+        <span fxFlex></span>
+
+        <span *ngIf="fg_params.get('query').value"
+            class="timeline__button clear"
+            [ngClass]="{
+                warn: fg_params.get('query').invalid
+            }">
             <button mat-icon-button [matTooltip]="errorMessage()"
                 (click)="clearQuery()">
                 <span class="fa_regular"><fa-icon [icon]="['fas', 'times']"></fa-icon></span>
             </button>
         </span>
 
-        <span *ngIf="fg_params.get('query').value && fg_params.get('query').valid"
-            class="timeline__button clear">
-            <button mat-icon-button aria-label="Clear"
-                (click)="clearQuery()">
-                <span class="fa_regular"><fa-icon [icon]="['fas', 'times']"></fa-icon></span>
-            </button>
-        </span>
-
+        <!-- filter btn should open dialog box with many filtering options -->
+        <!-- when search is active, then show spinner instead of filter btn -->
         <span class="timeline__button filter">
             <button mat-icon-button>
                 <span class="fa_regular"><fa-icon [icon]="['fas', 'filter']"></fa-icon></span>
