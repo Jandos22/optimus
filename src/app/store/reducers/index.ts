@@ -4,7 +4,11 @@ import {
   Params
 } from '@angular/router';
 
-import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  ActionReducerMap
+} from '@ngrx/store';
 
 import * as fromRouter from '@ngrx/router-store';
 
@@ -51,6 +55,11 @@ export const root: ActionReducerMap<RootState> = {
 export const getRouterState = createFeatureSelector<
   fromRouter.RouterReducerState<RouterStateUrl>
 >('routerReducer');
+
+export const getRouterUrl = createSelector(
+  getRouterState,
+  state => state.state.url
+);
 
 export const getRootState = createFeatureSelector<RootState>('root');
 

@@ -1,52 +1,52 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { Store } from '@ngrx/store';
+// rxjs
+import { Observable } from 'rxjs';
+
+import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as a_in_app from './../../../../store/actions/app.actions';
+import * as fromAppActions from './../../../../store/actions/app.actions';
 import * as fromLayoutActions from '../../../../store/actions/layout.actions';
 
 // interfaces
-// import { Locations } from './../../../../models/locations.m';
 import { LocationEnt } from './../../../../shared/interface/locations.model';
+import { SharepointUser } from '../../../../shared/interface/user.model';
 
 @Component({
-  selector: 'app-registration',
-  styleUrls: ['registration.component.css'],
+  selector: 'app-registration.common-flex-container',
+  styleUrls: ['registration.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `
-    <app-new-user-form fxLayout="row" fxLayoutAlign="center"
-        [alias]="alias"
-        [email]="email"
-        [locations]="locations">
-    </app-new-user-form>
+    <app-registration-header fxFlex="65px" class="common-header"
+      (toggleSidenav)="toggleSidenav()">
+    </app-registration-header>
+
+    <app-registration-content fxFlex class="common-content"
+      [userSharepoint]="userSharepoint$ | async"
+      [locations]="locations$ | async">
+    </app-registration-content>
+
+    <app-registration-footer fxFlex="49px" class="common-footer">
+    </app-registration-footer>
     `
 })
-export class RegistrationComponent implements OnInit, OnDestroy {
+export class RegistrationComponent implements OnInit {
   appName = 'Registration';
-  alias: string;
-  email: string;
-  locations: LocationEnt[];
+
+  userSharepoint$: Observable<SharepointUser>;
+  locations$: Observable<LocationEnt[]>;
 
   constructor(private store: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new a_in_app.ChangeAppName(this.appName));
+    this.store.dispatch(new fromAppActions.ChangeAppName(this.appName));
 
-    // don't even show sidenav when self-registration is opened [pending]
-    // this.store.dispatch(new fromLayoutActions.CloseSidenav());
+    this.userSharepoint$ = this.store.pipe(select(fromRoot.getUserSharepoint));
 
-    this.store.select(fromRoot.getUsername).subscribe(value => {
-      this.alias = value;
-    });
-
-    this.store.select(fromRoot.getEmail).subscribe(value => {
-      this.email = value;
-    });
-
-    this.store.select(fromRoot.selectAllLocations).subscribe(array => {
-      console.log(array);
-      this.locations = array;
-    });
+    this.locations$ = this.store.pipe(select(fromRoot.selectAllLocations));
   }
 
-  ngOnDestroy() {}
+  toggleSidenav() {
+    this.store.dispatch(new fromLayoutActions.ToggleSidenav());
+  }
 }

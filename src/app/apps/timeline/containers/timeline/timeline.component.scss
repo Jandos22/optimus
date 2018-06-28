@@ -9,23 +9,11 @@
   box-sizing: border-box;
   margin: 0;
   height: 100%;
-  // min-height: 100%;
-  //   width: 100%;
-  //   min-width: 100%;
   overflow: hidden;
-  // background: #eaeaea;
   background: #e3f2fd;
 }
 
 app-timeline-events-list {
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
-app-timeline-toolbar {
-  border-bottom: 1px solid #bbdefb;
-}
-
-app-timeline-footer {
-  border-top: 1px solid #bbdefb;
 }

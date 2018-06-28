@@ -1,6 +1,3 @@
-import { UserService } from './../../../../shared/services/user.service';
-import { WirelinePath } from './../../../../shared/constants/index';
-
 import {
   Component,
   OnInit,
@@ -18,20 +15,33 @@ import {
   FormGroup,
   FormBuilder,
   FormControl,
-  Validators
+  Validators,
+  AbstractControl
 } from '@angular/forms';
 
 import { Router } from '@angular/router';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+// rxjs
+import { of } from 'rxjs';
+import { take, switchMap, map } from 'rxjs/operators';
 
-import { ValidationService } from './../../../../validators/validation.service';
+// material
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // interfaces
 import { LocationEnt } from './../../../../shared/interface/locations.model';
-// import { Locations } from './../../../../models/locations.m';
 
+// constants
+import { WirelinePath } from './../../../../shared/constants/index';
+
+// entry components
 import { NewUserFormPhotoComponent } from '../index';
+
+// services
+import { ValidationService } from './../../../../validators/validation.service';
+import { AsyncValidationService } from '../../../../validators/async-validation.service';
+import { NewUserFormHttpService } from './services/new-user-form-http.service';
+import { UserService } from './../../../../shared/services/user.service';
 
 export interface Photo {
   photoExists: boolean;
@@ -43,9 +53,10 @@ export interface Photo {
 
 @Component({
   selector: 'app-new-user-form',
-  styleUrls: ['new-user-form.component.css'],
+  styleUrls: ['new-user-form.component.scss'],
   templateUrl: 'new-user-form.component.html',
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  providers: [NewUserFormHttpService]
 })
 export class NewUserFormComponent implements OnInit, OnChanges {
   // take alias from parent component
@@ -54,12 +65,12 @@ export class NewUserFormComponent implements OnInit, OnChanges {
   @Input() email: string;
   @Input() locations: LocationEnt[];
 
-  form: FormGroup;
-  photoForm: FormGroup;
+  fg_fields: FormGroup;
+  fg_photo: FormGroup;
 
   photoShow: string;
 
-  disabled: boolean;
+  // disabled: boolean;
 
   // buttons state
   saving = false;
@@ -68,26 +79,19 @@ export class NewUserFormComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private userService: UserService,
+    private asyncValidators: AsyncValidationService,
     private router: Router
   ) {
-    this.initForm();
-    this.initPhotoForm();
+    this.initFormFields();
+    this.initFormPhoto();
   }
 
-  ngOnInit() {
-    this.disabled = true;
+  ngOnInit() {}
 
-    this.form.get('Alias').valueChanges.subscribe(alias => {
-      this.form
-        .get('Photo.Url')
-        .setValue(WirelinePath + '/NgPhotos/' + alias + '.jpg');
-      this.form.get('Photo.Description').setValue(alias);
-    });
-  }
-
-  initForm() {
+  initFormFields() {
     // form initialization
-    this.form = this.fb.group({
+    // alias and email must be disabled for self-registration
+    this.fg_fields = this.fb.group({
       Name: ['', Validators.required],
       Surname: ['', Validators.required],
       Alias: [{ value: '', disabled: true }, Validators.required],
@@ -99,31 +103,27 @@ export class NewUserFormComponent implements OnInit, OnChanges {
           Validators.minLength(8),
           Validators.maxLength(8),
           ValidationService.onlyNumbers
-        ]
+        ],
+        this.uniqueGin.bind(this)
       ],
-      Location: ['', Validators.required],
-      Photo: this.fb.group({
-        Url: [''],
-        Description: ['']
-      })
+      LocationAssignedId: ['', Validators.required]
     });
   }
 
-  initPhotoForm() {
-    this.photoForm = this.fb.group({
+  initFormPhoto() {
+    this.fg_photo = this.fb.group({
+      ID: [''],
       Filename: ['', Validators.required],
       ArrayBuffer: [new ArrayBuffer(0), Validators.required]
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    // when imported values arrive, assign them accordingly
+    // this will pre-populate registration form
     if (this.alias && this.email) {
-      this.form.get('Alias').setValue(this.alias);
-      this.form.get('Email').setValue(this.email);
-      this.form.get('Photo.Description').setValue(this.alias);
-      this.form
-        .get('Photo.Url')
-        .setValue(`${WirelinePath}/NgPhotos/${this.alias}.jpg`);
+      this.fg_fields.get('Alias').setValue(this.alias);
+      this.fg_fields.get('Email').setValue(this.email);
     }
   }
 
@@ -131,110 +131,68 @@ export class NewUserFormComponent implements OnInit, OnChanges {
     const dialogRef = this.dialog.open(NewUserFormPhotoComponent, {
       data: {
         photo: this.photoShow,
-        arrayBuffer: this.photoForm.get('ArrayBuffer').value
+        arrayBuffer: this.fg_photo.get('ArrayBuffer').value
       }
     });
 
     dialogRef.afterClosed().subscribe((result: Photo) => {
+      console.log('PhotoPicker closed, result is below:');
       console.log(result);
       if (result) {
-        this.photoShow = result.photo;
-        this.photoForm.get('ArrayBuffer').setValue(result.arrayBuffer);
-        this.photoForm
-          .get('Filename')
-          .setValue(this.form.get('Alias').value + '.jpg');
+        this.applyChangesAfterPhotoPickerClosed(result);
       }
-      console.log(this.photoForm.get('ArrayBuffer').value.byteLength);
     });
   }
 
+  applyChangesAfterPhotoPickerClosed(result) {
+    this.photoShow = result.photo;
+    this.fg_photo.get('ArrayBuffer').setValue(result.arrayBuffer);
+    this.fg_photo
+      .get('Filename')
+      .setValue(this.fg_fields.get('Alias').value + '.jpg');
+  }
+
+  setFormPhotoID(ID) {
+    console.log('After receiving new user, set this ID = ' + ID);
+    this.fg_photo.get('ID').patchValue(ID);
+  }
+
+  resetArrayBuffer() {
+    this.fg_photo.get('ArrayBuffer').patchValue(new ArrayBuffer(0));
+  }
+
   onReset() {
-    this.initPhotoForm();
+    this.initFormPhoto();
     this.photoShow = '';
-    this.form.get('Name').reset();
-    this.form.get('Surname').reset();
-    this.form.get('Gin').reset();
-    this.form.get('Location').reset();
-  }
-
-  onSave() {
-    // set saving to true and show user inactive saving button
-    this.saving = true;
-
-    // adding user and photo
-    return this.userService
-      .addUser(this.form.getRawValue())
-      .toPromise()
-      .then(data => {
-        if (data.d) {
-          return this.userService.addPhoto(this.photoForm.value).toPromise();
-        }
-      })
-      .then((res: any) => {
-        if (res.d) {
-          this.router.navigate(['timeline']);
-        }
-      });
-  }
-
-  log() {
-    console.log(this.form);
-    console.log(this.photoForm);
+    this.fg_fields.get('Name').reset();
+    this.fg_fields.get('Surname').reset();
+    this.fg_fields.get('Gin').reset();
+    this.fg_fields.get('Location').reset();
   }
 
   // getters
 
   get photo() {
-    return this.photoForm.get('ArrayBuffer').value.byteLength !== 0
+    return this.fg_photo.get('ArrayBuffer').value.byteLength !== 0
       ? true
       : false;
   }
 
-  // Error Message Functions
+  // async validators
 
-  getError_Name() {
-    const required = this.form.controls['Name'].hasError('required');
+  uniqueGin(control: AbstractControl) {
+    // set uniqueGin to false, otherwise it will be valid before async check
+    // and if http call be long, then user can have time to click save button
+    this.fg_fields.controls['Gin'].setErrors({ notUnique: true });
 
-    return this.form.controls['Name'].touched
-      ? required
-        ? 'Name is required'
-        : ''
-      : '';
-  }
-
-  getError_Surname() {
-    const required = this.form.controls['Surname'].hasError('required');
-
-    return this.form.controls['Surname'].touched
-      ? required
-        ? 'Surname is required'
-        : ''
-      : '';
-  }
-
-  getError_Gin() {
-    const required = this.form.controls['Gin'].hasError('required');
-    const min = this.form.controls['Gin'].hasError('minlength');
-    const max = this.form.controls['Gin'].hasError('maxlength');
-    const onlyNumbers = this.form.controls['Gin'].hasError('onlyNumbers');
-
-    return this.form.controls['Gin'].touched
-      ? required
-        ? 'GIN number is required'
-        : onlyNumbers
-          ? 'Only numbers allowed'
-          : min || max
-            ? '8 digits required'
-            : ''
-      : '';
-  }
-
-  getError_Location() {
-    const required = this.form.controls['Location'].hasError('required');
-    return this.form.controls['Location'].touched
-      ? required
-        ? 'Location is required'
-        : ''
-      : '';
+    return of(control.value).pipe(
+      take(1),
+      switchMap((gin: number) => {
+        return this.asyncValidators.checkGinUnique(gin);
+      }),
+      map((response: boolean) => {
+        return response ? null : { notUnique: true };
+      })
+    );
   }
 }

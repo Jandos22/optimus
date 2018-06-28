@@ -1,11 +1,13 @@
 export interface UserState {
-  sharepoint: {
-    username: string;
-    email: string;
-    initials: string;
-    spId: number;
-  };
+  sharepoint: SharepointUser;
   optimus: OptimusUser;
+}
+
+export interface SharepointUser {
+  username: string;
+  email: string;
+  initials: string;
+  spId: number;
 }
 
 export interface OptimusUser {

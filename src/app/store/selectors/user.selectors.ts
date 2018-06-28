@@ -8,6 +8,15 @@ export const getUserState = createSelector(
   (state: fromRoot.RootState) => state.user
 );
 
+export const getUserSharepoint = createSelector(
+  getUserState,
+  fromUser.getUserSharepoint
+);
+export const getUserOptimus = createSelector(
+  getUserState,
+  fromUser.getUserOptimus
+);
+
 export const getUsername = createSelector(getUserState, fromUser.getUsername);
 
 export const getEmail = createSelector(getUserState, fromUser.getEmail);

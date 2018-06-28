@@ -1,0 +1,53 @@
+@import '../../../../../colors';
+
+.container {
+  padding: 16px;
+}
+
+.avatar {
+  font-size: 40px;
+}
+
+.title_group {
+  margin-left: -16px;
+}
+
+.actions {
+  padding: 0 16px;
+  margin-bottom: -8px !important;
+}
+
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.photo__container {
+  height: 125px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.noUserPhoto {
+  font-size: 120px;
+  height: 120px;
+  color: rgba(0, 0, 0, 0.5);
+
+  :hover {
+    color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+}
+
+.userPhoto {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+}
+.userPhoto:hover {
+  cursor: pointer;
+}
+
+.actions__container {
+  width: 100%;
+  height: 36px;
+}
