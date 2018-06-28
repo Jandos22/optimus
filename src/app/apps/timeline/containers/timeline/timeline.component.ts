@@ -21,13 +21,13 @@ import {
   selector: 'app-timeline.timeline-flex-container',
   encapsulation: ViewEncapsulation.None,
   template: `
-    <app-timeline-toolbar fxFlex="56px"></app-timeline-toolbar>
+    <app-timeline-toolbar fxFlex="64px" [appName]="appName"></app-timeline-toolbar>
 
     <app-timeline-events-list fxFlex
       [events]="events$ | async">
     </app-timeline-events-list>
 
-    <app-timeline-footer fxFlex="56px"
+    <app-timeline-footer fxFlex="48px"
       [indexes]="indexes" [totalDisplayed]="totalDisplayed"
       [from]="from" [to]="to" [totalFound]="totalFound$ | async"
       (onNext)="onNext($event)" (onBack)="onBack($event)">

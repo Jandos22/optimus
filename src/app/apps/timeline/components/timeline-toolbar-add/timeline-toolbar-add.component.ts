@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   template: `
     <span class="toolbarButton__wrapper--primary">
         <button mat-icon-button matTooltip="Post new event">
-            <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+            <span class="fa_regular"><fa-icon [icon]="['fas', 'plus']"></fa-icon></span>
         </button>
     </span>
     `

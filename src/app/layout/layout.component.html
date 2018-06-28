@@ -1,6 +1,6 @@
-<app-header></app-header>
+<!-- <app-header></app-header> -->
 
-<mat-sidenav-container class="sidenavContainer">
+<mat-sidenav-container class="sidenavContainer" (backdropClick)="onSidenavClose()">
 
   <!-- Sidenav Container -->
   <mat-sidenav [opened]="sidenavOpened$ | async" [mode]="sidenavMode$ | async" (close)="onSidenavClose()">
