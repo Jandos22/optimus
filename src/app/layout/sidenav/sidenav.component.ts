@@ -33,9 +33,6 @@ import * as layout from './../../store/actions/layout.actions';
       <li>
           <a routerLink="/exemptions" class="noSelect" (click)="onSidenavClick()">Exemptions</a>
       </li>
-      <li>
-          <a routerLink="/registration" class="noSelect" (click)="onSidenavClick()">Registration</a>
-      </li>
     </ul>
 
     <div *ngIf="!(isRegistered$ | async)" fxFlex></div>

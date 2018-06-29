@@ -120,7 +120,7 @@ export class LayoutComponent implements OnInit {
       isXL: false
     };
 
-    const autocollapseWidth = 800;
+    const autocollapseWidth = 856;
 
     this.innerWidth <= autocollapseWidth
       ? (curretSidenavState.mode = 'over')

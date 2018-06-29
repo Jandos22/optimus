@@ -35,26 +35,10 @@ body {
   vertical-align: baseline;
 }
 
-app-root {
-  height: 100vh;
-}
 app-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
-}
-
-.loading {
-  margin: 0;
-  height: 100vh;
-  background-color: #2196f3;
-}
-
-.loadingOptimus {
-  display: block;
-  margin: auto;
-  width: 216px;
-  padding: calc(100vh - 50vh) 0 0 0;
 }
 
 .common-flex-container {
