@@ -45,6 +45,7 @@
 <!-- style applied inline on purpose -->
 <!-- because depending on user's internet -->
 <!-- styles file will load with delay -->
+
 <body style="background-color: #bbdefb; height: 100vh;">
   <app-root style="margin: 0;">
     <div style="position: relative; background-color: #bbdefb; height: 100vh; margin: 0;">
@@ -67,5 +68,6 @@
 <!-- iOS Safari fullscreen issue
   experiments with visibility change and use of hash didn't succeed
 -->
+<!--  -->
 
 </html>
