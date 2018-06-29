@@ -9,6 +9,9 @@ export interface SpListItemField {
   ['odata.id']?: string;
   ['odata.etag']?: string;
   ['odata.editLink']?: string;
+  __metadata?: {
+    type?: string;
+  };
 }
 
 export interface SpListItemAttachmentFiles {

@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['sidenav-footer.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="sidenav__footer--container" fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex class="sidenav__footer--container" fxLayout="row" fxLayoutAlign="start center">
         <span matTooltip="Optimization Suite">Optimus</span>
     </div>
     `

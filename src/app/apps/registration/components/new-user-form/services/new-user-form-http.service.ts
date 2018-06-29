@@ -20,9 +20,17 @@ import { SharepointService } from '../../../../../shared/services/sharepoint.ser
 export class NewUserFormHttpService {
   constructor(private sp: SharepointService) {}
 
+  // list.create() method
   addNewUser(fields: PeopleItem) {
-    const add$ = new sprLib.list('NgPeople').create(fields);
-    return from(add$);
+    const fdv$ = this.sp.getFDV();
+    return fdv$.pipe(
+      take(1),
+      switchMap(fdv => {
+        return from(
+          new sprLib.list({ name: 'NgPeople', ...fdv }).create(fields)
+        );
+      })
+    );
   }
 
   savePhoto(photo: ToSaveUserPhoto) {

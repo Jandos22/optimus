@@ -40,7 +40,9 @@ import * as layout from './../../store/actions/layout.actions';
 
     <div *ngIf="!(isRegistered$ | async)" fxFlex></div>
 
-    <app-sidenav-footer fxFlex="49px" class="common-footer"></app-sidenav-footer>
+    <app-sidenav-footer fxFlex="49px" class="common-footer"
+      fxLayout="row" fxLayoutAlign="start center">
+    </app-sidenav-footer>
   </div>
   `,
   styleUrls: ['./sidenav.component.scss']

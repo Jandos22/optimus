@@ -32,10 +32,11 @@ import { NewUserFormHttpService } from '../services/new-user-form-http.service';
   template: `
     <!-- <button mat-button (click)="log()">LOG</button> -->
 
-    <button *ngIf="!saving" mat-button (click)="onReset()">RESET</button>
+    <button *ngIf="!saving" mat-button tabindex="-1" (click)="onReset.emit()">RESET</button>
 
+    <!-- [disabled]="fg_fields.invalid || !hasUnsavedPhoto || saving" -->
     <button mat-button tabindex="-1" color="primary" class="mat-button__fa-icon"
-        [disabled]="fg_fields.invalid || !hasUnsavedPhoto || saving"
+        [disabled]="fg_fields.invalid || saving"
         (click)="onSave()">
         <!-- two span els needed to have right vertical alignment -->
         <span *ngIf="saving" class="cta__fa-icon" matTooltip="Saving">
