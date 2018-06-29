@@ -1,6 +1,18 @@
 export interface UserState {
+  bootstrap: BootstrapUser;
   sharepoint: SharepointUser;
   optimus: OptimusUser;
+}
+
+export type UserBootstrapStage =
+  | 'Retrieving Username ...'
+  | 'Logged in as: '
+  | 'Looking for Optimus account ...'
+  | 'Optimus account found ...';
+
+export interface BootstrapUser {
+  bootstrapping: boolean;
+  currentStage: UserBootstrapStage;
 }
 
 export interface SharepointUser {

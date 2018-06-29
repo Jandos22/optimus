@@ -11,7 +11,7 @@ import * as fromRoot from './../store';
 import * as a_in_layout from './../store/actions/layout.actions';
 
 // ngrx
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 // material
 import {
@@ -22,19 +22,23 @@ import {
   MatDrawerContainer
 } from '@angular/material';
 
+// interfaces
 import { SidenavProperties } from './../models/sidenav-properties.m';
 import { WindowProperties } from '../shared/interface/layout.model';
+import { BootstrapUser } from '../shared/interface/user.model';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+  styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
 export class LayoutComponent implements OnInit {
   // Observables
   sidenavOpened$: Observable<boolean>;
   sidenavMode$: Observable<string>;
+
+  userBootstrap$: Observable<BootstrapUser>;
 
   // Layout Properties
 
@@ -80,6 +84,8 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.updateLayout();
+
+    this.userBootstrap$ = this.store.pipe(select(fromRoot.getUserBootstrap));
   }
 
   onSidenavClose() {

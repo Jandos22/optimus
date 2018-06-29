@@ -8,6 +8,11 @@ export const getUserState = createSelector(
   (state: fromRoot.RootState) => state.user
 );
 
+export const getUserBootstrap = createSelector(
+  getUserState,
+  fromUser.getUserBoostrap
+);
+
 export const getUserSharepoint = createSelector(
   getUserState,
   fromUser.getUserSharepoint

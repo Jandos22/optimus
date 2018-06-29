@@ -1,9 +1,13 @@
-import * as fromUser from '../actions/user.actions';
+import { UserActionTypes, UserActionsUnion } from '../actions/user.actions';
 
 // interfaces
 import { UserState } from '../../shared/interface/user.model';
 
 const initialState: UserState = {
+  bootstrap: {
+    bootstrapping: null,
+    currentStage: null
+  },
   sharepoint: {
     username: null,
     email: null,
@@ -24,10 +28,28 @@ const initialState: UserState = {
 
 export function reducer(
   state = initialState,
-  action: fromUser.UserActions
+  action: UserActionsUnion
 ): UserState {
   switch (action.type) {
-    case fromUser.SET_CURRENT_USER:
+    case UserActionTypes.START_USER_BOOTSTRAPPING:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, bootstrapping: true }
+      };
+
+    case UserActionTypes.FINISH_USER_BOOTSTRAPPING:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, bootstrapping: false }
+      };
+
+    case UserActionTypes.UPDATE_BOOTSTRAPPING_STAGE:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, currentStage: action.stage }
+      };
+
+    case UserActionTypes.SET_CURRENT_USER:
       return {
         ...state,
         sharepoint: {
@@ -36,7 +58,7 @@ export function reducer(
         }
       };
 
-    case fromUser.SET_OPTIMUS_USER:
+    case UserActionTypes.SET_OPTIMUS_USER:
       return {
         ...state,
         optimus: {
@@ -45,7 +67,7 @@ export function reducer(
         }
       };
 
-    case fromUser.SET_USER_NOT_REGISTERED:
+    case UserActionTypes.SET_USER_NOT_REGISTERED:
       return {
         ...state,
         optimus: {
@@ -54,7 +76,7 @@ export function reducer(
         }
       };
 
-    case fromUser.UPDATE_USER_LOCATIONS_OF_INTEREST:
+    case UserActionTypes.UPDATE_USER_LOCATIONS_OF_INTEREST:
       return {
         ...state,
         optimus: {
@@ -70,6 +92,8 @@ export function reducer(
 
 // state selectors
 export const getUser = (state: UserState) => state;
+
+export const getUserBoostrap = (state: UserState) => state.bootstrap;
 
 export const getUserSharepoint = (state: UserState) => state.sharepoint;
 export const getUserOptimus = (state: UserState) => state.optimus;

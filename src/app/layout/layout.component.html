@@ -3,7 +3,8 @@
 <mat-sidenav-container class="sidenavContainer" (backdropClick)="onSidenavClose()">
 
   <!-- Sidenav Container -->
-  <mat-sidenav [opened]="sidenavOpened$ | async" [mode]="sidenavMode$ | async" (close)="onSidenavClose()">
+  <mat-sidenav *ngIf="!(userBootstrap$ | async)?.bootstrapping" [opened]="sidenavOpened$ | async" [mode]="sidenavMode$ | async"
+    (close)="onSidenavClose()">
 
     <!-- Sidenav Content -->
     <app-sidenav></app-sidenav>
@@ -11,9 +12,10 @@
   </mat-sidenav>
 
   <!-- Content Container -->
-  <div ng-sidebar-content fxLayout="column" fxFlexFill>
+  <div ng-sidebar-content fxLayout="column" fxFlexFill class="common-mat-content-container">
     <router-outlet></router-outlet>
-    <>
+    <app-bootstrap-user fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="(userBootstrap$ | async)?.bootstrapping"
+      [userBootstrap]="(userBootstrap$ | async)" class="common-content"></app-bootstrap-user>
   </div>
 
 </mat-sidenav-container>
