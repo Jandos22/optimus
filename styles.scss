@@ -1,0 +1,362 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url('assets/fonts/roboto-Regular.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('assets/fonts/roboto-Italic.ttf');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@import 'colors';
+
+$mdc-theme-primary: #2196f3; // primary color
+$mdc-theme-secondary: #ffc107; // secondary color
+$mdc-theme-background: #fff;
+
+@import '~@angular-mdc/theme/material';
+
+/* You can add global styles to this file, and also import other style files */
+html {
+  -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+  text-size-adjust: 100%;
+  height: 100vh;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-family: 'Roboto', sans-serif;
+  vertical-align: baseline;
+}
+
+app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+
+.common-flex-container {
+  // properties as flex container
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  // other styles
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #e3f2fd;
+}
+
+.common-header {
+  border-bottom: 1px solid $my-blue-100;
+}
+
+.common-content {
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.common-footer {
+  border-top: 1px solid $my-blue-100;
+}
+
+.common-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+
+  :hover {
+    color: rgba(0, 0, 0, 0.875);
+    background: $my-blue-100;
+  }
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+.flexToolbar {
+  flex: 0 0 auto;
+  flex-basis: 64px;
+}
+
+.flexContent {
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+}
+
+.flexFooter {
+  flex: 0 0 auto;
+  flex-basis: 56px;
+}
+
+.my-form-field_container {
+  margin-bottom: 0.5rem;
+}
+
+/* to fix zooming input fields on mobile devices */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px !important;
+  }
+}
+
+// list items
+.my-item-container {
+  background: white;
+  height: 4rem;
+  min-height: 4rem;
+  padding: 0 1rem;
+}
+
+.my-progress__container {
+  position: relative;
+  // top: 16px;
+  top: 2px;
+  // z-index: 1;
+}
+
+.my-progress__spinner {
+  z-index: 1;
+}
+
+.my-progress__value {
+  box-sizing: border-box;
+  position: absolute;
+  font-size: 0.875rem;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  // background: #9be7ff;
+  // border: 4px solid $my-primary-light;
+  border: 4px solid #ddd;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 34px;
+  // z-index: -1;
+}
+
+.my-item__title--container {
+  overflow: hidden;
+}
+
+.my-item__secondrow {
+  font-size: 0.875rem;
+  a {
+    color: #1976d2;
+    text-decoration: none;
+  }
+  a.text--accent {
+    text-decoration: underline;
+    text-decoration-color: $my-accent;
+  }
+  app-exemptions-status {
+    margin: 6px 4px 4px 4px;
+    // padding: 4px;
+  }
+}
+
+.textXXS {
+  font-size: 13px;
+}
+
+.mat-chip.mat-basic-chip {
+  margin: 0px 0px;
+  line-height: 15px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: black;
+  background-color: #ddd;
+}
+
+.mat-chip.mat-basic-chip.mat-primary {
+  color: white;
+  background-color: $my-primary;
+}
+
+.mat-chip.mat-basic-chip.mat-accent {
+  color: black;
+  background-color: $my-accent;
+}
+
+.my-section__text {
+  line-height: 1rem;
+  font-weight: 600;
+  background-color: #eee;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 20px 16px 12px 16px;
+}
+
+// #MYMDC
+
+// .my-mdc-card {
+//   margin: 0 16px;
+//   // padding: 8px;
+// }
+
+.my-padding_8 {
+  padding: 1rem;
+}
+
+.my-section {
+  line-height: 0.875rem;
+  color: #999;
+  font-size: 0.875rem;
+  margin: 1rem;
+  padding: 0;
+}
+
+// clipped text, 'I am a sentence with clipped...'
+// depends on parent width value
+.txt__clipped {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// container that grows in both x and y directions
+// used in app-ppe
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  // min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+}
+
+// duplicates the style of mat-hint
+// but is also multiline and may wrap
+.my-hint__multiline {
+  margin: -13.5px 0 0 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 13.5px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+// fixes height of button with text in span container
+// in mat-dialog-options
+span.g_form-button__text {
+  line-height: 15px;
+}
+
+// span.g_form-button__text.has-spinner {
+//   padding-right: 4px;
+// }
+
+// my customization of material and fontawesome icons
+
+button.mat-button__fa-icon.mat-button.mat-primary {
+  padding: 0;
+  min-width: 36px;
+  max-height: 36px;
+}
+
+.cta__fa-icon {
+  font-size: 20px;
+}
+
+.inputquery__error--icon {
+  color: $my-warn;
+}
+
+.fa_regular {
+  font-size: 1rem;
+}
+
+.fa_userphoto {
+  font-size: 125px;
+}
+
+.my__footer--pagination {
+  height: 56px;
+  background: $my-blue-50;
+}
+
+.footerButton__container {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.footerButton__wrapper {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: #b3e5fc;
+  }
+}
+
+.toolbarButton__wrapper--primary {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.5);
+  :hover {
+    background: $my-blue-100;
+    color: rgba(0, 0, 0, 0.875);
+  }
+}
+
+.toolbarButton__wrapper--warn {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  :hover {
+    background: $my-red-50;
+  }
+}
+
+// USER PHOTO PICKER
+
+.userPhotoCropped {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+input[type='text']::-ms-clear {
+  display: none;
+}
+
+::-ms-reveal {
+  display: none;
+}
+
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 0.65) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.65) !important;
+  -webkit-opacity: 1;
+  opacity: 1;
+}
