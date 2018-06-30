@@ -36,7 +36,7 @@ export class NewUserFormHttpService {
   savePhoto(photo: ToSaveUserPhoto) {
     const fdv$ = this.sp.getFDV();
 
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
     url += `/AttachmentFiles/add(FileName='${photo.Filename}')`;
 
     return fdv$.pipe(

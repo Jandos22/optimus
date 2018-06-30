@@ -12,18 +12,10 @@ const initialState: UserState = {
     username: null,
     email: null,
     initials: null,
-    spId: null
+    spId: null,
+    isRegistered: null
   },
-  optimus: {
-    Id: null,
-    isRegistered: null,
-    name: null,
-    surname: null,
-    photo: null,
-    photoUrl: null,
-    locationAssigned: null,
-    locationsOfInterest: []
-  }
+  optimus: null
 };
 
 export function reducer(
@@ -67,12 +59,12 @@ export function reducer(
         }
       };
 
-    case UserActionTypes.SET_USER_NOT_REGISTERED:
+    case UserActionTypes.UPDATE_USER_REGISTERED:
       return {
         ...state,
-        optimus: {
-          ...state.optimus,
-          isRegistered: action.payload
+        sharepoint: {
+          ...state.sharepoint,
+          isRegistered: action.registered
         }
       };
 
@@ -81,7 +73,7 @@ export function reducer(
         ...state,
         optimus: {
           ...state.optimus,
-          locationsOfInterest: action.payload
+          LocationsOfInterestId: action.payload
         }
       };
 
@@ -93,15 +85,19 @@ export function reducer(
 // state selectors
 export const getUser = (state: UserState) => state;
 
+// from user
 export const getUserBoostrap = (state: UserState) => state.bootstrap;
-
 export const getUserSharepoint = (state: UserState) => state.sharepoint;
 export const getUserOptimus = (state: UserState) => state.optimus;
 
+// from optimus
+export const getUserId = (state: UserState) => state.optimus.Id;
+
+// from sharepoint
 export const getUsername = (state: UserState) => state.sharepoint.username;
 export const getEmail = (state: UserState) => state.sharepoint.email;
-export const getUserId = (state: UserState) => state.optimus.Id;
-export const getIsRegistered = (state: UserState) => state.optimus.isRegistered;
+export const getIsRegistered = (state: UserState) =>
+  state.sharepoint.isRegistered;
 export const getInitials = (state: UserState) => state.sharepoint.initials;
-export const getPhoto = (state: UserState) => state.optimus.photo;
-export const getPhotoUrl = (state: UserState) => state.optimus.photoUrl;
+// export const getPhoto = (state: UserState) => state.optimus.photo;
+// export const getPhotoUrl = (state: UserState) => state.optimus.photoUrl;

@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, CanActivate } from '@angular/router';
+import { Router, CanActivate } from '@angular/router';
 
-// rxjs 6
+// rxjs
 import { Subscription } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
@@ -13,6 +13,7 @@ import * as a_in_locations from '../store/actions/locations.actions';
 import { UserService } from '../shared/services/user.service';
 
 // interfaces
+import { PeopleItem } from './../shared/interface/people.model';
 import { CurrentUser } from './../models/current-user.m';
 
 @Injectable()
@@ -25,7 +26,6 @@ export class AuthGuard implements OnDestroy {
 
   constructor(
     private router: Router,
-    // private route: ActivatedRoute,
     private store: Store<fromRoot.RootState>,
     private userService: UserService
   ) {
@@ -106,7 +106,7 @@ export class AuthGuard implements OnDestroy {
     console.log('No user found in NgPeople ... navigate to registration.');
 
     // just for safety confirm that this user is not registered
-    this.store.dispatch(new userActions.SetUserNotRegistered(false));
+    this.store.dispatch(new userActions.UpdateUserRegistered(false));
 
     if (this.currentUrl === '/registration') {
       return true;
@@ -115,26 +115,24 @@ export class AuthGuard implements OnDestroy {
     }
   }
 
-  userIsRegistered(optimusUser) {
+  userIsRegistered(optimusUser: PeopleItem) {
     console.log('User is registered: ...');
     console.log(optimusUser);
     this.store.dispatch(
       new userActions.UpdateBootstrappingStage('Optimus account found ...')
     );
 
-    // map logged in user for Store
-    const payload = this.userService.prepOptimusUserObject(optimusUser);
-
     // update store with optimus user info
-    this.store.dispatch(new userActions.SetOptimusUser(payload));
+    this.store.dispatch(new userActions.UpdateUserRegistered(true));
+    this.store.dispatch(new userActions.SetOptimusUser(optimusUser));
 
     // meanwhile update user's locations of interest
     this.store.dispatch(
-      new a_in_locations.UpdateSelected(payload.locationsOfInterest)
+      new a_in_locations.UpdateSelected(optimusUser.LocationsOfInterestId)
     );
 
     // grant permission for navigation
-    console.log(payload.name + ' can navigate to: ' + this.currentUrl);
+    console.log(optimusUser.Name + ' can navigate to: ' + this.currentUrl);
 
     this.store.dispatch(new userActions.FinishUserBootstrapping());
 

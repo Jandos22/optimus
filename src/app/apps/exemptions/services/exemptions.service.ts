@@ -16,7 +16,7 @@ export class ExemptionsService {
 
   // returns all exemptions for a given location
   getExemptionsOfLocation(location: string) {
-    const url = `${ApiPath}web/lists/getbytitle('NgExemptions')/items?`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
     return this.http
       .get(url, {
         params: new HttpParams().set('$filter', `Location eq '${location}'`)
@@ -30,7 +30,7 @@ export class ExemptionsService {
 
   // returns all exemption groups for a given location
   getExemptionsGroupsOfLocation(location: string) {
-    const url = `${ApiPath}web/lists/getbytitle('NgExemptionGroups')/items?`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgExemptionGroups')/items?`;
     return this.http
       .get(url, {
         params: new HttpParams().set('$filter', `Location eq '${location}'`)

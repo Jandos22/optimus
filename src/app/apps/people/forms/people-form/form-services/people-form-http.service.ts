@@ -66,7 +66,7 @@ export class PeopleFormHttpService {
   // if user doesn't have photo than return green light for next action
   cleanUpAttachmentFiles(photo: ToSaveUserPhoto) {
     // url constructed to get user object with Attachments and AttachmentsList
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
     url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
     const getUserObject$ = from(sprLib.rest({ url, type: 'GET' }));
@@ -98,7 +98,7 @@ export class PeopleFormHttpService {
   deletePhotoByFilename(photo: ToSaveUserPhoto) {
     const fdv$ = this.sp.getFDV();
 
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')`;
     url += `/getItemById(${photo.ID})`;
     url += `/AttachmentFiles/getByFileName('${photo.Filename}')`;
 
@@ -127,7 +127,7 @@ export class PeopleFormHttpService {
 
   uploadPhoto(photo: ToSaveUserPhoto) {
     const fdv$ = this.sp.getFDV();
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
     url += `/AttachmentFiles/add(FileName='${photo.Filename}')`;
     return fdv$.pipe(
       take(1),

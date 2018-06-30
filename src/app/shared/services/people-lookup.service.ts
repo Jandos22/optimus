@@ -16,7 +16,7 @@ export class PeopleLookupService {
 
   getUserById(ID: number) {
     // building url for http call
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${ID})`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${ID})`;
     url += `?$select=ID,Alias,Fullname,Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
     // Observable created from Promise

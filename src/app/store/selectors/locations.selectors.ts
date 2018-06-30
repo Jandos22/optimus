@@ -28,6 +28,13 @@ export const selectLocationsTotal = createSelector(
   fromLocations.selectLocationsTotal
 );
 
+export const getLocationById = (id: number) =>
+  createSelector(
+    getLocationsState,
+    fromLocations.selectLocationsEntities,
+    entities => entities[id]
+  );
+
 export const selectSelectedId = createSelector(
   getLocationsState,
   fromLocations.selectSelectedId

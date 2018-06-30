@@ -16,7 +16,7 @@ export class LocationsService {
 
   // returns all exemptions for a given location
   getLocations() {
-    const url = `${ApiPath}web/lists/getbytitle('NgLocations')/items?`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgLocations')/items?`;
     return this.http
       .get(url, {
         params: new HttpParams().set('$select', `Id,Title`)

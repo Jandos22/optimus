@@ -15,7 +15,7 @@ export enum UserActionTypes {
   // get/set actions
   GET_CURRENT_USER = '[User] Get Current User',
   SET_CURRENT_USER = '[User] Set Current User',
-  SET_USER_NOT_REGISTERED = '[User] Set User Not Registered',
+  UPDATE_USER_REGISTERED = '[User] Set User Registered',
   SET_OPTIMUS_USER = '[User] Set Optimus User',
   // effects actions
   CHECK_CURRENT_USER = '[User] Check Current User',
@@ -49,9 +49,9 @@ export class CheckCurrentUser implements Action {
   constructor(public payload: any) {}
 }
 
-export class SetUserNotRegistered implements Action {
-  readonly type = UserActionTypes.SET_USER_NOT_REGISTERED;
-  constructor(public payload: any) {}
+export class UpdateUserRegistered implements Action {
+  readonly type = UserActionTypes.UPDATE_USER_REGISTERED;
+  constructor(public registered: boolean) {}
 }
 
 export class SetOptimusUser implements Action {
@@ -71,6 +71,6 @@ export type UserActionsUnion =
   | GetCurrentUser
   | SetCurrentUser
   | CheckCurrentUser
-  | SetUserNotRegistered
+  | UpdateUserRegistered
   | SetOptimusUser
   | UpdateUserLocationsOfInterest;

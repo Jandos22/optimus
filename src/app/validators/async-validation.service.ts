@@ -14,7 +14,7 @@ export class AsyncValidationService {
 
   // check if alias is already registered (unique? false) or not (unique? true)
   checkAliasUnique(alias: string): Observable<boolean> {
-    const url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     return this.http
       .get(url, {
@@ -29,7 +29,7 @@ export class AsyncValidationService {
   }
 
   checkGinUnique(gin: number): Observable<boolean> {
-    const url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     return this.http
       .get(url, {

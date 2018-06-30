@@ -45,7 +45,7 @@ export class TimelineService {
 
   buildUrl(params: TimelineEventsParams, counter?: boolean) {
     // api url for NgTimeline
-    let url = `${ApiPath}web/lists/getbytitle('NgTimeline')/items?`;
+    let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items?`;
 
     // parameters
     const query = params.query.replace('#', '%23');

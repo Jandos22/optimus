@@ -98,7 +98,7 @@ export class PeopleService {
     console.log('check if photo exists');
     // url constructed to
     // - get user with Attachments and AttachmentsList
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')`;
     url += `/items(${updatedPhoto.ID})`;
     url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
@@ -131,7 +131,7 @@ export class PeopleService {
 
   uploadPhoto(updatedPhoto) {
     const fdv$ = this.sp.getFDV();
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')/items(${
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${
       updatedPhoto.ID
     })`;
     url += `/AttachmentFiles/add(FileName='${updatedPhoto.Filename}')`;
@@ -152,7 +152,7 @@ export class PeopleService {
   deletePeopleItemPhoto(updatedPhoto: PeopleUpdatedPhoto) {
     const fdv$ = this.sp.getFDV();
 
-    let url = `${ApiPath}web/lists/getByTitle('NgPeople')`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')`;
     url += `/getItemById(${updatedPhoto.ID})`;
     url += `/AttachmentFiles/getByFileName('${updatedPhoto.Filename}')`;
 
@@ -195,7 +195,7 @@ export class PeopleService {
 
   buildUrlToGetPeople(params: PeopleParams, counter?: boolean) {
     // api url for NgPeople
-    let url = `${ApiPath}web/lists/getbytitle('NgPeople')/items?`;
+    let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     // parameters
     const query = params.query;
