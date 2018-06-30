@@ -26,7 +26,7 @@
   <!-- ***** M-O-B-I-L-E ***** -->
   <!-- don't use apple-mobile meta tag, it always reloads app on visibility change, bad -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
   <!-- PC and Android icon -->
@@ -50,14 +50,14 @@
   <app-root style="margin: 0;">
     <div style="position: relative; background-color: #bbdefb; height: 100vh; margin: 0;">
       <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-        <span style="margin: auto auto">
+        <span>
           Optimization Suite
         </span>
       </div>
       <div style="display: flex; align-items: center; position: absolute; bottom: 0; margin: auto auto; width: 100%; height: 64px; color: rgba(0,0,0,0.75);">
         <div style="margin: auto;">
           <span>Schlumberger</span>
-          <span style="padding: 0 4px">&middot;</span>
+          <span style="padding: 0 4px">&#xB7;</span>
           <span>Wireline</span>
         </div>
       </div>

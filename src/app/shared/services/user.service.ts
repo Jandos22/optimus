@@ -70,6 +70,9 @@ export class UserService {
   getSelectFields() {
     return [
       'Id',
+      'Name',
+      'Surname',
+      'Fullname',
       'Alias',
       'Attachments',
       'AttachmentFiles',
@@ -77,9 +80,10 @@ export class UserService {
       'LocationAssigned/Title',
       'LocationsOfInterestId',
       'LocationsOfInterest/Title',
-      'Name',
-      'Surname',
-      'Fullname'
+      'Position/Title',
+      'PositionId',
+      'Roles',
+      'Roles/Title'
     ].toString();
   }
 
@@ -87,7 +91,9 @@ export class UserService {
     return [
       'AttachmentFiles',
       'LocationAssigned',
-      'LocationsOfInterest'
+      'LocationsOfInterest',
+      'Position',
+      'Roles'
     ].toString();
   }
 

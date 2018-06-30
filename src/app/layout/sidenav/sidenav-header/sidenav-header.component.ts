@@ -9,19 +9,15 @@ import { PeopleItem } from './../../../shared/interface/people.model';
   styleUrls: ['sidenav-header.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="sidenav__header--container" fxLayout="row" fxLayoutAlign="start center">
+    <app-sidenav-header-has-account *ngIf="userSharepoint.isRegistered"
+      fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px"
+      [user]="userOptimus">
+    </app-sidenav-header-has-account>
 
-      <app-sidenav-header-has-account *ngIf="userSharepoint.isRegistered"
-        fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px"
-        [user]="userOptimus">
-      </app-sidenav-header-has-account>
-
-        <app-sidenav-header-no-account *ngIf="!userSharepoint.isRegistered"
-            fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
-            [userSharepoint]="userSharepoint">
-        </app-sidenav-header-no-account>
-
-    </div>
+    <app-sidenav-header-no-account *ngIf="!userSharepoint.isRegistered"
+        fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
+        [userSharepoint]="userSharepoint">
+    </app-sidenav-header-no-account>
     `
 })
 export class SidenavHeaderComponent {

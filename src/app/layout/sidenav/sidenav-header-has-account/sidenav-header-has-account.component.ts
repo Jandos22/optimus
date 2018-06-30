@@ -12,11 +12,17 @@ import { UtilitiesService } from '../../../shared/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button mat-icon-button>
-      <img class="sidanav__user--photo" *ngIf="user.Attachments" [src]="getPhotoUrl()">
+      <span class="sidanav__user--photo" fxLayout="column" fxLayoutAlign="center center">
+        <img *ngIf="user.Attachments" [src]="getPhotoUrl()">
+      </span>
     </button>
     <div class="sivedav__user--info" fxLayout="column" fxLayoutAlign="end start">
         <span class="fullname">{{ user.Fullname}}</span>
-        <span class="location">{{ user.LocationAssigned.Title }}</span>
+        <div class="second_line" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="4px">
+          <span>{{ user.LocationAssigned.Title }}</span>
+          <span *ngIf="hasPosition()">&middot;</span>
+          <span *ngIf="hasPosition()">{{ user.Position.Title}}</span>
+        </div>
     </div>
     `
 })
@@ -27,5 +33,9 @@ export class SidenavHeaderHasAccountComponent {
 
   getPhotoUrl() {
     return this.utils.photoUrl(this.user.AttachmentFiles);
+  }
+
+  hasPosition() {
+    return this.user.PositionId ? true : false;
   }
 }

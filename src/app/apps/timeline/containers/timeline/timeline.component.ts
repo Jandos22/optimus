@@ -21,7 +21,9 @@ import {
   selector: 'app-timeline.timeline-flex-container',
   encapsulation: ViewEncapsulation.None,
   template: `
-    <app-timeline-toolbar fxFlex="65px" [appName]="appName" class="common-header"></app-timeline-toolbar>
+    <app-timeline-header fxFlex="65px"
+      [appName]="appName" class="common-header">
+    </app-timeline-header>
 
     <app-timeline-events-list fxFlex
       [events]="events$ | async">

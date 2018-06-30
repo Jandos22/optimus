@@ -22,7 +22,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-  selector: 'app-people',
+  selector: 'app-people.flexContainer',
   styleUrls: ['./people.component.css'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `

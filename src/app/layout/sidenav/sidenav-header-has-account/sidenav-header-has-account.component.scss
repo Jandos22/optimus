@@ -1,8 +1,20 @@
+@import '../../../../colors';
+
 .sidanav__user--photo {
   border-radius: 50%;
   height: 40px;
   width: 40px;
   margin: auto;
+
+  &:hover {
+    background: $my-blue-100;
+  }
+
+  img {
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+  }
 }
 
 .sivedav__user--info {
@@ -16,9 +28,15 @@
     color: rgba(0, 0, 0, 0.75);
   }
 
-  span.location {
-    line-height: 14px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
+  div.second_line {
+    height: 16px;
+    width: 100%;
+    overflow: hidden;
+
+    span {
+      line-height: 16px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+    }
   }
 }

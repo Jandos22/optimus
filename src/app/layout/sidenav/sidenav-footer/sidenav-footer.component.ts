@@ -5,10 +5,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['sidenav-footer.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div fxFlex class="sidenav__footer--container" fxLayout="row" fxLayoutAlign="start center">
-        <span matTooltip="Optimization Suite">Optimus</span>
+    <div class='common-button my-footer'>
+      <button mat-icon-button matTooltip='Configure Applications list'>
+        <span class='fa_regular'><fa-icon [icon]="['fas', 'cog']"></fa-icon></span>
+      </button>
     </div>
-    `
+    <span matTooltip="Optimization Suite">Optimus</span>
+  `
 })
 export class SidenavFooterComponent {
   constructor() {}

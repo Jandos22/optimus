@@ -20,6 +20,7 @@
             "assets": ["src/assets", "src/assets/icons/favicon8_32p.png"],
             "styles": [
               "src/_colors.scss",
+              "src/styles__fonts.scss",
               "src/styles__theme.scss",
               "src/styles.scss"
             ],

@@ -14,7 +14,7 @@ import * as fromPeople from '../../../../store';
 
 // rxjs
 import { Subscription, Observable, merge } from 'rxjs';
-import { map, filter, debounceTime, scan } from 'rxjs/operators';
+import { map, scan } from 'rxjs/operators';
 
 // interfaces
 import { PeopleItem } from './../../../../../../shared/interface/people.model';
