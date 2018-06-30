@@ -148,9 +148,9 @@ input.common-toolbar-input-search {
   &:-ms-input-placeholder {
     //   /* Internet Explorer 10-11 */
     font-family: 'Roboto';
+    font-size: 16px !important;
     color: rgba(0, 0, 0, 0.5);
     line-height: 22px;
-    font-size: 16px;
     font-weight: 500;
   }
 
