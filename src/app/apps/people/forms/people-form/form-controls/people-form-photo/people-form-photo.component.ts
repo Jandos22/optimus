@@ -16,22 +16,12 @@ import { PeopleFormPhotoPickerComponent } from './../../../people-form-photo-pic
 import { MatDialog } from '@angular/material';
 import { FormMode } from './../../../../../../shared/interface/form.model';
 
-// constants
-import { ApiPath, PathOptimus } from '../../../../../../shared/constants/index';
-
-// interfaces
-import { UserPhotoState } from './../../../../../registration/components/new-user-form-photo/new-user-form-photo.component';
-
 @Component({
   selector: 'app-people-form-photo',
   styleUrls: ['people-form-photo.component.css'],
   template: `
     <div fxFlex fxLayout="row wrap" fxLayoutAlign="center">
-      <!-- show when user doesn't have unsaved photo -->
       <img [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()" (click)="openPhotoPicker()">
-      <!-- show when user has unsaved photo
-      <img *ngIf="hasUnsavedPhoto"
-        [src]="fg_photo.get('PhotoUrl').value" class="userPhoto" [ngClass]="getPhotoClass()" (click)="openPhotoPicker()"> -->
     </div>
     `
 })

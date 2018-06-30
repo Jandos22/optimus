@@ -2,9 +2,12 @@ export interface SpListItemField {
   Id?: number;
   ID?: number;
   Attachments?: boolean;
-  AttachmentFiles?: {
-    results?: SpListItemAttachmentFiles[];
-  };
+  AttachmentFiles?:
+    | {
+        results?: SpListItemAttachmentFiles[];
+      }
+    | SpListItemAttachmentFiles[]
+    | any;
   ['odata.type']?: string;
   ['odata.id']?: string;
   ['odata.etag']?: string;

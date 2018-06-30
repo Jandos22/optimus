@@ -1,33 +1,47 @@
-import * as fromUser from '../actions/user.actions';
+import { UserActionTypes, UserActionsUnion } from '../actions/user.actions';
 
 // interfaces
 import { UserState } from '../../shared/interface/user.model';
 
 const initialState: UserState = {
+  bootstrap: {
+    bootstrapping: null,
+    currentStage: null
+  },
   sharepoint: {
     username: null,
     email: null,
     initials: null,
-    spId: null
+    spId: null,
+    isRegistered: null
   },
-  optimus: {
-    Id: null,
-    isRegistered: null,
-    name: null,
-    surname: null,
-    photo: null,
-    photoUrl: null,
-    locationAssigned: null,
-    locationsOfInterest: []
-  }
+  optimus: null
 };
 
 export function reducer(
   state = initialState,
-  action: fromUser.UserActions
+  action: UserActionsUnion
 ): UserState {
   switch (action.type) {
-    case fromUser.SET_CURRENT_USER:
+    case UserActionTypes.START_USER_BOOTSTRAPPING:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, bootstrapping: true }
+      };
+
+    case UserActionTypes.FINISH_USER_BOOTSTRAPPING:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, bootstrapping: false }
+      };
+
+    case UserActionTypes.UPDATE_BOOTSTRAPPING_STAGE:
+      return {
+        ...state,
+        bootstrap: { ...state.bootstrap, currentStage: action.stage }
+      };
+
+    case UserActionTypes.SET_CURRENT_USER:
       return {
         ...state,
         sharepoint: {
@@ -36,7 +50,7 @@ export function reducer(
         }
       };
 
-    case fromUser.SET_OPTIMUS_USER:
+    case UserActionTypes.SET_OPTIMUS_USER:
       return {
         ...state,
         optimus: {
@@ -45,21 +59,21 @@ export function reducer(
         }
       };
 
-    case fromUser.SET_USER_NOT_REGISTERED:
+    case UserActionTypes.UPDATE_USER_REGISTERED:
       return {
         ...state,
-        optimus: {
-          ...state.optimus,
-          isRegistered: action.payload
+        sharepoint: {
+          ...state.sharepoint,
+          isRegistered: action.registered
         }
       };
 
-    case fromUser.UPDATE_USER_LOCATIONS_OF_INTEREST:
+    case UserActionTypes.UPDATE_USER_LOCATIONS_OF_INTEREST:
       return {
         ...state,
         optimus: {
           ...state.optimus,
-          locationsOfInterest: action.payload
+          LocationsOfInterestId: action.payload
         }
       };
 
@@ -71,13 +85,19 @@ export function reducer(
 // state selectors
 export const getUser = (state: UserState) => state;
 
+// from user
+export const getUserBoostrap = (state: UserState) => state.bootstrap;
 export const getUserSharepoint = (state: UserState) => state.sharepoint;
 export const getUserOptimus = (state: UserState) => state.optimus;
 
+// from optimus
+export const getUserId = (state: UserState) => state.optimus.Id;
+
+// from sharepoint
 export const getUsername = (state: UserState) => state.sharepoint.username;
 export const getEmail = (state: UserState) => state.sharepoint.email;
-export const getUserId = (state: UserState) => state.optimus.Id;
-export const getIsRegistered = (state: UserState) => state.optimus.isRegistered;
+export const getIsRegistered = (state: UserState) =>
+  state.sharepoint.isRegistered;
 export const getInitials = (state: UserState) => state.sharepoint.initials;
-export const getPhoto = (state: UserState) => state.optimus.photo;
-export const getPhotoUrl = (state: UserState) => state.optimus.photoUrl;
+// export const getPhoto = (state: UserState) => state.optimus.photo;
+// export const getPhotoUrl = (state: UserState) => state.optimus.photoUrl;

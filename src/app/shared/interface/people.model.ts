@@ -10,13 +10,14 @@ export interface PeopleItem extends SpListItemField {
   Alias?: string;
   Email?: string;
   Gin?: string;
+  LocationAssigned?: { Title?: string };
   LocationAssignedId?: number;
   LocationsOfInterestId?: number[];
   Fullname?: string;
-  Photo?: {
-    Filename: string;
-    ArrayBuffer: ArrayBuffer;
-  };
+  Position?: UserPosition;
+  PositionId?: number;
+  Roles?: UserRole[];
+  RolesId?: number;
 }
 
 export class PeopleItemObject implements PeopleItem {
@@ -27,6 +28,7 @@ export class PeopleItemObject implements PeopleItem {
   Alias = '';
   Email = '';
   Gin = '';
+  LocationAssigned;
   LocationAssignedId: number = null;
   Fullname: '';
   ['odata.type'];
@@ -37,10 +39,10 @@ export class PeopleItemObject implements PeopleItem {
   AttachmentFiles: {
     results?: SpListItemAttachmentFiles[];
   };
-  Photo = {
-    Filename: '',
-    ArrayBuffer: new ArrayBuffer(0)
-  };
+  PositionId;
+  Position;
+  RolesId;
+  Roles;
   constructor(item?: PeopleItem) {
     console.log(item);
     if (item) {
@@ -49,12 +51,14 @@ export class PeopleItemObject implements PeopleItem {
       this.Alias = item.Alias;
       this.Email = item.Email;
       this.Gin = item.Gin;
+      this.LocationAssigned = item.LocationAssigned;
       this.LocationAssignedId = item.LocationAssignedId;
       this.Attachments = item.Attachments;
       this.AttachmentFiles = item.AttachmentFiles;
-      if (item.Attachments) {
-        this.Photo.Filename = `${item.Alias}.jpg`;
-      }
+      this.PositionId = item.PositionId;
+      this.Position = item.Position;
+      this.RolesId = item.RolesId;
+      this.Roles = item.Roles;
     }
   }
 }
@@ -69,4 +73,12 @@ export interface ToSaveUserPhoto {
   ID?: number;
   Filename?: string;
   ArrayBuffer?: ArrayBuffer;
+}
+
+export interface UserPosition {
+  Title: string;
+}
+
+export interface UserRole {
+  Title: string;
 }

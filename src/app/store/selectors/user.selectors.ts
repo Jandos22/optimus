@@ -8,6 +8,11 @@ export const getUserState = createSelector(
   (state: fromRoot.RootState) => state.user
 );
 
+export const getUserBootstrap = createSelector(
+  getUserState,
+  fromUser.getUserBoostrap
+);
+
 export const getUserSharepoint = createSelector(
   getUserState,
   fromUser.getUserSharepoint
@@ -27,5 +32,5 @@ export const getIsRegistered = createSelector(
 );
 export const getUserId = createSelector(getUserState, fromUser.getUserId);
 export const getInitials = createSelector(getUserState, fromUser.getInitials);
-export const getPhoto = createSelector(getUserState, fromUser.getPhoto);
-export const getPhotoUrl = createSelector(getUserState, fromUser.getPhotoUrl);
+// export const getPhoto = createSelector(getUserState, fromUser.getPhoto);
+// export const getPhotoUrl = createSelector(getUserState, fromUser.getPhotoUrl);

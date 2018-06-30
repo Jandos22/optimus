@@ -19,18 +19,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- material icons are self-hosted and import via css in angular.json -->
-  <!-- roboto font is self-hosted and imported via styles.css -->
+  <!-- ***** S-T-Y-L-I-N-G ***** -->
+  <!-- roboto font is self-hosted and imported via styles.scss -->
   <!-- material design theme is customized via styles__theme.scss -->
 
-  <!-- MOBILE -->
-  <!-- don't use apple-mobile meta tag, it always reloads app on visibility change -->
+  <!-- ***** M-O-B-I-L-E ***** -->
+  <!-- don't use apple-mobile meta tag, it always reloads app on visibility change, bad -->
   <meta name="mobile-web-app-capable" content="yes">
+  <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
-  <!-- browser, pc desktop and android icon -->
+  <!-- PC and Android icon -->
   <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png">
-  <!-- <link rel="icon" type="image/x-icon" href="assets/icons/favicon8x10_32p.png"> -->
 
   <!-- iOS homescreen icon -->
   <link rel="apple-touch-icon" href="assets/icons/favicon8_iphone.png">
@@ -42,17 +42,31 @@
 
 </head>
 
-<body>
-  <app-root>
-    <div class="loading">
-      <img src="assets/logo.png" alt="Loading Optimus" class="loadingOptimus">
+<!-- style applied inline on purpose -->
+<!-- because depending on user's internet -->
+<!-- styles file will load with delay -->
+
+<body style="background-color: #bbdefb; height: 100vh;">
+  <app-root style="margin: 0;">
+    <div style="position: relative; background-color: #bbdefb; height: 100vh; margin: 0;">
+      <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+        <span>
+          Optimization Suite
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; position: absolute; bottom: 0; margin: auto auto; width: 100%; height: 64px; color: rgba(0,0,0,0.75);">
+        <div style="margin: auto;">
+          <span>Schlumberger</span>
+          <span style="padding: 0 4px">&#xB7;</span>
+          <span>Wireline</span>
+        </div>
+      </div>
     </div>
   </app-root>
 </body>
 
 <!-- iOS Safari fullscreen issue
   experiments with visibility change and use of hash didn't succeed
-  - best option is to use Google Chrome on iOS which doesn't hide address bar, but gives best UX with my web app.
 -->
 
 </html>

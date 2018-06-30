@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-timeline-toolbar-add',
-  styleUrls: ['timeline-toolbar-add.component.scss'],
+  selector: 'app-timeline-toolbar-button-add',
+  styleUrls: ['timeline-toolbar-button-add.component.scss'],
   template: `
-    <span class="toolbarButton__wrapper--primary">
+    <div class="common-button">
         <button mat-icon-button matTooltip="Post new event">
             <span class="fa_regular"><fa-icon [icon]="['fas', 'plus']"></fa-icon></span>
         </button>
-    </span>
+    </div>
     `
 })
-export class TimelineToolbarAddComponent {
+export class TimelineToolbarButtonAddComponent {
   constructor() {}
 }

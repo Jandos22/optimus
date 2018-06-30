@@ -9,4 +9,3 @@ export const getAppState = createSelector(
 );
 
 export const getAppName = createSelector(getAppState, fromApp.getAppName);
-export const getAppWorking = createSelector(getAppState, fromApp.getAppWorking);

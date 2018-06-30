@@ -30,9 +30,9 @@ export class UserService {
   }
 
   checkLoggedInUserRegistered(alias) {
-    let url = `${ApiPath}Web/lists/getbytitle('NgPeople')/items?`;
-    url += `$select=Id,Alias,Attachments,AttachmentFiles,LocationAssignedId,LocationsOfInterestId,Name,Surname`;
-    url += `&$expand=AttachmentFiles`;
+    let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
+    url += `$select=${this.getSelectFields()}`;
+    url += `&$expand=${this.getExpandsFields()}`;
     url += `&$filter=Alias eq '${alias}'`;
     return this.http.get(url);
   }
@@ -40,50 +40,6 @@ export class UserService {
   listitem(list) {
     return (
       'SP.Data.' + list.charAt(0).toUpperCase() + list.slice(1) + 'ListItem'
-    );
-  }
-
-  addUser(user: any): Observable<any> {
-    user = {
-      ...user,
-      __metadata: {
-        type: this.listitem('NgPeople')
-      }
-    };
-    return this.getFDV().pipe(
-      switchMap((fdv: FDV) => {
-        return this.http.post(
-          `${ApiPath}web/lists/getbytitle('NgPeople')/items`,
-          JSON.stringify(user),
-          {
-            headers: new HttpHeaders()
-              .set('accept', 'application/json;odata=verbose')
-              .append('content-type', 'application/json;odata=verbose')
-              .append('X-RequestDigest', fdv.FormDigestValue)
-          }
-        );
-      }),
-      map(res => {
-        return res;
-      })
-    );
-  }
-
-  addPhoto(photo: Photo) {
-    return this.getFDV().pipe(
-      switchMap((fdv: FDV) => {
-        const url = `${ApiPath}web/lists/getbytitle('NgPhotos')/rootfolder/files/add(url='${
-          photo.Filename
-        }',overwrite='true')`;
-
-        return this.http.post(url, photo.ArrayBuffer, {
-          headers: new HttpHeaders()
-            .set('accept', 'application/json;odata=verbose')
-            .append('Content-Type', 'application/json;odata=verbose')
-            .append('X-RequestDigest', fdv.FormDigestValue)
-        });
-      }),
-      map(res => res)
     );
   }
 
@@ -111,26 +67,34 @@ export class UserService {
     };
   }
 
-  prepOptimusUserObject(userdata: PeopleItem) {
-    console.log(userdata);
-    let photoUrl = '';
-    if (userdata.Attachments) {
-      photoUrl = userdata.AttachmentFiles[0].ServerRelativeUrl;
-    }
-    if (ApiPath.startsWith('_')) {
-      photoUrl = PathSlbSp + photoUrl;
-    }
+  getSelectFields() {
+    return [
+      'Id',
+      'Name',
+      'Surname',
+      'Fullname',
+      'Alias',
+      'Attachments',
+      'AttachmentFiles',
+      'LocationAssignedId',
+      'LocationAssigned/Title',
+      'LocationsOfInterestId',
+      'LocationsOfInterest/Title',
+      'Position/Title',
+      'PositionId',
+      'Roles',
+      'Roles/Title'
+    ].toString();
+  }
 
-    return {
-      Id: userdata.Id,
-      isRegistered: true,
-      name: userdata.Name,
-      surname: userdata.Surname,
-      photo: userdata.Attachments,
-      photoUrl,
-      locationAssigned: userdata.LocationAssignedId,
-      locationsOfInterest: userdata.LocationsOfInterestId
-    };
+  getExpandsFields() {
+    return [
+      'AttachmentFiles',
+      'LocationAssigned',
+      'LocationsOfInterest',
+      'Position',
+      'Roles'
+    ].toString();
   }
 
   private getFDV() {

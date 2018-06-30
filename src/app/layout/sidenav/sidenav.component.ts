@@ -15,7 +15,8 @@ import * as layout from './../../store/actions/layout.actions';
   <div fxFlexFill fxLayout="column" class="sidenav__container">
 
     <!-- User Information Section -->
-    <app-sidenav-header fxFlex="65px" class="common-header"
+    <app-sidenav-header fxFlex="65px"  fxLayout="row" fxLayoutAlign="start center"
+      class="common-header"
       [userSharepoint]="userSharepoint$ | async"
       [userOptimus]="userOptimus$ | async">
     </app-sidenav-header>
@@ -33,15 +34,12 @@ import * as layout from './../../store/actions/layout.actions';
       <li>
           <a routerLink="/exemptions" class="noSelect" (click)="onSidenavClick()">Exemptions</a>
       </li>
-      <li>
-          <a routerLink="/registration" class="noSelect" (click)="onSidenavClick()">Registration</a>
-      </li>
     </ul>
 
     <div *ngIf="!(isRegistered$ | async)" fxFlex></div>
 
     <app-sidenav-footer fxFlex="49px" class="common-footer"
-      fxLayout="row" fxLayoutAlign="start center">
+      fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
     </app-sidenav-footer>
   </div>
   `,

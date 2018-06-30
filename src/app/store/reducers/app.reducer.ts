@@ -4,12 +4,10 @@ import { Locations } from './../../models/locations.m';
 
 export interface AppState {
   name: string;
-  working: boolean;
 }
 
 const initialState: AppState = {
-  name: null,
-  working: false
+  name: null
 };
 
 export function reducer(
@@ -23,30 +21,6 @@ export function reducer(
         name: action.payload
       };
 
-    case a_in_app.START_WORKING:
-      if (state.working === false) {
-        return {
-          ...state,
-          working: true
-        };
-      } else if (state.working === true) {
-        return state;
-      } else {
-        return state;
-      }
-
-    case a_in_app.FINISH_WORKING:
-      if (state.working === true) {
-        return {
-          ...state,
-          working: false
-        };
-      } else if (state.working === false) {
-        return state;
-      } else {
-        return state;
-      }
-
     default:
       return state;
   }
@@ -55,4 +29,3 @@ export function reducer(
 // selectors
 
 export const getAppName = (state: AppState) => state.name;
-export const getAppWorking = (state: AppState) => state.working;

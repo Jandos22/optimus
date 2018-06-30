@@ -11,7 +11,7 @@ import * as fromRoot from './../store';
 import * as a_in_layout from './../store/actions/layout.actions';
 
 // ngrx
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 // material
 import {
@@ -22,13 +22,15 @@ import {
   MatDrawerContainer
 } from '@angular/material';
 
+// interfaces
 import { SidenavProperties } from './../models/sidenav-properties.m';
 import { WindowProperties } from '../shared/interface/layout.model';
+import { BootstrapUser } from '../shared/interface/user.model';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+  styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
 export class LayoutComponent implements OnInit {
@@ -36,7 +38,7 @@ export class LayoutComponent implements OnInit {
   sidenavOpened$: Observable<boolean>;
   sidenavMode$: Observable<string>;
 
-  working$: Observable<boolean>;
+  userBootstrap$: Observable<BootstrapUser>;
 
   // Layout Properties
 
@@ -60,8 +62,6 @@ export class LayoutComponent implements OnInit {
     this.sidenavOpened$ = this.store.select(fromRoot.getSidenavOpened);
     this.sidenavMode$ = this.store.select(fromRoot.getSidenavMode);
 
-    this.working$ = this.store.select(fromRoot.getAppWorking);
-
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
@@ -84,6 +84,8 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.updateLayout();
+
+    this.userBootstrap$ = this.store.pipe(select(fromRoot.getUserBootstrap));
   }
 
   onSidenavClose() {
@@ -118,7 +120,7 @@ export class LayoutComponent implements OnInit {
       isXL: false
     };
 
-    const autocollapseWidth = 800;
+    const autocollapseWidth = 856;
 
     this.innerWidth <= autocollapseWidth
       ? (curretSidenavState.mode = 'over')
