@@ -41,7 +41,7 @@ export class ExemptionsComponent implements OnInit {
 
   ngOnInit() {
     // update html page title
-    this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
+    this.rootStore.dispatch(new fromRoot.SetAppName(this.appName));
 
     // get exemptions list from store
     this.exemptions = this.featureStore.pipe(

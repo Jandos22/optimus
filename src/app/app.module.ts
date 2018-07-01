@@ -53,6 +53,9 @@ import * as fromComponents from './shared/components';
 // services
 import * as fromServices from './shared/services';
 
+// pipes
+import * as fromPipes from './shared/pipes';
+
 // guards
 import { AuthGuard } from './guards/auth.guard';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
@@ -61,7 +64,8 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
   declarations: [
     AppComponent,
     ...fromLayout.containers,
-    ...fromComponents.components
+    ...fromComponents.components,
+    ...fromPipes.pipes
   ],
   entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [

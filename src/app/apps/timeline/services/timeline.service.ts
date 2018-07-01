@@ -19,7 +19,7 @@ import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 // interfaces
 import { SpResponse } from './../../../models/sp-response.model';
 import { TimelineEventsParams } from '../../../shared/interface/timeline.model';
-import { SpGetListItemResult } from './../../../shared/interface/sp-list-item-field.model';
+import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
 import { SharepointService } from './../../../shared/services/sharepoint.service';

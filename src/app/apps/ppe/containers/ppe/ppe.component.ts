@@ -41,7 +41,7 @@ export class PpeComponent {
     private router: Router
   ) {
     // update html page title
-    this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
+    this.rootStore.dispatch(new fromRoot.SetAppName(this.appName));
 
     // redirect to default tab
     this.router.navigate(['ppe/catalog']);

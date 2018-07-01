@@ -4,14 +4,12 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 // ngrx
-import { Action } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import * as a_in_errors from '../actions/errors.actions';
 
 // rxjs
-import { throwError, of } from 'rxjs';
-import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 // component for dialog box
 import { ErrorDialogBoxComponent } from '../../shared/components/error-dialog-box/error-dialog-box.component';

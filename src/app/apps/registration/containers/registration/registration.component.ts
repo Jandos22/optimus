@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as fromAppActions from './../../../../store/actions/app.actions';
+import * as fromAppsActions from './../../../../store/actions/apps.actions';
 import * as fromLayoutActions from '../../../../store/actions/layout.actions';
 
 // interfaces
@@ -39,7 +39,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private store: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new fromAppActions.ChangeAppName(this.appName));
+    this.store.dispatch(new fromAppsActions.SetAppName(this.appName));
 
     this.userSharepoint$ = this.store.pipe(select(fromRoot.getUserSharepoint));
 

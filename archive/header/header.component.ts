@@ -10,12 +10,11 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from './../../store';
 import * as fromRootUser from './../../store/reducers/user.reducer';
-import * as a_in_app from './../../store/actions/app.actions';
+import * as fromAppsActions from './../../store/actions/apps.actions';
 import * as layout from './../../store/actions/layout.actions';
 
 // models
 import { UserState } from './../../shared/interface/user.model';
-import { Locations } from './../../models/locations.m';
 import { SidenavProperties } from './../../models/sidenav-properties.m';
 import { WindowProperties } from '../../shared/interface/layout.model';
 import { HeaderProperties } from './../../models/header-properties.m';

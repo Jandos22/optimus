@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../store';
 import * as userActions from '../store/actions/user.actions';
-import * as a_in_app from '../store/actions/app.actions';
+// import * as a_in_app from '../store/actions/apps.actions';
 import * as a_in_locations from '../store/actions/locations.actions';
 
 import { UserService } from '../shared/services/user.service';

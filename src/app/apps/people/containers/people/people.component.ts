@@ -126,7 +126,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     app_people ? app_people.setAttribute('class', 'flexContainer') : '';
 
     // update html page title
-    this.rootStore.dispatch(new fromRoot.ChangeAppName(this.appName));
+    this.rootStore.dispatch(new fromRoot.SetAppName(this.appName));
 
     // subscribe to indexes
     this.indexes$ = this.peopleStore

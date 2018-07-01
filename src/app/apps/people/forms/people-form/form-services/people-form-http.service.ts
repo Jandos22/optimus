@@ -17,7 +17,7 @@ import {
 import { ApiPath, WirelinePath } from './../../../../../shared/constants/index';
 
 // interface
-import { SpGetListItemResult } from './../../../../../shared/interface/sp-list-item-field.model';
+import { SpGetListItemResult } from '../../../../../shared/interface/sp-list-item.model';
 import {
   PeopleUpdatedPhoto,
   PeopleItem,

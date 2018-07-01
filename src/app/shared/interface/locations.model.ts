@@ -1,9 +1,8 @@
-import { SpListItemField } from './sp-list-item-field.model';
+import { AppItem } from './applications.model';
+import { SpListItem } from './sp-list-item.model';
 
-export interface LocationSp extends SpListItemField {
-  Title: string;
-}
-
-export interface LocationEnt extends LocationSp, SpListItemField {
+export interface LocationEnt extends SpListItem {
   id: number;
+  Title: string;
+  ApplicationsInUse: AppItem[];
 }

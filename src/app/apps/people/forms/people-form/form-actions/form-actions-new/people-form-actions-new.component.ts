@@ -19,7 +19,7 @@ import { PeopleItem } from '../../../../../../shared/interface/people.model';
 
 // services
 import { PeopleFormHttpService } from '../../form-services';
-import { SpListItemAttachmentFiles } from '../../../../../../shared/interface/sp-list-item-field.model';
+import { SpListItemAttachmentFiles } from '../../../../../../shared/interface/sp-list-item.model';
 
 @Component({
   selector: 'app-people-form-actions-new',
