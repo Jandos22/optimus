@@ -22,6 +22,10 @@ body {
   vertical-align: baseline;
 }
 
+app-root {
+  height: 100vh;
+}
+
 app-layout {
   display: flex;
   flex-direction: column;
@@ -31,14 +35,17 @@ app-layout {
 .common-flex-container {
   // properties as flex container
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
+  flex-flow: column;
+  // justify-content: flex-start;
   align-items: stretch;
-  align-content: stretch;
+  // align-content: stretch;
   // other styles
   box-sizing: border-box;
   margin: 0;
   height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
   overflow: hidden;
   background: #e3f2fd;
 }
@@ -51,7 +58,7 @@ app-layout {
 
 .common-content {
   overflow-y: auto;
-  padding: 16px;
+  padding: 16px 0;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
@@ -164,18 +171,48 @@ input.common-toolbar-input-search {
     font-size: 16px;
     font-weight: 500;
   }
+}
 
-  // &::-webkit-input-placeholder {
-  //   color: rgba(0, 0, 0, 0.5);
-  //   font-family: 'Roboto';
-  //   color: rgba(0, 0, 0, 0.5);
-  //   height: 16px;
-  //   line-height: 16px;
-  //   font-size: 16px;
-  //   font-weight: 500;
-  //   margin: auto 0;
-  // vertical-align: bottom;
-  // }
+.common-content-container {
+  margin: 0 auto;
+  padding-left: 16px;
+  display: block;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  @media screen and (min-width: 600px) {
+    // padding-left: 16px;
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
+
+.common-content-item {
+  width: 100%;
+
+  @media screen and (min-width: 600px) {
+    width: auto;
+  }
+
+  &.last {
+    margin-right: 16px !important;
+  }
+}
+
+.common-list-item {
+  // display: block;
+  width: 100%;
+  height: 56px;
+  padding: 0;
+  background: #fcfcfc;
+  // border-bottom: 1px solid $my-blue-200;
+  border-bottom: 1px solid $my-blue-100;
+  border-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 8px;
+
+  @media screen and (min-width: 600px) {
+    width: auto;
+  }
 }
 
 .flexContainer {

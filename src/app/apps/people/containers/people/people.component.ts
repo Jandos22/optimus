@@ -9,11 +9,13 @@ import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
 
 // material
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
-import { PeopleParams } from './../../models/people-params.model';
+import {
+  PeopleItem,
+  UserSearchParams
+} from './../../../../shared/interface/people.model';
 import { PaginationIndexes } from './../../models/pagination-indexes.model';
 
 // form component
@@ -22,24 +24,28 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-  selector: 'app-people.flexContainer',
-  styleUrls: ['./people.component.css'],
-  encapsulation: ViewEncapsulation.Emulated,
+  selector: 'app-people.common-flex-container',
+  styleUrls: ['./people.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `
     <mat-progress-bar *ngIf="searching"
       class="workingOnRequest" color="warn" mode="indeterminate">
     </mat-progress-bar>
 
-    <app-people-toolbar
+    <app-people-header
+      fxFlex="65px" class="common-header"
+      [appName]="appName"
       (openForm)="openForm('new', $event)">
-    </app-people-toolbar>
+    </app-people-header>
 
-    <app-people-list class="flexContent" style="padding: 8px 0;"
-      [list]="list" (openUserForm)="openForm('view', $event)">
-    </app-people-list>
+    <app-people-content
+      fxFlex class="common-content"
+      [data]="data"
+      (openUserForm)="openForm('view', $event)">
+    </app-people-content>
 
     <app-people-toolbar-bottom class="flexFooter"
-      [indexes]="indexes" [listLength]="listLength"
+      [indexes]="indexes" [listLength]="dataLength"
       [from]="from" [to]="to" [total]="total"
       (onNext)="onNext($event)" (onBack)="onBack($event)">
     </app-people-toolbar-bottom>
@@ -52,8 +58,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
   appName = 'People';
 
   // data
-  list$: Subscription;
-  list: PeopleItem[];
+  data$: Subscription;
+  data: PeopleItem[];
 
   total$: Subscription;
   total: any;
@@ -62,13 +68,13 @@ export class PeopleComponent implements OnInit, OnDestroy {
   searching: boolean;
 
   // counter
-  listLength: number;
+  dataLength: number;
   from: number;
   to: number;
 
   // params
   params$: Subscription;
-  params: PeopleParams;
+  params: UserSearchParams;
 
   // pagination
   indexes$: Subscription;
@@ -85,35 +91,18 @@ export class PeopleComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private peopleStore: Store<fromPeople.PeopleState>,
-    private rootStore: Store<fromRoot.RootState>,
+    private store_people: Store<fromPeople.PeopleState>,
+    private store_root: Store<fromRoot.RootState>,
     public form: MatDialog,
     private notify: NotificationsService
   ) {
-    this.list$ = this.peopleStore
-      .pipe(select(fromPeople.selectAllUsers))
-      .subscribe(list => {
-        // goes in people-list component
-        this.list = list;
-
-        // go in people-toolbar-bottom component
-        this.listLength = list.length;
-        if (this.indexes) {
-          this.from = this.indexes.current * this.params.top + 1;
-          this.to = this.from + this.listLength - 1;
-        }
-
-        // count total
-        this.countTotalItems(this.params);
-      });
-
-    this.total$ = this.peopleStore
+    this.total$ = this.store_people
       .select(fromPeople.getUsersTotal)
       .subscribe(total => {
         this.total = total;
       });
 
-    this.searching$ = this.peopleStore
+    this.searching$ = this.store_people
       .select(fromPeople.getUsersSearching)
       .subscribe(search => {
         this.searching = search;
@@ -121,27 +110,41 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this fix is to make content of People to fill full height
-    const app_people = document.getElementsByTagName('app-people')[0];
-    app_people ? app_people.setAttribute('class', 'flexContainer') : '';
+    // main data = array of users
+    this.data$ = this.store_people
+      .pipe(select(fromPeople.selectAllUsers))
+      .subscribe(data => {
+        // goes in people-list component
+        this.data = data;
+
+        // go in people-toolbar-bottom component
+        this.dataLength = data.length;
+        if (this.indexes) {
+          this.from = this.indexes.current * this.params.top + 1;
+          this.to = this.from + this.dataLength - 1;
+        }
+
+        // count total
+        this.countTotalItems(this.params);
+      });
 
     // update html page title
-    this.rootStore.dispatch(new fromRoot.SetAppName(this.appName));
+    this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
 
     // subscribe to indexes
-    this.indexes$ = this.peopleStore
+    this.indexes$ = this.store_people
       .select(fromPeople.getPageIndexes)
       .subscribe(indexes => (this.indexes = indexes));
 
     // monitor current index, trigger search when changed
-    this.params$ = this.peopleStore
+    this.params$ = this.store_people
       .select(fromPeople.getParams)
       .subscribe(params => {
         this.params = params;
       });
 
     // subscribe to search pagelinks
-    this.links$ = this.peopleStore
+    this.links$ = this.store_people
       .select(fromPeople.getPageLinks)
       .subscribe(links => {
         this.links = links;
@@ -149,18 +152,18 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   onNext(indexes: PaginationIndexes) {
-    this.peopleStore.dispatch(new fromPeople.OnNext(this.links[indexes.next]));
+    this.store_people.dispatch(new fromPeople.OnNext(this.links[indexes.next]));
   }
 
   onBack(indexes: PaginationIndexes) {
-    this.peopleStore.dispatch(
+    this.store_people.dispatch(
       new fromPeople.OnBack(this.links[indexes.previous])
     );
   }
 
   countTotalItems(params) {
     if (params) {
-      this.peopleStore.dispatch(new fromPeople.BeginCount(params));
+      this.store_people.dispatch(new fromPeople.BeginCount(params));
     }
   }
 
@@ -178,7 +181,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.list$.unsubscribe();
+    this.data$.unsubscribe();
     this.total$.unsubscribe();
     this.indexes$.unsubscribe();
     this.params$.unsubscribe();

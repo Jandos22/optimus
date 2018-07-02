@@ -18,7 +18,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
   styleUrls: ['sidenav-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-nav-list>
+    <mat-nav-list style="margin: -8px 16px 0 16px;">
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
             class="sidenav-app-component"
             mat-list-item

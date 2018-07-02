@@ -72,6 +72,12 @@ export interface ToSaveUserPhoto {
   ArrayBuffer?: ArrayBuffer;
 }
 
+export interface UserSearchParams {
+  query: string;
+  locations: number[];
+  top: number;
+}
+
 export interface UserPosition {
   Title: string;
 }

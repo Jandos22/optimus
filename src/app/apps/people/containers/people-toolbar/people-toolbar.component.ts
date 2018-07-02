@@ -1,111 +1,40 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../../store';
-import * as fromPeople from '../../store';
-
-// rxjs 6
-import { Subscription, Observable } from 'rxjs';
-import {
-  debounceTime,
-  map,
-  tap,
-  skipWhile,
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-people-toolbar',
-  styleUrls: ['people-toolbar.component.css'],
+  styleUrls: ['people-toolbar.component.scss'],
   template: `
-    <mat-toolbar class="my-toolbar">
-        <mat-toolbar-row>
+    <app-people-toolbar-button-menu class="common-toolbar-item">
+    </app-people-toolbar-button-menu>
 
-          <div fxFlexFill fxLayout="row" fxLayoutAlign="start center">
+    <app-people-toolbar-input-search fxFlex
+        [appName]="appName" [fg_params]="fg_params"
+        (onFocus)="onFocus.emit()" (onBlur)="onBlur.emit()">
+    </app-people-toolbar-input-search>
 
-            <span>
-              <button mat-icon-button (click)="onOpenForm('new')" color="warn">
-                <!-- <mat-icon>add</mat-icon> -->
-                <fa-icon [icon]="['fas', 'plus']"></fa-icon>
-              </button>
-            </span>
+    <app-people-toolbar-button-clear
+        *ngIf="fg_params.get('query').value"
+        [fg_params]="fg_params">
+    </app-people-toolbar-button-clear>
 
-            <app-people-search
-                [parent]="paramsForm">
-            </app-people-search>
+    <app-people-toolbar-button-filters>
+    </app-people-toolbar-button-filters>
 
-            <span fxFlex></span>
-
-            <app-people-top-select
-              [top]="paramsForm.get('top').value"
-              (onSelectTop)="onSelectTop($event)">
-            </app-people-top-select>
-
-          </div>
-
-        </mat-toolbar-row>
-    </mat-toolbar>
+    <app-people-toolbar-button-add>
+    </app-people-toolbar-button-add>
     `
 })
-export class PeopleToolbarComponent implements OnInit, OnDestroy {
-  paramsForm = new FormGroup({
-    query: new FormControl(''),
-    location: new FormControl(''),
-    top: new FormControl(25)
-  });
+export class PeopleToolbarComponent {
+  @Input() appName: string;
+  @Input() fg_params: FormGroup;
 
-  @Output() openForm = new EventEmitter<string>();
+  @Output() onFocus = new EventEmitter<any>();
+  @Output() onBlur = new EventEmitter<any>();
 
-  // when params change,
-  // update store with new params values
-  // same action activates in search effects
-  params$: Subscription = this.paramsForm.valueChanges
-    .pipe(
-      debounceTime(600),
-      distinctUntilChanged(),
-      skipWhile(_ => this.paramsForm.get('query').invalid === true)
-    )
-    .subscribe(params => {
-      console.log('params updated');
-      this.peopleStore.dispatch(new fromPeople.UpdateParams(params));
-    });
+  constructor() {}
 
-  // comes from STORE.application.location
-  // controlled from *HEADER select menu
-  selectedLocation$: Subscription;
-
-  constructor(
-    private peopleStore: Store<fromPeople.PeopleState>,
-    private rootStore: Store<fromRoot.RootState>
-  ) {}
-
-  ngOnInit() {
-    // subscribe to store and update selected location on change
-    this.selectedLocation$ = this.rootStore
-      .select(fromRoot.selectSelectedId)
-      .subscribe(location => {
-        this.paramsForm.get('location').setValue(location);
-      });
-  }
-
-  // triggered from child component
-  onSelectTop(top) {
-    this.paramsForm.get('top').setValue(top);
-  }
-
-  onOpenForm(state) {
-    this.openForm.emit(state);
-  }
-
-  ngOnDestroy() {
-    this.selectedLocation$.unsubscribe();
-    this.params$.unsubscribe();
+  onClear() {
+    this.fg_params.reset();
   }
 }

@@ -11,21 +11,22 @@ import { Subscription, Observable } from 'rxjs';
 
 // interfaces
 import { PaginationIndexes } from '../../../../shared/interface/pagination.model';
-import { PeopleItem } from '../../../../shared/interface/people.model';
 import {
   TimelineEventsParams,
   TimelineEventItem
 } from '../../../../shared/interface/timeline.model';
 
 @Component({
-  selector: 'app-timeline.timeline-flex-container',
+  selector: 'app-timeline.common-flex-container',
   encapsulation: ViewEncapsulation.None,
   template: `
-    <app-timeline-header fxFlex="65px"
-      [appName]="appName" class="common-header">
+    <app-timeline-header
+      fxFlex="65px" class="common-header"
+      [appName]="appName">
     </app-timeline-header>
 
-    <app-timeline-events-list fxFlex
+    <app-timeline-events-list
+      fxFlex class="common-content"
       [events]="events$ | async">
     </app-timeline-events-list>
 

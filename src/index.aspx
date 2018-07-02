@@ -46,7 +46,7 @@
 <!-- because depending on user's internet -->
 <!-- styles file will load with delay -->
 
-<body style="background-color: #bbdefb; height: 100vh;">
+<body style="background-color: #bbdefb;">
   <app-root style="margin: 0;">
     <div style="position: relative; background-color: #bbdefb; height: 100vh; margin: 0;">
       <div style="display: flex; align-items: center; justify-content: center; height: 100%;">

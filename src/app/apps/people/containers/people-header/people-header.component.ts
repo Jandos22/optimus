@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 // ngrx
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as fromTimeline from '../../store';
+import * as fromPeople from '../../store';
 
 // rxjs
 import { Subscription, combineLatest } from 'rxjs';
@@ -24,28 +24,28 @@ import {
 } from 'rxjs/operators';
 
 // interfaces
-import { TimelineEventsParams } from './../../../../shared/interface/timeline.model';
+import { UserSearchParams } from './../../../../shared/interface/people.model';
 
 // validators
 import { ValidationService } from './../../../../validators/validation.service';
 
 @Component({
-  selector: 'app-timeline-header',
-  styleUrls: ['timeline-header.component.scss'],
+  selector: 'app-people-header',
+  styleUrls: ['people-header.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-timeline-toolbar class="common-toolbar"
-      fxFlex fxFlex.gt-xs="568px"
-      fxLayout="row nowrap" fxLayoutAlign="start center"
-      [appName]="appName" [fg_params]="fg_params"
-      (onFocus)="onFocus()" (onBlur)="onBlur()"
-      [ngClass]="{  focused: focus,
-                    invalid: fg_params.get('query').invalid }">
-    </app-timeline-toolbar>
-    `
+      <app-people-toolbar class="common-toolbar"
+        fxFlex fxFlex.gt-xs="568px"
+        fxLayout="row nowrap" fxLayoutAlign="start center"
+        [appName]="appName" [fg_params]="fg_params"
+        (onFocus)="onFocus()" (onBlur)="onBlur()"
+        [ngClass]="{  focused: focus,
+                      invalid: fg_params.get('query').invalid }">
+      </app-people-toolbar>
+      `
 })
-export class TimelineHeaderComponent implements OnInit, OnDestroy {
+export class PeopleHeaderComponent implements OnInit, OnDestroy {
   @Input() appName: string;
   fg_params: FormGroup;
 
@@ -56,7 +56,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private store_timeline: Store<fromTimeline.TimelineState>,
+    private store_people: Store<fromPeople.PeopleState>,
     private store_root: Store<fromRoot.RootState>
   ) {
     this.initializeParamsFormGroup();
@@ -109,13 +109,13 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
           };
         })
       )
-      .subscribe((params: TimelineEventsParams) => {
+      .subscribe((params: UserSearchParams) => {
         console.log('params updated');
-        // this action updates store > timeline.params
+        // this action updates store > people.params
         // this action is intercepted in search effects
         // search effects triggers chain of actions needed
         // to request events from server and load them in store
-        this.store_timeline.dispatch(new fromTimeline.UpdateParams(params));
+        this.store_people.dispatch(new fromPeople.UpdateParams(params));
       });
   }
 

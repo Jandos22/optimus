@@ -1,19 +1,19 @@
-.timeline-flex-container {
-  // properties as flex container
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-  // other styles
-  box-sizing: border-box;
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #e3f2fd;
-}
+// .timeline-flex-container {
+//   // properties as flex container
+//   display: flex;
+//   flex-flow: column nowrap;
+//   justify-content: flex-start;
+//   align-items: stretch;
+//   align-content: stretch;
+//   // other styles
+//   box-sizing: border-box;
+//   margin: 0;
+//   height: 100%;
+//   overflow: hidden;
+//   background: #e3f2fd;
+// }
 
-app-timeline-events-list {
-  overflow-y: auto;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-}
+// app-timeline-events-list {
+//   overflow-y: auto;
+//   -ms-overflow-style: -ms-autohiding-scrollbar;
+// }
