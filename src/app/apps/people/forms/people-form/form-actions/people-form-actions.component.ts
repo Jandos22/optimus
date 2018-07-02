@@ -6,7 +6,7 @@ import { FormMode } from './../../../../../shared/interface/form.model';
 
 // interfaces
 import { PeopleItem } from './../../../../../shared/interface/people.model';
-import { SpListItemAttachmentFiles } from './../../../../../shared/interface/sp-list-item-field.model';
+import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
 
 @Component({
   selector: 'app-people-form-actions',

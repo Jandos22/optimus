@@ -30,10 +30,7 @@ import { LocationsService } from './../../shared/services/locations.service';
 import { ApiPath } from './../../shared/constants/index';
 
 // interfaces
-import {
-  LocationSp,
-  LocationEnt
-} from '../../shared/interface/locations.model';
+import { LocationEnt } from '../../shared/interface/locations.model';
 
 @Injectable()
 export class LocationsEffects {
@@ -49,7 +46,7 @@ export class LocationsEffects {
     ofType(a_in_locations.LocationsActionTypes.GET_LOCATIONS),
     switchMap((action: a_in_locations.GetLocations) => {
       return this.locationsService.getLocations().pipe(
-        map((locations: LocationSp[]) => {
+        map((locations: LocationEnt[]) => {
           // console.log('received: ' + data);
 
           const locations$ = from(locations);
@@ -60,7 +57,7 @@ export class LocationsEffects {
           locations$
             .pipe(
               take(n_of_locations),
-              reduce((acc: LocationEnt[], curr: LocationSp) => {
+              reduce((acc: LocationEnt[], curr: LocationEnt) => {
                 return [...acc, { ...curr, id: curr.Id }];
               }, [])
             )
@@ -84,7 +81,10 @@ export class LocationsEffects {
     map((action: a_in_locations.UpdateSelected) => {
       let ID;
       this.store
-        .pipe(take(1), select(fromRoot.getUserId))
+        .pipe(
+          take(1),
+          select(fromRoot.getUserId)
+        )
         .subscribe((Id: number) => {
           ID = Id;
         });

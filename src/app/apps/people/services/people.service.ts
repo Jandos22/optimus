@@ -21,7 +21,7 @@ import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 // interfaces
 import { PeopleParams } from './../models/people-params.model';
 import { PeopleUpdatedPhoto } from './../../../shared/interface/people.model';
-import { SpGetListItemResult } from './../../../shared/interface/sp-list-item-field.model';
+import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
 import { SharepointService } from './../../../shared/services/sharepoint.service';

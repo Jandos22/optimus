@@ -1,10 +1,7 @@
 import { PeopleItem } from './people.model';
-import {
-  SpListItemField,
-  SpListItemAttachmentFiles
-} from './sp-list-item-field.model';
+import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
 
-export interface TimelineEventItem extends SpListItemField {
+export interface TimelineEventItem extends SpListItem {
   id?: number;
   EventDate: Date;
   Title?: string;

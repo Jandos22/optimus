@@ -12,7 +12,7 @@ import {
 
 import * as fromRouter from '@ngrx/router-store';
 
-import * as fromApp from './app.reducer';
+import * as fromApps from './apps.reducer';
 import * as fromLayout from './layout.reducer';
 import * as fromUser from './user.reducer';
 import * as fromErrors from './errors.reducer';
@@ -32,7 +32,7 @@ export interface RouterState {
 }
 
 export interface RootState {
-  app: fromApp.AppState;
+  apps: fromApps.AppsState;
   user: UserState;
   layout: fromLayout.LayoutState;
   errors: fromErrors.ErrorsState;
@@ -44,7 +44,7 @@ export const reducers: ActionReducerMap<RouterState> = {
 };
 
 export const root: ActionReducerMap<RootState> = {
-  app: fromApp.reducer,
+  apps: fromApps.reducer,
   user: fromUser.reducer,
   layout: fromLayout.reducer,
   errors: fromErrors.reducer,

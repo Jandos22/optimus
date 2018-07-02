@@ -1,4 +1,4 @@
-export interface SpListItemField {
+export interface SpListItem {
   Id?: number;
   ID?: number;
   Attachments?: boolean;
@@ -29,5 +29,5 @@ export interface SpListItemAttachmentFiles {
 }
 
 export interface SpGetListItemResult {
-  d: SpListItemField;
+  d: SpListItem;
 }

@@ -1,0 +1,20 @@
+@import '../../../../colors';
+
+a.sidenav__app {
+  border-radius: 4px;
+
+  &.mat-list-item {
+    font-size: 14px;
+    height: 32px !important;
+    color: rgba(0, 0, 0, 0.75);
+
+    &.hidden {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    &:hover {
+      background: $my-blue-100;
+      color: rgba(0, 0, 0, 0.875);
+    }
+  }
+}

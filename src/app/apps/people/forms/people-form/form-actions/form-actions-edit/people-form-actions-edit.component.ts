@@ -1,4 +1,4 @@
-import { SpListItemAttachmentFiles } from './../../../../../../shared/interface/sp-list-item-field.model';
+import { SpListItemAttachmentFiles } from '../../../../../../shared/interface/sp-list-item.model';
 import {
   Component,
   Input,

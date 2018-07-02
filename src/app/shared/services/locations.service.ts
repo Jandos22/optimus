@@ -19,7 +19,9 @@ export class LocationsService {
     const url = `${ApiPath}/web/lists/getbytitle('NgLocations')/items?`;
     return this.http
       .get(url, {
-        params: new HttpParams().set('$select', `Id,Title`)
+        params: new HttpParams()
+          .set('$select', this.selectFields())
+          .append('$expand', this.expandFields())
       })
       .pipe(
         map((response: { value: any[] }) => {
@@ -27,12 +29,6 @@ export class LocationsService {
         })
       );
   }
-
-  // method updates only LocationsOfInterest field
-  // of a given user (item) in NgPeople list
-  // updateLocationsOfInterest(object): Promise<any> {
-  //   return sprLib.list('NgPeople').update(object);
-  // }
 
   updateLocationsOfInterest(object) {
     const fdv$ = this.sp.getFDV();
@@ -48,5 +44,20 @@ export class LocationsService {
         return from(update$.then(response => response));
       })
     );
+  }
+
+  selectFields() {
+    return [
+      'Id',
+      'Title',
+      'ApplicationsInUse/ID',
+      'ApplicationsInUse/Title',
+      'ApplicationsInUse/RouterLink',
+      'ApplicationsInUse/AppPositionNumber'
+    ].toString();
+  }
+
+  expandFields() {
+    return ['ApplicationsInUse'].toString();
   }
 }

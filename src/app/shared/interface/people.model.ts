@@ -1,9 +1,6 @@
-import {
-  SpListItemField,
-  SpListItemAttachmentFiles
-} from './sp-list-item-field.model';
+import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
 
-export interface PeopleItem extends SpListItemField {
+export interface PeopleItem extends SpListItem {
   id?: number;
   Name?: string;
   Surname?: string;

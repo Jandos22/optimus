@@ -51,6 +51,7 @@ app-layout {
 
 .common-content {
   overflow-y: auto;
+  padding: 16px;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
@@ -100,11 +101,11 @@ app-layout {
     color: $my-warn;
   }
 
-  &.my-footer {
-    &:hover {
-      background: $my-blue-100;
-    }
-  }
+  // &.my-footer {
+  //   &:hover {
+  //     // background: $my-blue-100;
+  //   }
+  // }
 }
 
 .common-toolbar-input-container {

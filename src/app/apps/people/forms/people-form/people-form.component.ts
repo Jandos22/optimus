@@ -74,7 +74,7 @@ import {
   UserPhotoState
 } from '../people-form-photo-picker/people-form-photo-picker.component';
 // import { FormMode } from '../../../../models/form-mode.model';
-import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item-field.model';
+import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 
 @Component({
   selector: 'app-people-form',

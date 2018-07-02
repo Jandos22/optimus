@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromTimeline from '../../store';
-import * as application from '../../../../store/actions/app.actions';
+import * as application from '../../../../store/actions/apps.actions';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -69,7 +69,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.store_root.dispatch(new application.ChangeAppName(this.appName));
+    this.store_root.dispatch(new application.SetAppName(this.appName));
 
     this.events$ = this.store_timeline.pipe(
       select(fromTimeline.selectAllEvents)
