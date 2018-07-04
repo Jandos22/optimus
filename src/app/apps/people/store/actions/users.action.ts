@@ -3,20 +3,42 @@ import { Action } from '@ngrx/store';
 import { PeopleItem } from './../../../../shared/interface/people.model';
 
 export enum UsersActionTypes {
-  SEARCH_TRUE = '[People Users] Searching Started',
-  SEARCH_FALSE = '[People Users] Searching Finished',
+  // SEARCH_TRUE = '[People Users] Searching Started',
+  // SEARCH_FALSE = '[People Users] Searching Finished',
+  SEARCH_USERS_START = '[People Users] Search Users Start',
+  SEARCH_USERS_SUCCESS = '[People Users] Search Users Success',
+  SEARCH_USERS_NO_RESULTS = '[People Users] Search Users No Results',
+  COUNT_USERS_TOTAL = '[People Users] Count Total (since next url is present)',
   ADD_ONE_USER = '[People Users] Add One User',
+  INSERT_ONE_USER = '[People Users] Insert One User (in beginning)',
   UPDATE_PEOPLE_LIST = '[People Users] Update People List',
-  UPDATE_ONE_USER = '[People Users] Update One User',
-  UPDATE_TOTAL_ITEMS = '[People Users] Update Total Items'
+  UPDATE_ONE_USER = '[People Users] Update One User'
 }
 
-export class SearchTrue implements Action {
-  readonly type = UsersActionTypes.SEARCH_TRUE;
+// export class SearchTrue implements Action {
+//   readonly type = UsersActionTypes.SEARCH_TRUE;
+// }
+
+// export class SearchFalse implements Action {
+//   readonly type = UsersActionTypes.SEARCH_FALSE;
+// }
+
+export class SearchUsersStart implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS_START;
+  constructor(public url: string) {}
 }
 
-export class SearchFalse implements Action {
-  readonly type = UsersActionTypes.SEARCH_FALSE;
+export class SearchUsersSuccess implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS_SUCCESS;
+  constructor(public users: PeopleItem[]) {}
+}
+
+export class SearchUsersNoResults implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS_NO_RESULTS;
+}
+
+export class CountUsersTotal implements Action {
+  readonly type = UsersActionTypes.COUNT_USERS_TOTAL;
 }
 
 export class AddOneUser implements Action {
@@ -24,9 +46,9 @@ export class AddOneUser implements Action {
   constructor(public user: PeopleItem) {}
 }
 
-export class UpdatePeopleList implements Action {
-  readonly type = UsersActionTypes.UPDATE_PEOPLE_LIST;
-  constructor(public users: PeopleItem[]) {}
+export class InsertOneUser implements Action {
+  readonly type = UsersActionTypes.INSERT_ONE_USER;
+  constructor(public user: PeopleItem) {}
 }
 
 export class UpdateOneUser implements Action {
@@ -34,15 +56,13 @@ export class UpdateOneUser implements Action {
   constructor(public id: number, public changes: PeopleItem) {}
 }
 
-export class UpdateTotalItems implements Action {
-  readonly type = UsersActionTypes.UPDATE_TOTAL_ITEMS;
-  constructor(public total: any) {}
-}
-
 export type UsersActionsUnion =
-  | SearchTrue
-  | SearchFalse
+  // | SearchTrue
+  // | SearchFalse
   | AddOneUser
-  | UpdatePeopleList
-  | UpdateOneUser
-  | UpdateTotalItems;
+  | InsertOneUser
+  | SearchUsersStart
+  | SearchUsersSuccess
+  | SearchUsersNoResults
+  | CountUsersTotal
+  | UpdateOneUser;

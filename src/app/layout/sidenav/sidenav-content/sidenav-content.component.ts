@@ -1,6 +1,8 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
@@ -18,11 +20,11 @@ import { AppItem } from '../../../shared/interface/applications.model';
   styleUrls: ['sidenav-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-nav-list>
+    <mat-nav-list style="margin: -8px 16px 0 16px;">
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
             class="sidenav-app-component"
             mat-list-item
-            [app]="app">
+            [app]="app" (onSidenavClick)="onSidenavClick.emit()">
         </app-sidenav-content-app>
     </mat-nav-list>
     `
@@ -31,6 +33,8 @@ export class SidenavContentComponent implements OnChanges {
   @Input() myLocation: LocationEnt;
   @Input() apps: AppItem[];
   @Input() showHiddenApps: boolean;
+
+  @Output() onSidenavClick = new EventEmitter<any>();
 
   appsMap: AppItem[];
 
@@ -67,9 +71,9 @@ export class SidenavContentComponent implements OnChanges {
     const showHiddenApps: SimpleChange = changes.showHiddenApps;
 
     if (myLocation && apps) {
-      console.log(apps);
-      console.log(myLocation);
-      console.log(showHiddenApps);
+      // console.log(apps);
+      // console.log(myLocation);
+      // console.log(showHiddenApps);
       this.mapApplications(apps.currentValue, myLocation.currentValue);
     }
 
@@ -77,6 +81,4 @@ export class SidenavContentComponent implements OnChanges {
       this.mapApplications(this.apps, this.myLocation);
     }
   }
-
-  getLocationAssigned() {}
 }

@@ -1,17 +1,14 @@
 import * as fromParams from '../actions/params.action';
 
-// constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
-
 export interface ParamsState {
-  location: number[];
   query: string;
+  locations: number[];
   top: number;
 }
 
 export const initialState: ParamsState = {
-  location: null,
   query: null,
+  locations: null,
   top: null
 };
 

@@ -27,19 +27,15 @@ export class PeopleFormPhotoService {
     }
   }
 
-  getFileName(mode: FormMode, item: PeopleItem) {
-    if (mode === 'new') {
-      return 'nophoto.jpg';
+  getFileName(item: PeopleItem) {
+    if (item.Attachments) {
+      return item.AttachmentFiles.results[0].FileName;
     } else {
-      if (item.Attachments) {
-        return item.AttachmentFiles.results[0].FileName;
-      } else {
-        return item.Alias + '.jpg';
-      }
+      return item.Alias + '.jpg';
     }
   }
 
-  getPhotoUrl(mode: FormMode, item: PeopleItem) {
+  getPhotoUrl(item: PeopleItem) {
     if (item.Attachments) {
       const photoUrl = ApiPath.startsWith('_') ? PathSlbSp : '';
       return photoUrl + item.AttachmentFiles.results[0].ServerRelativeUrl;

@@ -33,8 +33,17 @@ export class PeopleFormHttpService {
 
   // returns newly create PeopleItem object
   addUser(newFields: PeopleItem) {
-    const create$ = new sprLib.list('NgPeople').create(newFields);
-    return from(create$.then(res => res));
+    const fdv$ = this.sp.getFDV();
+
+    return fdv$.pipe(
+      switchMap(fdv => {
+        const create$ = new sprLib.list({
+          name: 'NgPeople',
+          ...fdv
+        }).create(newFields);
+        return from(create$.then(res => res));
+      })
+    );
   }
 
   // receives unsavedFields and saves them in NgPeople list
@@ -141,5 +150,47 @@ export class PeopleFormHttpService {
         return from(upload$.then(response => response));
       })
     );
+  }
+
+  getUserById(ID: number) {
+    let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items(${ID})?`;
+    url += `$select=${this.getSelectFields()}`;
+    url += `&$expand=${this.getExpandFields()}`;
+    return from(sprLib.rest({ url: url }));
+  }
+
+  getSelectFields() {
+    const $select = [
+      'Id',
+      'ID',
+      'Alias',
+      'Name',
+      'Surname',
+      'Fullname',
+      'Email',
+      'Gin',
+      'LocationAssigned/Id',
+      'LocationAssigned/Title',
+      'LocationAssignedId',
+      'PositionId',
+      'Position/Id',
+      'Position/Title',
+      'RolesId',
+      'Roles/Id',
+      'Roles/Title',
+      'Attachments',
+      'AttachmentFiles'
+    ];
+    return $select.toString();
+  }
+
+  getExpandFields() {
+    const $expand = [
+      'AttachmentFiles',
+      'LocationAssigned',
+      'Position',
+      'Roles'
+    ];
+    return $expand.toString();
   }
 }

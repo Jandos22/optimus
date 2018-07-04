@@ -1,11 +1,10 @@
 @import '../../colors';
 
 /*  fixed iOS safari viewport height issue with viewport-units-buggyfill 
+    init added in app.component.ts
     9-May-2018 Zhandos Ombayev */
 .sidenavContainer {
-  /* height: calc(100vh - 56px) !important; */
   height: 100vh !important;
-  /* content: 'viewport-units-buggyfill; height: calc(100vh - 56px);'; */
   width: 100%;
   background: #e3f2fd;
 }

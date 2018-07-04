@@ -11,22 +11,23 @@ import { Subscription, Observable } from 'rxjs';
 
 // interfaces
 import { PaginationIndexes } from '../../../../shared/interface/pagination.model';
-import { PeopleItem } from '../../../../shared/interface/people.model';
 import {
   TimelineEventsParams,
   TimelineEventItem
 } from '../../../../shared/interface/timeline.model';
 
 @Component({
-  selector: 'app-timeline.timeline-flex-container',
+  selector: 'app-timeline.common-flex-container',
   encapsulation: ViewEncapsulation.None,
   template: `
-    <app-timeline-header fxFlex="65px"
-      [appName]="appName" class="common-header">
+    <app-timeline-header
+      fxFlex="65px" class="common-header"
+      [appName]="appName">
     </app-timeline-header>
 
-    <app-timeline-events-list fxFlex
-      [events]="events$ | async">
+    <app-timeline-events-list
+      fxFlex class="common-content"
+      [events]="data">
     </app-timeline-events-list>
 
     <app-timeline-footer fxFlex="49px" class="common-footer"
@@ -41,7 +42,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   appName = 'Timeline';
 
   // data
-  events$: Observable<TimelineEventItem[]>;
+  data$: Subscription;
+  data: TimelineEventItem[];
 
   // pagination
   calcFromToTotal$: Subscription;
@@ -71,9 +73,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store_root.dispatch(new application.SetAppName(this.appName));
 
-    this.events$ = this.store_timeline.pipe(
-      select(fromTimeline.selectAllEvents)
-    );
+    // main data = array of users
+    this.data$ = this.store_timeline
+      .pipe(select(fromTimeline.selectAllEvents))
+      .subscribe(data => {
+        // goes in people-list component
+        this.data = data;
+        // count total
+        // this.countTotalItems(this.params);
+      });
 
     this.params$ = this.store_timeline
       .select(fromTimeline.getParams)
@@ -84,9 +92,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.calcFromToTotal$ = this.store_timeline
       .pipe(select(fromTimeline.selectTotalDisplayedEvents))
       .subscribe(totalDisplayed => {
+        console.log('total displayed: ' + totalDisplayed);
         this.totalDisplayed = totalDisplayed;
-
-        if (this.indexes) {
+        console.log(this.indexes);
+        if (this.indexes.current) {
           this.from = this.indexes.current * this.params.top + 1;
           this.to = this.from + this.totalDisplayed - 1;
         }
@@ -97,7 +106,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
     // subscribe to indexes
     this.indexes$ = this.store_timeline
       .select(fromTimeline.getPageIndexes)
-      .subscribe(indexes => (this.indexes = indexes));
+      .subscribe(indexes => {
+        console.log('indexes:');
+        console.log(this.indexes);
+        this.indexes = indexes;
+      });
 
     // subscribe to search pagelinks
     this.links$ = this.store_timeline
@@ -119,7 +132,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
     );
   }
 
+  countTotalItems(params) {
+    if (params) {
+      this.store_timeline.dispatch(new fromTimeline.BeginCount(params));
+    }
+  }
+
   ngOnDestroy() {
+    this.data$.unsubscribe();
     this.indexes$.unsubscribe();
     this.calcFromToTotal$.unsubscribe();
     this.params$.unsubscribe();

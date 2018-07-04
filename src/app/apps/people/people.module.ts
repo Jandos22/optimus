@@ -1,6 +1,7 @@
 // 3rd party
 import { MaterialModule } from '../../shared/libraries/material.module';
 import { ImageCropperModule } from 'ngx-img-cropper';
+import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
 
 // angular
 import { NgModule } from '@angular/core';
@@ -43,6 +44,7 @@ export const peopleRoutes: Routes = [
     EffectsModule.forFeature(effects),
     ImageCropperModule,
     MaterialModule,
+    MaterialDesignComponentsModule,
     FontAwesomeModule,
     SimpleNotificationsModule
   ],

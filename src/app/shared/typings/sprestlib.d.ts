@@ -44,7 +44,7 @@ declare namespace sprLib {
 
   interface RestOptions {
     url: string;
-    type: 'GET' | 'POST' | 'DELETE';
+    type?: 'GET' | 'POST' | 'DELETE';
     requestDigest?: string;
     data?: Object;
     headers?: any;

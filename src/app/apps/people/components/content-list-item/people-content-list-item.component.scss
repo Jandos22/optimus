@@ -1,0 +1,64 @@
+@import '../../../../../colors';
+
+.people-user-photo {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin: auto;
+  background-image: url('../../../../../assets/no_user.png');
+
+  &:hover {
+    background: $my-blue-100;
+  }
+
+  img {
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+  }
+}
+
+.people-user-info {
+  height: 40px;
+  width: auto;
+  margin: 0 4px 0 16px;
+
+  div.fullname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.75);
+    max-width: 136px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media screen and (min-width: 360px) {
+      max-width: 176px;
+    }
+
+    @media screen and (min-width: 400px) {
+      max-width: 216px;
+    }
+
+    @media screen and (min-width: 450px) {
+      max-width: 256px;
+    }
+  }
+
+  div.second-line {
+    height: 16px;
+    width: 100%;
+    overflow: hidden;
+
+    span {
+      line-height: 16px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+.newItem {
+  background: #c8e6c9;
+}

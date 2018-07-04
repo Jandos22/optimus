@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faCog,
+  faEllipsisV,
   faExclamationCircle,
   faEye,
   faEyeSlash,
@@ -15,7 +16,8 @@ import {
   faSpinner,
   faTimes,
   faUser,
-  faUsers
+  faUsers,
+  faUserGraduate
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -32,6 +34,7 @@ export const fontawesome_icons = {
   faChevronLeft,
   faChevronRight,
   faCog,
+  faEllipsisV,
   faExclamationCircle,
   faEye,
   faEyeSlash,
@@ -46,5 +49,6 @@ export const fontawesome_icons = {
   faTimesCircle,
   faUser,
   faUserCircle,
-  faUsers
+  faUsers,
+  faUserGraduate
 };

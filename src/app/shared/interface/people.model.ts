@@ -1,6 +1,7 @@
 import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
 
 export interface PeopleItem extends SpListItem {
+  New?: boolean;
   id?: number;
   Name?: string;
   Surname?: string;
@@ -70,6 +71,12 @@ export interface ToSaveUserPhoto {
   ID?: number;
   Filename?: string;
   ArrayBuffer?: ArrayBuffer;
+}
+
+export interface UserSearchParams {
+  query: string;
+  locations: number[];
+  top: number;
 }
 
 export interface UserPosition {

@@ -33,7 +33,7 @@ import { ValidationService } from './../../../../validators/validation.service';
   selector: 'app-timeline-header',
   styleUrls: ['timeline-header.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-timeline-toolbar class="common-toolbar"
       fxFlex fxFlex.gt-xs="568px"

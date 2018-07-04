@@ -3,24 +3,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, throwError, of, from } from 'rxjs';
-import {
-  map,
-  mergeMap,
-  catchError,
-  switchMap,
-  concatMap,
-  take,
-  retry
-} from 'rxjs/operators';
+import { throwError, of, from } from 'rxjs';
+import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
 
 // constants
-import { ApiPath, WirelinePath } from '../../../shared/constants';
+import { ApiPath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { PeopleParams } from './../models/people-params.model';
-import { PeopleUpdatedPhoto } from './../../../shared/interface/people.model';
+import {
+  PeopleUpdatedPhoto,
+  UserSearchParams
+} from './../../../shared/interface/people.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
@@ -193,13 +187,13 @@ export class PeopleService {
     );
   }
 
-  buildUrlToGetPeople(params: PeopleParams, counter?: boolean) {
+  buildUrlToGetPeople(params: UserSearchParams, counter?: boolean) {
     // api url for NgPeople
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     // parameters
     const query = params.query;
-    const location = params.location;
+    const locations = params.locations;
     let top = params.top;
 
     // $select & $expand
@@ -207,7 +201,7 @@ export class PeopleService {
     url += `&$expand=${this.getExpandsFields().toString()}`;
 
     // $filter
-    if (query || location.length) {
+    if (query || locations.length) {
       url += `&$filter=`;
     }
 
@@ -219,12 +213,12 @@ export class PeopleService {
       url += `or(substringof('${query}',Gin)))`;
     }
 
-    if (query && location.length) {
+    if (query && locations.length) {
       url += 'and';
     }
 
-    if (location.length) {
-      url += `${this.getFilterLocationAssigned(location)}`;
+    if (locations.length) {
+      url += `${this.getFilterLocationAssigned(locations)}`;
     }
 
     // $orderby
@@ -249,11 +243,18 @@ export class PeopleService {
       'Alias',
       'Name',
       'Surname',
+      'Fullname',
       'Email',
       'Gin',
       'LocationAssigned/Id',
+      'LocationAssigned/Title',
       'LocationAssignedId',
-      // 'Photo',
+      'PositionId',
+      'Position/Id',
+      'Position/Title',
+      'RolesId',
+      'Roles/Id',
+      'Roles/Title',
       'Attachments',
       'AttachmentFiles'
     ];
@@ -261,7 +262,12 @@ export class PeopleService {
   }
 
   getExpandsFields() {
-    const $expand = ['AttachmentFiles', 'LocationAssigned'];
+    const $expand = [
+      'AttachmentFiles',
+      'LocationAssigned',
+      'Position',
+      'Roles'
+    ];
     return $expand.toString();
   }
 

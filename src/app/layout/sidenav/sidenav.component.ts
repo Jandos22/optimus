@@ -1,4 +1,4 @@
-import { take } from 'rxjs/operators';
+import { take, skip } from 'rxjs/operators';
 import { LocationEnt } from './../../shared/interface/locations.model';
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
@@ -21,19 +21,23 @@ import { PeopleItem } from '../../shared/interface/people.model';
   <div fxFlexFill fxLayout="column" class="sidenav__container">
 
     <!-- User Information Section -->
-    <app-sidenav-header fxFlex="65px"  fxLayout="row" fxLayoutAlign="start center"
+    <app-sidenav-header *ngIf="userSharepoint$ | async"
+      fxFlex="65px"  fxLayout="row" fxLayoutAlign="start center"
       class="common-header"
       [userSharepoint]="userSharepoint$ | async"
       [userOptimus]="userOptimus">
     </app-sidenav-header>
 
-    <app-sidenav-content *ngIf="myLocation$ | async" fxFlex class="common-content"
+    <app-sidenav-content *ngIf="myLocation$ | async"
+      fxFlex class="common-content"
       [myLocation]="myLocation$ | async"
       [apps]="applications$ | async"
-      [showHiddenApps]="showHiddenApps">
+      [showHiddenApps]="showHiddenApps"
+      (onSidenavClick)="onSidenavClick()">
     </app-sidenav-content>
 
-    <app-sidenav-footer *ngIf="userOptimus" fxFlex="49px" class="common-footer"
+    <app-sidenav-footer *ngIf="userOptimus"
+      fxFlex="49px" class="common-footer"
       fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0px"
       [showHiddenApps]="showHiddenApps"
       (onToggleHiddenApps)="onToggleHiddenApps()">
