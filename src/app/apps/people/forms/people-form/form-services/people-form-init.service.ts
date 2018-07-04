@@ -66,13 +66,23 @@ export class PeopleFormInitService {
     });
   }
 
-  create_FormGroup_Photo(mode: FormMode, item: PeopleItem) {
-    return new FormGroup({
-      ID: new FormControl(item.ID),
-      Filename: new FormControl(this.photoService.getFileName(mode, item)),
-      PhotoUrl: new FormControl(this.photoService.getPhotoUrl(mode, item)),
-      ArrayBuffer: new FormControl(new ArrayBuffer(0))
-    });
+  create_FormGroup_Photo(mode: FormMode, item?: PeopleItem) {
+    console.log(mode);
+    if (mode === 'new') {
+      return new FormGroup({
+        ID: new FormControl(''),
+        Filename: new FormControl(''),
+        PhotoUrl: new FormControl(this.photoService.getNoPhotoUrl()),
+        ArrayBuffer: new FormControl(new ArrayBuffer(0))
+      });
+    } else {
+      return new FormGroup({
+        ID: new FormControl(item.ID),
+        Filename: new FormControl(this.photoService.getFileName(item)),
+        PhotoUrl: new FormControl(this.photoService.getPhotoUrl(item)),
+        ArrayBuffer: new FormControl(new ArrayBuffer(0))
+      });
+    }
   }
 
   // async validators

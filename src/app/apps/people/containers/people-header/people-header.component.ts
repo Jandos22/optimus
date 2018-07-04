@@ -3,6 +3,8 @@ import {
   OnDestroy,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
@@ -38,8 +40,8 @@ import { ValidationService } from './../../../../validators/validation.service';
       <app-people-toolbar class="common-toolbar"
         fxFlex fxFlex.gt-xs="568px"
         fxLayout="row nowrap" fxLayoutAlign="start center"
-        [appName]="appName" [fg_params]="fg_params"
-        (onFocus)="onFocus()" (onBlur)="onBlur()"
+        [appName]="appName" [fg_params]="fg_params" [searching]="searching"
+        (onFocus)="onFocus()" (onBlur)="onBlur()" (openUserForm)="openUserForm.emit()"
         [ngClass]="{  focused: focus,
                       invalid: fg_params.get('query').invalid }">
       </app-people-toolbar>
@@ -47,6 +49,10 @@ import { ValidationService } from './../../../../validators/validation.service';
 })
 export class PeopleHeaderComponent implements OnInit, OnDestroy {
   @Input() appName: string;
+  @Input() searching: boolean;
+
+  @Output() openUserForm = new EventEmitter<any>();
+
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
@@ -101,7 +107,7 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
     this.$params = params$
       .pipe(
         map(params => {
-          console.log(params);
+          // console.log(params);
           return {
             query: params[0],
             locations: params[1],

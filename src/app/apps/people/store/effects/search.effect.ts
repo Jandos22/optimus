@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
 
-// ngrx
-import { Effect, Actions } from '@ngrx/effects';
-
 // rxjs
-import { of, from } from 'rxjs';
-import {
-  map,
-  switchMap,
-  mergeMap,
-  catchError,
-  tap,
-  take,
-  reduce
-} from 'rxjs/operators';
+import { map, switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
 
-// actions
-import * as fromSearch from '../actions/search.actions';
-import * as fromParams from '../actions/params.action';
-import * as fromPagination from '../actions/pagination.action';
-import * as fromUsers from '../actions/users.action';
+// lodash
+import * as _ from 'lodash';
+
+// ngrx
+import { Store, Action, select } from '@ngrx/store';
+import { Effect, Actions, ofType } from '@ngrx/effects';
+import * as fromPeople from '../index';
+import * as fromParamsActions from '../actions/params.action';
+import * as fromPaginationActions from '../actions/pagination.actions';
+import * as fromUsersActions from '../actions/users.action';
 
 // services
 import { PeopleService } from '../../services/people.service';
 
-// constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
-
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
-import { SearchUsers } from '../../models/search-users.m';
+import {
+  PeopleItem,
+  UserSearchParams
+} from './../../../../shared/interface/people.model';
 import { SpResponse } from './../../../../models/sp-response.model';
 
 @Injectable()
-export class SearchEffects {
+export class UsersSearchEffects {
+  // when params change, then hold local copy
+  // for use in count total
+  params: UserSearchParams;
+
   constructor(
+    private store$: Store<fromPeople.PeopleState>,
     private actions$: Actions,
     private peopleService: PeopleService
   ) {}
@@ -42,131 +39,131 @@ export class SearchEffects {
   // when params change:
   // reset pagination and get new url
   @Effect()
-  updateParams$ = this.actions$.ofType(fromParams.UPDATE_PARAMS).pipe(
-    map((action: fromParams.UpdateParams) => {
+  updateParams$ = this.actions$.pipe(
+    ofType(fromParamsActions.UPDATE_PARAMS),
+    map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
-    mergeMap(params => {
-      return [
-        new fromPagination.ResetPagination(),
-        new fromSearch.GetNewUrl(params)
-      ];
-    })
-  );
-
-  // when receive new url
-  // start new page (index 0 and one only link)
-  // start new search with new url
-  @Effect()
-  getNewUrl$ = this.actions$.ofType(fromSearch.GET_NEW_URL).pipe(
-    map((action: fromSearch.GetNewUrl) => {
-      return this.peopleService.buildUrlToGetPeople(action.params);
+    map((params: UserSearchParams) => {
+      this.params = params;
+      return this.peopleService.buildUrlToGetPeople(params);
     }),
-    switchMap(url => {
+    mergeMap(url => {
       return [
-        new fromPagination.StartNewPage(url),
-        new fromSearch.BeginSearch(url),
-        new fromUsers.SearchTrue()
+        new fromPaginationActions.ResetPagination(),
+        new fromPaginationActions.AddLink(url),
+        new fromUsersActions.SearchUsersStart(url)
       ];
     })
   );
 
   @Effect()
-  beginSearch$ = this.actions$.ofType(fromSearch.BEGIN_SEARCH).pipe(
-    map((action: fromSearch.BeginSearch) => action.url),
-    switchMap((url: string) => {
-      // send request to server via service
-      return this.peopleService.getPeopleWithGivenUrl(url).pipe(
-        mergeMap((res: SpResponse) => {
+  searchUsersStart$ = this.actions$.pipe(
+    ofType(fromUsersActions.UsersActionTypes.SEARCH_USERS_START),
+    withLatestFrom(this.store$.pipe(select(fromPeople.getCurrentIndex))),
+    map((merged: any[]) => {
+      return {
+        action: merged[0] as fromUsersActions.SearchUsersStart,
+        currentIndex: merged[1] as number
+      };
+    }),
+    switchMap(merged => {
+      const getUsers$ = this.peopleService.getPeopleWithGivenUrl(
+        merged.action.url
+      );
+      return getUsers$.pipe(
+        mergeMap((response: SpResponse) => {
           // collection of actions that will be dispatched
           const dispatch = [];
 
-          // if results are not empty, then update NgPeople list
-          if (res.d.results) {
-            let users: PeopleItem[] = [];
-            const users$ = from(res.d.results);
-            users$
-              .pipe(
-                take(res.d.results.length),
-                reduce((acc: PeopleItem[], curr: PeopleItem) => {
-                  const current: PeopleItem = { ...curr, id: curr.Id };
+          if (response.d.results.length) {
+            // when users received, map them to add "id" property for @ngrx/entity
+            const users = _.reduce(
+              response.d.results,
+              function(acc: PeopleItem[], user: PeopleItem) {
+                return [...acc, { ...user, id: user.ID }];
+              },
+              []
+            );
+            // if users exist and have length more than 0
+            dispatch.push(new fromUsersActions.SearchUsersSuccess(users));
+            dispatch.push(
+              new fromPaginationActions.UpdateTotalDisplayed(users.length)
+            );
 
-                  // if (curr.Attachments) {
-                  //   const photoUrl =
-                  //     curr.AttachmentFiles.results[0].ServerRelativeUrl +
-                  //     '?time=' +
-                  //     Date.now();
-                  //   current = {
-                  //     ...current,
-                  //     AttachmentFiles: {
-                  //       results: [
-                  //         {
-                  //           ...current.AttachmentFiles.results[0],
-                  //           ServerRelativeUrl: photoUrl
-                  //         }
-                  //       ]
-                  //     }
-                  //   };
-                  // }
-
-                  return [...acc, { ...current }];
-                }, [])
-              )
-              .subscribe((u: PeopleItem[]) => {
-                console.log(u);
-                users = [...u];
-              });
-
-            dispatch.push(new fromUsers.UpdatePeopleList(users));
-            dispatch.push(new fromUsers.SearchFalse());
-          }
-
-          // if results have next page, then add its url to links array
-          if (res.d.__next) {
-            dispatch.push(new fromPagination.AddNextLink(res.d.__next));
+            // if results have next page
+            // then add its url to links array
+            // and begin count for "totalExist"
+            if (response.d.__next) {
+              dispatch.push(
+                new fromPaginationActions.AddLink(response.d.__next)
+              );
+              dispatch.push(new fromUsersActions.CountUsersTotal());
+            } else {
+              if (merged.currentIndex === 0) {
+                dispatch.push(
+                  new fromPaginationActions.UpdateTotalExist(users.length)
+                );
+              }
+            }
           } else {
-            dispatch.push(new fromPagination.NoNextLink());
+            // if no users found
+            dispatch.push(new fromUsersActions.SearchUsersNoResults());
+            dispatch.push(new fromPaginationActions.UpdateTotalDisplayed(0));
+            dispatch.push(new fromPaginationActions.UpdateTotalExist(0));
           }
 
           // dispatched several actions using mergeMap
           return dispatch;
         })
-        // catchError(error => of(new fromUsers.ErrorGetPeople(error)))
       );
     })
   );
 
   @Effect()
-  onNext$ = this.actions$.ofType(fromPagination.ON_NEXT).pipe(
-    map((action: fromPagination.OnNext) => {
-      return new fromSearch.BeginSearch(action.url);
-    })
-  );
-
-  @Effect()
-  onBack$ = this.actions$.ofType(fromPagination.ON_BACK).pipe(
-    map((action: fromPagination.OnBack) => {
-      return new fromSearch.BeginSearch(action.url);
-    })
-  );
-
-  @Effect()
-  onBeginCount$ = this.actions$.ofType(fromSearch.BEGIN_COUNT).pipe(
-    map((action: fromSearch.BeginCount) => {
-      return this.peopleService.buildUrlToGetPeople(action.params, true);
+  countUsersTotal$ = this.actions$.pipe(
+    ofType(fromUsersActions.UsersActionTypes.COUNT_USERS_TOTAL),
+    map(x => {
+      return this.peopleService.buildUrlToGetPeople(this.params, true);
     }),
     switchMap(url => {
       return this.peopleService.getPeopleWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
-            return new fromUsers.UpdateTotalItems(0);
+            return new fromPaginationActions.UpdateTotalExist(0);
           } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromUsers.UpdateTotalItems(res.d.results.length);
-          } else {
-            return new fromUsers.UpdateTotalItems('500+');
+            return new fromPaginationActions.UpdateTotalExist(
+              res.d.results.length
+            );
           }
         })
       );
+    })
+  );
+
+  @Effect()
+  onNext$ = this.actions$.pipe(
+    ofType(fromPaginationActions.PaginationActionTypes.ON_NEXT),
+    map((action: fromPaginationActions.OnNext) => {
+      return new fromUsersActions.SearchUsersStart(action.url);
+    })
+  );
+
+  @Effect()
+  onBack$ = this.actions$.pipe(
+    ofType(fromPaginationActions.PaginationActionTypes.ON_BACK),
+    withLatestFrom(this.store$.pipe(select(fromPeople.getCurrentIndex))),
+    map((merged: any[]) => {
+      return {
+        action: merged[0] as fromPaginationActions.OnBack,
+        currentIndex: merged[1] as number
+      };
+    }),
+    mergeMap(merged => {
+      return [
+        new fromUsersActions.SearchUsersStart(merged.action.url),
+        new fromPaginationActions.RemoveLink(merged.currentIndex)
+      ];
     })
   );
 }

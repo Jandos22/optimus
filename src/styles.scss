@@ -22,10 +22,13 @@ body {
   vertical-align: baseline;
 }
 
+// must have for iOS Safari correct viewport height rendering
+// applied with buggy-fill
 app-root {
   height: 100vh;
 }
 
+// must have for iOS Safari correct viewport height rendering
 app-layout {
   display: flex;
   flex-direction: column;
@@ -59,16 +62,30 @@ app-layout {
 .common-content {
   overflow-y: auto;
   padding: 16px 0;
+  overflow: overlay;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .common-footer {
   border-top: 1px solid $my-blue-100;
-  padding: 16px;
+  padding: 0 16px;
   color: rgba(0, 0, 0, 0.75);
   font-size: 1rem;
   overflow: hidden;
   // height: 49px;
+
+  .common-footer-container {
+    width: 100%;
+    height: 48px;
+    margin: auto;
+    padding: 0;
+
+    @media screen and (min-width: 600px) {
+      padding: 0 16px;
+      min-width: 600px;
+      max-width: 600px;
+    }
+  }
 }
 
 .common-toolbar {
@@ -77,6 +94,7 @@ app-layout {
   padding: 0 4px;
   border-radius: 4px;
   background: $my-blue-100;
+  position: relative;
 
   &.focused {
     box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
@@ -177,6 +195,7 @@ input.common-toolbar-input-search {
   margin: 0 auto;
   padding-left: 16px;
   display: block;
+  overflow: overlay;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
   @media screen and (min-width: 600px) {
@@ -213,6 +232,17 @@ input.common-toolbar-input-search {
   @media screen and (min-width: 600px) {
     width: auto;
   }
+}
+
+mat-progress-bar.common-searching-indicator {
+  position: absolute !important;
+  height: 4px;
+  margin-top: 0px;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .flexContainer {

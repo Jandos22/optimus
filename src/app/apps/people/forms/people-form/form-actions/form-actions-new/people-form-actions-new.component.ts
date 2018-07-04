@@ -1,12 +1,12 @@
-import { take } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 // rxjs
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../../../store';
 import * as fromPeople from '../../../../store';
 
@@ -19,13 +19,14 @@ import { PeopleItem } from '../../../../../../shared/interface/people.model';
 
 // services
 import { PeopleFormHttpService } from '../../form-services';
-import { SpListItemAttachmentFiles } from '../../../../../../shared/interface/sp-list-item.model';
 
 @Component({
   selector: 'app-people-form-actions-new',
   styleUrls: ['people-form-actions-new.component.scss'],
   template: `
-    <button mat-button color="primary" (click)="log()">F</button>
+    <!-- for development
+    <button mat-button color="primary" (click)="log()">Log</button> -->
+
     <button mat-button tabindex="-1" color="primary" class="mat-button__fa-icon"
       [disabled]="!fg_fields.valid || !hasUnsavedPhoto || savingChanges"
       (click)="onSave()">
@@ -43,7 +44,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
   @Input() fg_fields: FormGroup;
   @Input() fg_photo: FormGroup;
 
-  @Output() closeUserForm = new EventEmitter();
+  @Output() closeUserForm = new EventEmitter<any>();
 
   $watchArrayBuffer: Subscription; // unsubscription handled in ngOnDestroy
 
@@ -97,10 +98,28 @@ export class PeopleFormActionsNewComponent implements OnInit {
     // update fg_photo by adding ID of created user
     // check if form has unsaved photo and upload it
     // if no unsaved photo, then close form
+    console.log('get new user');
     console.log(newUser);
-    this.fg_photo.get('ID').patchValue(newUser.ID);
+    this.spHttp
+      .getUserById(newUser.ID)
+      .pipe(take(1))
+      .subscribe(
+        success => this.getNewlyCreatedUserSuccess(success as PeopleItem[]),
+        error => console.log(error),
+        () => console.log('completed getting newly created user')
+      );
+  }
+
+  getNewlyCreatedUserSuccess(newUserExpanded: PeopleItem[]) {
+    console.log('get new user expanded');
+    console.log(newUserExpanded);
+    this.fg_photo.get('ID').patchValue(newUserExpanded[0].ID);
     this.store_people.dispatch(
-      new fromUsersActions.AddOneUser({ ...newUser, id: newUser.ID })
+      new fromUsersActions.InsertOneUser({
+        ...newUserExpanded[0],
+        id: newUserExpanded[0].ID,
+        New: true
+      })
     );
     this.closeFormOrUploadPhoto();
   }
@@ -156,6 +175,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
       this.savingChanges = true;
       this.savePhoto();
     } else {
+      console.log(this.fg_fields.value);
       this.savingChanges = false;
       this.closeUserForm.emit({
         result: 'success',

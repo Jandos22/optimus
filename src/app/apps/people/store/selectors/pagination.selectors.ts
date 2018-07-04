@@ -16,17 +16,27 @@ export const getPagination = createSelector(
   fromPagination.getPagination
 );
 
-export const getPageIndexes = createSelector(
-  getPaginationState,
-  fromPagination.getPageIndexes
-);
+// export const getPageIndexes = createSelector(
+//   getPaginationState,
+//   fromPagination.getPageIndexes
+// );
 
-export const getPageCurrentIndex = createSelector(
+export const getCurrentIndex = createSelector(
   getPaginationState,
-  fromPagination.getPageCurrentIndex
+  fromPagination.getCurrentIndex
 );
 
 export const getPageLinks = createSelector(
   getPaginationState,
   fromPagination.getPageLinks
+);
+
+export const getTotalDisplayed = createSelector(
+  getPaginationState,
+  fromPagination.getTotalDisplayed
+);
+
+export const getTotalExist = createSelector(
+  getPaginationState,
+  fromPagination.getTotalExist
 );

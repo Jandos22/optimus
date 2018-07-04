@@ -47,7 +47,7 @@ export class PeopleFormActionsComponent {
   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
   @Output()
   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
-  @Output() closeUserForm = new EventEmitter();
+  @Output() closeUserForm = new EventEmitter<any>();
 
   constructor() {}
 }

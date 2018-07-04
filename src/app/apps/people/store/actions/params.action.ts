@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { UserSearchParams } from '../../../../shared/interface/people.model';
 
 // actions
-export const UPDATE_PARAMS = '[People] Update Params';
+export const UPDATE_PARAMS = '[People Params] Update Params';
 
 // action creators
 

@@ -1,6 +1,7 @@
 import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
 
 export interface PeopleItem extends SpListItem {
+  New?: boolean;
   id?: number;
   Name?: string;
   Surname?: string;

@@ -1,6 +1,8 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectionStrategy,
   ViewEncapsulation
 } from '@angular/core';
@@ -16,12 +18,15 @@ import { AppItem } from '../../../shared/interface/applications.model';
   template: `
     <a mat-list-item class="sidenav__app"
         [routerLink]="app.RouterLink"
-        [ngClass]="{ 'hidden': !app.Visible }">
+        [ngClass]="{ 'hidden': !app.Visible }"
+        (click)="onSidenavClick.emit()">
         {{ app.Title }}
     </a>
     `
 })
 export class SidenavContentAppComponent {
   @Input() app: AppItem;
+
+  @Output() onSidenavClick = new EventEmitter<any>();
   constructor() {}
 }

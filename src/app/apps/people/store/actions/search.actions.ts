@@ -4,16 +4,10 @@ import { Action } from '@ngrx/store';
 import { UserSearchParams } from '../../../../shared/interface/people.model';
 
 // actions
-export const GET_NEW_URL = '[People] E - Get New Url';
 export const BEGIN_SEARCH = '[People] E/R - Begin Search';
 export const BEGIN_COUNT = '[People] E/R - Begin Count';
 
 // action creators
-
-export class GetNewUrl implements Action {
-  readonly type = GET_NEW_URL;
-  constructor(public params: UserSearchParams) {}
-}
 
 export class BeginSearch implements Action {
   readonly type = BEGIN_SEARCH;
@@ -25,4 +19,4 @@ export class BeginCount implements Action {
   constructor(public params: UserSearchParams) {}
 }
 
-export type SearchActions = GetNewUrl | BeginSearch | BeginCount;
+export type SearchActions = BeginSearch | BeginCount;

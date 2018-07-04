@@ -20,8 +20,7 @@ export const selectAllUsers = createSelector(
   getUsersState,
   fromUsers.selectAllUsers
 );
-
-export const getUsersTotal = createSelector(
+export const selectTotalDisplayedEvents = createSelector(
   getUsersState,
-  fromUsers.getUsersTotal
+  fromUsers.selectUsersTotal
 );

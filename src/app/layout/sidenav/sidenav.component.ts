@@ -1,4 +1,4 @@
-import { take } from 'rxjs/operators';
+import { take, skip } from 'rxjs/operators';
 import { LocationEnt } from './../../shared/interface/locations.model';
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
@@ -32,7 +32,8 @@ import { PeopleItem } from '../../shared/interface/people.model';
       fxFlex class="common-content"
       [myLocation]="myLocation$ | async"
       [apps]="applications$ | async"
-      [showHiddenApps]="showHiddenApps">
+      [showHiddenApps]="showHiddenApps"
+      (onSidenavClick)="onSidenavClick()">
     </app-sidenav-content>
 
     <app-sidenav-footer *ngIf="userOptimus"

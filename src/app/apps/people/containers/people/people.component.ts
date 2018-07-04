@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 // rxjs
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+// ngrx
 import { Store, select } from '@ngrx/store';
 import * as fromPeople from '../../store';
 import * as fromRoot from '../../../../store';
@@ -16,11 +17,12 @@ import {
   PeopleItem,
   UserSearchParams
 } from './../../../../shared/interface/people.model';
-import { PaginationIndexes } from './../../models/pagination-indexes.model';
+import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
 
 // form component
 import { PeopleFormComponent } from '../../forms/people-form/people-form.component';
 
+// services
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
@@ -28,14 +30,10 @@ import { NotificationsService } from 'angular2-notifications';
   styleUrls: ['./people.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <mat-progress-bar *ngIf="searching"
-      class="workingOnRequest" color="warn" mode="indeterminate">
-    </mat-progress-bar>
-
     <app-people-header
       fxFlex="65px" class="common-header"
-      [appName]="appName"
-      (openForm)="openForm('new', $event)">
+      [appName]="appName" [searching]="searching"
+      (openUserForm)="openForm('new', $event)">
     </app-people-header>
 
     <app-people-content
@@ -44,45 +42,32 @@ import { NotificationsService } from 'angular2-notifications';
       (openUserForm)="openForm('view', $event)">
     </app-people-content>
 
-    <app-people-toolbar-bottom class="flexFooter"
-      [indexes]="indexes" [listLength]="dataLength"
-      [from]="from" [to]="to" [total]="total"
-      (onNext)="onNext($event)" (onBack)="onBack($event)">
-    </app-people-toolbar-bottom>
+    <app-people-footer fxFlex="49px" class="common-footer"
+      [pagination]="pagination" [top]="params.top" [searching]="searching"
+      (onNext)="onNext()" (onBack)="onBack()">
+    </app-people-footer>
 
     <simple-notifications [options]="options"></simple-notifications>
   `
 })
 export class PeopleComponent implements OnInit, OnDestroy {
-  // title in header
+  // app title in header and store.root.apps.name
   appName = 'People';
 
   // data
-  data$: Subscription;
+  $data: Subscription;
   data: PeopleItem[];
 
-  total$: Subscription;
-  total: any;
-
-  searching$: Subscription;
+  $searching: Subscription;
   searching: boolean;
 
-  // counter
-  dataLength: number;
-  from: number;
-  to: number;
-
   // params
-  params$: Subscription;
+  $params: Subscription;
   params: UserSearchParams;
 
   // pagination
-  indexes$: Subscription;
-  links$: Subscription;
-
-  // pagination local copy
-  indexes: PaginationIndexes;
-  links: string[];
+  $pagination: Subscription;
+  pagination: PaginationState;
 
   public options = {
     position: ['middle', 'center'],
@@ -95,76 +80,54 @@ export class PeopleComponent implements OnInit, OnDestroy {
     private store_root: Store<fromRoot.RootState>,
     public form: MatDialog,
     private notify: NotificationsService
-  ) {
-    this.total$ = this.store_people
-      .select(fromPeople.getUsersTotal)
-      .subscribe(total => {
-        this.total = total;
-      });
-
-    this.searching$ = this.store_people
-      .select(fromPeople.getUsersSearching)
-      .subscribe(search => {
-        this.searching = search;
-      });
-  }
+  ) {}
 
   ngOnInit() {
+    // update html page title and store.root.apps.name
+    this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
+
     // main data = array of users
-    this.data$ = this.store_people
+    this.$data = this.store_people
       .pipe(select(fromPeople.selectAllUsers))
       .subscribe(data => {
         // goes in people-list component
         this.data = data;
-
-        // go in people-toolbar-bottom component
-        this.dataLength = data.length;
-        if (this.indexes) {
-          this.from = this.indexes.current * this.params.top + 1;
-          this.to = this.from + this.dataLength - 1;
-        }
-
         // count total
-        this.countTotalItems(this.params);
+        // this.countTotalItems(this.params);
       });
 
-    // update html page title
-    this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
+    this.$pagination = this.store_people
+      .pipe(select(fromPeople.getPagination))
+      .subscribe(pagination => (this.pagination = pagination));
 
-    // subscribe to indexes
-    this.indexes$ = this.store_people
-      .select(fromPeople.getPageIndexes)
-      .subscribe(indexes => (this.indexes = indexes));
+    this.$searching = this.store_people
+      .select(fromPeople.getUsersSearching)
+      .subscribe(search => {
+        this.searching = search;
+      });
 
-    // monitor current index, trigger search when changed
-    this.params$ = this.store_people
+    // monitor params for top
+    this.$params = this.store_people
       .select(fromPeople.getParams)
       .subscribe(params => {
         this.params = params;
       });
-
-    // subscribe to search pagelinks
-    this.links$ = this.store_people
-      .select(fromPeople.getPageLinks)
-      .subscribe(links => {
-        this.links = links;
-      });
   }
 
-  onNext(indexes: PaginationIndexes) {
-    this.store_people.dispatch(new fromPeople.OnNext(this.links[indexes.next]));
-  }
-
-  onBack(indexes: PaginationIndexes) {
+  onNext() {
     this.store_people.dispatch(
-      new fromPeople.OnBack(this.links[indexes.previous])
+      new fromPeople.OnNext(
+        this.pagination.links[this.pagination.currentIndex + 1]
+      )
     );
   }
 
-  countTotalItems(params) {
-    if (params) {
-      this.store_people.dispatch(new fromPeople.BeginCount(params));
-    }
+  onBack() {
+    this.store_people.dispatch(
+      new fromPeople.OnBack(
+        this.pagination.links[this.pagination.currentIndex - 1]
+      )
+    );
   }
 
   openForm(mode, item?): void {
@@ -174,17 +137,26 @@ export class PeopleComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
-        if (res.result === 'success') {
+        console.log(res);
+        if (res && res.result === 'success') {
           this.notify.create('Successfully added', res.data.Alias, 'success');
+
+          // immediately scroll down when new user added
+          // document
+          //   .querySelector('app-people-content.common-content')
+          //   .scrollTo(
+          //     0,
+          //     document.querySelector('app-people-content.common-content')
+          //       .scrollHeight
+          //   );
         }
       });
   }
 
   ngOnDestroy() {
-    this.data$.unsubscribe();
-    this.total$.unsubscribe();
-    this.indexes$.unsubscribe();
-    this.params$.unsubscribe();
-    this.links$.unsubscribe();
+    this.$pagination.unsubscribe();
+    this.$data.unsubscribe();
+    this.$params.unsubscribe();
+    this.$searching.unsubscribe();
   }
 }

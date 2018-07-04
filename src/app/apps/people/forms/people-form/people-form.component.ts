@@ -5,25 +5,11 @@ import {
 } from './../../../../shared/constants/index';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
-import {
-  FormArray,
-  FormGroup,
-  FormBuilder,
-  FormControl,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 // rxjs
-import {
-  Subscription,
-  Observable,
-  of,
-  from,
-  merge,
-  fromEvent,
-  Subject
-} from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
+
 import {
   map,
   tap,
@@ -35,20 +21,11 @@ import {
 } from 'rxjs/operators';
 
 // ngrx
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as fromPeople from '../../store/';
-
-// ngrx actions
-import * as a_in_errors from '../../../../store/actions/errors.actions';
 
 // material
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-
-// services
-import { PeopleService } from './../../services/people.service';
-import { ValidationService } from '../../../../validators/validation.service';
-import { AsyncValidationService } from './../../../../validators/async-validation.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // form services
 import { PeopleFormInitService } from './form-services/people-form-init.service';
@@ -58,14 +35,7 @@ import { PeopleFormPhotoService } from './form-services/people-form-photo.servic
 import { PeopleFormHttpService } from './form-services/people-form-http.service';
 
 // interfaces
-import { PeopleItemChanges } from '../../models/people-item.model';
-import { LocationEnt } from '../../../../shared/interface/locations.model';
-import { WindowProperties } from '../../../../shared/interface/layout.model';
-import {
-  PeopleItem,
-  PeopleItemObject,
-  PeopleUpdatedPhoto
-} from './../../../../shared/interface/people.model';
+import { PeopleItem } from './../../../../shared/interface/people.model';
 import { FormMode } from './../../../../shared/interface/form.model';
 
 // dialog components
@@ -73,7 +43,6 @@ import {
   PeopleFormPhotoPickerComponent,
   UserPhotoState
 } from '../people-form-photo-picker/people-form-photo-picker.component';
-// import { FormMode } from '../../../../models/form-mode.model';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 
 @Component({
@@ -110,21 +79,15 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // react to value changes in form
   alias$: Subscription;
 
-  // unsavedPhoto = {
-  //   hasUnsavedPhoto: false,
-  //   ArrayBuffer: new ArrayBuffer(0),
-  //   PhotoUrl: ''
-  // };
-
   constructor(
     private _root_store: Store<fromRoot.RootState>,
-    private _people_store: Store<fromPeople.PeopleState>,
     private initFormService: PeopleFormInitService,
-    private asyncValidators: AsyncValidationService,
     public formRef: MatDialogRef<PeopleFormComponent>,
     private formSizeService: PeopleFormSizeService,
     @Inject(MAT_DIALOG_DATA) public data: { mode: FormMode; item?: PeopleItem }
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.$mode = new Subject<FormMode>();
 
     // when Form Mode changes initialize form groups
@@ -138,9 +101,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     // get locations list from root store
     this.$locations = this._root_store.select(fromRoot.selectAllLocations);
-  }
 
-  ngOnInit() {
     this.$mode.next(this.data.mode);
 
     // on each breakpoint change, update size of form dialog
@@ -167,6 +128,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // *** form group for photo
   initialize_FormGroup_Photo(mode, item?) {
+    console.log(mode);
     this.fg_photo = this.initFormService.create_FormGroup_Photo(mode, item);
     console.log(this.fg_photo);
   }
@@ -219,38 +181,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   closeUserForm($event) {
     this.formRef.close($event);
   }
-
-  // get locationDisabled() {
-  //   return this.mode.isNew ? false : this.mode.isView ? true : false;
-  // }
-
-  // async validators
-
-  // takes 'alias' => checks database => return form error or null
-  // I couldn't integrate debounce time, now it just cancels http calls when typing
-  // uniqueAlias(control: AbstractControl) {
-  //   return of(control.value).pipe(
-  //     take(1),
-  //     switchMap((alias: string) => {
-  //       return this.asyncValidators.checkAliasUnique(alias);
-  //     }),
-  //     map((response: boolean) => {
-  //       return response ? null : { uniqueAlias: true };
-  //     })
-  //   );
-  // }
-
-  // uniqueGin(control: AbstractControl) {
-  //   return of(control.value).pipe(
-  //     take(1),
-  //     switchMap((gin: number) => {
-  //       return this.asyncValidators.checkGinUnique(gin);
-  //     }),
-  //     map((response: boolean) => {
-  //       return response ? null : { unique: true };
-  //     })
-  //   );
-  // }
 
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {

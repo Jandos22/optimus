@@ -15,7 +15,7 @@ export class SharepointService {
   constructor(private http: HttpClient) {}
 
   public getFDV() {
-    const url = ApiPath + 'contextinfo';
+    const url = ApiPath + '/contextinfo';
     const headers = new HttpHeaders().set(
       'accept',
       'application/json;odata=verbose'

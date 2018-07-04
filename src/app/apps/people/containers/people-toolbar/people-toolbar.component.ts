@@ -5,6 +5,10 @@ import { FormGroup } from '@angular/forms';
   selector: 'app-people-toolbar',
   styleUrls: ['people-toolbar.component.scss'],
   template: `
+    <mat-progress-bar *ngIf="searching"
+      class="common-searching-indicator" color="primary" mode="indeterminate">
+    </mat-progress-bar>
+
     <app-people-toolbar-button-menu class="common-toolbar-item">
     </app-people-toolbar-button-menu>
 
@@ -21,14 +25,17 @@ import { FormGroup } from '@angular/forms';
     <app-people-toolbar-button-filters>
     </app-people-toolbar-button-filters>
 
-    <app-people-toolbar-button-add>
+    <app-people-toolbar-button-add
+      (openUserForm)="openUserForm.emit()">
     </app-people-toolbar-button-add>
     `
 })
 export class PeopleToolbarComponent {
   @Input() appName: string;
+  @Input() searching: boolean;
   @Input() fg_params: FormGroup;
 
+  @Output() openUserForm = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
   @Output() onBlur = new EventEmitter<any>();
 

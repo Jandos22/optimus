@@ -3,7 +3,7 @@
 
 
     <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-        <app-people-form-photo [fg_photo]="fg_photo" [mode]="data.mode" (photoChanged)="photoChanged($event)">
+        <app-people-form-photo *ngIf="fg_photo" [fg_photo]="fg_photo" [mode]="data.mode" (photoChanged)="photoChanged($event)">
         </app-people-form-photo>
     </div>
 

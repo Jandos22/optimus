@@ -29,15 +29,11 @@ export const selectLocationsTotal = createSelector(
 );
 
 export const getLocationById = (id: number) =>
-  createSelector(
-    selectLocationsEntities,
-    // fromLocations.selectLocationsEntities,
-    entities => {
-      console.log(entities);
-      console.log(id);
-      return entities[id];
-    }
-  );
+  createSelector(selectLocationsEntities, entities => {
+    // console.log(entities);
+    // console.log(id);
+    return entities[id];
+  });
 
 export const selectSelectedId = createSelector(
   getLocationsState,
