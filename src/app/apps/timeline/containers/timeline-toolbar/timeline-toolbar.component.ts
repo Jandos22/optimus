@@ -1,10 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-timeline-toolbar',
   styleUrls: ['timeline-toolbar.component.scss'],
   template: `
+    <mat-progress-bar *ngIf="searching"
+      class="common-searching-indicator" color="primary" mode="indeterminate">
+    </mat-progress-bar>
+
     <app-timeline-toolbar-button-menu class="common-toolbar-item">
     </app-timeline-toolbar-button-menu>
 
@@ -27,6 +37,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class TimelineToolbarComponent {
   @Input() appName: string;
+  @Input() searching: boolean;
   @Input() fg_params: FormGroup;
 
   @Output() onFocus = new EventEmitter<any>();

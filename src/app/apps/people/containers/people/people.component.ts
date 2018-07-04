@@ -54,18 +54,15 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // app title in header and store.root.apps.name
   appName = 'People';
 
-  // data
   $data: Subscription;
   data: PeopleItem[];
 
   $searching: Subscription;
   searching: boolean;
 
-  // params
   $params: Subscription;
   params: UserSearchParams;
 
-  // pagination
   $pagination: Subscription;
   pagination: PaginationState;
 
@@ -76,8 +73,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private store_people: Store<fromPeople.PeopleState>,
     private store_root: Store<fromRoot.RootState>,
+    private store_people: Store<fromPeople.PeopleState>,
     public form: MatDialog,
     private notify: NotificationsService
   ) {}
@@ -90,10 +87,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
     this.$data = this.store_people
       .pipe(select(fromPeople.selectAllUsers))
       .subscribe(data => {
-        // goes in people-list component
         this.data = data;
-        // count total
-        // this.countTotalItems(this.params);
       });
 
     this.$pagination = this.store_people

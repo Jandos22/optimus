@@ -12,7 +12,7 @@ export interface TimelineEventItem extends SpListItem {
   LocationsId?: number[];
 }
 
-export interface TimelineEventsParams {
+export interface TimelineSearchParams {
   query: string;
   locations: number[];
   top: number;

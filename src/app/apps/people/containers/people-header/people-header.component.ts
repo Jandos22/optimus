@@ -21,8 +21,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map,
-  tap
+  map
 } from 'rxjs/operators';
 
 // interfaces

@@ -3,6 +3,8 @@ import {
   OnDestroy,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
@@ -19,12 +21,11 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map,
-  tap
+  map
 } from 'rxjs/operators';
 
 // interfaces
-import { TimelineEventsParams } from './../../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from './../../../../shared/interface/timeline.model';
 
 // validators
 import { ValidationService } from './../../../../validators/validation.service';
@@ -38,7 +39,7 @@ import { ValidationService } from './../../../../validators/validation.service';
     <app-timeline-toolbar class="common-toolbar"
       fxFlex fxFlex.gt-xs="568px"
       fxLayout="row nowrap" fxLayoutAlign="start center"
-      [appName]="appName" [fg_params]="fg_params"
+      [appName]="appName" [fg_params]="fg_params" [searching]="searching"
       (onFocus)="onFocus()" (onBlur)="onBlur()"
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('query').invalid }">
@@ -47,6 +48,8 @@ import { ValidationService } from './../../../../validators/validation.service';
 })
 export class TimelineHeaderComponent implements OnInit, OnDestroy {
   @Input() appName: string;
+  @Input() searching: boolean;
+
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
@@ -109,7 +112,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
           };
         })
       )
-      .subscribe((params: TimelineEventsParams) => {
+      .subscribe((params: TimelineSearchParams) => {
         console.log('params updated');
         // this action updates store > timeline.params
         // this action is intercepted in search effects

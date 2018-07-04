@@ -85,10 +85,10 @@ export function checkUrl(url: string) {
   }
 }
 
-export function checkIndexPrevious(index) {
-  if (index === -1) {
-    return null;
-  } else {
-    return index;
-  }
-}
+// export function checkIndexPrevious(index) {
+//   if (index === -1) {
+//     return null;
+//   } else {
+//     return index;
+//   }
+// }

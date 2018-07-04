@@ -3,22 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { Observable, of, from } from 'rxjs';
-import {
-  map,
-  mergeMap,
-  switchMap,
-  concatMap,
-  take,
-  retry
-} from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 // constants
 import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { SpResponse } from './../../../models/sp-response.model';
-import { TimelineEventsParams } from '../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from '../../../shared/interface/timeline.model';
+import { SpResponse } from './../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
@@ -35,7 +28,7 @@ export class TimelineService {
       })
       .pipe(
         switchMap((response: SpResponse) => {
-          console.log(response);
+          // console.log(response);
           if (response.d.results) {
             return of(response);
           }
@@ -43,7 +36,7 @@ export class TimelineService {
       );
   }
 
-  buildUrl(params: TimelineEventsParams, counter?: boolean) {
+  buildUrl(params: TimelineSearchParams, counter?: boolean) {
     // api url for NgTimeline
     let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items?`;
 

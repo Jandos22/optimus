@@ -3,31 +3,32 @@ import { Action } from '@ngrx/store';
 import { TimelineEventItem } from './../../../../shared/interface/timeline.model';
 
 export enum EventsActionTypes {
-  LOAD_TIMELINE_EVENTS = '[Timeline Events] Load Timeline Events',
-  LOAD_TIMELINE_EVENTS_SUCCESS = '[Timeline Events] Load Timeline Events Success',
-  SEARCH_TRUE = '[Timeline Events] Searching Started',
-  SEARCH_FALSE = '[Timeline Events] Searching Finished'
+  SEARCH_EVENTS_START = '[Timeline Events] Search Events Start',
+  SEARCH_EVENTS_SUCCESS = '[Timeline Events] Search Events Success',
+  SEARCH_EVENTS_NO_RESULTS = '[Timeline Events] Search Events No Results',
+  COUNT_EVENTS_TOTAL = '[Timeline Events] Count Total (since next url is present)'
 }
 
-export class LoadTimelineEvents implements Action {
-  readonly type = EventsActionTypes.LOAD_TIMELINE_EVENTS;
+export class SearchEventsStart implements Action {
+  readonly type = EventsActionTypes.SEARCH_EVENTS_START;
+  constructor(public url: string) {}
 }
 
-export class LoadTimelineEventsSuccess implements Action {
-  readonly type = EventsActionTypes.LOAD_TIMELINE_EVENTS_SUCCESS;
+export class SearchEventsSuccess implements Action {
+  readonly type = EventsActionTypes.SEARCH_EVENTS_SUCCESS;
   constructor(public events: TimelineEventItem[]) {}
 }
 
-export class SearchTrue implements Action {
-  readonly type = EventsActionTypes.SEARCH_TRUE;
+export class SearchEventsNoResults implements Action {
+  readonly type = EventsActionTypes.SEARCH_EVENTS_NO_RESULTS;
 }
 
-export class SearchFalse implements Action {
-  readonly type = EventsActionTypes.SEARCH_FALSE;
+export class CountEventsTotal implements Action {
+  readonly type = EventsActionTypes.COUNT_EVENTS_TOTAL;
 }
 
 export type EventsActionsUnion =
-  | SearchTrue
-  | SearchFalse
-  | LoadTimelineEvents
-  | LoadTimelineEventsSuccess;
+  | SearchEventsStart
+  | SearchEventsSuccess
+  | SearchEventsNoResults
+  | CountEventsTotal;

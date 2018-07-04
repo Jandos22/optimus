@@ -5,7 +5,6 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
   SimpleChanges,
-  SimpleChange,
   OnChanges
 } from '@angular/core';
 

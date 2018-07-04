@@ -1,9 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-people-toolbar',
   styleUrls: ['people-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-progress-bar *ngIf="searching"
       class="common-searching-indicator" color="primary" mode="indeterminate">

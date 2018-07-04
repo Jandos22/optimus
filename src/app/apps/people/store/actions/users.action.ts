@@ -3,25 +3,14 @@ import { Action } from '@ngrx/store';
 import { PeopleItem } from './../../../../shared/interface/people.model';
 
 export enum UsersActionTypes {
-  // SEARCH_TRUE = '[People Users] Searching Started',
-  // SEARCH_FALSE = '[People Users] Searching Finished',
   SEARCH_USERS_START = '[People Users] Search Users Start',
   SEARCH_USERS_SUCCESS = '[People Users] Search Users Success',
   SEARCH_USERS_NO_RESULTS = '[People Users] Search Users No Results',
   COUNT_USERS_TOTAL = '[People Users] Count Total (since next url is present)',
   ADD_ONE_USER = '[People Users] Add One User',
   INSERT_ONE_USER = '[People Users] Insert One User (in beginning)',
-  UPDATE_PEOPLE_LIST = '[People Users] Update People List',
   UPDATE_ONE_USER = '[People Users] Update One User'
 }
-
-// export class SearchTrue implements Action {
-//   readonly type = UsersActionTypes.SEARCH_TRUE;
-// }
-
-// export class SearchFalse implements Action {
-//   readonly type = UsersActionTypes.SEARCH_FALSE;
-// }
 
 export class SearchUsersStart implements Action {
   readonly type = UsersActionTypes.SEARCH_USERS_START;
@@ -57,8 +46,6 @@ export class UpdateOneUser implements Action {
 }
 
 export type UsersActionsUnion =
-  // | SearchTrue
-  // | SearchFalse
   | AddOneUser
   | InsertOneUser
   | SearchUsersStart

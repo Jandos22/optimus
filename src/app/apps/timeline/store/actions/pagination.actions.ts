@@ -3,13 +3,15 @@ import { Action } from '@ngrx/store';
 // actions
 export enum PaginationActionTypes {
   // below actions caught only in reducers
-  RESET_PAGINATION = '[Timeline] Reset Pagination',
-  START_NEW_PAGE = '[Timeline] Start New Page',
+  RESET_PAGINATION = '[Timeline Pagination] Reset (since params changed)',
+  // START_NEW_PAGE = '[People] R - Start New Page',
 
-  UPDATE_TOTAL_FOUND = '[Timeline Pagination] Update Total Found',
+  UPDATE_TOTAL_DISPLAYED = '[Timeline Pagination] Update Total Displayed',
+  UPDATE_TOTAL_EXIST = '[Timeline Pagination] Update Total Exist',
 
-  ADD_NEXT_LINK = '[Timeline] Add Next Link',
-  NO_NEXT_LINK = '[Timeline] No Next Link',
+  ADD_LINK = '[Timeline Pagination] Add Link',
+  REMOVE_LINK = '[Timeline Pagination] Remove Link',
+
   // below actions have side effects
   ON_NEXT = '[Timeline] Next Button Clicked',
   ON_BACK = '[Timeline] Back Button Clicked'
@@ -22,23 +24,24 @@ export class ResetPagination implements Action {
   constructor() {}
 }
 
-export class StartNewPage implements Action {
-  readonly type = PaginationActionTypes.START_NEW_PAGE;
+export class UpdateTotalDisplayed implements Action {
+  readonly type = PaginationActionTypes.UPDATE_TOTAL_DISPLAYED;
+  constructor(public totalDisplayed: number) {}
+}
+
+export class UpdateTotalExist implements Action {
+  readonly type = PaginationActionTypes.UPDATE_TOTAL_EXIST;
+  constructor(public totalExist: number) {}
+}
+
+export class AddLink implements Action {
+  readonly type = PaginationActionTypes.ADD_LINK;
   constructor(public url: string) {}
 }
 
-export class UpdateTotalFound implements Action {
-  readonly type = PaginationActionTypes.UPDATE_TOTAL_FOUND;
-  constructor(public total: any) {}
-}
-
-export class AddNextLink implements Action {
-  readonly type = PaginationActionTypes.ADD_NEXT_LINK;
-  constructor(public url: string) {}
-}
-
-export class NoNextLink implements Action {
-  readonly type = PaginationActionTypes.NO_NEXT_LINK;
+export class RemoveLink implements Action {
+  readonly type = PaginationActionTypes.REMOVE_LINK;
+  constructor(public index: number) {}
 }
 
 export class OnNext implements Action {
@@ -53,9 +56,10 @@ export class OnBack implements Action {
 
 export type PaginationActionsUnion =
   | ResetPagination
-  | StartNewPage
-  | UpdateTotalFound
-  | AddNextLink
-  | NoNextLink
+  // | StartNewPage
+  | UpdateTotalDisplayed
+  | UpdateTotalExist
+  | AddLink
+  | RemoveLink
   | OnNext
   | OnBack;

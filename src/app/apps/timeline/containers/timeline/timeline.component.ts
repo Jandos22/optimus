@@ -10,11 +10,11 @@ import * as application from '../../../../store/actions/apps.actions';
 import { Subscription, Observable } from 'rxjs';
 
 // interfaces
-import { PaginationIndexes } from '../../../../shared/interface/pagination.model';
 import {
-  TimelineEventsParams,
+  TimelineSearchParams,
   TimelineEventItem
 } from '../../../../shared/interface/timeline.model';
+import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
 
 @Component({
   selector: 'app-timeline.common-flex-container',
@@ -22,7 +22,7 @@ import {
   template: `
     <app-timeline-header
       fxFlex="65px" class="common-header"
-      [appName]="appName">
+      [appName]="appName" [searching]="searching">
     </app-timeline-header>
 
     <app-timeline-events-list
@@ -31,9 +31,8 @@ import {
     </app-timeline-events-list>
 
     <app-timeline-footer fxFlex="49px" class="common-footer"
-      [indexes]="indexes" [totalDisplayed]="totalDisplayed"
-      [from]="from" [to]="to" [totalFound]="totalFound$ | async"
-      (onNext)="onNext($event)" (onBack)="onBack($event)">
+      [pagination]="pagination" [top]="params.top" [searching]="searching"
+      (onNext)="onNext()" (onBack)="onBack()">
     </app-timeline-footer>
   `,
   styleUrls: ['./timeline.component.scss']
@@ -41,29 +40,17 @@ import {
 export class TimelineComponent implements OnInit, OnDestroy {
   appName = 'Timeline';
 
-  // data
-  data$: Subscription;
+  $data: Subscription;
   data: TimelineEventItem[];
 
-  // pagination
-  calcFromToTotal$: Subscription;
-  total: any;
+  $searching: Subscription;
+  searching: boolean;
 
-  totalFound$: Observable<number | string>;
-  totalDisplayed: number;
+  $params: Subscription;
+  params: TimelineSearchParams;
 
-  from: number;
-  to: number;
-
-  indexes$: Subscription;
-  indexes: PaginationIndexes;
-
-  links$: Subscription;
-  links: string[];
-
-  // params
-  params$: Subscription;
-  params: TimelineEventsParams;
+  $pagination: Subscription;
+  pagination: PaginationState;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -71,64 +58,47 @@ export class TimelineComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // update html page title and store.root.apps.name
     this.store_root.dispatch(new application.SetAppName(this.appName));
 
-    // main data = array of users
-    this.data$ = this.store_timeline
+    // main data = array of events
+    this.$data = this.store_timeline
       .pipe(select(fromTimeline.selectAllEvents))
       .subscribe(data => {
-        // goes in people-list component
         this.data = data;
-        // count total
-        // this.countTotalItems(this.params);
       });
 
-    this.params$ = this.store_timeline
+    this.$pagination = this.store_timeline
+      .pipe(select(fromTimeline.getPagination))
+      .subscribe(pagination => (this.pagination = pagination));
+
+    this.$searching = this.store_timeline
+      .select(fromTimeline.getEventsSearching)
+      .subscribe(search => {
+        this.searching = search;
+      });
+
+    // monitor params for top
+    this.$params = this.store_timeline
       .select(fromTimeline.getParams)
       .subscribe(params => {
         this.params = params;
       });
-
-    this.calcFromToTotal$ = this.store_timeline
-      .pipe(select(fromTimeline.selectTotalDisplayedEvents))
-      .subscribe(totalDisplayed => {
-        console.log('total displayed: ' + totalDisplayed);
-        this.totalDisplayed = totalDisplayed;
-        console.log(this.indexes);
-        if (this.indexes.current) {
-          this.from = this.indexes.current * this.params.top + 1;
-          this.to = this.from + this.totalDisplayed - 1;
-        }
-      });
-
-    this.totalFound$ = this.store_timeline.select(fromTimeline.getTotalFound);
-
-    // subscribe to indexes
-    this.indexes$ = this.store_timeline
-      .select(fromTimeline.getPageIndexes)
-      .subscribe(indexes => {
-        console.log('indexes:');
-        console.log(this.indexes);
-        this.indexes = indexes;
-      });
-
-    // subscribe to search pagelinks
-    this.links$ = this.store_timeline
-      .select(fromTimeline.getPageLinks)
-      .subscribe(links => {
-        this.links = links;
-      });
   }
 
-  onNext(indexes: PaginationIndexes) {
+  onNext() {
     this.store_timeline.dispatch(
-      new fromTimeline.OnNext(this.links[indexes.next])
+      new fromTimeline.OnNext(
+        this.pagination.links[this.pagination.currentIndex + 1]
+      )
     );
   }
 
-  onBack(indexes: PaginationIndexes) {
+  onBack() {
     this.store_timeline.dispatch(
-      new fromTimeline.OnBack(this.links[indexes.previous])
+      new fromTimeline.OnBack(
+        this.pagination.links[this.pagination.currentIndex - 1]
+      )
     );
   }
 
@@ -139,10 +109,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.data$.unsubscribe();
-    this.indexes$.unsubscribe();
-    this.calcFromToTotal$.unsubscribe();
-    this.params$.unsubscribe();
-    this.links$.unsubscribe();
+    this.$pagination.unsubscribe();
+    this.$data.unsubscribe();
+    this.$params.unsubscribe();
+    this.$searching.unsubscribe();
   }
 }
