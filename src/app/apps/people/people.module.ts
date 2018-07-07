@@ -1,8 +1,3 @@
-// 3rd party
-import { MaterialModule } from '../../shared/libraries/material.module';
-import { ImageCropperModule } from 'ngx-img-cropper';
-import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
-
 // angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,6 +8,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, effects } from './store';
+
+// 3rd party
+import { MaterialModule } from '../../shared/libraries/material.module';
+import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ImageCropperModule } from 'ngx-img-cropper';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // containers
 import * as fromContainers from './containers';
@@ -27,8 +29,6 @@ import * as fromFormActions from './forms/people-form/form-actions';
 
 // services
 import * as fromServices from './services';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // routes
 export const peopleRoutes: Routes = [

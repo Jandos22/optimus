@@ -1,0 +1,72 @@
+<span mat-dialog-title style="text-align: center;">
+    Timeline Event
+</span>
+<mat-dialog-content>
+
+    <div class="cmn-form-container">
+
+      <div class="group-of-2" fxLayout="row wrap">
+
+        <app-timeline-form-event-date
+            class="cmn-form-component"
+            fxLayout="row"
+            [fg_fields]="fg_fields">
+        </app-timeline-form-event-date>
+
+        <app-timeline-form-event-type
+            class="cmn-form-component"
+            fxLayout="row"
+            [fg_fields]="fg_fields"
+            [eventTypes]="eventTypes$ | async">
+        </app-timeline-form-event-type>
+
+      </div>
+
+      <div class="group-of-2" fxLayout="row wrap">
+
+        <app-timeline-form-title
+            class="cmn-form-component take-2-cols"
+            fxLayout="row"
+            [fg_fields]="fg_fields">
+        </app-timeline-form-title>
+
+      </div>
+
+      <div class="group-of-2" fxLayout="row wrap">
+        <app-timeline-form-summary
+            class="cmn-form-component take-2-cols"
+            fxLayout="row"
+            [fg_fields]="fg_fields">
+        </app-timeline-form-summary>
+      </div>
+
+      <div class="group-of-2" fxLayout="row wrap">
+        <app-timeline-form-locations
+            class="cmn-form-component"
+            fxLayout="row"
+            [fg_fields]="fg_fields"
+            [accessLevel]="accessLevel$ | async"
+            [locationAssignedId]="locationAssignedId"
+            [locations]="locations$ | async">
+        </app-timeline-form-locations>
+      </div>
+
+      <div class="group-of-2" fxLayout="row wrap">
+        <app-timeline-form-event-reporters
+            class="cmn-form-component take-2-cols"
+            fxLayout="column"
+            [fg_fields]="fg_fields"
+            [accessLevel]="accessLevel$ | async">
+        </app-timeline-form-event-reporters>
+      </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-timeline-form-actions
+        [fg_fields]="fg_fields" [mode]="data.mode"
+        (closeForm)="closeForm($event)">
+    </app-timeline-form-actions>
+</mat-dialog-actions>

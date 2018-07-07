@@ -36,7 +36,7 @@ export class PeopleService {
             return of(response);
           }
         }),
-        catchError((error: any) => throwError(error.json()))
+        // errors (if any) are caught in search effects
       );
   }
 

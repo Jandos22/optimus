@@ -40,7 +40,8 @@ import { ValidationService } from './../../../../validators/validation.service';
       fxFlex fxFlex.gt-xs="568px"
       fxLayout="row nowrap" fxLayoutAlign="start center"
       [appName]="appName" [fg_params]="fg_params" [searching]="searching"
-      (onFocus)="onFocus()" (onBlur)="onBlur()"
+      [accessLevel]="accessLevel"
+      (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('query').invalid }">
     </app-timeline-toolbar>
@@ -49,6 +50,9 @@ import { ValidationService } from './../../../../validators/validation.service';
 export class TimelineHeaderComponent implements OnInit, OnDestroy {
   @Input() appName: string;
   @Input() searching: boolean;
+  @Input() accessLevel: number;
+
+  @Output() openForm = new EventEmitter<any>();
 
   fg_params: FormGroup;
 

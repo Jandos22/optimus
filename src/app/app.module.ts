@@ -10,6 +10,7 @@ library.add(fromFontAwesome.fontawesome_icons);
 
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from './shared/shared.module';
 
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -60,12 +61,15 @@ import * as fromPipes from './shared/pipes';
 import { AuthGuard } from './guards/auth.guard';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+
+import * as fromDateFormats from './shared/date/date.formats';
+
 @NgModule({
   declarations: [
     AppComponent,
     ...fromLayout.containers,
     ...fromComponents.components,
-    ...fromPipes.pipes
   ],
   entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [
@@ -74,6 +78,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     MaterialModule,
     FontAwesomeModule,
     SimpleNotificationsModule.forRoot(),
@@ -83,6 +88,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     StoreRouterConnectingModule,
     AppRoutingModule,
     RegistrationModule,
+    MatNativeDateModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
@@ -90,17 +96,13 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
     { provide: RouterStateSerializer, useClass: CustomSerializer },
     ...fromServices.services,
     AuthGuard,
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandlerService
-    }
+    { provide: DateAdapter, useClass: MatNativeDateModule, deps: [MAT_DATE_LOCALE]},
+    { provide: MAT_DATE_FORMATS, useValue: fromDateFormats.formats},
   ],
   exports: [
+    SharedModule,
     FontAwesomeModule,
     SimpleNotificationsModule
-    // ...fromContainers.containers,
-    // MaterialModule,
-    // ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
 })

@@ -22,7 +22,8 @@
               "src/_colors.scss",
               "src/styles__fonts.scss",
               "src/styles__theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/styles__form.scss"
             ],
             "scripts": ["./node_modules/sprestlib/dist/sprestlib.min.js"]
           },

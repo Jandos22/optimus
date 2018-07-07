@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { of, from } from 'rxjs';
 import {
   map,
   switchMap,
@@ -19,7 +18,6 @@ import * as _ from 'lodash';
 import { Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import * as fromTimeline from '../index';
-import * as fromSearchActions from '../actions/search.actions';
 import * as fromParamsActions from '../actions/params.actions';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromEventsActions from '../actions/events.actions';

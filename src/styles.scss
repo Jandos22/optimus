@@ -35,7 +35,7 @@ app-layout {
   height: 100vh;
 }
 
-.common-flex-container {
+app-timeline.common-flex-container {
   // properties as flex container
   display: flex;
   flex-flow: column;
@@ -522,4 +522,11 @@ input[type='text']::-ms-clear {
   -webkit-text-fill-color: rgba(0, 0, 0, 0.65) !important;
   -webkit-opacity: 1;
   opacity: 1;
+}
+
+.common-user-photo__matoption {
+  border-radius: 50%;
+  // margin: 4px;
+  height: 32px;
+  width: 32px;
 }

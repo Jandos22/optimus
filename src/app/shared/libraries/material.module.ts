@@ -20,6 +20,9 @@ import {
   MatExpansionModule,
   MatTooltipModule
 } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 import { LayoutModule } from '@angular/cdk/layout';
 
 const matModules: any[] = [
@@ -39,7 +42,10 @@ const matModules: any[] = [
   MatChipsModule,
   MatTabsModule,
   MatExpansionModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDatepickerModule,
+  MatAutocompleteModule,
+  MatNativeDateModule
 ];
 
 @NgModule({

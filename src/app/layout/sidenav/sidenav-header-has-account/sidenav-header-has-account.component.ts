@@ -32,7 +32,7 @@ export class SidenavHeaderHasAccountComponent {
   constructor(private utils: UtilitiesService) {}
 
   getPhotoUrl() {
-    return this.utils.photoUrl(this.user.AttachmentFiles);
+    return this.utils.userPhoto(this.user);
   }
 
   hasPosition() {

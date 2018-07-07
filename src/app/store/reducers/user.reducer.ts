@@ -45,7 +45,7 @@ export function reducer(
       return {
         ...state,
         sharepoint: {
-          ...state.sharepoint,
+          // ...state.sharepoint,
           ...action.payload
         }
       };
@@ -54,7 +54,7 @@ export function reducer(
       return {
         ...state,
         optimus: {
-          ...state.optimus,
+          // ...state.optimus,
           ...action.payload
         }
       };
@@ -90,8 +90,26 @@ export const getUserBoostrap = (state: UserState) => state.bootstrap;
 export const getUserSharepoint = (state: UserState) => state.sharepoint;
 export const getUserOptimus = (state: UserState) => state.optimus;
 
+// user access level depends on position he/she holds
+export const getUserAccessLevel = (state: UserState) => {
+  if (state.optimus) {
+    return state.optimus.Position.AccessLevel;
+  } else {
+    // lowest access level
+    return 1;
+  }
+};
+
 // from optimus
 export const getUserId = (state: UserState) => state.optimus.Id;
+
+export const getUserLocationAssignedId = (state: UserState) => {
+  if (state.optimus) {
+    return state.optimus.LocationAssignedId;
+  } else {
+    return null;
+  }
+};
 
 // from sharepoint
 export const getUsername = (state: UserState) => state.sharepoint.username;

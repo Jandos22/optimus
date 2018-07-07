@@ -1,13 +1,19 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
+// rxjs
+import { Subscription, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+
 // ngrx
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromTimeline from '../../store';
-import * as application from '../../../../store/actions/apps.actions';
 
-// rxjs
-import { Subscription, Observable } from 'rxjs';
+// material
+import { MatDialog } from '@angular/material';
+
+// form component
+import { TimelineFormComponent } from '../../forms';
 
 // interfaces
 import {
@@ -15,6 +21,7 @@ import {
   TimelineEventItem
 } from '../../../../shared/interface/timeline.model';
 import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-timeline.common-flex-container',
@@ -22,7 +29,9 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
   template: `
     <app-timeline-header
       fxFlex="65px" class="common-header"
-      [appName]="appName" [searching]="searching">
+      [appName]="appName" [searching]="searching"
+      [accessLevel]="(user$ | async).Position?.AccessLevel"
+      (openForm)="openForm('new', $event)">
     </app-timeline-header>
 
     <app-timeline-events-list
@@ -40,6 +49,8 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
 export class TimelineComponent implements OnInit, OnDestroy {
   appName = 'Timeline';
 
+  user$: Observable<PeopleItem>;
+
   $data: Subscription;
   data: TimelineEventItem[];
 
@@ -54,12 +65,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
-    private store_timeline: Store<fromTimeline.TimelineState>
+    private store_timeline: Store<fromTimeline.TimelineState>,
+    public form: MatDialog
   ) {}
 
   ngOnInit() {
     // update html page title and store.root.apps.name
-    this.store_root.dispatch(new application.SetAppName(this.appName));
+    this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
+
+    // fetch Event Types list from database
+    this.store_root.dispatch(new fromTimeline.FetchEventTypesStart());
+
+    this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
 
     // main data = array of events
     this.$data = this.store_timeline
@@ -106,6 +123,17 @@ export class TimelineComponent implements OnInit, OnDestroy {
     if (params) {
       this.store_timeline.dispatch(new fromTimeline.BeginCount(params));
     }
+  }
+
+  openForm(mode, item?): void {
+    const data = { mode, item };
+    const formRef = this.form.open(TimelineFormComponent, { data });
+    formRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   ngOnDestroy() {

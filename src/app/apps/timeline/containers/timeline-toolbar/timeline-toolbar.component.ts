@@ -10,6 +10,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-timeline-toolbar',
   styleUrls: ['timeline-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-progress-bar *ngIf="searching"
       class="common-searching-indicator" color="primary" mode="indeterminate">
@@ -31,7 +32,9 @@ import { FormGroup } from '@angular/forms';
     <app-timeline-toolbar-button-filters>
     </app-timeline-toolbar-button-filters>
 
-    <app-timeline-toolbar-button-add>
+    <app-timeline-toolbar-button-add
+      *ngIf="canCreate()"
+      (openForm)="openForm.emit()">
     </app-timeline-toolbar-button-add>
     `
 })
@@ -39,7 +42,9 @@ export class TimelineToolbarComponent {
   @Input() appName: string;
   @Input() searching: boolean;
   @Input() fg_params: FormGroup;
+  @Input() accessLevel: number;
 
+  @Output() openForm = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
   @Output() onBlur = new EventEmitter<any>();
 
@@ -47,5 +52,13 @@ export class TimelineToolbarComponent {
 
   onClear() {
     this.fg_params.reset();
+  }
+
+  canCreate() {
+    if (this.accessLevel) {
+      return this.accessLevel >= 3 ? true : false;
+    } else {
+      return false;
+    }
   }
 }

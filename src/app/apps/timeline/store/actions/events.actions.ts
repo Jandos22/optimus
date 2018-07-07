@@ -6,7 +6,7 @@ export enum EventsActionTypes {
   SEARCH_EVENTS_START = '[Timeline Events] Search Events Start',
   SEARCH_EVENTS_SUCCESS = '[Timeline Events] Search Events Success',
   SEARCH_EVENTS_NO_RESULTS = '[Timeline Events] Search Events No Results',
-  COUNT_EVENTS_TOTAL = '[Timeline Events] Count Total (since next url is present)'
+  COUNT_EVENTS_TOTAL = '[Timeline Events] Count Total (since next url is present)',
 }
 
 export class SearchEventsStart implements Action {

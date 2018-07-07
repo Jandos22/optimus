@@ -1,5 +1,5 @@
-import { PeopleItem } from './people.model';
 import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
+import { LocationEnt } from './locations.model';
 
 export interface TimelineEventItem extends SpListItem {
   id?: number;
@@ -7,8 +7,10 @@ export interface TimelineEventItem extends SpListItem {
   Title?: string;
   Summary?: string;
   EventReporters?: TimelineEventReporters;
+  EventReportersId?: number[];
   EventType?: TimelineEventType;
   EventTypeId?: number[];
+  Locations: LocationEnt[];
   LocationsId?: number[];
 }
 
@@ -18,11 +20,13 @@ export interface TimelineSearchParams {
   top: number;
 }
 
-export interface TimelineEventType {
+export interface TimelineEventType extends SpListItem {
   Id: number;
   Title: string;
+  ApplicableToId?: number[];
+  ApplicableTo?: LocationEnt[];
 }
 
 export interface TimelineEventReporters {
-  results?: PeopleItem[];
+  results?: TimelineEventItem[];
 }

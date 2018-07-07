@@ -1,9 +1,11 @@
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+
+// constants
 import {
   PathSlbSp,
   WirelinePath,
   PathOptimus
 } from './../../../../shared/constants/index';
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 
@@ -184,9 +186,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
-    // this.$$mode.unsubscribe();
+    this.$mode.unsubscribe();
     this.$window.unsubscribe();
-    // this.$locations.unsubscribe();
     this.alias$.unsubscribe();
   }
 }

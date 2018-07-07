@@ -1,3 +1,4 @@
+import { PeopleItem } from './../interface/people.model';
 import { take } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -21,6 +22,20 @@ export class UtilitiesService {
       return SlbSpPath + attachments[0].ServerRelativeUrl;
     } else {
       return null;
+    }
+  }
+
+  userPhoto(user: PeopleItem) {
+    if (user.Attachments) {
+
+      if (user.AttachmentFiles.results) {
+        return SlbSpPath + user.AttachmentFiles.results[0].ServerRelativeUrl;
+      } else {
+        return 'assets/no_user.png';
+      }
+
+    } else {
+      return 'assets/no_user.png';
     }
   }
 }

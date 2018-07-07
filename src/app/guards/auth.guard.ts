@@ -92,11 +92,11 @@ export class AuthGuard implements OnDestroy {
           .checkLoggedInUserRegistered(alias)
           .toPromise()
           .then((response: any) => {
+            console.log(response);
             // if no user found in NgPeople
             // then response.value will be empty
-            const data = response.value[0];
-            return data
-              ? this.userIsRegistered(data)
+            return response[0]
+              ? this.userIsRegistered(response[0])
               : this.navigateToRegistration();
           });
       });
