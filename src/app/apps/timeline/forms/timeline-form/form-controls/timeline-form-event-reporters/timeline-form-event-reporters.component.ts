@@ -25,7 +25,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material';
 @Component({
   selector: 'app-timeline-form-event-reporters',
   styleUrls: ['timeline-form-event-reporters.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated,
+  encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="65.5px" [formGroup]="fg_users">
