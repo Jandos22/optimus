@@ -24,7 +24,7 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-timeline.common-flex-container',
+  selector: 'app-timeline.common-app-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-timeline-header

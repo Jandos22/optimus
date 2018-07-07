@@ -26,7 +26,7 @@ import { PeopleFormComponent } from '../../forms/people-form/people-form.compone
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-  selector: 'app-people.common-flex-container',
+  selector: 'app-people.common-app-container',
   styleUrls: ['./people.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -37,8 +37,9 @@ import { NotificationsService } from 'angular2-notifications';
     </app-people-header>
 
     <app-people-content
-      fxFlex class="common-content"
-      [data]="data"
+      class="common-content"
+      fxLayout="column"
+      fxFlex [data]="data"
       (openUserForm)="openForm('view', $event)">
     </app-people-content>
 
