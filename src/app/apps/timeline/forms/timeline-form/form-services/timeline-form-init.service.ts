@@ -4,43 +4,39 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 // services
 // import { ValidationService } from './../../../../../validators/validation.service';
-import { TimelineFormValueService } from './timeline-form-value.service';
 
 // interfaces
 import { FormMode } from '../../../../../shared/interface/form.model';
 import { TimelineEventItem } from '../../../../../shared/interface/timeline.model';
 
-// import * as moment from 'moment';
+// constants
+import { ApiPath, PathSlbSp } from '../../../../../shared/constants';
 
 @Injectable()
 export class TimelineFormInitService {
-  constructor(private formValueService: TimelineFormValueService) {}
+  constructor() {}
 
   create_FormGroup_Fields(mo: FormMode, it: TimelineEventItem, lo: number) {
-    // item = this.formValueService.createPeopleItemObject(mode, item);
     return new FormGroup({
-      Title: new FormControl(
-        this.getSimpleFormValue(mo, it, 'Title'), [
+      Title: new FormControl(this.getSimpleFormValue(mo, it, 'Title'), [
         Validators.required,
         Validators.minLength(30),
         Validators.maxLength(70)
       ]),
-      Summary: new FormControl(
-        this.getSimpleFormValue(mo, it, 'Summary'), [
+      Summary: new FormControl(this.getSimpleFormValue(mo, it, 'Summary'), [
         Validators.required,
         Validators.minLength(60),
         Validators.maxLength(140)
       ]),
-      RichText: new FormControl(
-        this.getRichText(mo, it)
-      ),
+      RichText: new FormControl(this.getRichText(mo, it)),
       EventTypeId: new FormControl(
         this.getEventTypeId(mo, it),
         Validators.required
       ),
       EventDate: new FormControl(
         this.getEventDate(mo, it),
-        Validators.required),
+        Validators.required
+      ),
       LocationsId: new FormControl(
         this.getLocationsId(mo, it, lo),
         Validators.required
@@ -50,6 +46,34 @@ export class TimelineFormInitService {
         Validators.required
       )
     });
+  }
+
+  create_FormGroup_Image(mo: FormMode, it: TimelineEventItem) {
+    if (mo === 'new') {
+      return new FormGroup({
+        ID: new FormControl(''),
+        ImageUrl: new FormControl(''),
+        ArrayBuffer: new FormControl(new ArrayBuffer(0))
+      });
+    } else {
+      return new FormGroup({
+        ID: new FormControl(it.ID),
+        ImageUrl: new FormControl(this.getImageUrl(it)),
+        ArrayBuffer: new FormControl(new ArrayBuffer(0))
+      });
+    }
+  }
+
+  getImageUrl(item: TimelineEventItem) {
+    // check if item has attachments
+    if (item.Attachments) {
+      // if running in dev mode then prepend prefix path
+      const url = ApiPath.startsWith('_') ? PathSlbSp : '';
+      // image url will be the first attachment file
+      return url + item.AttachmentFiles.results[0].ServerRelativeUrl;
+    } else {
+      return '';
+    }
   }
 
   // get field value & condition

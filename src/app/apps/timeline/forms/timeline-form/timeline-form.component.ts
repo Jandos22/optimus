@@ -32,19 +32,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // form services
 import { TimelineFormInitService } from './form-services/timeline-form-init.service';
-import { TimelineFormValueService } from './form-services/timeline-form-value.service';
 // import { TimelineFormSizeService } from './form-services/timeline-form-size.service';
-// import { TimelineFormPhotoService } from './form-services/timeline-form-photo.service';
 // import { TimelineFormHttpService } from './form-services/timeline-form-http.service';
 
-// dialog components
-// import {
-// TimelineFormPhotoPickerComponent,
-// UserPhotoState
-// } from '../timeline-form-photo-picker/timeline-form-photo-picker.component';
-
 // interfaces
-import { TimelineEventItem, TimelineEventType } from '../../../../shared/interface/timeline.model';
+import {
+  TimelineEventItem,
+  TimelineEventType
+} from '../../../../shared/interface/timeline.model';
 import { FormMode } from '../../../../shared/interface/form.model';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
@@ -54,26 +49,24 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   selector: 'app-timeline-form',
   styleUrls: ['timeline-form.component.scss'],
   templateUrl: './timeline-form.component.html',
-  providers: [
-    TimelineFormInitService,
-    TimelineFormValueService
-    //   TimelineFormSizeService,
-    //   PeopleFormPhotoService,
-    //   PeopleFormHttpService
-  ]
+  providers: [TimelineFormInitService]
 })
 export class TimelineFormComponent implements OnInit, OnDestroy {
   // form shall have only two form groups
   // which are initialized immediately in class constructor
   fg_fields: FormGroup;
-  // fg_photo: FormGroup;
+  fg_image: FormGroup;
 
   accessLevel$: Observable<number>;
+
   $locationAssignedId: Subscription;
   locationAssignedId: number;
 
   // form title
   Title: string;
+
+  // get self optimus account
+  selfUser$: Observable<PeopleItem>;
 
   // subscribe to window from root store
   // used to update form size dynamically
@@ -85,9 +78,6 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
 
   // Form Mode is Subject
   $mode: Subject<FormMode>;
-
-  // react to value changes in form
-  alias$: Subscription;
 
   // focuses
   rte_focused = false;
@@ -105,27 +95,25 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.$mode = new Subject<FormMode>();
 
-    // when Form Mode changes initialize form groups
+    this.setupSubscriptions();
+    this.setupObservables();
+
+    this.$mode.next(this.data.mode);
+  }
+
+  setupSubscriptions() {
+    // all subscriptions start with $ prefix
+    // this helps quickly check if all been unsubscribed
+
+    // $$$ when Form Mode changes initialize form groups
     this.$mode.subscribe(mode => {
       console.log('mode changed to: ' + mode);
       this.data.mode = mode;
-      this.initialize_FormGroup_Fields(mode, this.data.item);
-      // this.initialize_FormGroup_Photo(mode, this.data.item);
-      // this.updateFormTitle(mode);
+
+      this.createFormGroups(mode, this.data.item, this.locationAssignedId);
     });
 
-    this.accessLevel$ = this.store_root.pipe(select(fromRoot.getUserAccessLevel));
-    this.$locationAssignedId = this.store_root.pipe(select(fromRoot.getUserLocationAssignedId)).subscribe(
-      locationId => this.locationAssignedId = locationId
-    );
-
-    // get selectables
-    this.eventTypes$ = this.store_root.pipe(select(fromTimeline.getApplicableEventTypes));
-    this.locations$ = this.store_root.select(fromRoot.selectAllLocations);
-
-    this.$mode.next(this.data.mode);
-
-    // on each breakpoint change, update size of form dialog
+    // $$$ on each breakpoint change, update size of form dialog
     this.$window = this.store_root
       .select(fromRoot.getLayoutWindow)
       .subscribe(window => {
@@ -133,35 +121,41 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  // *** form group for fields
-  initialize_FormGroup_Fields(mode, item?) {
-    this.fg_fields = this.formInitService.create_FormGroup_Fields(mode, item, this.locationAssignedId);
-    console.log(this.fg_fields);
+  setupObservables() {
+    // list of component life long observables
+    // all observables end with $ suffix
+
+    // get self user item to use in event reporters selection
+    this.selfUser$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
+
+    // get and observe user's access level
+    this.accessLevel$ = this.store_root.pipe(
+      select(fromRoot.getUserAccessLevel)
+    );
+
+    // get selectable event types
+    this.eventTypes$ = this.store_root.pipe(
+      select(fromTimeline.getApplicableEventTypes)
+    );
+
+    // get user's location assigned id
+    this.$locationAssignedId = this.store_root
+      .pipe(select(fromRoot.getUserLocationAssignedId))
+      .subscribe(locationId => (this.locationAssignedId = locationId));
+
+    // get selectable locations
+    this.locations$ = this.store_root.select(fromRoot.selectAllLocations);
   }
 
-  // // *** form group for photo
-  // initialize_FormGroup_Photo(mode, item?) {
-  //   console.log(mode);
-  //   this.fg_photo = this.initFormService.create_FormGroup_Photo(mode, item);
-  //   console.log(this.fg_photo);
-  // }
+  createFormGroups(m: FormMode, it: TimelineEventItem, lo: number) {
+    // create 2 form groups
+    this.fg_fields = this.formInitService.create_FormGroup_Fields(m, it, lo);
+    this.fg_image = this.formInitService.create_FormGroup_Image(m, it);
 
-  // // Utility Functions
-
-  // updatePhotoFilename(): void {
-  //   const alias: string = this.fg_fields.get('Alias').value;
-  //   this.fg_photo.get('Filename').setValue(alias ? `${alias}.jpg` : '');
-  // }
-
-  // updateFormTitle(mode) {
-  //   const name = this.fg_fields.get('Name').value;
-  //   const surname = this.fg_fields.get('Surname').value;
-  //   if (mode === 'new') {
-  //     this.Title = 'New User';
-  //   } else {
-  //     this.Title = name + ' ' + surname;
-  //   }
-  // }
+    console.log('created 2 form groups:');
+    console.log(this.fg_fields);
+    console.log(this.fg_image);
+  }
 
   switchFormMode(mode: FormMode) {
     this.$mode.next(mode);
@@ -184,12 +178,11 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
   //   };
   // }
 
-  // // triggered from PeopleFormPhoto component
-  // photoChanged(newPhoto: { PhotoUrl: string; ArrayBuffer: ArrayBuffer }) {
-  //   this.fg_photo.get('PhotoUrl').patchValue(newPhoto.PhotoUrl);
-  //   this.fg_photo.get('ArrayBuffer').patchValue(newPhoto.ArrayBuffer);
-  //   // this.unsavedPhoto = { hasUnsavedPhoto: true, ...newPhoto };
-  // }
+  // @Output from FormControlImagePicker
+  imageChanged(ArrayBuffer: ArrayBuffer) {
+    this.fg_image.get('ArrayBuffer').patchValue(ArrayBuffer);
+    // this.unsavedPhoto = { hasUnsavedPhoto: true, ...newPhoto };
+  }
 
   onSelectUser(selected: number[]) {
     this.fg_fields.get('EventReportersId').patchValue(selected);
@@ -209,6 +202,5 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     this.$window.unsubscribe();
     this.$locationAssignedId.unsubscribe();
     // this.$locations.unsubscribe();
-    // this.alias$.unsubscribe();
   }
 }

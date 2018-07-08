@@ -15,21 +15,23 @@ import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-li
     <app-timeline-form-actions-new
         *ngIf="mode === 'new'"
         (closeForm)="closeForm.emit($event)"
-        [fg_fields]="fg_fields">
+        [fg_fields]="fg_fields"
+        [fg_image]="fg_image">
     </app-timeline-form-actions-new>
     `
 })
 export class TimelineFormActionsComponent {
   @Input() mode: FormMode;
   @Input() fg_fields: FormGroup;
-//   @Input() fg_photo: FormGroup;
-//   @Input() initialFields: PeopleItem;
+  @Input() fg_image: FormGroup;
+  //   @Input() initialFields: PeopleItem;
 
-//   @Output() switchFormMode = new EventEmitter<any>();
-//   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+  //   @Output() switchFormMode = new EventEmitter<any>();
+  //   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
   @Output()
-//   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
-  @Output() closeForm = new EventEmitter<any>();
+  //   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
+  @Output()
+  closeForm = new EventEmitter<any>();
 
   constructor() {}
 }

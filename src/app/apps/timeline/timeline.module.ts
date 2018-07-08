@@ -37,7 +37,7 @@ import * as fromPipes from '../../shared/pipes';
 // form modules
 import { FormControlUsersSelectionModule } from '../../shared/modules/form-control-users-selection/form-control-users-selection.module';
 import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
-
+import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
 
 // routes
 export const timelineRoutes: Routes = [
@@ -52,14 +52,14 @@ export const timelineRoutes: Routes = [
     RouterModule.forChild(timelineRoutes),
     StoreModule.forFeature('timeline', reducers),
     EffectsModule.forFeature(effects),
-    ImageCropperModule,
     MaterialModule,
     MaterialDesignComponentsModule,
     FontAwesomeModule,
     SimpleNotificationsModule,
     // form control modules
     FormControlUsersSelectionModule,
-    RichTextEditorLightModule
+    RichTextEditorLightModule,
+    FormControlImagePickerModule
   ],
   providers: [...fromServices.services],
   declarations: [
@@ -67,7 +67,7 @@ export const timelineRoutes: Routes = [
     ...fromComponents.components,
     ...fromForms.form_dialogs,
     ...fromFormControls.forms_controls,
-    ...fromFormActions.form_actions,
+    ...fromFormActions.form_actions
     // ...fromPipes.pipes
   ],
   entryComponents: [...fromForms.form_dialogs]

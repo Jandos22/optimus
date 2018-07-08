@@ -15,15 +15,30 @@ import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 
 // rxjs
 import { Observable, combineLatest, Subscription, Subject } from 'rxjs';
-import { startWith, map, debounceTime, take, distinctUntilChanged, pairwise, filter, tap } from 'rxjs/operators';
+import {
+  startWith,
+  map,
+  debounceTime,
+  take,
+  distinctUntilChanged,
+  pairwise,
+  filter,
+  tap
+} from 'rxjs/operators';
 
 // interfaces
 import { LocationEnt } from '../../../../interface/locations.model';
-import { PeopleItem, SearchParamsUser } from '../../../../interface/people.model';
+import {
+  PeopleItem,
+  SearchParamsUser
+} from '../../../../interface/people.model';
 
 // services
 import { SearchUsersService, UtilitiesService } from '../../../../services';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger
+} from '@angular/material';
 
 import * as _ from 'lodash';
 import { element } from '../../../../../../../node_modules/protractor';
@@ -58,7 +73,7 @@ import { element } from '../../../../../../../node_modules/protractor';
       </mat-autocomplete>
 
       <div matSuffix *ngIf="!searching"
-        class="prefix-as-chip">
+        class="suffix-chip">
         {{ getCountSelectedUsers() }}
       </div>
 
@@ -78,17 +93,19 @@ import { element } from '../../../../../../../node_modules/protractor';
 })
 export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   @Input() fg_fields: FormGroup;
+  @Input() selfUser: PeopleItem;
   @Input() accessLevel: number;
 
   @Output() onSelectUser = new EventEmitter<number[]>();
 
-  @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
+  @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
+  autoComplete: MatAutocompleteTrigger;
   @ViewChild('formField') el_FormField: ElementRef;
 
   // notifies subscribers each time screen size change
   // used to dynamically set maxWidth of fullname of selected users
   // necessary on small screens no trim users fullname
-  $resizeEvent = new Subject;
+  $resizeEvent = new Subject();
 
   // form group for autocomplete input
   fg_users: FormGroup;
@@ -105,13 +122,9 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   // combined observable
   $query: Subscription;
 
-  constructor(
-    private fb: FormBuilder,
-    private srv: SearchUsersService,
-  ) {}
+  constructor(private fb: FormBuilder, private srv: SearchUsersService) {}
 
   ngOnInit() {
-
     // initialize form group for searching users
     this.fg_users = this.fb.group({
       text: '',
@@ -123,17 +136,17 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     // watch query text changes
     // pass only text and check if new value is different
     // also wait 500 ms until passing new value
-    this.text$ = this.fg_users.get('text').valueChanges
-      .pipe(
-        startWith(''),
-        filter(value => typeof value === 'string'),
-        distinctUntilChanged(),
-        debounceTime(500)
-      );
+    this.text$ = this.fg_users.get('text').valueChanges.pipe(
+      startWith(''),
+      filter(value => typeof value === 'string'),
+      distinctUntilChanged(),
+      debounceTime(500)
+    );
 
     // watch selected locations changes
-    this.locations$ = this.fg_fields.get('LocationsId').valueChanges
-      .pipe(startWith(initialLocations));
+    this.locations$ = this.fg_fields
+      .get('LocationsId')
+      .valueChanges.pipe(startWith(initialLocations));
 
     // react whenever watched input change
     this.$query = combineLatest(this.text$, this.locations$)
@@ -148,22 +161,21 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
 
     // wait 100ms, no need to run flow on every pixel change
     // get width of parent container and pass it to calc maxWidth
-    this.$resizeEvent.
-      pipe(
+    this.$resizeEvent
+      .pipe(
         debounceTime(100),
         map(any => {
           return document.getElementById('refWidth').clientWidth;
         })
-      ).
-      subscribe(
-        refWidth => this.setMaxWidth(refWidth)
-    );
+      )
+      .subscribe(refWidth => this.setMaxWidth(refWidth));
 
     // listen to selected users and when get user
     // then map to ids, then loop through users and disable selected
     // so that they cannot be selected again
-    this.$fc_selectedUsers = this.fg_users.get('selectedUsers').valueChanges
-      .pipe(
+    this.$fc_selectedUsers = this.fg_users
+      .get('selectedUsers')
+      .valueChanges.pipe(
         map((selected: PeopleItem[]) => {
           return _.map(selected, function(user) {
             return user.ID;
@@ -172,6 +184,14 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
         tap(ids => this.disableSelected(ids))
       )
       .subscribe(ids => this.onSelectUser.emit(ids));
+
+    this.addSelfToSelected(this.selfUser);
+  }
+
+  addSelfToSelected(self: PeopleItem) {
+    if (self) {
+      this.addSelectedUsers(self);
+    }
   }
 
   // receive ids array
@@ -180,13 +200,11 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   // otherwise return user untouched
   disableSelected(ids: number[]) {
     this.users = _.map(this.users, function(user) {
-
       const check = _.find(ids, function(id) {
         return id === user.ID;
       });
 
-      return check ? { ...user, selected: true} : user;
-
+      return check ? { ...user, selected: true } : user;
     });
   }
 
@@ -213,11 +231,13 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     this.searching = true;
     const search$ = this.srv.searchUsers(query);
 
-    search$.pipe(take(1)).subscribe(
-      success => this.searchUsersSuccess(success),
-      error => this.searchUsersError(error),
-      () => console.log('search users completed')
-    );
+    search$
+      .pipe(take(1))
+      .subscribe(
+        success => this.searchUsersSuccess(success),
+        error => this.searchUsersError(error),
+        () => console.log('search users completed')
+      );
   }
 
   searchUsersSuccess(success) {
@@ -242,44 +262,45 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     this.resetText();
   }
 
-    addSelectedUsers(user: PeopleItem) {
-      const selected: null | PeopleItem[] = this.fg_users.get('selectedUsers').value;
+  addSelectedUsers(user: PeopleItem) {
+    const selected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+      .value;
 
-      if (selected.length) {
-        this.fg_users.get('selectedUsers').patchValue([ user, ...selected]);
-      } else {
-        this.fg_users.get('selectedUsers').patchValue([user]);
-      }
-
-      // neccessary if user already start with small screen size
-      this.$resizeEvent.next();
+    if (selected.length) {
+      this.fg_users.get('selectedUsers').patchValue([user, ...selected]);
+    } else {
+      this.fg_users.get('selectedUsers').patchValue([user]);
     }
 
-    keepOpen() {
-      const self = this;
-      setTimeout(function () {
-        self.autoComplete.openPanel();
-      }, 500);
-    }
+    // neccessary if user already start with small screen size
+    this.$resizeEvent.next();
+  }
 
-    resetText() {
-      this.fg_users.get('text').setValue('');
-    }
+  keepOpen() {
+    const self = this;
+    setTimeout(function() {
+      self.autoComplete.openPanel();
+    }, 500);
+  }
 
-    // @output from child
-    removeSelectedUser(id: number) {
-      console.log('remove user with id:' + id);
-      // get selected users
-      const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
-      // get new array without removed user
-      const filtered = _.filter(selected, function(o: PeopleItem) {
-        return o.ID !== id;
-      });
-      // unselect user in users
-      this.enableUnselected(id);
-      // overwrite previously selected users
-      this.fg_users.get('selectedUsers').patchValue(filtered);
-    }
+  resetText() {
+    this.fg_users.get('text').setValue('');
+  }
+
+  // @output from child
+  removeSelectedUser(id: number) {
+    console.log('remove user with id:' + id);
+    // get selected users
+    const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
+    // get new array without removed user
+    const filtered = _.filter(selected, function(o: PeopleItem) {
+      return o.ID !== id;
+    });
+    // unselect user in users
+    this.enableUnselected(id);
+    // overwrite previously selected users
+    this.fg_users.get('selectedUsers').patchValue(filtered);
+  }
 
   getCountSelectedUsers() {
     const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
@@ -291,7 +312,8 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event']) onResize(event) {
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
     this.$resizeEvent.next();
   }
 
@@ -313,5 +335,4 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     this.$resizeEvent.unsubscribe();
     this.$fc_selectedUsers.unsubscribe();
   }
-
 }

@@ -127,7 +127,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   openForm(mode, item?): void {
     const data = { mode, item };
-    const formRef = this.form.open(TimelineFormComponent, { data });
+    const formRef = this.form.open(TimelineFormComponent, {
+      data,
+      disableClose: true
+    });
     formRef
       .afterClosed()
       .pipe(take(1))

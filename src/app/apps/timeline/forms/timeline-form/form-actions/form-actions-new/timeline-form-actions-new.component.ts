@@ -42,6 +42,7 @@ import * as fromErrorActions from '../../../../../../store/actions/errors.action
 })
 export class TimelineFormActionsNewComponent implements OnInit {
   @Input() fg_fields: FormGroup;
+  @Input() fg_image: FormGroup;
   // @Input() fg_photo: FormGroup;
 
   @Output() closeForm = new EventEmitter<any>();
@@ -53,11 +54,7 @@ export class TimelineFormActionsNewComponent implements OnInit {
 
   // hasUnsavedPhoto = false;
 
-  constructor(
-    private store_root: Store<fromRoot.RootState>,
-    // private store_people: Store<fromTimeline.TimelineState>,
-    // private spHttp: PeopleFormHttpService
-  ) {}
+  constructor(private store_root: Store<fromRoot.RootState>) {}
 
   ngOnInit() {
     // this.$watchArrayBuffer = this.fg_photo
@@ -192,7 +189,7 @@ export class TimelineFormActionsNewComponent implements OnInit {
     // const date = this.fg_fields.controls['EventDate'].value as Moment;
     console.log(this.fg_fields);
     console.log(this.fg_fields.getRawValue());
-
+    console.log(this.fg_image);
     // const newFields = { ...this.fg_fields.getRawValue(), EventDate: date.toDate() };
 
     // console.log(newFields);
