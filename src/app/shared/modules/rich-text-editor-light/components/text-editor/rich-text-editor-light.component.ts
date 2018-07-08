@@ -21,7 +21,7 @@ Quill.register('modules/imageResize', ImageResize);
         </quill-editor>
     </div>
     <div class="image-warning-text">* add image(s) only if absolutely needed</div>
-    <div class="image-warning-text">** limit image's width/height to 400px</div>
+    <div class="image-warning-text">** limit image's width to 400px</div>
     `
 })
 export class RichTextEditorLightComponent implements OnInit {
