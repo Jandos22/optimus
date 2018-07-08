@@ -27,7 +27,7 @@
             </app-timeline-form-summary>
         </div>
 
-        <div class="group-of-2" fxLayout="row wrap">
+        <div class="group-of-2" fxLayout="column">
             <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
                 Event Photo
                 <i>(optional)</i>
@@ -36,6 +36,8 @@
             <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [fg_image]="fg_image"
                 (imageChanged)="imageChanged($event)">
             </app-form-control-image-picker>
+
+            <div fxFlex="19.5px"></div>
 
         </div>
 

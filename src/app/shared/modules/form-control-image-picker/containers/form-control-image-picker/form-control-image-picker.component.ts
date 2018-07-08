@@ -50,7 +50,7 @@ import { FormControlImagePickerService } from './../../services/form-control-ima
   template: `
   <mdc-card [outlined]="true" id="refWidth">
 
-    <mdc-card-media class="common-form-media-container">
+    <mdc-card-media class="common-form-media-container" *ngIf="!state.picker.showNoImage">
 
       <!-- if component doesn't have old or new image -->
       <div *ngIf="state.picker.showNoImage" class="no-image" fxLayout="column" fxLayoutAlign="center center">
@@ -76,6 +76,14 @@ import { FormControlImagePickerService } from './../../services/form-control-ima
 
       <!-- <button mat-button (click)="log()">LOG</button> -->
 
+      <label for="photoInput" *ngIf="!state.picker.selected">
+        <mdc-ripple class="common-file-browse-button"
+          [mdc-elevation]="0" [attachTo]="ripple1"
+          fxLayout="row" fxLayoutAlign="center center">
+          <span #ripple1 class='fa_regular'><fa-icon [icon]="['far', 'image']"></fa-icon></span>
+        </mdc-ripple>
+      </label>
+
       <button *ngIf="state.picker.selected && state.picker.cropped"
         mat-button (click)="back()">
         BACK TO CROP
@@ -87,7 +95,7 @@ import { FormControlImagePickerService } from './../../services/form-control-ima
         <mdc-ripple class="common-file-browse-button"
           [mdc-elevation]="0" [attachTo]="ripple"
           fxLayout="row" fxLayoutAlign="center center">
-          <div #rippleSpan>BROWSE</div>
+          <div #ripple>BROWSE</div>
         </mdc-ripple>
       </label>
       <input id="photoInput" type="file" style="display: none;" (change)="fileChangeListener($event)">
