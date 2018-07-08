@@ -89,6 +89,9 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
   // react to value changes in form
   alias$: Subscription;
 
+  // focuses
+  rte_focused = false;
+
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_timeline: Store<fromTimeline.TimelineState>,
@@ -190,6 +193,10 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
 
   onSelectUser(selected: number[]) {
     this.fg_fields.get('EventReportersId').patchValue(selected);
+  }
+
+  onRichTextFocus(event) {
+    this.rte_focused = event;
   }
 
   closeForm($event) {

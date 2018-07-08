@@ -31,6 +31,9 @@ export class TimelineFormInitService {
         Validators.minLength(60),
         Validators.maxLength(140)
       ]),
+      RichText: new FormControl(
+        this.getRichText(mo, it)
+      ),
       EventTypeId: new FormControl(
         this.getEventTypeId(mo, it),
         Validators.required
@@ -106,6 +109,18 @@ export class TimelineFormInitService {
         return { value: item.EventReportersId, disabled: true };
       case 'edit':
         return { value: item.EventReportersId, disabled: false };
+    }
+  }
+
+  // get event rich text field value & condition
+  getRichText(mode: FormMode, item: TimelineEventItem) {
+    switch (mode) {
+      case 'new':
+        return ''; // start with empty string
+      case 'view':
+        return { value: item.RichText, disabled: true };
+      case 'edit':
+        return { value: item.RichText, disabled: false };
     }
   }
 }

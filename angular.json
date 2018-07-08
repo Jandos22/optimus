@@ -23,9 +23,13 @@
               "src/styles__fonts.scss",
               "src/styles__theme.scss",
               "src/styles.scss",
-              "src/styles/styles__form.scss"
+              "src/styles/styles__form.scss",
+              "src/styles/quill.snow.css"
             ],
-            "scripts": ["./node_modules/sprestlib/dist/sprestlib.min.js"]
+            "scripts": [
+              "./node_modules/sprestlib/dist/sprestlib.min.js",
+              "./node_modules/quill/dist/quill.min.js"
+            ]
           },
           "configurations": {
             "production": {

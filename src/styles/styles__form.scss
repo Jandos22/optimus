@@ -1,5 +1,7 @@
 // the only place to put styles for forms and for elements
 
+@import '../colors';
+
 .cmn-form-container {
   display: flex;
   flex-direction: column;
@@ -28,7 +30,6 @@
       max-width: 392px; // 180*2+16*2
     }
   }
-
 }
 
 .cmn-form-component {
@@ -52,4 +53,24 @@
   padding-bottom: 4px;
   margin-bottom: 4px;
   // border-bottom: 1px solid #ccc;
+}
+
+.cmn-form-control-title {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13.5px;
+  margin-bottom: 10.5px;
+
+  &.rte_focused {
+    font-size: 12px;
+    color: $my-primary;
+  }
+}
+
+.image-warning-text {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  line-height: 13.5px;
+  padding: 4px 4px 0px 4px;
 }

@@ -6,6 +6,7 @@ export interface TimelineEventItem extends SpListItem {
   EventDate: Date;
   Title?: string;
   Summary?: string;
+  RichText?: any;
   EventReporters?: TimelineEventReporters;
   EventReportersId?: number[];
   EventType?: TimelineEventType;

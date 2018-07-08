@@ -36,6 +36,7 @@ import * as fromPipes from '../../shared/pipes';
 
 // form modules
 import { FormControlUsersSelectionModule } from '../../shared/modules/form-control-users-selection/form-control-users-selection.module';
+import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
 
 
 // routes
@@ -57,7 +58,8 @@ export const timelineRoutes: Routes = [
     FontAwesomeModule,
     SimpleNotificationsModule,
     // form control modules
-    FormControlUsersSelectionModule
+    FormControlUsersSelectionModule,
+    RichTextEditorLightModule
   ],
   providers: [...fromServices.services],
   declarations: [
