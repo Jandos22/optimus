@@ -5,7 +5,7 @@ import {
   PathSlbSp,
   WirelinePath,
   PathOptimus
-} from './../../../../shared/constants/index';
+} from '../../../../shared/constants';
 
 import { FormGroup } from '@angular/forms';
 
@@ -37,8 +37,8 @@ import { PeopleFormPhotoService } from './form-services/people-form-photo.servic
 import { PeopleFormHttpService } from './form-services/people-form-http.service';
 
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
-import { FormMode } from './../../../../shared/interface/form.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
+import { FormMode } from '../../../../shared/interface/form.model';
 
 // dialog components
 import {

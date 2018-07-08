@@ -2,7 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 // interfaces
 import { SharepointUser } from '../../../shared/interface/user.model';
-import { PeopleItem } from './../../../shared/interface/people.model';
+import { PeopleItem } from '../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-sidenav-header',

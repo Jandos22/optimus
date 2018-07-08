@@ -8,7 +8,7 @@ import {
 } from '../actions/events.actions';
 
 // interfaces
-import { TimelineEventItem } from './../../../../shared/interface/timeline.model';
+import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
 // compose reducer state shape here
 export interface EventsState extends EntityState<TimelineEventItem> {

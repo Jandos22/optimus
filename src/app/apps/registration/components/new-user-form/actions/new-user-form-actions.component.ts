@@ -20,7 +20,7 @@ import * as fromRoot from '../../../../../store';
 import * as fromErrorActions from '../../../../../store/actions/errors.actions';
 
 // interfaces
-import { PeopleItem } from './../../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../../shared/interface/people.model';
 
 // services
 import { NewUserFormHttpService } from '../services/new-user-form-http.service';

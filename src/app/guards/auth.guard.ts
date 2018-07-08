@@ -13,8 +13,8 @@ import * as a_in_locations from '../store/actions/locations.actions';
 import { UserService } from '../shared/services/user.service';
 
 // interfaces
-import { PeopleItem } from './../shared/interface/people.model';
-import { CurrentUser } from './../models/current-user.m';
+import { PeopleItem } from '../shared/interface/people.model';
+import { CurrentUser } from '../models/current-user.m';
 
 @Injectable()
 export class AuthGuard implements OnDestroy {

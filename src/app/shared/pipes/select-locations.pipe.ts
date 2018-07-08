@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 // import * as _ from 'lodash';
 
 // interfaces
-import { LocationEnt } from './../interface/locations.model';
+import { LocationEnt } from '../interface/locations.model';
 
 @Pipe({
   name: 'selectLocations'

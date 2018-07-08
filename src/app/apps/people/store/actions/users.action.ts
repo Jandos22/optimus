@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { PeopleItem } from './../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 export enum UsersActionTypes {
   SEARCH_USERS_START = '[People Users] Search Users Start',

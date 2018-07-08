@@ -1,7 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 // constants
-import { ApiPath, PathSlbSp } from './../../../../shared/constants/index';
+import { ApiPath, PathSlbSp } from '../../../../shared/constants';
 
 // interfaces
 import { TimelineEventItem } from '../../../../shared/interface/timeline.model';

@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 // interfaces
-import { ExemptionsGrouped } from './../../../../shared/interface/exemptions.model';
+import { ExemptionsGrouped } from '../../../../shared/interface/exemptions.model';
 
 @Component({
   selector: 'app-exemptions-groups',

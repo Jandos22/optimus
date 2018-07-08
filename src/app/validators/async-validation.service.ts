@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
-import { ApiPath } from './../shared/constants/index';
+import { ApiPath } from '../shared/constants';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';

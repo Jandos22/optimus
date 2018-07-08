@@ -5,10 +5,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from './../../../shared/constants/index';
+import { ApiPath } from '../../../shared/constants';
 
 // services
-import { SharepointService } from './../../../shared/services/sharepoint.service';
+import { SharepointService } from '../../../shared/services/sharepoint.service';
 
 // interfaces
 import { TimelineEventType } from '../../../shared/interface/timeline.model';

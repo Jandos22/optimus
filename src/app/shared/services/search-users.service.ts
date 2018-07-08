@@ -6,14 +6,14 @@ import { throwError, of, from } from 'rxjs';
 import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from '../../shared/constants';
-import { hk_accept, hv_appjson } from '../../shared/constants/headers';
+import { ApiPath } from '../constants';
+import { hk_accept, hv_appjson } from '../constants/headers';
 
-import { SpResponse } from './../../shared/interface/sp-response.model';
-import { SpGetListItemResult } from '../../shared/interface/sp-list-item.model';
+import { SpResponse } from '../interface/sp-response.model';
+import { SpGetListItemResult } from '../interface/sp-list-item.model';
 
 // services
-import { SharepointService } from './../../shared/services/sharepoint.service';
+import { SharepointService } from './sharepoint.service';
 
 // interfaces
 import { SearchParamsUser } from '../interface/people.model';

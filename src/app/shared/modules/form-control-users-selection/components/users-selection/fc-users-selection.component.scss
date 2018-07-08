@@ -1,3 +1,5 @@
+@import '../../../../../../colors';
+
 div.selectable-user-photo-container {
     width: 36px;
     height: 36px;
@@ -13,11 +15,16 @@ div.selectable-user-photo-container {
     height: 40px;
     width: 100%;
 
-span.fullname {
+span.fullnameSelect {
     line-height: 20px;
     font-size: 14px;
     font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
     color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 div.second_line {
@@ -31,4 +38,20 @@ div.second_line {
     color: rgba(0, 0, 0, 0.5);
     }
 }
+}
+
+.prefix-as-chip {
+    padding: 4px 8px;
+    margin: 0;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 16px;
+    height: 16px;
+    width: 24px;
+    text-align: center;
+    background: #ccc;
+}
+
+.userSelected {
+    background: $my-blue-50;
 }

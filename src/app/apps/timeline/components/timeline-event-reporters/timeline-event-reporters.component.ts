@@ -2,7 +2,7 @@ import {
   PathSlbSp,
   ApiPath,
   PathOptimus
-} from './../../../../shared/constants/index';
+} from '../../../../shared/constants';
 import {
   Component,
   Input,

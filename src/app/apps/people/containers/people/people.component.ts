@@ -16,8 +16,8 @@ import { MatDialog } from '@angular/material';
 import {
   PeopleItem,
   UserSearchParams
-} from './../../../../shared/interface/people.model';
-import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
+} from '../../../../shared/interface/people.model';
+import { PaginationState } from '../../store/reducers/pagination.reducer';
 
 // form component
 import { PeopleFormComponent } from '../../forms/people-form/people-form.component';

@@ -20,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
-import { environment } from './../environments/environment';
+import { environment } from '../environments/environment';
 
 // NgRx
 import { StoreModule, MetaReducer } from '@ngrx/store';

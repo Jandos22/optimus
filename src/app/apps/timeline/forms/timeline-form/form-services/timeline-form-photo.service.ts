@@ -1,5 +1,5 @@
-import { ApiPath } from './../../../../../shared/constants/index';
-import { FormMode } from './../../../../../shared/interface/form.model';
+import { ApiPath } from '../../../../../shared/constants';
+import { FormMode } from '../../../../../shared/interface/form.model';
 import { Injectable } from '@angular/core';
 
 // interface

@@ -29,19 +29,19 @@ import { take, switchMap, map } from 'rxjs/operators';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // interfaces
-import { LocationEnt } from './../../../../shared/interface/locations.model';
+import { LocationEnt } from '../../../../shared/interface/locations.model';
 
 // constants
-import { WirelinePath } from './../../../../shared/constants/index';
+import { WirelinePath } from '../../../../shared/constants';
 
 // entry components
-import { NewUserFormPhotoComponent } from '../index';
+import { NewUserFormPhotoComponent } from '..';
 
 // services
-import { ValidationService } from './../../../../validators/validation.service';
+import { ValidationService } from '../../../../validators/validation.service';
 import { AsyncValidationService } from '../../../../validators/async-validation.service';
 import { NewUserFormHttpService } from './services/new-user-form-http.service';
-import { UserService } from './../../../../shared/services/user.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 export interface Photo {
   photoExists: boolean;

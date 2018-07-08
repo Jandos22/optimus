@@ -5,7 +5,7 @@ import {
   PathSlbSp,
   WirelinePath,
   PathOptimus
-} from './../../../../shared/constants/index';
+} from '../../../../shared/constants';
 
 import { FormGroup } from '@angular/forms';
 
@@ -44,10 +44,11 @@ import { TimelineFormValueService } from './form-services/timeline-form-value.se
 // } from '../timeline-form-photo-picker/timeline-form-photo-picker.component';
 
 // interfaces
-import { TimelineEventItem, TimelineEventType } from './../../../../shared/interface/timeline.model';
-import { FormMode } from './../../../../shared/interface/form.model';
+import { TimelineEventItem, TimelineEventType } from '../../../../shared/interface/timeline.model';
+import { FormMode } from '../../../../shared/interface/form.model';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-timeline-form',
@@ -186,6 +187,10 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
   //   this.fg_photo.get('ArrayBuffer').patchValue(newPhoto.ArrayBuffer);
   //   // this.unsavedPhoto = { hasUnsavedPhoto: true, ...newPhoto };
   // }
+
+  onSelectUser(selected: number[]) {
+    this.fg_fields.get('EventReportersId').patchValue(selected);
+  }
 
   closeForm($event) {
     this.formRef.close($event);

@@ -5,13 +5,13 @@ import { from } from 'rxjs';
 import { take, switchMap } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from './../../../../../shared/constants/index';
+import { ApiPath } from '../../../../../shared/constants';
 
 // interfaces
 import {
   PeopleItem,
   ToSaveUserPhoto
-} from './../../../../../shared/interface/people.model';
+} from '../../../../../shared/interface/people.model';
 
 // services
 import { SharepointService } from '../../../../../shared/services/sharepoint.service';

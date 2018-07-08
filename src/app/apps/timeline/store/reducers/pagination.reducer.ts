@@ -7,7 +7,7 @@ import {
 import * as _ from 'lodash';
 
 // constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
+import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface PaginationState {
   currentIndex: number;

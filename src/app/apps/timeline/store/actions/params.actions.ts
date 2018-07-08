@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 // interfaces
-import { TimelineSearchParams } from './../../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from '../../../../shared/interface/timeline.model';
 
 // actions
 export enum ParamsActionTypes {

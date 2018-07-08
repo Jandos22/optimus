@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TimelineFormValueService } from './timeline-form-value.service';
 
 // interfaces
-import { FormMode } from './../../../../../shared/interface/form.model';
+import { FormMode } from '../../../../../shared/interface/form.model';
 import { TimelineEventItem } from '../../../../../shared/interface/timeline.model';
 
 // import * as moment from 'moment';

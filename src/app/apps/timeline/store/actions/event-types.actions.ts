@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { TimelineEventType } from './../../../../shared/interface/timeline.model';
+import { TimelineEventType } from '../../../../shared/interface/timeline.model';
 
 export enum EventTypesActionTypes {
   FETCH_EVENT_TYPES = '[Timeline Events] Fetch Event Types',

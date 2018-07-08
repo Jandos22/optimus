@@ -5,7 +5,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 // component for dialog box
-import { HeaderLocationSelectorComponent } from './../header-location-selector/header-location-selector.component';
+import { HeaderLocationSelectorComponent } from '../header-location-selector/header-location-selector.component';
 
 // ngrx
 import { Store, select } from '@ngrx/store';

@@ -1,4 +1,4 @@
-import { SharedModule } from './../../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 // angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -34,6 +34,10 @@ import * as fromServices from './services';
 // pipes
 import * as fromPipes from '../../shared/pipes';
 
+// form modules
+import { FormControlUsersSelectionModule } from '../../shared/modules/form-control-users-selection/form-control-users-selection.module';
+
+
 // routes
 export const timelineRoutes: Routes = [
   { path: '', component: fromContainers.TimelineComponent }
@@ -51,7 +55,9 @@ export const timelineRoutes: Routes = [
     MaterialModule,
     MaterialDesignComponentsModule,
     FontAwesomeModule,
-    SimpleNotificationsModule
+    SimpleNotificationsModule,
+    // form control modules
+    FormControlUsersSelectionModule
   ],
   providers: [...fromServices.services],
   declarations: [

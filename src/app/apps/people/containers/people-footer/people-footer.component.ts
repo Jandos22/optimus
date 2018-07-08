@@ -12,7 +12,7 @@ import {
   PaginationIndexes,
   PaginationCounter
 } from '../../../../shared/interface/pagination.model';
-import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
+import { PaginationState } from '../../store/reducers/pagination.reducer';
 
 @Component({
   selector: 'app-people-footer',

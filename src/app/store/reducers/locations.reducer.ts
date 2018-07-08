@@ -3,7 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import {
   LocationsActionTypes,
   LocationsActionsUnion
-} from './../actions/locations.actions';
+} from '../actions/locations.actions';
 
 // interfaces
 import { LocationEnt } from '../../shared/interface/locations.model';

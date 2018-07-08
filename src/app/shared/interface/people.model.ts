@@ -16,6 +16,8 @@ export interface PeopleItem extends SpListItem {
   PositionId?: number;
   Roles?: UserRole[];
   RolesId?: number;
+  // pseudo
+  selected?: boolean;
 }
 
 export class PeopleItemObject implements PeopleItem {

@@ -22,7 +22,7 @@ import * as _ from 'lodash';
 import { Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import * as fromRoot from '../../../../store';
-import * as fromTimeline from '../index';
+import * as fromTimeline from '..';
 import * as fromErrorActions from '../../../../store/actions/errors.actions';
 
 // services

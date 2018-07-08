@@ -26,10 +26,10 @@ import * as fromUsersActions from '../../../../store/actions/users.action';
 import {
   PeopleItem,
   ToSaveUserPhoto
-} from './../../../../../../shared/interface/people.model';
+} from '../../../../../../shared/interface/people.model';
 
 // services
-import { PeopleFormHttpService } from './../../form-services/people-form-http.service';
+import { PeopleFormHttpService } from '../../form-services/people-form-http.service';
 
 @Component({
   selector: 'app-people-form-actions-edit',

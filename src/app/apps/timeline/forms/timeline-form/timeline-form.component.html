@@ -52,12 +52,13 @@
       </div>
 
       <div class="group-of-2" fxLayout="row wrap">
-        <app-timeline-form-event-reporters
+        <app-fc-users-selection
             class="cmn-form-component take-2-cols"
             fxLayout="column"
             [fg_fields]="fg_fields"
-            [accessLevel]="accessLevel$ | async">
-        </app-timeline-form-event-reporters>
+            [accessLevel]="accessLevel$ | async"
+            (onSelectUser)="onSelectUser($event)">
+        </app-fc-users-selection>
       </div>
 
     </div>

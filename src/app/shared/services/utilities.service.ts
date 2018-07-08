@@ -1,10 +1,10 @@
-import { PeopleItem } from './../interface/people.model';
+import { PeopleItem } from '../interface/people.model';
 import { take } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // constants
-import { SlbSpPath } from './../constants/index';
+import { SlbSpPath } from '../constants';
 
 // interfaces
 import { SpListItemAttachmentFiles } from '../interface/sp-list-item.model';

@@ -25,10 +25,10 @@ import {
 } from 'rxjs/operators';
 
 // interfaces
-import { TimelineSearchParams } from './../../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from '../../../../shared/interface/timeline.model';
 
 // validators
-import { ValidationService } from './../../../../validators/validation.service';
+import { ValidationService } from '../../../../validators/validation.service';
 
 @Component({
   selector: 'app-timeline-header',

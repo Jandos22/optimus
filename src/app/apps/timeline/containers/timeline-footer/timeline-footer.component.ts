@@ -12,7 +12,7 @@ import {
   PaginationIndexes,
   PaginationCounter
 } from '../../../../shared/interface/pagination.model';
-import { PaginationState } from '../../../timeline/store/reducers/pagination.reducer';
+import { PaginationState } from '../../store/reducers/pagination.reducer';
 
 @Component({
   selector: 'app-timeline-footer',

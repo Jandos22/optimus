@@ -23,14 +23,14 @@ import { PpeActionsUnion, PpeActionTypes } from '../actions/ppe.actions';
 import * as ActionsInPpe from '../actions/ppe.actions';
 
 // services
-import { PpeService } from './../../services/ppe.service';
+import { PpeService } from '../../services/ppe.service';
 
 // interfaces
 import {
   PpeCategory,
   PpeItem,
   PpeItemsByCategory
-} from './../../../../shared/interface/ppe.model';
+} from '../../../../shared/interface/ppe.model';
 
 @Injectable()
 export class PpeEffects {

@@ -8,7 +8,7 @@ import {
 } from '../actions/event-types.actions';
 
 // interfaces
-import { TimelineEventType } from './../../../../shared/interface/timeline.model';
+import { TimelineEventType } from '../../../../shared/interface/timeline.model';
 
 // compose reducer state shape here
 export interface EventTypesState extends EntityState<TimelineEventType> {

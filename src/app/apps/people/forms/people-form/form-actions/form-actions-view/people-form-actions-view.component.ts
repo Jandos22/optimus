@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 // interfaces
-import { FormMode } from './../../../../../../shared/interface/form.model';
+import { FormMode } from '../../../../../../shared/interface/form.model';
 
 // ngrx
 import { Store } from '@ngrx/store';

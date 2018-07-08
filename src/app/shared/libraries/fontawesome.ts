@@ -24,7 +24,8 @@ import {
   faUserCircle,
   faSave,
   faImage,
-  faTimesCircle
+  faTimesCircle,
+  faTrashAlt
 } from '@fortawesome/free-regular-svg-icons';
 
 export const fontawesome_icons = {
@@ -47,6 +48,7 @@ export const fontawesome_icons = {
   faSpinner,
   faTimes,
   faTimesCircle,
+  faTrashAlt,
   faUser,
   faUserCircle,
   faUsers,

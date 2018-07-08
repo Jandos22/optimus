@@ -27,7 +27,7 @@ import {
 import * as ActionsInExemptions from '../actions/exemptions.actions';
 
 // services
-import { ExemptionsService } from './../../services/exemptions.service';
+import { ExemptionsService } from '../../services/exemptions.service';
 import {
   Exemption,
   ExemptionsRaw,

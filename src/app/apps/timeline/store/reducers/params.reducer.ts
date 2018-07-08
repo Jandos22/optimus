@@ -5,7 +5,7 @@ import {
 } from '../actions/params.actions';
 
 // constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
+import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface ParamsState {
   locations: number[];

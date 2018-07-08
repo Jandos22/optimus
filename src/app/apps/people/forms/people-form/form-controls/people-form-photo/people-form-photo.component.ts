@@ -12,9 +12,9 @@ import { FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
-import { PeopleFormPhotoPickerComponent } from './../../../people-form-photo-picker/people-form-photo-picker.component';
+import { PeopleFormPhotoPickerComponent } from '../../../people-form-photo-picker/people-form-photo-picker.component';
 import { MatDialog } from '@angular/material';
-import { FormMode } from './../../../../../../shared/interface/form.model';
+import { FormMode } from '../../../../../../shared/interface/form.model';
 
 @Component({
   selector: 'app-people-form-photo',

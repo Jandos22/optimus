@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 // interfaces
-import { AppItem } from './../../shared/interface/applications.model';
+import { AppItem } from '../../shared/interface/applications.model';
 
 export enum AppsActionTypes {
   GET_ALL_APPS = '[Apps] Get All Applications',

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-people-content',

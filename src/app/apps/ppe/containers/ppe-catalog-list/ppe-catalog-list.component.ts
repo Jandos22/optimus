@@ -5,7 +5,7 @@ import {
   PpeCategory,
   PpeItem,
   PpeItemsByCategory
-} from './../../../../shared/interface/ppe.model';
+} from '../../../../shared/interface/ppe.model';
 
 @Component({
   selector: 'app-ppe-catalog-list',

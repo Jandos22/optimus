@@ -5,10 +5,10 @@ import { from } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 // constants
-import { ApiPath } from './../constants/index';
+import { ApiPath } from '../constants';
 
 // interfaces
-import { PeopleItem } from './../interface/people.model';
+import { PeopleItem } from '../interface/people.model';
 
 @Injectable()
 export class PeopleLookupService {

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { TimelineEventItem } from './../../../../shared/interface/timeline.model';
+import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
 export enum EventsActionTypes {
   SEARCH_EVENTS_START = '[Timeline Events] Search Events Start',

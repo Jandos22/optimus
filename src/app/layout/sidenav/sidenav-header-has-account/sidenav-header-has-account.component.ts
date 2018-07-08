@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 // interfaces
-import { PeopleItem } from './../../../shared/interface/people.model';
+import { PeopleItem } from '../../../shared/interface/people.model';
 
 // services
 import { UtilitiesService } from '../../../shared/services';

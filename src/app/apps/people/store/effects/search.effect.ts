@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 // ngrx
 import { Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import * as fromPeople from '../index';
+import * as fromPeople from '..';
 import * as fromParamsActions from '../actions/params.action';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromUsersActions from '../actions/users.action';
@@ -22,8 +22,8 @@ import { PeopleService } from '../../services/people.service';
 import {
   PeopleItem,
   UserSearchParams
-} from './../../../../shared/interface/people.model';
-import { SpResponse } from './../../../../models/sp-response.model';
+} from '../../../../shared/interface/people.model';
+import { SpResponse } from '../../../../models/sp-response.model';
 
 @Injectable()
 export class UsersSearchEffects {

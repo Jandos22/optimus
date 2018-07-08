@@ -2,10 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 // types
-import { FormMode } from './../../../../../shared/interface/form.model';
+import { FormMode } from '../../../../../shared/interface/form.model';
 
 // interfaces
-import { PeopleItem } from './../../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../../shared/interface/people.model';
 import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
 
 @Component({

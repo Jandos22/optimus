@@ -17,7 +17,7 @@ import * as _ from 'lodash';
 // ngrx
 import { Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import * as fromTimeline from '../index';
+import * as fromTimeline from '..';
 import * as fromParamsActions from '../actions/params.actions';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromEventsActions from '../actions/events.actions';
@@ -27,7 +27,7 @@ import * as fromErrorActions from '../../../../store/actions/errors.actions';
 import { TimelineService } from '../../services/timeline.service';
 
 // interfaces
-import { SpResponse } from './../../../../models/sp-response.model';
+import { SpResponse } from '../../../../models/sp-response.model';
 import {
   TimelineEventItem,
   TimelineSearchParams

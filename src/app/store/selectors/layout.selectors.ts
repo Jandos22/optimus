@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import * as fromRoot from '../';
+import * as fromRoot from '..';
 import * as fromLayout from '../reducers/layout.reducer';
 
 export const getLayoutState = createSelector(

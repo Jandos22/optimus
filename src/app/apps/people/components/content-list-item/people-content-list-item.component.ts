@@ -18,10 +18,10 @@ import {
 } from '@angular/animations';
 
 // services
-import { UtilitiesService } from './../../../../shared/services/utilities.service';
+import { UtilitiesService } from '../../../../shared/services/utilities.service';
 
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-people-content-list-item',

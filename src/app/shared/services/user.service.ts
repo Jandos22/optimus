@@ -1,4 +1,4 @@
-import { PathSlbSp } from './../constants/index';
+import { PathSlbSp } from '../constants';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -6,16 +6,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ApiPath, WirelinePath, ProxyPath } from './../constants';
+import { ApiPath, WirelinePath, ProxyPath } from '../constants';
 
 // data models
 import { Photo } from '../../models/photo.model';
-import { FDV } from './../interface/form-digest-value.model';
-import { FormDigestValue } from '../../models/index';
+import { FDV } from '../interface/form-digest-value.model';
+import { FormDigestValue } from '../../models';
 import { CurrentUser } from '../../models/current-user.m';
 
 // services
-import { SharepointService } from '../services/sharepoint.service';
+import { SharepointService } from './sharepoint.service';
 import { PeopleItem } from '../interface/people.model';
 
 // import { sprLib } from '../../../typings';
