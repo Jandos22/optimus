@@ -78,7 +78,6 @@ app-layout {
   min-width: 100%;
   overflow: hidden;
   background: #e3f2fd;
-  
 }
 
 .common-header {
@@ -548,13 +547,6 @@ input[type='text']::-ms-clear {
 
 ::-ms-reveal {
   display: none;
-}
-
-.mat-input-element:disabled {
-  color: rgba(0, 0, 0, 0.65) !important;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.65) !important;
-  -webkit-opacity: 1;
-  opacity: 1;
 }
 
 .common-user-photo__matoption {

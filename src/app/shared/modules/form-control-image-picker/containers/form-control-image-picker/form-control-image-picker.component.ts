@@ -1,5 +1,3 @@
-import { debounceTime, map } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import {
   Component,
   OnInit,
@@ -12,6 +10,10 @@ import {
   ElementRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+// rxjs
+import { debounceTime, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { ImageCropperComponent, CropperSettings } from 'ngx-img-cropper';
 
@@ -44,6 +46,9 @@ export interface ImageState {
 // services
 import { FormControlImagePickerService } from './../../services/form-control-image-picker.service';
 
+// interfaces
+import { FormMode } from './../../../../interface/form.model';
+
 @Component({
   selector: 'app-form-control-image-picker',
   styleUrls: ['form-control-image-picker.component.scss'],
@@ -72,7 +77,8 @@ import { FormControlImagePickerService } from './../../services/form-control-ima
 
     </mdc-card-media>
 
-    <mdc-card-actions fxLayout="row" fxLayoutAlign="space-between center" class="actions">
+    <mdc-card-actions *ngIf="mode !== 'view'"
+      fxLayout="row" fxLayoutAlign="space-between center" class="actions">
 
       <!-- <button mat-button (click)="log()">LOG</button> -->
 
@@ -123,6 +129,7 @@ import { FormControlImagePickerService } from './../../services/form-control-ima
 export class FormControlImagePickerComponent implements OnInit {
   @Input() fg_fields: FormGroup;
   @Input() fg_image: FormGroup;
+  @Input() mode: FormMode;
 
   // send array buffer as 0 or as new image
   @Output() imageChanged = new EventEmitter<ArrayBuffer>();

@@ -42,6 +42,7 @@ import {
 
 import * as _ from 'lodash';
 import { element } from '../../../../../../../node_modules/protractor';
+import { FormMode } from '../../../../interface/form.model';
 
 @Component({
   selector: 'app-fc-users-selection',
@@ -49,7 +50,7 @@ import { element } from '../../../../../../../node_modules/protractor';
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field id="refWidth"
+    <mat-form-field id="refWidth" *ngIf="mode !== 'view'"
       fxFlex="65.5px" [formGroup]="fg_users">
 
       <input matInput
@@ -87,7 +88,8 @@ import { element } from '../../../../../../../node_modules/protractor';
       *ngFor="let user of this.fg_users.get('selectedUsers').value"
       fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="8px"
       class="common-form-user-item"
-      [user]="user" (removeSelectedUser)="removeSelectedUser($event)">
+      [user]="user" [mode]="mode"
+      (removeSelectedUser)="removeSelectedUser($event)">
     </app-users-selection-user-selected>
     `
 })
@@ -95,6 +97,7 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   @Input() fg_fields: FormGroup;
   @Input() selfUser: PeopleItem;
   @Input() accessLevel: number;
+  @Input() mode: FormMode;
 
   @Output() onSelectUser = new EventEmitter<number[]>();
 
@@ -125,11 +128,7 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private srv: SearchUsersService) {}
 
   ngOnInit() {
-    // initialize form group for searching users
-    this.fg_users = this.fb.group({
-      text: '',
-      selectedUsers: ''
-    });
+    this.initFormGroup(this.mode);
 
     const initialLocations = this.fg_fields.get('LocationsId').get('results')
       .value;
@@ -187,6 +186,15 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
       .subscribe(ids => this.onSelectUser.emit(ids));
 
     this.addSelfToSelected(this.selfUser);
+  }
+
+  initFormGroup(mode: FormMode) {
+    console.log(mode);
+    // initialize form group for searching users
+    this.fg_users = this.fb.group({
+      text: [{ value: '', disabled: mode === 'view' ? true : false }],
+      selectedUsers: ''
+    });
   }
 
   addSelfToSelected(self: PeopleItem) {

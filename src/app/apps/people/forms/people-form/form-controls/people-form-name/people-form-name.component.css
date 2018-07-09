@@ -1,7 +1,0 @@
-/* default color when form control is disabled is too light */
-.mat-input-element:disabled {
-  color: rgba(0, 0, 0, 0.75) !important;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.75) !important;
-  -webkit-opacity: 1;
-  opacity: 1;
-}

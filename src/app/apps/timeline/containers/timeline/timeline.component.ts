@@ -36,7 +36,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
     <app-timeline-events-list
       fxFlex class="common-content"
-      [events]="data">
+      [events]="data" (openForm)="openForm('view', $event)">
     </app-timeline-events-list>
 
     <app-timeline-footer fxFlex="49px" class="common-footer"

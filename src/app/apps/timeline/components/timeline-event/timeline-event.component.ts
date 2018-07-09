@@ -1,4 +1,10 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation
+} from '@angular/core';
 
 // constants
 import { ApiPath, PathSlbSp } from '../../../../shared/constants';
@@ -35,9 +41,13 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
                   <span>{{ event.EventType.Title }}</span>
                 </div>
 
-                <div class="event__title">{{ event.Title }}</div>
+                <div class="event__title" (click)="openForm.emit(event)">
+                  {{ event.Title }}
+                </div>
 
-                <span class="event__summary">{{ event.Summary }}</span>
+                <span class="event__summary" (click)="openForm.emit(event)">
+                  {{ event.Summary }}
+                </span>
 
                 <div class="event__hashtags" *ngIf="event.HashTags">{{ event.HashTags }}</div>
 
@@ -54,6 +64,9 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 })
 export class TimelineEventComponent {
   @Input() event: TimelineEventItem;
+
+  @Output() openForm = new EventEmitter<TimelineEventItem>();
+
   constructor() {}
 
   get imageUrl() {

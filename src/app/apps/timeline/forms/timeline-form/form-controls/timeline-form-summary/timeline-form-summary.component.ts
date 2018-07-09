@@ -46,8 +46,10 @@ export class TimelineFormSummaryComponent {
       ? required
         ? '... is required'
         : min
-        ? 'minimum 60 characters required'
-        : max ? 'maximum 140 characters allowed'
-      : '' : '';
+          ? 'minimum 60 characters required'
+          : max
+            ? 'maximum 140 characters allowed'
+            : ''
+      : '';
   }
 }

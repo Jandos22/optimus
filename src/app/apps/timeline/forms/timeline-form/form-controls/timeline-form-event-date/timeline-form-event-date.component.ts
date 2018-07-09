@@ -4,9 +4,10 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { FormGroup, } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
-// import * as moment from 'moment';
+// interfaces
+import { FormMode } from './../../../../../../shared/interface/form.model';
 
 @Component({
   selector: 'app-timeline-form-event-date',
@@ -20,13 +21,14 @@ import { FormGroup, } from '@angular/forms';
         [matDatepicker]="picker"
         formControlName="EventDate">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
+      <mat-datepicker touchUi #picker [disabled]="mode === 'view'"></mat-datepicker>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class TimelineFormEventDateComponent {
   @Input() fg_fields: FormGroup;
+  @Input() mode: FormMode;
 
   constructor() {}
 

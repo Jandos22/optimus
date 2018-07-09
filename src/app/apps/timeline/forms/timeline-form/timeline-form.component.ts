@@ -108,6 +108,7 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     this.$mode.subscribe(mode => {
       console.log('mode changed to: ' + mode);
       this.data.mode = mode;
+      console.log(this.data.item);
 
       this.createFormGroups(mode, this.data.item, this.locationAssignedId);
     });

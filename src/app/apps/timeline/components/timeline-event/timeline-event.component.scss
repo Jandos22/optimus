@@ -1,3 +1,5 @@
+@import '../../../../../colors';
+
 .event-card__container {
   margin: 8px 0;
 }
@@ -52,6 +54,11 @@
   line-height: 21px; /* fallback */
   max-height: 42px; /* fallback */
   margin-bottom: 8px;
+
+  &:hover {
+    cursor: pointer;
+    color: $my-primary-dark;
+  }
 }
 
 .event__summary {
@@ -66,6 +73,11 @@
   line-height: 16px; /* fallback */
   max-height: 48px; /* fallback */
   margin-bottom: 8px;
+
+  &:hover {
+    cursor: pointer;
+    color: $my-primary-dark;
+  }
 }
 
 .event__hashtags {

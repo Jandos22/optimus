@@ -1,4 +1,15 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormMode } from './../../../../interface/form.model';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  Sanitizer,
+  SecurityContext,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 // import { QuillEditorComponent } from 'ngx-quill';
 
@@ -13,32 +24,51 @@ Quill.register('modules/imageResize', ImageResize);
   styleUrls: ['rich-text-editor-light.component.scss'],
   template: `
     <div [formGroup]="fg_fields">
+
+        <!-- NEW or EDIT modes -->
         <quill-editor
+          *ngIf="mode !== 'view'"
             [modules]="modules"
             [style]="{height: '200px'}"
             formControlName="RichText"
             (onSelectionChanged)="handleSelectionChanged($event)">
         </quill-editor>
+
+        <!-- VIEW mode -->
+        <div #richtext>
+        </div>
     </div>
-    <div class="image-warning-text">* add image(s) only if absolutely needed</div>
-    <div class="image-warning-text">** limit image's width to 400px</div>
     `
 })
 export class RichTextEditorLightComponent implements OnInit {
   @Input() fg_fields: FormGroup;
+  @Input() mode: FormMode;
 
   @Output() onFocus = new EventEmitter<any>();
 
   modules;
 
-  constructor() {}
+  // for view mode
+  @ViewChild('richtext') private richtext: ElementRef;
+
+  constructor(private sanitizer: Sanitizer) {}
 
   ngOnInit() {
     this.initModules();
+    console.log(this.mode);
 
     this.fg_fields.get('RichText').statusChanges.subscribe(v => {
       console.log(this.fg_fields.get('RichText'));
     });
+
+    // this.richtext = this.sanitizer.sanitize(
+    //   SecurityContext.NONE,
+    //   this.fg_fields.get('RichText').value
+    // );
+
+    this.richtext.nativeElement.innerHTML = this.fg_fields.get(
+      'RichText'
+    ).value;
   }
 
   initModules() {

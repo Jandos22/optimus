@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { FormMode } from './../../../../interface/form.model';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 
 // interfaces
 import { PeopleItem } from '../../../../interface/people.model';
@@ -7,10 +14,10 @@ import { PeopleItem } from '../../../../interface/people.model';
 import { UtilitiesService } from './../../../../services/utilities.service';
 
 @Component({
-    selector: 'app-users-selection-user-selected',
-    styleUrls: ['users-selection-user-selected.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
+  selector: 'app-users-selection-user-selected',
+  styleUrls: ['users-selection-user-selected.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
     <div fxFlex="36px" class="selectable-user-photo-container">
         <img [src]="utils.userPhoto(user)">
     </div>
@@ -23,7 +30,7 @@ import { UtilitiesService } from './../../../../services/utilities.service';
         </div>
     </div>
     <div class='common-button'>
-        <button mat-icon-button matTooltip='Remove User'
+        <button *ngIf="mode !== 'view'" mat-icon-button matTooltip='Remove User' tabindex="-1"
             (click)="removeSelectedUser.emit(user.ID)">
             <span class='fa_regular'><fa-icon [icon]="['far', 'trash-alt']"></fa-icon></span>
         </button>
@@ -31,9 +38,10 @@ import { UtilitiesService } from './../../../../services/utilities.service';
     `
 })
 export class UsersSelectionUserSelectedComponent {
-    @Input() user: PeopleItem;
+  @Input() user: PeopleItem;
+  @Input() mode: FormMode;
 
-    @Output() removeSelectedUser = new EventEmitter<number>();
+  @Output() removeSelectedUser = new EventEmitter<number>();
 
-    constructor(public utils: UtilitiesService) {}
+  constructor(public utils: UtilitiesService) {}
 }

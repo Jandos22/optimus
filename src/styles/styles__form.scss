@@ -119,3 +119,22 @@
   width: 100%;
   height: 206px;
 }
+
+// VIEW MODE
+// * when material form fields disabled
+// * modify color to darker
+// * apply these globally
+
+.mat-select-disabled .mat-select-value {
+  color: rgba(0, 0, 0, 0.75) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.75) !important;
+  -webkit-opacity: 1 !important;
+  opacity: 1 !important;
+}
+
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 0.75) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.75) !important;
+  -webkit-opacity: 1 !important;
+  opacity: 1 !important;
+}

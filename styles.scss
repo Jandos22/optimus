@@ -41,7 +41,6 @@ app-layout {
   height: 100vh;
 }
 
-
 .common-flex-container {
   // properties as flex container
   display: flex;
@@ -352,11 +351,4 @@ input[type='text']::-ms-clear {
 
 ::-ms-reveal {
   display: none;
-}
-
-.mat-input-element:disabled {
-  color: rgba(0, 0, 0, 0.65) !important;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.65) !important;
-  -webkit-opacity: 1;
-  opacity: 1;
 }

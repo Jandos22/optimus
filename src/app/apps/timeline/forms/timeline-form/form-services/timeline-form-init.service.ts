@@ -125,9 +125,9 @@ export class TimelineFormInitService {
       case 'new':
         return [locationId]; // Default Event Type = General, its id = 3
       case 'view':
-        return { value: item.LocationsId, disabled: true };
+        return { value: item.LocationsId.results, disabled: true };
       case 'edit':
-        return { value: item.LocationsId, disabled: false };
+        return { value: item.LocationsId.results, disabled: false };
     }
   }
 
