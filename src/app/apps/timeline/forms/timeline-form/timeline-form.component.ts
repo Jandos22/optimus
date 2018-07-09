@@ -32,8 +32,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // form services
 import { TimelineFormInitService } from './form-services/timeline-form-init.service';
-// import { TimelineFormSizeService } from './form-services/timeline-form-size.service';
-// import { TimelineFormHttpService } from './form-services/timeline-form-http.service';
+import { TimelineFormHttpService } from './form-services/timeline-form-http.service';
 
 // interfaces
 import {
@@ -49,7 +48,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   selector: 'app-timeline-form',
   styleUrls: ['timeline-form.component.scss'],
   templateUrl: './timeline-form.component.html',
-  providers: [TimelineFormInitService]
+  providers: [TimelineFormHttpService, TimelineFormInitService]
 })
 export class TimelineFormComponent implements OnInit, OnDestroy {
   // form shall have only two form groups
@@ -185,7 +184,10 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
   }
 
   onSelectUser(selected: number[]) {
-    this.fg_fields.get('EventReportersId').patchValue(selected);
+    this.fg_fields
+      .get('EventReportersId')
+      .get('results')
+      .patchValue(selected);
   }
 
   onRichTextFocus(event) {

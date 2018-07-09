@@ -5,8 +5,8 @@ import { FormGroup } from '@angular/forms';
 import { FormMode } from '../../../../../shared/interface/form.model';
 
 // interfaces
-// import { PeopleItem } from './../../../../../shared/interface/people.model';
 import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
+import { TimelineEventItem } from '../../../../../shared/interface/timeline.model';
 
 @Component({
   selector: 'app-timeline-form-actions',
@@ -26,12 +26,11 @@ export class TimelineFormActionsComponent {
   @Input() fg_image: FormGroup;
   //   @Input() initialFields: PeopleItem;
 
-  //   @Output() switchFormMode = new EventEmitter<any>();
-  //   @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+  @Output() switchFormMode = new EventEmitter<any>();
+  @Output() updateFormGroupFields = new EventEmitter<TimelineEventItem>();
   @Output()
-  //   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
-  @Output()
-  closeForm = new EventEmitter<any>();
+  updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
+  @Output() closeForm = new EventEmitter<any>();
 
   constructor() {}
 }

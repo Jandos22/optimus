@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 
 // services
 // import { ValidationService } from './../../../../../validators/validation.service';
@@ -14,37 +19,39 @@ import { ApiPath, PathSlbSp } from '../../../../../shared/constants';
 
 @Injectable()
 export class TimelineFormInitService {
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
   create_FormGroup_Fields(mo: FormMode, it: TimelineEventItem, lo: number) {
-    return new FormGroup({
-      Title: new FormControl(this.getSimpleFormValue(mo, it, 'Title'), [
-        Validators.required,
-        Validators.minLength(30),
-        Validators.maxLength(70)
-      ]),
-      Summary: new FormControl(this.getSimpleFormValue(mo, it, 'Summary'), [
-        Validators.required,
-        Validators.minLength(60),
-        Validators.maxLength(140)
-      ]),
-      RichText: new FormControl(this.getRichText(mo, it)),
-      EventTypeId: new FormControl(
-        this.getEventTypeId(mo, it),
-        Validators.required
-      ),
-      EventDate: new FormControl(
-        this.getEventDate(mo, it),
-        Validators.required
-      ),
-      LocationsId: new FormControl(
-        this.getLocationsId(mo, it, lo),
-        Validators.required
-      ),
-      EventReportersId: new FormControl(
-        this.getEventReportersId(mo, it),
-        Validators.required
-      )
+    return this.fb.group({
+      Title: [
+        this.getSimpleFormValue(mo, it, 'Title'),
+        [
+          Validators.required,
+          Validators.minLength(30),
+          Validators.maxLength(70)
+        ]
+      ],
+      Summary: [
+        this.getSimpleFormValue(mo, it, 'Summary'),
+        [
+          Validators.required,
+          Validators.minLength(60),
+          Validators.maxLength(140)
+        ]
+      ],
+      HashTags: [
+        this.getSimpleFormValue(mo, it, 'HashTags'),
+        [Validators.maxLength(140)]
+      ],
+      RichText: [this.getRichText(mo, it)],
+      EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
+      EventDate: [this.getEventDate(mo, it), Validators.required],
+      LocationsId: this.fb.group({
+        results: [this.getLocationsId(mo, it, lo), Validators.required]
+      }),
+      EventReportersId: this.fb.group({
+        results: [this.getEventReportersId(mo, it), Validators.required]
+      })
     });
   }
 

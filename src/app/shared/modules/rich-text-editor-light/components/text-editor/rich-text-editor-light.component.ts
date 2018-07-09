@@ -44,22 +44,21 @@ export class RichTextEditorLightComponent implements OnInit {
   initModules() {
     this.modules = {
       toolbar: [
-        // align left, center or right
-        [{ align: [] }],
-        // toggled buttons
-        ['bold', 'italic', 'underline', 'strike'],
-        // custom button values
-        // [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }],
+        // toggled buttons // 'strike', 'underline'
+        ['bold', 'italic', 'underline'],
         // lists
         [{ list: 'ordered' }, { list: 'bullet' }],
-        // headings
-        [{ header: [1, 2, 3, false] }],
+        // align left, center or right
+        [{ align: [] }],
+        [{ font: [] }],
         // text and text background colors
         [{ color: [] }, { background: [] }],
         // remove formatting button
         ['clean'],
-        // link and image, video
-        ['link', 'image']
+        // link, image, video
+        ['link'],
+        // headings
+        [{ header: [1, 2, 3, false] }]
       ],
       imageResize: {}
     };

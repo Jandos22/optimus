@@ -131,7 +131,8 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
       selectedUsers: ''
     });
 
-    const initialLocations = this.fg_fields.get('LocationsId').value;
+    const initialLocations = this.fg_fields.get('LocationsId').get('results')
+      .value;
 
     // watch query text changes
     // pass only text and check if new value is different
@@ -244,7 +245,9 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
     console.log(success);
     this.searching = false;
     this.users = success;
-    this.disableSelected(this.fg_fields.get('EventReportersId').value);
+    this.disableSelected(
+      this.fg_fields.get('EventReportersId').get('results').value
+    );
   }
 
   searchUsersError(error) {

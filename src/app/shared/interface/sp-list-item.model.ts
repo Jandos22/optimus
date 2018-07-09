@@ -3,7 +3,7 @@ export interface SpListItem {
   ID?: number;
   Attachments?: boolean;
   AttachmentFiles?: {
-    results?: SpListItemAttachmentFiles[]
+    results?: SpListItemAttachmentFiles[];
   };
   ['odata.type']?: string;
   ['odata.id']?: string;
@@ -15,6 +15,17 @@ export interface SpListItem {
 }
 
 export interface SpListItemAttachmentFiles {
+  FileName: string;
+  FileNameAsPath: {
+    DecodedUrl: string;
+  };
+  ServerRelativePath: {
+    DecodedUrl: string;
+  };
+  ServerRelativeUrl: string;
+}
+
+export interface SpListItemAttachmentFile {
   FileName: string;
   FileNameAsPath: {
     DecodedUrl: string;

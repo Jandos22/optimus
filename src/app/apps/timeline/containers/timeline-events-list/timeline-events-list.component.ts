@@ -12,7 +12,7 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
       <app-timeline-event *ngFor="let event of events; last as last" [event]="event"
-        [className]="last ? 'event-last' : ''">
+        [ngClass]="{ 'event-last': last }">
       </app-timeline-event>
 
     </div>

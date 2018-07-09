@@ -47,7 +47,7 @@ export class TimelineService {
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
-    url += `&$expand=${this.getExpandsFields().toString()}`;
+    url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter
     if (query || locations.length) {
@@ -58,6 +58,7 @@ export class TimelineService {
       url += `(`;
       url += `(substringof('${query}',Title))`;
       url += `or(substringof('${query}',Summary))`;
+      url += `or(substringof('${query}',HashTags))`;
       url += `)`;
     }
 
@@ -101,12 +102,14 @@ export class TimelineService {
       'LocationsId',
       'Attachments',
       'AttachmentFiles',
+      'RichText',
+      'HashTags',
       'Created'
     ];
     return $select.toString();
   }
 
-  getExpandsFields() {
+  getExpandFields() {
     const $expand = [
       'AttachmentFiles',
       'EventType',

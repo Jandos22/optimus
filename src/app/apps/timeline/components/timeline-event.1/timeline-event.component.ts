@@ -12,43 +12,25 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
   encapsulation: ViewEncapsulation.None,
   template: `
     <mdc-card class="event-card__container">
-        <div fxLayout="column" fxLayout.gt-xs="row">
+        <mdc-card-primary-action fxLayout="column" fxLayout.gt-xs="row">
             <mdc-card-media fxFlex="125px" fxFlex.gt-xs="200px"
               [square]="true" *ngIf="event.Attachments"
               [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
-
-              <mdc-card-media-content fxLayout="column" fxLayoutAlign="start start"
-                class="event-card__media-content">
-                <div class="event__type" fxLayout="row" fxLayoutGap="8px">
-                  <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
-                  <span>{{ event.EventType.Title }}</span>
-                </div>
-              </mdc-card-media-content>
-
             </mdc-card-media>
-            <div fxLayout="column" fxLayoutAlign="start"
-              [ngClass]="(event.Attachments ? 'event-card__hasimage' : 'event-card__noimage')">
-
-                <div *ngIf="!event.Attachments"
-                  class="event__type noimage" fxLayout="row" fxLayoutGap="8px">
+            <div fxLayout="column" fxLayoutGap="8px"
+              [className]="withOrwithoutPhoto()">
+                <div class="event__type" fxLayoutGap="8px">
                   <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
                   <span>{{ event.EventType.Title }}</span>
                 </div>
-
                 <div class="event__title">{{ event.Title }}</div>
-
                 <span class="event__summary">{{ event.Summary }}</span>
-
-                <div class="event__hashtags" *ngIf="event.HashTags">{{ event.HashTags }}</div>
-
-                <div fxFlex></div>
-
-                <app-timeline-event-reporters
-                  class="event-card__reporters--container"
+                <span fxFlex></span>
+                <app-timeline-event-reporters class="event-card__reporters--container"
                     [reporters]="event.EventReporters.results" [eventDate]="event.EventDate">
                 </app-timeline-event-reporters>
             </div>
-        </div>
+        </mdc-card-primary-action>
     </mdc-card>
     `
 })

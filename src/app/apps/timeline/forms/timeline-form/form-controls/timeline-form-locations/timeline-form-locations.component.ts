@@ -15,10 +15,10 @@ import { LocationEnt } from '../../../../../../shared/interface/locations.model'
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field fxFlex="100" [formGroup]="fg_fields">
+    <mat-form-field fxFlex="100" [formGroup]="fg_fields.get('LocationsId')">
       <mat-select multiple
         placeholder="Locations"
-        formControlName="LocationsId">
+        formControlName="results">
         <mat-option
           *ngFor="let item of locations | selectLocations: locationAssignedId : accessLevel"
           [value]="item.id">

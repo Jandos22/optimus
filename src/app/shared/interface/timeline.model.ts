@@ -1,9 +1,11 @@
 import { SpListItem, SpListItemAttachmentFiles } from './sp-list-item.model';
 import { LocationEnt } from './locations.model';
 
+import { PeopleItem } from './people.model';
+
 export interface TimelineEventItem extends SpListItem {
   id?: number;
-  EventDate: Date;
+  EventDate?: Date;
   Title?: string;
   Summary?: string;
   RichText?: any;
@@ -11,8 +13,11 @@ export interface TimelineEventItem extends SpListItem {
   EventReportersId?: number[];
   EventType?: TimelineEventType;
   EventTypeId?: number[];
-  Locations: LocationEnt[];
-  LocationsId?: number[];
+  Locations?: LocationEnt[];
+  LocationsId?: TimelineLocations;
+  HashTags?: string;
+  // pseudo field
+  New?: boolean;
 }
 
 export interface TimelineSearchParams {
@@ -29,5 +34,14 @@ export interface TimelineEventType extends SpListItem {
 }
 
 export interface TimelineEventReporters {
-  results?: TimelineEventItem[];
+  results?: PeopleItem[];
+}
+
+export interface TimelineLocations {
+  results?: number[];
+}
+
+export interface ToSaveEventImage {
+  ID?: number;
+  ArrayBuffer?: ArrayBuffer;
 }

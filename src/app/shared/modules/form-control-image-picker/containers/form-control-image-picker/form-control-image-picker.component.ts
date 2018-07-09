@@ -155,11 +155,11 @@ export class FormControlImagePickerComponent implements OnInit {
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.cropperClass = 'common-image-cropper';
     this.cropperSettings.width = 178;
-    this.cropperSettings.height = 100.125;
+    this.cropperSettings.height = 178;
     this.cropperSettings.croppedWidth = 374;
-    this.cropperSettings.croppedHeight = 210.375;
+    this.cropperSettings.croppedHeight = 374;
     // this.cropperSettings.canvasWidth = 178;
-    // this.cropperSettings.canvasHeight = 100.125;
+    // this.cropperSettings.canvasHeight = 178;
     this.cropperSettings.dynamicSizing = true;
     this.cropperSettings.fileType = 'image/jpeg';
     this.cropperSettings.cropOnResize = true;

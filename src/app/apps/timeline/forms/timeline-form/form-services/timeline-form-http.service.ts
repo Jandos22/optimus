@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 // rxjs
 import { Observable, of, from } from 'rxjs';
@@ -10,52 +9,56 @@ import {
   concatMap,
   take,
   retry,
-  mergeMap
+  mergeMap,
+  reduce
 } from 'rxjs/operators';
 
 // constants
 import { ApiPath } from '../../../../../shared/constants';
 
 // interface
-import { SpGetListItemResult } from '../../../../../shared/interface/sp-list-item.model';
 import {
-  PeopleUpdatedPhoto,
-  PeopleItem,
-  ToSaveUserPhoto
-} from '../../../../../shared/interface/people.model';
+  SpGetListItemResult,
+  SpListItemAttachmentFile
+} from '../../../../../shared/interface/sp-list-item.model';
+import {
+  TimelineEventItem,
+  ToSaveEventImage
+} from './../../../../../shared/interface/timeline.model';
 
 // services
 import { SharepointService } from '../../../../../shared/services/sharepoint.service';
+import { TimelineService } from '../../../services';
 
 @Injectable()
 export class TimelineFormHttpService {
-  constructor(private http: HttpClient, private sp: SharepointService) {}
+  constructor(private sp: SharepointService, private srv: TimelineService) {}
 
   // returns newly create PeopleItem object
-  addUser(newFields: PeopleItem) {
+  createEvent(newFields: TimelineEventItem) {
     const fdv$ = this.sp.getFDV();
 
     return fdv$.pipe(
       switchMap(fdv => {
         const create$ = new sprLib.list({
-          name: 'NgPeople',
+          name: 'NgTimeline',
           ...fdv
         }).create(newFields);
-        return from(create$.then(res => res));
+        return from(create$);
       })
     );
   }
 
-  // receives unsavedFields and saves them in NgPeople list
+  // receives unsavedFields and saves them in list
   // returns object with saved fields or error
-  updatePeopleItem(updatedFields): Observable<PeopleItem> {
+  updateEventItem(updatedFields): Observable<TimelineEventItem> {
     // go ask for form digest value
     const fdv$ = this.sp.getFDV();
     // when get FDV then run HTTP to update list item
     return fdv$.pipe(
       switchMap(fdv => {
         const update$: Promise<any> = new sprLib.list({
-          name: 'NgPeople',
+          name: 'NgTimeline',
           ...fdv
         }).update(updatedFields);
         return from(update$.then(response => response));
@@ -63,53 +66,74 @@ export class TimelineFormHttpService {
     );
   }
 
-  saveNewPhoto(photo: ToSaveUserPhoto) {
-    return this.cleanUpAttachmentFiles(photo).pipe(
-      switchMap(_ => {
-        return this.uploadPhoto(photo);
+  saveImage(image: ToSaveEventImage) {
+    // delete old files before any image saving
+    return this.cleanUpAttachmentFiles(image).pipe(
+      switchMap(success => {
+        return this.uploadImage(image);
       })
     );
   }
 
-  // if user already has photo then delete it
-  // if user doesn't have photo than return green light for next action
-  cleanUpAttachmentFiles(photo: ToSaveUserPhoto) {
+  // if event already has images then delete it
+  // if event doesn't have images than return green light for next action
+  cleanUpAttachmentFiles(image: ToSaveEventImage) {
     // url constructed to get user object with Attachments and AttachmentsList
-    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgTimeline')/items(${
+      image.ID
+    })`;
     url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
-    const getUserObject$ = from(sprLib.rest({ url, type: 'GET' }));
+    const getItem$ = from(sprLib.rest({ url, type: 'GET' }));
 
-    return getUserObject$.pipe(
+    return getItem$.pipe(
       take(1),
-      map((user: any) => {
-        console.log(user);
-        let hasPhoto = false;
-        // check if user has attachments
-        if (user[0].Attachments) {
-          // check for same Filename
-          for (const file of user[0].AttachmentFiles.results) {
-            console.log(file);
-            if (file.FileName === photo.Filename) {
-              hasPhoto = true;
-            }
-          }
+      map((item: TimelineEventItem[]) => {
+        console.log('cleaning up attachments: received item');
+        console.log(item);
+
+        // check if item has attachments
+        if (item[0].Attachments) {
+          // files and observable from files
+          const files = item[0].AttachmentFiles.results;
+          const files$: Observable<SpListItemAttachmentFile> = from(files);
+
+          // run the pipe to delete files one by one
+          return files$.pipe(
+            take(Number(files.length)),
+            concatMap(file => {
+              return this.deleteFileByFilename(item[0].ID, file.FileName);
+            }),
+            reduce(
+              (
+                acc: SpListItemAttachmentFile[],
+                curr: SpListItemAttachmentFile[]
+              ) => {
+                return [...acc, curr[0]];
+              },
+              []
+            )
+          );
+        } else {
+          return from([]) as Observable<SpListItemAttachmentFile[]>;
         }
-        return hasPhoto;
       }),
-      switchMap(hasPhoto => {
-        console.log(hasPhoto);
-        return hasPhoto ? this.deletePhotoByFilename(photo) : of(true);
+      map(deleted => {
+        console.log(
+          'item checked for attachments and clean up done if was necessary'
+        );
+        console.log(deleted);
+        return true;
       })
     );
   }
 
-  deletePhotoByFilename(photo: ToSaveUserPhoto) {
+  deleteFileByFilename(id: number, filename: string) {
     const fdv$ = this.sp.getFDV();
 
-    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')`;
-    url += `/getItemById(${photo.ID})`;
-    url += `/AttachmentFiles/getByFileName('${photo.Filename}')`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgTimeline')`;
+    url += `/getItemById(${id})`;
+    url += `/AttachmentFiles/getByFileName('${filename}')`;
 
     return fdv$.pipe(
       take(1),
@@ -124,20 +148,17 @@ export class TimelineFormHttpService {
             'X-RequestDigest': fdv.requestDigest
           }
         });
-        return from(
-          deleted$.then(response => {
-            console.log(response);
-            return true;
-          })
-        );
+        return from(deleted$);
       })
     );
   }
 
-  uploadPhoto(photo: ToSaveUserPhoto) {
+  uploadImage(image: ToSaveEventImage) {
     const fdv$ = this.sp.getFDV();
-    let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
-    url += `/AttachmentFiles/add(FileName='${photo.Filename}')`;
+    let url = `${ApiPath}/web/lists/getByTitle('NgTimeline')/items(${
+      image.ID
+    })`;
+    url += `/AttachmentFiles/add(FileName='EventImage.jpg')`;
     return fdv$.pipe(
       take(1),
       switchMap(fdv => {
@@ -145,52 +166,17 @@ export class TimelineFormHttpService {
           url: url,
           type: 'POST',
           ...fdv,
-          data: photo.ArrayBuffer
+          data: image.ArrayBuffer
         });
-        return from(upload$.then(response => response));
+        return from(upload$);
       })
     );
   }
 
-  getUserById(ID: number) {
-    let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items(${ID})?`;
-    url += `$select=${this.getSelectFields()}`;
-    url += `&$expand=${this.getExpandFields()}`;
+  getItemById(ID: number) {
+    let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items(${ID})?`;
+    url += `$select=${this.srv.getSelectFields()}`;
+    url += `&$expand=${this.srv.getExpandFields()}`;
     return from(sprLib.rest({ url: url }));
-  }
-
-  getSelectFields() {
-    const $select = [
-      'Id',
-      'ID',
-      'Alias',
-      'Name',
-      'Surname',
-      'Fullname',
-      'Email',
-      'Gin',
-      'LocationAssigned/Id',
-      'LocationAssigned/Title',
-      'LocationAssignedId',
-      'PositionId',
-      'Position/Id',
-      'Position/Title',
-      'RolesId',
-      'Roles/Id',
-      'Roles/Title',
-      'Attachments',
-      'AttachmentFiles'
-    ];
-    return $select.toString();
-  }
-
-  getExpandFields() {
-    const $expand = [
-      'AttachmentFiles',
-      'LocationAssigned',
-      'Position',
-      'Roles'
-    ];
-    return $expand.toString();
   }
 }

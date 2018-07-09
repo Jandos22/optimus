@@ -45,6 +45,24 @@ export function reducer(
       return { ...adapted, searching: false };
     }
 
+    case EventsActionTypes.INSERT_ONE_EVENT: {
+      const event = action.event;
+      const ids = [event.ID, ...state.ids] as string[] | number[];
+      const entities = { [event.ID]: event, ...state.entities };
+      return { ...state, ids, entities };
+    }
+
+    case EventsActionTypes.ADD_ONE_EVENT: {
+      return adapter.addOne(action.event, state);
+    }
+
+    case EventsActionTypes.UPDATE_ONE_EVENT: {
+      return adapter.updateOne(
+        { id: action.id, changes: action.changes },
+        state
+      );
+    }
+
     default:
       return state;
   }

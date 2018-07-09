@@ -38,6 +38,7 @@ import * as fromPipes from '../../shared/pipes';
 import { FormControlUsersSelectionModule } from '../../shared/modules/form-control-users-selection/form-control-users-selection.module';
 import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
+import { FormControlHashTagsModule } from '../../shared/modules/form-control-hash-tags/form-control-hash-tags.module';
 
 // routes
 export const timelineRoutes: Routes = [
@@ -59,7 +60,8 @@ export const timelineRoutes: Routes = [
     // form control modules
     FormControlUsersSelectionModule,
     RichTextEditorLightModule,
-    FormControlImagePickerModule
+    FormControlImagePickerModule,
+    FormControlHashTagsModule
   ],
   providers: [...fromServices.services],
   declarations: [

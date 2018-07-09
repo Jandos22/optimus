@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-// import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { ApiPath } from '../constants';
