@@ -1,3 +1,4 @@
+import { FormMode } from './../../../../../../shared/interface/form.model';
 import {
   Component,
   Input,
@@ -21,13 +22,14 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
         cdkAutosizeMaxRows="1"
         cdkAutosizeMaxRows="2">
       </textarea>
-      <mat-hint align="end">{{fg_fields.get('Title').value.length}} / 70</mat-hint>
+      <mat-hint align="end" *ngIf="mode !== 'view'">{{fg_fields.get('Title').value.length}} / 70</mat-hint>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class TimelineFormTitleComponent {
   @Input() fg_fields: FormGroup;
+  @Input() mode: FormMode;
 
   constructor() {}
 

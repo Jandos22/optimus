@@ -17,8 +17,8 @@ import { FormGroup } from '@angular/forms';
           cdkAutosizeMaxRows="1"
           cdkAutosizeMaxRows="2">
       </textarea>
-      <mat-hint align="start" *ngIf="(mode === 'edit' || mode === 'new')">#usit #usrs-b</mat-hint>
-      <mat-hint align="end" *ngIf="(mode === 'edit' || mode === 'new')">{{fg_fields.get('HashTags').value.length}} / 140</mat-hint>
+      <mat-hint align="start" *ngIf="mode !== 'view'">#usit #usrs-b</mat-hint>
+      <mat-hint align="end" *ngIf="mode !== 'view'">{{ fg_fields.get('HashTags').value?.length }} / 140</mat-hint>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
     `

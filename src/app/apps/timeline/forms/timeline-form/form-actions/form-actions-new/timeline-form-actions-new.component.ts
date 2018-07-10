@@ -31,7 +31,7 @@ import { TimelineFormHttpService } from '../../form-services/timeline-form-http.
   selector: 'app-timeline-form-actions-new',
   styleUrls: ['timeline-form-actions-new.component.scss'],
   template: `
-    <button mat-button color="primary" (click)="log()">LOG</button>
+    <!-- <button mat-button color="primary" (click)="log()">LOG</button> -->
 
     <button mat-button color="primary"
       [disabled]="!fg_fields.valid || savingChanges"

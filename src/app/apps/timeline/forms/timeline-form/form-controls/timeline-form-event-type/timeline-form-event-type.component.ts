@@ -1,3 +1,4 @@
+import { FormMode } from './../../../../../../shared/interface/form.model';
 import {
   Component,
   Input,
@@ -16,18 +17,25 @@ import { TimelineEventType } from '../../../../../../shared/interface/timeline.m
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_fields">
-      <mat-select placeholder="Event Type" formControlName="EventTypeId">
+
+      <mat-select placeholder="Event Type" formControlName="EventTypeId"
+        [disabled]="mode === 'view'">
+
         <mat-option *ngFor="let item of eventTypes" [value]="item.id">
             {{ item.Title }}
         </mat-option>
+
       </mat-select>
+
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
+
     </mat-form-field>
   `
 })
 export class TimelineFormEventTypeComponent {
   @Input() fg_fields: FormGroup;
   @Input() eventTypes: TimelineEventType[];
+  @Input() mode: FormMode;
 
   constructor() {}
 

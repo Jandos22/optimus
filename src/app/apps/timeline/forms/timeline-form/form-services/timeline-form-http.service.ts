@@ -10,7 +10,8 @@ import {
   take,
   retry,
   mergeMap,
-  reduce
+  reduce,
+  tap
 } from 'rxjs/operators';
 
 // constants
@@ -51,7 +52,7 @@ export class TimelineFormHttpService {
 
   // receives unsavedFields and saves them in list
   // returns object with saved fields or error
-  updateEventItem(updatedFields): Observable<TimelineEventItem> {
+  updateItem(updatedFields): Observable<TimelineEventItem> {
     // go ask for form digest value
     const fdv$ = this.sp.getFDV();
     // when get FDV then run HTTP to update list item
@@ -61,7 +62,7 @@ export class TimelineFormHttpService {
           name: 'NgTimeline',
           ...fdv
         }).update(updatedFields);
-        return from(update$.then(response => response));
+        return from(update$);
       })
     );
   }
@@ -70,6 +71,7 @@ export class TimelineFormHttpService {
     // delete old files before any image saving
     return this.cleanUpAttachmentFiles(image).pipe(
       switchMap(success => {
+        console.log(success);
         return this.uploadImage(image);
       })
     );
@@ -82,7 +84,7 @@ export class TimelineFormHttpService {
     let url = `${ApiPath}/web/lists/getByTitle('NgTimeline')/items(${
       image.ID
     })`;
-    url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
+    url += `?$select=ID,Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
     const getItem$ = from(sprLib.rest({ url, type: 'GET' }));
 
@@ -94,36 +96,31 @@ export class TimelineFormHttpService {
 
         // check if item has attachments
         if (item[0].Attachments) {
-          // files and observable from files
-          const files = item[0].AttachmentFiles.results;
-          const files$: Observable<SpListItemAttachmentFile> = from(files);
-
-          // run the pipe to delete files one by one
-          return files$.pipe(
-            take(Number(files.length)),
-            concatMap(file => {
-              return this.deleteFileByFilename(item[0].ID, file.FileName);
-            }),
-            reduce(
-              (
-                acc: SpListItemAttachmentFile[],
-                curr: SpListItemAttachmentFile[]
-              ) => {
-                return [...acc, curr[0]];
-              },
-              []
-            )
-          );
+          console.log('item has attachments, deleted them first');
+          console.log(item[0].AttachmentFiles.results);
+          return item[0].AttachmentFiles.results;
         } else {
-          return from([]) as Observable<SpListItemAttachmentFile[]>;
+          // no files to delete
+          return [];
         }
       }),
-      map(deleted => {
-        console.log(
-          'item checked for attachments and clean up done if was necessary'
-        );
-        console.log(deleted);
-        return true;
+      mergeMap(files => {
+        console.log('received files for deletions:');
+        console.log(files.length);
+
+        const files$ = from(files);
+
+        if (files.length) {
+          return files$.pipe(
+            take(files.length),
+            concatMap(file => {
+              return from(this.deleteFileByFilename(image.ID, file.FileName));
+            }),
+            tap(results => console.log('deleted all images'))
+          );
+        } else {
+          return of(true);
+        }
       })
     );
   }
