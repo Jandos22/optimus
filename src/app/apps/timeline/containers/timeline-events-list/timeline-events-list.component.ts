@@ -1,4 +1,10 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation
+} from '@angular/core';
 
 // interfaces
 import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
@@ -12,7 +18,8 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
       <app-timeline-event *ngFor="let event of events; last as last" [event]="event"
-        [className]="last ? 'event-last' : ''">
+        [ngClass]="{ 'event-last': last }"
+        (openForm)="openForm.emit($event)">
       </app-timeline-event>
 
     </div>
@@ -20,6 +27,8 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 })
 export class TimelineEventsListComponent {
   @Input() events: TimelineEventItem[];
+
+  @Output() openForm = new EventEmitter<TimelineEventItem>();
 
   constructor() {}
 }

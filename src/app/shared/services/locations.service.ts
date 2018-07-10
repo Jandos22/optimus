@@ -1,4 +1,4 @@
-import { ApiPath } from './../../shared/constants/index';
+import { ApiPath } from '../constants';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 

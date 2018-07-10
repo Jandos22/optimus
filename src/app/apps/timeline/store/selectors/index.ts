@@ -1,4 +1,4 @@
 export * from './events.selectors';
-// export * from './search.selectors';
+export * from './event-types.selectors';
 export * from './pagination.selectors';
 export * from './params.selectors';

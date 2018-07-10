@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import * as fromRoot from '../index';
+import * as fromRoot from '..';
 import * as fromErrors from '../reducers/errors.reducer';
 
 export const getErrorsState = createSelector(

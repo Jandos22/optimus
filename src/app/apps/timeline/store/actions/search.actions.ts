@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 // interfaces
-import { TimelineEventsParams } from '../../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from '../../../../shared/interface/timeline.model';
 
 // actions
 export enum SearchActionTypes {
@@ -14,7 +14,7 @@ export enum SearchActionTypes {
 
 export class GetNewUrl implements Action {
   readonly type = SearchActionTypes.GET_NEW_URL;
-  constructor(public params: TimelineEventsParams) {}
+  constructor(public params: TimelineSearchParams) {}
 }
 
 export class BeginSearch implements Action {
@@ -24,7 +24,7 @@ export class BeginSearch implements Action {
 
 export class BeginCount implements Action {
   readonly type = SearchActionTypes.BEGIN_COUNT;
-  constructor(public params: TimelineEventsParams) {}
+  constructor(public params: TimelineSearchParams) {}
 }
 
 export type SearchActionsUnion = GetNewUrl | BeginSearch | BeginCount;

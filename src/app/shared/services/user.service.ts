@@ -1,21 +1,21 @@
-import { PathSlbSp } from './../constants/index';
+import { PathSlbSp } from '../constants';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, of } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ApiPath, WirelinePath, ProxyPath } from './../constants';
+import { ApiPath, WirelinePath, ProxyPath } from '../constants';
 
 // data models
 import { Photo } from '../../models/photo.model';
-import { FDV } from './../interface/form-digest-value.model';
-import { FormDigestValue } from '../../models/index';
+import { FDV } from '../interface/form-digest-value.model';
+import { FormDigestValue } from '../../models';
 import { CurrentUser } from '../../models/current-user.m';
 
 // services
-import { SharepointService } from '../services/sharepoint.service';
+import { SharepointService } from './sharepoint.service';
 import { PeopleItem } from '../interface/people.model';
 
 // import { sprLib } from '../../../typings';
@@ -29,12 +29,20 @@ export class UserService {
     // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
 
+  // checkLoggedInUserRegistered(alias) {
+  //   let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
+  //   url += `$select=${this.getSelectFields()}`;
+  //   url += `&$expand=${this.getExpandsFields()}`;
+  //   url += `&$filter=Alias eq '${alias}'`;
+  //   return this.http.get(url);
+  // }
+
   checkLoggedInUserRegistered(alias) {
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
     url += `$select=${this.getSelectFields()}`;
     url += `&$expand=${this.getExpandsFields()}`;
     url += `&$filter=Alias eq '${alias}'`;
-    return this.http.get(url);
+    return from(sprLib.rest({ url }));
   }
 
   listitem(list) {
@@ -51,7 +59,7 @@ export class UserService {
     if (
       loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint'
     ) {
-      loginName = 'vpasmurnov@slb.com';
+      loginName = 'rwu3@slb.com';
       spId = 9;
     }
 
@@ -80,9 +88,11 @@ export class UserService {
       'LocationAssigned/Title',
       'LocationsOfInterestId',
       'LocationsOfInterest/Title',
-      'Position/Title',
       'PositionId',
+      'Position/Title',
+      'Position/AccessLevel',
       'Roles',
+      'Roles/Id',
       'Roles/Title'
     ].toString();
   }

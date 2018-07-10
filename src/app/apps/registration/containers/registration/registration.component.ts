@@ -5,11 +5,11 @@ import { Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
-import * as fromAppsActions from './../../../../store/actions/apps.actions';
+import * as fromAppsActions from '../../../../store/actions/apps.actions';
 import * as fromLayoutActions from '../../../../store/actions/layout.actions';
 
 // interfaces
-import { LocationEnt } from './../../../../shared/interface/locations.model';
+import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { SharepointUser } from '../../../../shared/interface/user.model';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 // interface
-import { Exemption } from './../../../../shared/interface/exemptions.model';
+import { Exemption } from '../../../../shared/interface/exemptions.model';
 
 @Component({
   selector: 'app-exemptions-list',

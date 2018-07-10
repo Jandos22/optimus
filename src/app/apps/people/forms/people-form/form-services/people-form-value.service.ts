@@ -5,7 +5,7 @@ import { FormMode } from '../../../../../shared/interface/form.model';
 import {
   PeopleItem,
   PeopleItemObject
-} from './../../../../../shared/interface/people.model';
+} from '../../../../../shared/interface/people.model';
 
 @Injectable()
 export class PeopleFormValueService {

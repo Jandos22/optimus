@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MdcCardModule, MdcRippleModule } from '@angular-mdc/web';
+import {
+  MdcCardModule,
+  MdcRippleModule,
+  MdcElevationModule
+} from '@angular-mdc/web';
 
-const mdcModules: any[] = [MdcCardModule, MdcRippleModule];
+const mdcModules: any[] = [MdcCardModule, MdcRippleModule, MdcElevationModule];
 
 @NgModule({
   imports: [CommonModule],

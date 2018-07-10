@@ -5,7 +5,7 @@ import {
 
 import * as _ from 'lodash';
 
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
+import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface PaginationState {
   currentIndex: number;
@@ -85,10 +85,10 @@ export function checkUrl(url: string) {
   }
 }
 
-export function checkIndexPrevious(index) {
-  if (index === -1) {
-    return null;
-  } else {
-    return index;
-  }
-}
+// export function checkIndexPrevious(index) {
+//   if (index === -1) {
+//     return null;
+//   } else {
+//     return index;
+//   }
+// }

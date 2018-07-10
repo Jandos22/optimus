@@ -1,7 +1,7 @@
 import {
   ExemptionsActionTypes,
   ExemptionsActionsUnion
-} from './../actions/exemptions.actions';
+} from '../actions/exemptions.actions';
 
 export interface ExemptionsState {
   list: any[];

@@ -3,26 +3,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { Observable, of, from } from 'rxjs';
-import {
-  map,
-  mergeMap,
-  switchMap,
-  concatMap,
-  take,
-  retry
-} from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 // constants
 import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { SpResponse } from './../../../models/sp-response.model';
-import { TimelineEventsParams } from '../../../shared/interface/timeline.model';
+import { TimelineSearchParams } from '../../../shared/interface/timeline.model';
+import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
-import { SharepointService } from './../../../shared/services/sharepoint.service';
+import { SharepointService } from '../../../shared/services/sharepoint.service';
 
 @Injectable()
 export class TimelineService {
@@ -35,7 +28,7 @@ export class TimelineService {
       })
       .pipe(
         switchMap((response: SpResponse) => {
-          console.log(response);
+          // console.log(response);
           if (response.d.results) {
             return of(response);
           }
@@ -43,7 +36,7 @@ export class TimelineService {
       );
   }
 
-  buildUrl(params: TimelineEventsParams, counter?: boolean) {
+  buildUrl(params: TimelineSearchParams, counter?: boolean) {
     // api url for NgTimeline
     let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items?`;
 
@@ -54,7 +47,7 @@ export class TimelineService {
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
-    url += `&$expand=${this.getExpandsFields().toString()}`;
+    url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter
     if (query || locations.length) {
@@ -65,6 +58,7 @@ export class TimelineService {
       url += `(`;
       url += `(substringof('${query}',Title))`;
       url += `or(substringof('${query}',Summary))`;
+      url += `or(substringof('${query}',HashTags))`;
       url += `)`;
     }
 
@@ -108,12 +102,14 @@ export class TimelineService {
       'LocationsId',
       'Attachments',
       'AttachmentFiles',
+      'RichText',
+      'HashTags',
       'Created'
     ];
     return $select.toString();
   }
 
-  getExpandsFields() {
+  getExpandFields() {
     const $expand = [
       'AttachmentFiles',
       'EventType',

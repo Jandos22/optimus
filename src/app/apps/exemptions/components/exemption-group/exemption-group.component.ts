@@ -1,4 +1,4 @@
-import { ExemptionsGrouped } from './../../../../shared/interface/exemptions.model';
+import { ExemptionsGrouped } from '../../../../shared/interface/exemptions.model';
 import { Component, Input } from '@angular/core';
 
 // rxjs

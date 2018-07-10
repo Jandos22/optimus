@@ -7,7 +7,6 @@ import {
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 // interfaces
-// import { FormMode } from './../../../../../models/form-mode.model';
 
 @Component({
   selector: 'app-people-form-name',

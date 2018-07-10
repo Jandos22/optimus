@@ -4,27 +4,23 @@ import {
   PaginationActionsUnion
 } from '../actions/pagination.actions';
 
+import * as _ from 'lodash';
+
 // constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
+import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface PaginationState {
-  indexes: {
-    previous: number;
-    current: number;
-    next: number;
-  };
+  currentIndex: number;
   links: string[];
-  totalFound: number | string;
+  totalDisplayed: number;
+  totalExist: number;
 }
 
 export const initialState: PaginationState = {
-  indexes: {
-    previous: null,
-    current: null,
-    next: null
-  },
+  currentIndex: 0,
   links: [],
-  totalFound: null
+  totalDisplayed: 0,
+  totalExist: null
 };
 
 export function reducer(
@@ -38,54 +34,34 @@ export function reducer(
         ...initialState
       };
 
-    case PaginationActionTypes.START_NEW_PAGE:
-      return {
-        ...state,
-        indexes: { previous: null, current: 0, next: null },
-        links: [checkUrl(action.url)]
-      };
-
-    case PaginationActionTypes.UPDATE_TOTAL_FOUND: {
-      return {
-        ...state,
-        totalFound: action.total
-      };
+    case PaginationActionTypes.UPDATE_TOTAL_DISPLAYED: {
+      const totalDisplayed = action.totalDisplayed;
+      return { ...state, totalDisplayed };
     }
 
-    case PaginationActionTypes.ADD_NEXT_LINK:
+    case PaginationActionTypes.UPDATE_TOTAL_EXIST: {
+      const totalExist = action.totalExist;
+      return { ...state, totalExist };
+    }
+
+    case PaginationActionTypes.ADD_LINK:
       return {
         ...state,
-        indexes: { ...state.indexes, next: state.indexes.current + 1 },
         links: [...state.links, checkUrl(action.url)]
       };
 
-    case PaginationActionTypes.NO_NEXT_LINK:
-      return {
-        ...state,
-        indexes: { ...state.indexes, next: null }
-      };
+    case PaginationActionTypes.REMOVE_LINK:
+      const links = _.slice(state.links, 0, action.index + 1);
+      console.log(links);
+      return { ...state, links };
 
     // run when NEXT button is clicked
     case PaginationActionTypes.ON_NEXT:
-      return {
-        ...state,
-        indexes: {
-          previous: state.indexes.current,
-          current: state.indexes.next,
-          next: null
-        }
-      };
+      return { ...state, currentIndex: state.currentIndex + 1 };
 
     // run when BACK button is clicked
     case PaginationActionTypes.ON_BACK:
-      return {
-        ...state,
-        indexes: {
-          previous: checkIndexPrevious(state.indexes.previous - 1),
-          current: state.indexes.previous,
-          next: null
-        }
-      };
+      return { ...state, currentIndex: state.currentIndex - 1 };
 
     default:
       return state;
@@ -95,11 +71,11 @@ export function reducer(
 // for selectors
 
 export const getPagination = (state: PaginationState) => state;
-export const getPageIndexes = (state: PaginationState) => state.indexes;
-export const getPageCurrentIndex = (state: PaginationState) =>
-  state.indexes.current;
+export const getCurrentIndex = (state: PaginationState) => state.currentIndex;
 export const getPageLinks = (state: PaginationState) => state.links;
-export const getTotalFound = (state: PaginationState) => state.totalFound;
+export const getTotalDisplayed = (state: PaginationState) =>
+  state.totalDisplayed;
+export const getTotalExist = (state: PaginationState) => state.totalExist;
 
 // help functions
 
@@ -108,13 +84,5 @@ export function checkUrl(url: string) {
     return url.replace(WirelinePath + '/', '');
   } else {
     return url;
-  }
-}
-
-export function checkIndexPrevious(index) {
-  if (index === -1) {
-    return null;
-  } else {
-    return index;
   }
 }

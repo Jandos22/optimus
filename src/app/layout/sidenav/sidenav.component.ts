@@ -1,5 +1,5 @@
 import { take, skip } from 'rxjs/operators';
-import { LocationEnt } from './../../shared/interface/locations.model';
+import { LocationEnt } from '../../shared/interface/locations.model';
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 // rxjs
@@ -7,8 +7,8 @@ import { Observable, Subscription } from 'rxjs';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from './../../store';
-import * as layout from './../../store/actions/layout.actions';
+import * as fromRoot from '../../store';
+import * as layout from '../../store/actions/layout.actions';
 
 // interfaces
 import { AppItem } from '../../shared/interface/applications.model';

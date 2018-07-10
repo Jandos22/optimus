@@ -7,8 +7,8 @@ import {
 
 // rxjs
 import { Observable, Subscription } from 'rxjs';
-import * as fromRoot from './../store';
-import * as a_in_layout from './../store/actions/layout.actions';
+import * as fromRoot from '../store';
+import * as a_in_layout from '../store/actions/layout.actions';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -23,7 +23,7 @@ import {
 } from '@angular/material';
 
 // interfaces
-import { SidenavProperties } from './../models/sidenav-properties.m';
+import { SidenavProperties } from '../models/sidenav-properties.m';
 import { WindowProperties } from '../shared/interface/layout.model';
 import { BootstrapUser } from '../shared/interface/user.model';
 

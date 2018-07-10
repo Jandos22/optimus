@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import {
   Exemption,
   ExemptionsGrouped
-} from './../../../../shared/interface/exemptions.model';
+} from '../../../../shared/interface/exemptions.model';
 
 export enum ExemptionsActionTypes {
   GET_EXEMPTIONS = '[Exemptions] Get Exemptions',

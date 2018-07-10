@@ -1,12 +1,12 @@
 // actions
-import { PpeActionTypes, PpeActionsUnion } from './../actions/ppe.actions';
+import { PpeActionTypes, PpeActionsUnion } from '../actions/ppe.actions';
 
 // interfaces
 import {
   PpeCategory,
   PpeItemsByCategory
-} from './../../../../shared/interface/ppe.model';
-import { PpeItem } from './../../../../shared/interface/ppe.model';
+} from '../../../../shared/interface/ppe.model';
+import { PpeItem } from '../../../../shared/interface/ppe.model';
 
 export interface PpeCatalogState {
   categories: PpeCategory[];

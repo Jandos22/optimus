@@ -11,10 +11,10 @@ export const getEventsState = createSelector(
 
 // selectors
 
-// export const getUsersSearching = createSelector(
-//   getUsersState,
-//   fromUsers.getUsersSearching
-// );
+export const getEventsSearching = createSelector(
+  getEventsState,
+  fromEvents.getEventsSearching
+);
 
 export const selectAllEvents = createSelector(
   getEventsState,
@@ -25,8 +25,3 @@ export const selectTotalDisplayedEvents = createSelector(
   getEventsState,
   fromEvents.selectEventsTotal
 );
-
-// export const getUsersTotal = createSelector(
-//     getEventsState,
-//   fromUsers.getUsersTotal
-// );

@@ -17,7 +17,7 @@ import { Subscription, Observable, merge } from 'rxjs';
 import { map, scan } from 'rxjs/operators';
 
 // interfaces
-import { PeopleItem } from './../../../../../../shared/interface/people.model';
+import { PeopleItem } from '../../../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-people-form-actions-edit-fields',

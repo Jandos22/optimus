@@ -16,6 +16,8 @@ export interface PeopleItem extends SpListItem {
   PositionId?: number;
   Roles?: UserRole[];
   RolesId?: number;
+  // pseudo
+  selected?: boolean;
 }
 
 export class PeopleItemObject implements PeopleItem {
@@ -76,11 +78,18 @@ export interface ToSaveUserPhoto {
 export interface UserSearchParams {
   query: string;
   locations: number[];
-  top: number;
+  top?: number;
+}
+
+export interface SearchParamsUser {
+  text: string;
+  locations: number[];
+  top?: number;
 }
 
 export interface UserPosition {
   Title: string;
+  AccessLevel: number;
 }
 
 export interface UserRole {

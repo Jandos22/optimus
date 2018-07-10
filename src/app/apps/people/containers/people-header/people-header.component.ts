@@ -21,15 +21,14 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map,
-  tap
+  map
 } from 'rxjs/operators';
 
 // interfaces
-import { UserSearchParams } from './../../../../shared/interface/people.model';
+import { UserSearchParams } from '../../../../shared/interface/people.model';
 
 // validators
-import { ValidationService } from './../../../../validators/validation.service';
+import { ValidationService } from '../../../../validators/validation.service';
 
 @Component({
   selector: 'app-people-header',

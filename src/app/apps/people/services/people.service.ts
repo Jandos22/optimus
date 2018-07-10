@@ -1,4 +1,3 @@
-import { SpResponse } from './../../../models/sp-response.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -14,17 +13,18 @@ import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 import {
   PeopleUpdatedPhoto,
   UserSearchParams
-} from './../../../shared/interface/people.model';
+} from '../../../shared/interface/people.model';
+import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
-import { SharepointService } from './../../../shared/services/sharepoint.service';
+import { SharepointService } from '../../../shared/services/sharepoint.service';
 
 @Injectable()
 export class PeopleService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
-  getPeopleWithGivenUrl(url) {
+  getDataWithGivenUrl(url) {
     return this.http
       .get(url, {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
@@ -36,7 +36,7 @@ export class PeopleService {
             return of(response);
           }
         }),
-        catchError((error: any) => throwError(error.json()))
+        // errors (if any) are caught in search effects
       );
   }
 
@@ -187,12 +187,12 @@ export class PeopleService {
     );
   }
 
-  buildUrlToGetPeople(params: UserSearchParams, counter?: boolean) {
+  buildUrl(params: UserSearchParams, counter?: boolean) {
     // api url for NgPeople
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     // parameters
-    const query = params.query;
+    const query = params.query.replace('#', '%23');
     const locations = params.locations;
     let top = params.top;
 

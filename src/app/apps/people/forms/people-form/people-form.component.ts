@@ -1,9 +1,11 @@
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+
+// constants
 import {
   PathSlbSp,
   WirelinePath,
   PathOptimus
-} from './../../../../shared/constants/index';
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+} from '../../../../shared/constants';
 
 import { FormGroup } from '@angular/forms';
 
@@ -35,8 +37,8 @@ import { PeopleFormPhotoService } from './form-services/people-form-photo.servic
 import { PeopleFormHttpService } from './form-services/people-form-http.service';
 
 // interfaces
-import { PeopleItem } from './../../../../shared/interface/people.model';
-import { FormMode } from './../../../../shared/interface/form.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
+import { FormMode } from '../../../../shared/interface/form.model';
 
 // dialog components
 import {
@@ -184,9 +186,8 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
-    // this.$$mode.unsubscribe();
+    this.$mode.unsubscribe();
     this.$window.unsubscribe();
-    // this.$locations.unsubscribe();
     this.alias$.unsubscribe();
   }
 }

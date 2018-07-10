@@ -12,14 +12,14 @@ import { of } from 'rxjs';
 import { take, switchMap, map } from 'rxjs/operators';
 
 // services
-import { ValidationService } from './../../../../../validators/validation.service';
-import { AsyncValidationService } from './../../../../../validators/async-validation.service';
+import { ValidationService } from '../../../../../validators/validation.service';
+import { AsyncValidationService } from '../../../../../validators/async-validation.service';
 import { PeopleFormValueService } from './people-form-value.service';
 import { PeopleFormPhotoService } from './people-form-photo.service';
 
 // interfaces
-import { PeopleItem } from './../../../../../shared/interface/people.model';
-import { FormMode } from './../../../../../shared/interface/form.model';
+import { PeopleItem } from '../../../../../shared/interface/people.model';
+import { FormMode } from '../../../../../shared/interface/form.model';
 
 @Injectable()
 export class PeopleFormInitService {

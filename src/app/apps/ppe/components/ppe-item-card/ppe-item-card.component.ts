@@ -1,10 +1,10 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 // interfaces
-import { PpeItem } from './../../../../shared/interface/ppe.model';
+import { PpeItem } from '../../../../shared/interface/ppe.model';
 
 // constants
-import { ApiPath, PathSlbSp } from './../../../../shared/constants/index';
+import { ApiPath, PathSlbSp } from '../../../../shared/constants';
 
 @Component({
   selector: 'app-ppe-item-card',

@@ -8,8 +8,8 @@ import * as fromRoot from '../../../../store';
 import { Observable, Subscription } from 'rxjs';
 
 // interfaces
-import { Exemption } from './../../../../shared/interface/exemptions.model';
-import { WindowProperties } from './../../../../shared/interface/layout.model';
+import { Exemption } from '../../../../shared/interface/exemptions.model';
+import { WindowProperties } from '../../../../shared/interface/layout.model';
 
 @Component({
   selector: 'app-exemption-item-card',

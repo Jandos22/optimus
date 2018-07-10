@@ -5,11 +5,12 @@ import { map, switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 // lodash
 import * as _ from 'lodash';
+// import { reduce } from 'lodash';
 
 // ngrx
-import { Store, Action, select } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import * as fromPeople from '../index';
+import * as fromPeople from '..';
 import * as fromParamsActions from '../actions/params.action';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromUsersActions from '../actions/users.action';
@@ -21,19 +22,19 @@ import { PeopleService } from '../../services/people.service';
 import {
   PeopleItem,
   UserSearchParams
-} from './../../../../shared/interface/people.model';
-import { SpResponse } from './../../../../models/sp-response.model';
+} from '../../../../shared/interface/people.model';
+import { SpResponse } from '../../../../models/sp-response.model';
 
 @Injectable()
 export class UsersSearchEffects {
   // when params change, then hold local copy
-  // for use in count total
+  // for use in count total (need refactor to use withLatestFrom)
   params: UserSearchParams;
 
   constructor(
     private store$: Store<fromPeople.PeopleState>,
     private actions$: Actions,
-    private peopleService: PeopleService
+    private srv: PeopleService
   ) {}
 
   // when params change:
@@ -46,7 +47,7 @@ export class UsersSearchEffects {
     }),
     map((params: UserSearchParams) => {
       this.params = params;
-      return this.peopleService.buildUrlToGetPeople(params);
+      return this.srv.buildUrl(params);
     }),
     mergeMap(url => {
       return [
@@ -68,9 +69,7 @@ export class UsersSearchEffects {
       };
     }),
     switchMap(merged => {
-      const getUsers$ = this.peopleService.getPeopleWithGivenUrl(
-        merged.action.url
-      );
+      const getUsers$ = this.srv.getDataWithGivenUrl(merged.action.url);
       return getUsers$.pipe(
         mergeMap((response: SpResponse) => {
           // collection of actions that will be dispatched
@@ -80,8 +79,8 @@ export class UsersSearchEffects {
             // when users received, map them to add "id" property for @ngrx/entity
             const users = _.reduce(
               response.d.results,
-              function(acc: PeopleItem[], user: PeopleItem) {
-                return [...acc, { ...user, id: user.ID }];
+              function(acc: PeopleItem[], item: PeopleItem) {
+                return [...acc, { ...item, id: item.ID }];
               },
               []
             );
@@ -124,10 +123,10 @@ export class UsersSearchEffects {
   countUsersTotal$ = this.actions$.pipe(
     ofType(fromUsersActions.UsersActionTypes.COUNT_USERS_TOTAL),
     map(x => {
-      return this.peopleService.buildUrlToGetPeople(this.params, true);
+      return this.srv.buildUrl(this.params, true);
     }),
     switchMap(url => {
-      return this.peopleService.getPeopleWithGivenUrl(url).pipe(
+      return this.srv.getDataWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
             return new fromPaginationActions.UpdateTotalExist(0);

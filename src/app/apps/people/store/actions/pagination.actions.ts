@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 export enum PaginationActionTypes {
   // below actions caught only in reducers
   RESET_PAGINATION = '[People Pagination] Reset (since params changed)',
-  START_NEW_PAGE = '[People] R - Start New Page',
+  // START_NEW_PAGE = '[People] R - Start New Page',
 
   UPDATE_TOTAL_DISPLAYED = '[People Pagination] Update Total Displayed',
   UPDATE_TOTAL_EXIST = '[People Pagination] Update Total Exist',
@@ -24,10 +24,10 @@ export class ResetPagination implements Action {
   constructor() {}
 }
 
-export class StartNewPage implements Action {
-  readonly type = PaginationActionTypes.START_NEW_PAGE;
-  constructor(public url: string) {}
-}
+// export class StartNewPage implements Action {
+//   readonly type = PaginationActionTypes.START_NEW_PAGE;
+//   constructor(public url: string) {}
+// }
 
 export class UpdateTotalDisplayed implements Action {
   readonly type = PaginationActionTypes.UPDATE_TOTAL_DISPLAYED;
@@ -61,7 +61,7 @@ export class OnBack implements Action {
 
 export type PaginationActionsUnion =
   | ResetPagination
-  | StartNewPage
+  // | StartNewPage
   | UpdateTotalDisplayed
   | UpdateTotalExist
   | AddLink

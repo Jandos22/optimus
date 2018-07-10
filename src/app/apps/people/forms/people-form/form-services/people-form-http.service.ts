@@ -14,7 +14,7 @@ import {
 } from 'rxjs/operators';
 
 // constants
-import { ApiPath, WirelinePath } from './../../../../../shared/constants/index';
+import { ApiPath, WirelinePath } from '../../../../../shared/constants';
 
 // interface
 import { SpGetListItemResult } from '../../../../../shared/interface/sp-list-item.model';
@@ -22,10 +22,10 @@ import {
   PeopleUpdatedPhoto,
   PeopleItem,
   ToSaveUserPhoto
-} from './../../../../../shared/interface/people.model';
+} from '../../../../../shared/interface/people.model';
 
 // services
-import { SharepointService } from './../../../../../shared/services/sharepoint.service';
+import { SharepointService } from '../../../../../shared/services/sharepoint.service';
 
 @Injectable()
 export class PeopleFormHttpService {

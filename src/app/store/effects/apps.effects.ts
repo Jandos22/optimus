@@ -13,10 +13,10 @@ import { map, mergeMap, switchMap, catchError, tap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 // services
-import { AppsService } from './../../shared/services/apps.service';
+import { AppsService } from '../../shared/services/apps.service';
 
 // interfaces
-import { AppItem } from './../../shared/interface/applications.model';
+import { AppItem } from '../../shared/interface/applications.model';
 
 @Injectable()
 export class AppsEffects {

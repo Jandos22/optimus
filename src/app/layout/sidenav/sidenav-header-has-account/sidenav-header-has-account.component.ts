@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 // interfaces
-import { PeopleItem } from './../../../shared/interface/people.model';
+import { PeopleItem } from '../../../shared/interface/people.model';
 
 // services
 import { UtilitiesService } from '../../../shared/services';
@@ -32,7 +32,7 @@ export class SidenavHeaderHasAccountComponent {
   constructor(private utils: UtilitiesService) {}
 
   getPhotoUrl() {
-    return this.utils.photoUrl(this.user.AttachmentFiles);
+    return this.utils.userPhoto(this.user);
   }
 
   hasPosition() {

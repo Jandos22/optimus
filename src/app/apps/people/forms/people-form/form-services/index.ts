@@ -16,4 +16,4 @@ export * from './people-form-value.service';
 export * from './people-form-size.service';
 export * from './people-form-init.service';
 export * from './people-form-http.service';
-export * from './people-form-http.service';
+export * from './people-form-photo.service';

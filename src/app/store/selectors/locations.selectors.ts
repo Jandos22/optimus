@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import * as fromRoot from '../index';
+import * as fromRoot from '..';
 import * as fromLocations from '../reducers/locations.reducer';
 
 export const getLocationsState = createSelector(

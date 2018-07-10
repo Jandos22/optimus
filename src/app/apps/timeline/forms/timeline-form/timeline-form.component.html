@@ -1,0 +1,86 @@
+<span mat-dialog-title style="text-align: center;">
+    Timeline Event
+</span>
+<mat-dialog-content>
+
+    <div class="cmn-form-container">
+
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <app-timeline-form-event-date class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-timeline-form-event-date>
+
+            <app-timeline-form-event-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [eventTypes]="eventTypes$ | async">
+            </app-timeline-form-event-type>
+
+        </div>
+
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <app-timeline-form-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields">
+            </app-timeline-form-title>
+
+        </div>
+
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-timeline-form-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields">
+            </app-timeline-form-summary>
+        </div>
+
+        <!-- Hash Tags / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('HashTags').value || data.mode === 'new' || data.mode === 'edit')">
+            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-hash-tags>
+        </div>
+
+        <!-- Event Image / 2 columns -->
+        <div class="group-of-2" fxLayout="column" *ngIf="(fg_image.get('ImageUrl').value || data.mode !== 'view')">
+            <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
+                Event Photo
+                <i>(optional)</i>
+            </span>
+
+            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [fg_image]="fg_image"
+                [mode]="data.mode" (imageChanged)="imageChanged($event)">
+            </app-form-control-image-picker>
+
+            <div fxFlex="19.5px"></div>
+
+        </div>
+
+        <!-- Rich Text Editor / 2 columns -->
+        <div class="group-of-2" fxLayout="column nowrap" fxLayoutAlign="start stretch" *ngIf="(fg_fields.get('RichText').value || data.mode !== 'view')">
+            <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
+                Event Details
+                <i>(optional)</i>
+            </span>
+            <app-rich-text-editor-light class="cmn-form-component take-2-cols" [fg_fields]="fg_fields" (onFocus)="onRichTextFocus($event)"
+                [mode]="data.mode">
+            </app-rich-text-editor-light>
+            <div fxFlex="19.5px"></div>
+        </div>
+
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-timeline-form-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
+                [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            </app-timeline-form-locations>
+        </div>
+
+        <!-- Event Reporters / 2 columns -->
+        <div class="group-of-2" fxLayout="column">
+            <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                Event Reporters
+            </span>
+            <app-fc-users-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
+                [mode]="data.mode" [selfUser]="selfUser$ | async" (onSelectUser)="onSelectUser($event)">
+            </app-fc-users-selection>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-timeline-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [mode]="data.mode" (closeForm)="closeForm($event)">
+    </app-timeline-form-actions>
+</mat-dialog-actions>

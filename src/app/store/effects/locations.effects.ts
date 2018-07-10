@@ -7,9 +7,9 @@ import { Action, Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import * as a_in_errors from '../actions/errors.actions';
-import * as a_in_locations from './../actions/locations.actions';
+import * as a_in_locations from '../actions/locations.actions';
 
-import * as fromRoot from '../index';
+import * as fromRoot from '..';
 
 // rxjs
 import { throwError, of, from } from 'rxjs';
@@ -24,10 +24,10 @@ import {
 } from 'rxjs/operators';
 
 // services
-import { LocationsService } from './../../shared/services/locations.service';
+import { LocationsService } from '../../shared/services/locations.service';
 
 // constants
-import { ApiPath } from './../../shared/constants/index';
+import { ApiPath } from '../../shared/constants';
 
 // interfaces
 import { LocationEnt } from '../../shared/interface/locations.model';

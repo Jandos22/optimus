@@ -16,11 +16,6 @@ export const getPagination = createSelector(
   fromPagination.getPagination
 );
 
-// export const getPageIndexes = createSelector(
-//   getPaginationState,
-//   fromPagination.getPageIndexes
-// );
-
 export const getCurrentIndex = createSelector(
   getPaginationState,
   fromPagination.getCurrentIndex

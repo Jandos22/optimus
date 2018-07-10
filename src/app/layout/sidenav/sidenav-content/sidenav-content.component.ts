@@ -12,7 +12,7 @@ import {
 import * as _ from 'lodash';
 
 // interfaces
-import { LocationEnt } from './../../../shared/interface/locations.model';
+import { LocationEnt } from '../../../shared/interface/locations.model';
 import { AppItem } from '../../../shared/interface/applications.model';
 
 @Component({

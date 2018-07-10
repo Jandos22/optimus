@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 
-// ngrx
-import { Action, Store, select } from '@ngrx/store';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-
 // rxjs
-import { of, from } from 'rxjs';
 import {
   map,
   switchMap,
   mergeMap,
   catchError,
-  tap,
   take,
-  reduce
+  reduce,
+  withLatestFrom
 } from 'rxjs/operators';
 
-// actions
-import * as fromSearchActions from '../actions/search.actions';
+// lodash
+import * as _ from 'lodash';
+
+// ngrx
+import { Store, select } from '@ngrx/store';
+import { Effect, Actions, ofType } from '@ngrx/effects';
+import * as fromTimeline from '..';
 import * as fromParamsActions from '../actions/params.actions';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromEventsActions from '../actions/events.actions';
@@ -26,139 +26,151 @@ import * as fromErrorActions from '../../../../store/actions/errors.actions';
 // services
 import { TimelineService } from '../../services/timeline.service';
 
-// constants
-import { WirelinePath, ApiPath } from './../../../../shared/constants/index';
-
 // interfaces
-import { SpResponse } from './../../../../models/sp-response.model';
-import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
+import { SpResponse } from '../../../../models/sp-response.model';
+import {
+  TimelineEventItem,
+  TimelineSearchParams
+} from '../../../../shared/interface/timeline.model';
 
 @Injectable()
 export class SearchEffects {
-  constructor(private actions$: Actions, private srv: TimelineService) {}
+  // when params change, then hold local copy
+  // for use in count total (need refactor to use withLatestFrom)
+  params: TimelineSearchParams;
+
+  constructor(
+    private store$: Store<fromTimeline.TimelineState>,
+    private actions$: Actions,
+    private srv: TimelineService
+  ) {}
 
   // when params change:
   // reset pagination and get new url
-  @Effect() // UPDATE PARAMS
+  @Effect()
   updateParams$ = this.actions$.pipe(
     ofType(fromParamsActions.ParamsActionTypes.UPDATE_PARAMS),
     map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
-    mergeMap(params => {
+    map((params: TimelineSearchParams) => {
+      this.params = params;
+      return this.srv.buildUrl(params);
+    }),
+    mergeMap(url => {
       return [
         new fromPaginationActions.ResetPagination(),
-        new fromSearchActions.GetNewUrl(params),
-        new fromSearchActions.BeginCount(params)
-      ];
-    })
-  );
-
-  // when receive new url
-  // start new page (index 0 and only one link)
-  // start new search with new url
-  @Effect() // GET NEW URL
-  getNewUrl$ = this.actions$.pipe(
-    ofType(fromSearchActions.SearchActionTypes.GET_NEW_URL),
-    map((action: fromSearchActions.GetNewUrl) => {
-      return this.srv.buildUrl(action.params);
-    }),
-    switchMap(url => {
-      return [
-        new fromPaginationActions.StartNewPage(url),
-        new fromSearchActions.BeginSearch(url),
-        new fromEventsActions.SearchTrue()
+        new fromPaginationActions.AddLink(url),
+        new fromEventsActions.SearchEventsStart(url)
       ];
     })
   );
 
   @Effect() // BEGIN SEARCH
-  beginSearch$ = this.actions$.pipe(
-    ofType(fromSearchActions.SearchActionTypes.BEGIN_SEARCH),
-    map((action: fromSearchActions.BeginSearch) => action.url),
-    switchMap((url: string) => {
-      // send request to server via service
-      return this.srv.getDataWithGivenUrl(url).pipe(
-        mergeMap((res: SpResponse) => {
+  searchUsersStart$ = this.actions$.pipe(
+    ofType(fromEventsActions.EventsActionTypes.SEARCH_EVENTS_START),
+    withLatestFrom(this.store$.pipe(select(fromTimeline.getCurrentIndex))),
+    map((merged: any[]) => {
+      return {
+        action: merged[0] as fromEventsActions.SearchEventsStart,
+        currentIndex: merged[1] as number
+      };
+    }),
+    switchMap(merged => {
+      const getUsers$ = this.srv.getDataWithGivenUrl(merged.action.url);
+      return getUsers$.pipe(
+        mergeMap((response: SpResponse) => {
           // collection of actions that will be dispatched
           const dispatch = [];
 
-          // if results are not empty, then update events list
-          if (res.d.results) {
-            let users: TimelineEventItem[] = [];
-            const users$ = from(res.d.results);
-            users$
-              .pipe(
-                take(res.d.results.length),
-                reduce((acc: TimelineEventItem[], curr: TimelineEventItem) => {
-                  const current: TimelineEventItem = { ...curr, id: curr.Id };
-                  return [...acc, { ...current }];
-                }, [])
-              )
-              .subscribe((u: TimelineEventItem[]) => {
-                console.log(u);
-                users = [...u];
-              });
-
-            dispatch.push(
-              new fromEventsActions.LoadTimelineEventsSuccess(users)
+          if (response.d.results.length) {
+            // when users received, map them to add "id" property for @ngrx/entity
+            const events = _.reduce(
+              response.d.results,
+              function(acc: TimelineEventItem[], item: TimelineEventItem) {
+                return [...acc, { ...item, id: item.ID }];
+              },
+              []
             );
-            dispatch.push(new fromEventsActions.SearchFalse());
-          }
+            // if users exist and have length more than 0
+            dispatch.push(new fromEventsActions.SearchEventsSuccess(events));
+            dispatch.push(
+              new fromPaginationActions.UpdateTotalDisplayed(events.length)
+            );
 
-          // if results have next page, then add its url to links array
-          if (res.d.__next) {
-            dispatch.push(new fromPaginationActions.AddNextLink(res.d.__next));
+            // if results have next page
+            // then add its url to links array
+            // and begin count for "totalExist"
+            if (response.d.__next) {
+              dispatch.push(
+                new fromPaginationActions.AddLink(response.d.__next)
+              );
+              dispatch.push(new fromEventsActions.CountEventsTotal());
+            } else {
+              if (merged.currentIndex === 0) {
+                dispatch.push(
+                  new fromPaginationActions.UpdateTotalExist(events.length)
+                );
+              }
+            }
           } else {
-            dispatch.push(new fromPaginationActions.NoNextLink());
+            // if no users found
+            dispatch.push(new fromEventsActions.SearchEventsNoResults());
+            dispatch.push(new fromPaginationActions.UpdateTotalDisplayed(0));
+            dispatch.push(new fromPaginationActions.UpdateTotalExist(0));
           }
 
           // dispatched several actions using mergeMap
           return dispatch;
-        }),
-        // if http call returns error, then dialog box will pop up
-        // user can close and continue working with toolbar methods
-        catchError((error: any) => of(new fromErrorActions.DisplayError(error)))
+        })
       );
     })
   );
 
-  @Effect() // ON NEXT
-  onNext$ = this.actions$.pipe(
-    ofType(fromPaginationActions.PaginationActionTypes.ON_NEXT),
-    map((action: fromPaginationActions.OnNext) => {
-      return new fromSearchActions.BeginSearch(action.url);
-    })
-  );
-
-  @Effect() // ON BACK
-  onBack$ = this.actions$.pipe(
-    ofType(fromPaginationActions.PaginationActionTypes.ON_BACK),
-    map((action: fromPaginationActions.OnBack) => {
-      return new fromSearchActions.BeginSearch(action.url);
-    })
-  );
-
-  @Effect() // ON BEGIN COUNT
-  onBeginCount$ = this.actions$.pipe(
-    ofType(fromSearchActions.SearchActionTypes.BEGIN_COUNT),
-    map((action: fromSearchActions.BeginCount) => {
-      return this.srv.buildUrl(action.params, true);
+  @Effect()
+  countUsersTotal$ = this.actions$.pipe(
+    ofType(fromEventsActions.EventsActionTypes.COUNT_EVENTS_TOTAL),
+    map(x => {
+      return this.srv.buildUrl(this.params, true);
     }),
     switchMap(url => {
       return this.srv.getDataWithGivenUrl(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
-            return new fromPaginationActions.UpdateTotalFound(0);
+            return new fromPaginationActions.UpdateTotalExist(0);
           } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromPaginationActions.UpdateTotalFound(
+            return new fromPaginationActions.UpdateTotalExist(
               res.d.results.length
             );
-          } else {
-            return new fromPaginationActions.UpdateTotalFound('500+');
           }
         })
       );
+    })
+  );
+
+  @Effect()
+  onNext$ = this.actions$.pipe(
+    ofType(fromPaginationActions.PaginationActionTypes.ON_NEXT),
+    map((action: fromPaginationActions.OnNext) => {
+      return new fromEventsActions.SearchEventsStart(action.url);
+    })
+  );
+
+  @Effect()
+  onBack$ = this.actions$.pipe(
+    ofType(fromPaginationActions.PaginationActionTypes.ON_BACK),
+    withLatestFrom(this.store$.pipe(select(fromTimeline.getCurrentIndex))),
+    map((merged: any[]) => {
+      return {
+        action: merged[0] as fromPaginationActions.OnBack,
+        currentIndex: merged[1] as number
+      };
+    }),
+    mergeMap(merged => {
+      return [
+        new fromEventsActions.SearchEventsStart(merged.action.url),
+        new fromPaginationActions.RemoveLink(merged.currentIndex)
+      ];
     })
   );
 }

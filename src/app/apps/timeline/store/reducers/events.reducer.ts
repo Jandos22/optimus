@@ -8,7 +8,7 @@ import {
 } from '../actions/events.actions';
 
 // interfaces
-import { TimelineEventItem } from './../../../../shared/interface/timeline.model';
+import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
 // compose reducer state shape here
 export interface EventsState extends EntityState<TimelineEventItem> {
@@ -31,22 +31,36 @@ export function reducer(
   action: EventsActionsUnion
 ): EventsState {
   switch (action.type) {
-    case EventsActionTypes.LOAD_TIMELINE_EVENTS_SUCCESS: {
-      return adapter.addAll(action.events, state);
+    case EventsActionTypes.SEARCH_EVENTS_START: {
+      return { ...state, searching: true };
     }
 
-    case EventsActionTypes.SEARCH_TRUE: {
-      return {
-        ...state,
-        searching: true
-      };
+    case EventsActionTypes.SEARCH_EVENTS_SUCCESS: {
+      const adapted = adapter.addAll(action.events, state);
+      return { ...adapted, searching: false };
     }
 
-    case EventsActionTypes.SEARCH_FALSE: {
-      return {
-        ...state,
-        searching: false
-      };
+    case EventsActionTypes.SEARCH_EVENTS_NO_RESULTS: {
+      const adapted = adapter.removeAll(state);
+      return { ...adapted, searching: false };
+    }
+
+    case EventsActionTypes.INSERT_ONE_EVENT: {
+      const event = action.event;
+      const ids = [event.ID, ...state.ids] as string[] | number[];
+      const entities = { [event.ID]: event, ...state.entities };
+      return { ...state, ids, entities };
+    }
+
+    case EventsActionTypes.ADD_ONE_EVENT: {
+      return adapter.addOne(action.event, state);
+    }
+
+    case EventsActionTypes.UPDATE_ONE_EVENT: {
+      return adapter.updateOne(
+        { id: action.id, changes: action.changes },
+        state
+      );
     }
 
     default:
@@ -62,6 +76,4 @@ export const {
   selectTotal: selectEventsTotal
 } = adapter.getSelectors();
 
-// custom selectors not covered by adapter
-// export const getNgPeopleList = (state: UsersState) => state.list;
-// export const getUsersTotal = (state: EventsState) => state.total;
+export const getEventsSearching = (state: EventsState) => state.searching;

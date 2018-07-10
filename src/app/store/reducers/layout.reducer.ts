@@ -1,4 +1,4 @@
-import { SidenavProperties } from './../../models/sidenav-properties.m';
+import { SidenavProperties } from '../../models/sidenav-properties.m';
 import { WindowProperties } from '../../shared/interface/layout.model';
 
 import * as fromLayout from '../actions/layout.actions';
