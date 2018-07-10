@@ -96,14 +96,16 @@ export class TimelineFormInitService {
   }
 
   // get event type field value & condition
+  // setting disabled via form builder doesn't work
+  // on mat-select fields, so disable them via attribute
   getEventTypeId(mode: FormMode, item: TimelineEventItem) {
     switch (mode) {
       case 'new':
         return 3; // Default Event Type = General, its id = 3
       case 'view':
-        return { value: item.EventTypeId, disabled: true };
+        return item.EventTypeId;
       case 'edit':
-        return { value: item.EventTypeId, disabled: false };
+        return item.EventTypeId;
     }
   }
 
@@ -125,9 +127,9 @@ export class TimelineFormInitService {
       case 'new':
         return [locationId]; // Default Event Type = General, its id = 3
       case 'view':
-        return { value: item.LocationsId.results, disabled: true };
+        return item.LocationsId.results;
       case 'edit':
-        return { value: item.LocationsId.results, disabled: false };
+        return item.LocationsId.results;
     }
   }
 
@@ -137,9 +139,9 @@ export class TimelineFormInitService {
       case 'new':
         return []; // Default Event Type = General, its id = 3
       case 'view':
-        return { value: item.EventReportersId, disabled: true };
+        return { value: item.EventReportersId.results, disabled: true };
       case 'edit':
-        return { value: item.EventReportersId, disabled: false };
+        return { value: item.EventReportersId.results, disabled: false };
     }
   }
 

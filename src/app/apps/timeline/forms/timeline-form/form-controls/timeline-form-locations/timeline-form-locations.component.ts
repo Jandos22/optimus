@@ -1,3 +1,4 @@
+import { FormMode } from './../../../../../../shared/interface/form.model';
 import {
   Component,
   Input,
@@ -16,7 +17,7 @@ import { LocationEnt } from '../../../../../../shared/interface/locations.model'
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_fields.get('LocationsId')">
-      <mat-select multiple
+      <mat-select multiple [disabled]="mode === 'view'"
         placeholder="Locations"
         formControlName="results">
         <mat-option
@@ -34,6 +35,7 @@ export class TimelineFormLocationsComponent {
   @Input() locationAssignedId: number;
   @Input() accessLevel: number;
   @Input() locations: LocationEnt[];
+  @Input() mode: FormMode;
 
   constructor() {}
 

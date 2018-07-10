@@ -138,3 +138,12 @@
   -webkit-opacity: 1 !important;
   opacity: 1 !important;
 }
+
+.common-rich-text-view-container {
+  font-size: 0.875rem;
+}
+
+.common-mat-dialog-content {
+  overflow: overlay;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}

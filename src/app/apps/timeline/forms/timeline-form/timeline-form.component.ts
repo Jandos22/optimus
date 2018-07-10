@@ -161,22 +161,26 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     this.$mode.next(mode);
   }
 
-  // updateFormGroupFields(updatedFields: PeopleItem) {
-  //   console.log(updatedFields);
-  //   this.data.item = { ...this.data.item, ...updatedFields };
-  // }
+  // triggered after saving fields
+  updateDataItem(updatedFields: TimelineEventItem) {
+    console.log('updating data item:');
+    console.log(updatedFields);
 
-  // updateFormGroupPhoto(newPhoto: SpListItemAttachmentFiles[]) {
-  //   console.log(this.data.item);
-  //   console.log(newPhoto);
-  //   this.data.item = {
-  //     ...this.data.item,
-  //     Attachments: true,
-  //     AttachmentFiles: {
-  //       results: { ...newPhoto }
-  //     }
-  //   };
-  // }
+    this.data.item = { ...this.data.item, ...updatedFields };
+  }
+
+  // triggered after saving image
+  updateDataItemImage(newImage: SpListItemAttachmentFiles[]) {
+    console.log(this.data.item);
+    console.log(newImage);
+    this.data.item = {
+      ...this.data.item,
+      Attachments: true,
+      AttachmentFiles: {
+        results: { ...newImage }
+      }
+    };
+  }
 
   // @Output from FormControlImagePicker
   imageChanged(ArrayBuffer: ArrayBuffer) {

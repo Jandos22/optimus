@@ -10,11 +10,11 @@ export interface TimelineEventItem extends SpListItem {
   Summary?: string;
   RichText?: any;
   EventReporters?: TimelineEventReporters;
-  EventReportersId?: number[];
+  EventReportersId?: TimelineEventReportersId;
   EventType?: TimelineEventType;
   EventTypeId?: number[];
   Locations?: LocationEnt[];
-  LocationsId?: TimelineLocations;
+  LocationsId?: TimelineLocationsId;
   HashTags?: string;
   // pseudo field
   New?: boolean;
@@ -33,11 +33,15 @@ export interface TimelineEventType extends SpListItem {
   ApplicableTo?: LocationEnt[];
 }
 
+export interface TimelineEventReportersId {
+  results?: number[];
+}
+
 export interface TimelineEventReporters {
   results?: PeopleItem[];
 }
 
-export interface TimelineLocations {
+export interface TimelineLocationsId {
   results?: number[];
 }
 

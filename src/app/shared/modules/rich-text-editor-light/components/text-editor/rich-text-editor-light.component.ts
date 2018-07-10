@@ -8,7 +8,9 @@ import {
   Sanitizer,
   SecurityContext,
   ElementRef,
-  ViewChild
+  ViewChild,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 // import { QuillEditorComponent } from 'ngx-quill';
@@ -27,20 +29,20 @@ Quill.register('modules/imageResize', ImageResize);
 
         <!-- NEW or EDIT modes -->
         <quill-editor
-          *ngIf="mode !== 'view'"
+            [hidden]="mode === 'view'"
             [modules]="modules"
             [style]="{height: '200px'}"
-            formControlName="RichText"
+            [formControl]="fg_fields.controls['RichText']"
             (onSelectionChanged)="handleSelectionChanged($event)">
         </quill-editor>
 
         <!-- VIEW mode -->
-        <div #richtext>
+        <div #richtext [hidden]="mode !== 'view'" class="common-rich-text-view-container">
         </div>
     </div>
     `
 })
-export class RichTextEditorLightComponent implements OnInit {
+export class RichTextEditorLightComponent implements OnInit, OnChanges {
   @Input() fg_fields: FormGroup;
   @Input() mode: FormMode;
 
@@ -57,18 +59,17 @@ export class RichTextEditorLightComponent implements OnInit {
     this.initModules();
     console.log(this.mode);
 
-    this.fg_fields.get('RichText').statusChanges.subscribe(v => {
+    this.fg_fields.controls['RichText'].statusChanges.subscribe(v => {
       console.log(this.fg_fields.get('RichText'));
     });
+  }
 
-    // this.richtext = this.sanitizer.sanitize(
-    //   SecurityContext.NONE,
-    //   this.fg_fields.get('RichText').value
-    // );
-
-    this.richtext.nativeElement.innerHTML = this.fg_fields.get(
-      'RichText'
-    ).value;
+  reactOnModeChange(mode: FormMode) {
+    if (mode === 'view') {
+      this.richtext.nativeElement.innerHTML = this.fg_fields.controls[
+        'RichText'
+      ].value;
+    }
   }
 
   initModules() {
@@ -99,6 +100,12 @@ export class RichTextEditorLightComponent implements OnInit {
       this.onFocus.emit(true);
     } else {
       this.onFocus.emit(false);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.mode) {
+      this.reactOnModeChange(changes.mode.currentValue);
     }
   }
 }

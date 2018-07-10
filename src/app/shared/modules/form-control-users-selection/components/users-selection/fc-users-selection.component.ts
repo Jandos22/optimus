@@ -1,3 +1,4 @@
+import { PeopleLookupService } from './../../../../services/people-lookup.service';
 import {
   Component,
   Input,
@@ -9,15 +10,18 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
-  ElementRef
+  ElementRef,
+  SimpleChange
 } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 
 // rxjs
-import { Observable, combineLatest, Subscription, Subject } from 'rxjs';
+import { Observable, combineLatest, Subscription, Subject, from } from 'rxjs';
 import {
   startWith,
   map,
+  concatMap,
+  reduce,
   debounceTime,
   take,
   distinctUntilChanged,
@@ -43,6 +47,10 @@ import {
 import * as _ from 'lodash';
 import { element } from '../../../../../../../node_modules/protractor';
 import { FormMode } from '../../../../interface/form.model';
+import {
+  TimelineEventReporters,
+  TimelineEventReportersId
+} from '../../../../interface/timeline.model';
 
 @Component({
   selector: 'app-fc-users-selection',
@@ -57,7 +65,8 @@ import { FormMode } from '../../../../interface/form.model';
         #autoCompleteInput
         placeholder="Event Reporter(s)"
         [matAutocomplete]="auto"
-        formControlName="text">
+        formControlName="text"
+        [disabled]="mode === 'view'">
 
       <mat-autocomplete
         #auto="matAutocomplete" [displayWith]="displayFn"
@@ -125,7 +134,11 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
   // combined observable
   $query: Subscription;
 
-  constructor(private fb: FormBuilder, private srv: SearchUsersService) {}
+  constructor(
+    private fb: FormBuilder,
+    private srv: SearchUsersService,
+    private lookup: PeopleLookupService
+  ) {}
 
   ngOnInit() {
     this.initFormGroup(this.mode);
@@ -185,14 +198,24 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
       )
       .subscribe(ids => this.onSelectUser.emit(ids));
 
-    this.addSelfToSelected(this.selfUser);
+    // when opening new form
+    // then add user to selected automatically
+    if (this.mode === 'new') {
+      this.addSelfToSelected(this.selfUser);
+    }
+
+    // when opening form in view mode
+    // then get EventReportersId array and fetch users' info
+    if (this.mode === 'view') {
+      this.handleReporters(this.fg_fields.controls['EventReportersId'].value);
+    }
   }
 
   initFormGroup(mode: FormMode) {
     console.log(mode);
     // initialize form group for searching users
     this.fg_users = this.fb.group({
-      text: [{ value: '', disabled: mode === 'view' ? true : false }],
+      text: '',
       selectedUsers: ''
     });
   }
@@ -339,6 +362,32 @@ export class FormControlUsersSelectionComponent implements OnInit, OnDestroy {
       const maxWidth = `max-width: ${refWidth - 92}px;`;
       document.getElementById('user' + user.ID).setAttribute('style', maxWidth);
     });
+  }
+
+  handleReporters(reporters: TimelineEventReportersId) {
+    console.log(reporters);
+
+    const ids: number[] = reporters.results;
+
+    if (ids.length) {
+      const reps$: Observable<number> = from(ids);
+
+      reps$
+        .pipe(
+          take(Number(ids.length)),
+          concatMap(id => {
+            return this.lookup.getUserById(id);
+          }),
+          reduce((acc: PeopleItem[], curr: PeopleItem) => {
+            return [...acc, curr[0]];
+          }, [])
+        )
+        .subscribe(v => {
+          console.log(v);
+          this.fg_users.controls['selectedUsers'].patchValue(v);
+          // this.reps = v as PeopleItem[];
+        });
+    }
   }
 
   ngOnDestroy() {
