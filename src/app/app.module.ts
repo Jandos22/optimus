@@ -73,6 +73,7 @@ import * as fromDateFormats from './shared/date/date.formats';
   ],
   entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -86,7 +87,6 @@ import * as fromDateFormats from './shared/date/date.formats';
     StoreModule.forFeature('root', root),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
-    AppRoutingModule,
     RegistrationModule,
     MatNativeDateModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []

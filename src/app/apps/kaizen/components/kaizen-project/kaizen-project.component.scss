@@ -1,0 +1,133 @@
+@import '../../../../../colors';
+
+.kaizenproject-card__container {
+  margin: 8px 0;
+}
+
+.kaizenproject-card__hasimage {
+  box-sizing: border-box;
+  // min-height: 206px;
+  padding: 16px;
+
+  @media screen and (min-width: 600px) {
+    max-width: 368px !important;
+  }
+}
+
+.kaizenproject-card__noimage {
+  box-sizing: border-box;
+  // min-height: 206px;
+  padding: 16px;
+  width: 100%;
+
+  @media screen and (min-width: 600px) {
+    max-width: 276px !important;
+  }
+}
+
+.kaizenproject-card__media-content {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.kaizenproject__date {
+  font-size: 0.75rem;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.kaizenproject__type {
+  // height: 42px;
+  font-size: 0.875rem;
+  padding: 16px;
+  color: #ddd;
+
+  &.noimage {
+    padding: 0;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+.kaizenproject__title {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.875);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-height: 21px; /* fallback */
+  max-height: 42px; /* fallback */
+  margin-bottom: 8px;
+
+  &:hover {
+    cursor: pointer;
+    color: $my-primary-dark;
+  }
+}
+
+.kaizenproject__summary {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-height: 16px; /* fallback */
+  max-height: 48px; /* fallback */
+  margin-bottom: 8px;
+
+  &:hover {
+    cursor: pointer;
+    color: $my-primary-dark;
+  }
+}
+
+.kaizenproject-card__doneby--container {
+  margin-top: 16px;
+  height: 36px;
+  max-height: 36px;
+}
+
+.kaizen-project-quest {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+  line-height: 14px;
+  margin: 8px 0 16px 0;
+
+  span.hasQPID {
+    color: $my-primary;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+}
+
+.kaizen-project-impact-type {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 16px;
+
+  span.impact-type {
+    padding-left: 8px;
+  }
+
+  span.value-creation {
+    padding-right: 4px;
+  }
+
+  span.project-type {
+    border-radius: 4px;
+    margin-right: 4px;
+    padding: 0 4px;
+    background: rgba(0, 0, 0, 0.54);
+    color: #eee;
+  }
+}
