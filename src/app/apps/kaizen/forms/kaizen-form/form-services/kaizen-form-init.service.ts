@@ -49,7 +49,6 @@ export class KaizenFormInitService {
       QuestRIR: [
         this.getSimpleFormValue(mo, it, 'QuestRIR'),
         [
-          Validators.required,
           Validators.minLength(14),
           Validators.maxLength(14),
           ValidationService.onlyNumbers
@@ -58,7 +57,6 @@ export class KaizenFormInitService {
       QuestQPID: [
         this.getSimpleFormValue(mo, it, 'QuestQPID'),
         [
-          Validators.required,
           Validators.minLength(6),
           Validators.maxLength(8),
           ValidationService.onlyNumbers

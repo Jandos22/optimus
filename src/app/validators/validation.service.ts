@@ -2,21 +2,23 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export class ValidationService {
   static onlyNumbers(control: AbstractControl) {
-    if (control.value === '') {
+    if (!control.value) {
       return null;
+    } else {
+      const regex = /^[0-9]+$/i;
+      const valid = regex.test(control.value);
+      return valid ? null : { onlyNumbers: true };
     }
-    const regex = /^[0-9]+$/i;
-    const valid = regex.test(control.value);
-    return valid ? null : { onlyNumbers: true };
   }
 
   static onlySearchable(control: AbstractControl) {
-    if (control.value === '') {
+    if (!control.value) {
       return null;
+    } else {
+      const regex = /^[a-z0-9 #_\-]+$/i;
+      const valid = regex.test(control.value);
+      return valid ? null : { onlySearchable: true };
     }
-    const regex = /^[a-z0-9 #_\-]+$/i;
-    const valid = regex.test(control.value);
-    return valid ? null : { onlySearchable: true };
   }
 }
 

@@ -31,11 +31,10 @@ import { KaizenFormHttpService } from '../../form-services/kaizen-form-http.serv
   selector: 'app-kaizen-form-actions-new',
   styleUrls: ['kaizen-form-actions-new.component.scss'],
   template: `
-    <button mat-button color="primary" (click)="log()">LOG</button>
+    <!-- <button mat-button color="primary" (click)="log()">LOG</button> -->
 
     <button mat-button color="primary"
       [disabled]="!fg_fields.valid || savingChanges"
-      [ngClass]="{ 'mat-button__fa-icon': savingChanges }"
       (click)="onSave()">
       <span *ngIf="!savingChanges">SAVE</span>
       <span *ngIf="savingChanges">SAVING </span>
