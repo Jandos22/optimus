@@ -144,6 +144,6 @@
 }
 
 .common-mat-dialog-content {
-  overflow: overlay;
+  overflow: overlay !important;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }

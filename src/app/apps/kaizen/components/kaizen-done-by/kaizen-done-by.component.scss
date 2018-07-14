@@ -1,0 +1,56 @@
+.kaizen-user-photo {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+}
+
+.doneby_container {
+  position: relative;
+}
+
+.doneby_date_container {
+  position: relative;
+  height: 36px;
+}
+
+.doneby_stack {
+  position: absolute;
+  height: 36px;
+  top: 0;
+
+  &:hover {
+    z-index: 10 !important;
+  }
+}
+
+.reporter__container--authors {
+  line-height: 16px;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+.reporter__container--eventdate {
+  line-height: 14px;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+.doneby__users--icon {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  background: #cfd8dc;
+  font-size: 18px;
+  line-height: 36px;
+}
+
+.doneby__user--icon {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  font-size: 18px;
+  line-height: 36px;
+}

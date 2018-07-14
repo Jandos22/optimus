@@ -20,6 +20,7 @@ import {
   MatExpansionModule,
   MatTooltipModule
 } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
@@ -45,7 +46,8 @@ const matModules: any[] = [
   MatTooltipModule,
   MatDatepickerModule,
   MatAutocompleteModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

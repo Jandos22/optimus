@@ -1,4 +1,5 @@
 import { SharedModule } from '../../shared/shared.module';
+
 // angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -35,10 +36,9 @@ import * as fromServices from './services';
 import * as fromPipes from '../../shared/pipes';
 
 // form modules
-import { FormControlUsersSelectionModule } from '../../shared/modules/form-control-users-selection/form-control-users-selection.module';
+import { FormControlsModule } from './../../shared/modules/form-controls/form-controls.module';
 import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
-import { FormControlHashTagsModule } from '../../shared/modules/form-control-hash-tags/form-control-hash-tags.module';
 
 // routes
 export const timelineRoutes: Routes = [
@@ -58,10 +58,9 @@ export const timelineRoutes: Routes = [
     FontAwesomeModule,
     SimpleNotificationsModule,
     // form control modules
-    FormControlUsersSelectionModule,
+    FormControlsModule,
     RichTextEditorLightModule,
-    FormControlImagePickerModule,
-    FormControlHashTagsModule
+    FormControlImagePickerModule
   ],
   providers: [...fromServices.services],
   declarations: [

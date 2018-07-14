@@ -16,6 +16,11 @@ export const appRoutes: Routes = [
     loadChildren: './apps/people/people.module#PeopleModule'
   },
   {
+    path: 'kaizen',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/kaizen/kaizen.module#KaizenModule'
+  },
+  {
     path: 'ppe',
     canActivate: [AuthGuard],
     loadChildren: './apps/ppe/ppe.module#PpeModule'

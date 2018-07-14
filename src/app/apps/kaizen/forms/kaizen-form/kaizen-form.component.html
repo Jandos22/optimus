@@ -1,0 +1,106 @@
+<span mat-dialog-title style="text-align: center;">
+    Kaizen Project
+</span>
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <!-- Project Date / 1 column -->
+            <app-kaizen-form-project-date class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-kaizen-form-project-date>
+
+            <!-- Project Type / 1 column -->
+            <app-kaizen-form-project-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [projectTypes]="projectTypes$ | async">
+            </app-kaizen-form-project-type>
+
+        </div>
+
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <!-- Impact Type / 1 column -->
+            <app-kaizen-form-impact-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [impactTypes]="impactTypes$ | async">
+            </app-kaizen-form-impact-type>
+
+            <!-- Value Creation / 1 column-->
+            <app-kaizen-form-value-creation class="cmn-form-component" fxLayout="row wrap" *ngIf="(fg_fields.get('ValueCreationForClient').value || data.mode !== 'view')"
+                [fg_fields]="fg_fields" [mode]="data.mode" (onValueCreationChange)="onValueCreationChange($event)"></app-kaizen-form-value-creation>
+        </div>
+
+
+        <!-- Title / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-title>
+
+        </div>
+
+        <!-- Summary / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-summary>
+        </div>
+
+        <!-- Project Image / 2 columns -->
+        <div class="group-of-2" fxLayout="column" *ngIf="(fg_image.get('ImageUrl').value || data.mode !== 'view')">
+            <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
+                Project Photo
+                <i>(optional)</i>
+            </span>
+
+            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [fg_image]="fg_image"
+                [mode]="data.mode" (imageChanged)="imageChanged($event)">
+            </app-form-control-image-picker>
+
+            <div fxFlex="19.5px"></div>
+
+        </div>
+
+        <!-- Rich Text Editor / 2 columns -->
+        <div class="group-of-2" fxLayout="column nowrap" fxLayoutAlign="start stretch" *ngIf="(fg_fields.get('RichText').value || data.mode !== 'view')">
+            <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
+                Project Details
+                <i>(optional)</i>
+            </span>
+            <app-rich-text-editor-light class="cmn-form-component take-2-cols" [fg_fields]="fg_fields" (onFocus)="onRichTextFocus($event)"
+                [mode]="data.mode">
+            </app-rich-text-editor-light>
+            <div fxFlex="19.5px"></div>
+        </div>
+
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('QuestRIR').value || data.mode !== 'view')">
+            <app-form-control-quest-rir class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+            </app-form-control-quest-rir>
+
+            <app-form-control-quest-qpid class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+            </app-form-control-quest-qpid>
+        </div>
+
+        <!-- Locations / 1 column -->
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-form-control-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+                [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            </app-form-control-locations>
+        </div>
+
+        <!-- Done By / 2 columns -->
+        <div class="group-of-2" fxLayout="column">
+            <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                Done By
+            </span>
+            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
+                [mode]="data.mode" [fieldName]="'DoneById'" [displayName]="'Done By'" [selfUser]="selfUser$ | async" (onSelectUser)="onSelectUser($event)">
+            </app-form-control-user-selection>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-kaizen-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)" (updateDataItemImage)="updateDataItemImage($event)">
+    </app-kaizen-form-actions>
+</mat-dialog-actions>
