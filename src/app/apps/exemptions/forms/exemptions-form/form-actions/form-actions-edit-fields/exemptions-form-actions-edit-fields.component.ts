@@ -45,6 +45,16 @@ export class ExemptionsFormActionsEditFieldsComponent
         .get('ExpiryDate')
         .valueChanges.pipe(map(ExpiryDate => ({ ExpiryDate }))),
 
+      // ExpiryDate observable
+      this.fg_fields
+        .get('Status')
+        .valueChanges.pipe(map(Status => ({ Status }))),
+
+      // ExpiryDate observable
+      this.fg_fields
+        .get('PendingActions')
+        .valueChanges.pipe(map(PendingActions => ({ PendingActions }))),
+
       // Title observable
       this.fg_fields.get('Title').valueChanges.pipe(map(Title => ({ Title }))),
 

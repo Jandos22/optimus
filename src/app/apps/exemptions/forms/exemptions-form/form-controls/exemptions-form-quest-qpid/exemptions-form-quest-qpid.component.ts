@@ -59,7 +59,7 @@ export class ExemptionsFormQuestQpidComponent {
     const qpid = this.fg_fields.controls['QuestQPID'].value;
     if (qpid) {
       window.open(
-        `https://quest.slb.com/quest/Exemptions/Exemptionview.asp?QPID=${qpid}`,
+        `https://quest.slb.com/quest/Exemption/ExemptionVIEW.asp?QID=${qpid}&QPID=${qpid}`,
         '_blank'
       );
     }

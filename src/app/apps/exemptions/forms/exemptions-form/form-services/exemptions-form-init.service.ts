@@ -24,6 +24,11 @@ export class ExemptionsFormInitService {
   create_FormGroup_Fields(mo: FormMode, it: ExemptionItem, lo: number) {
     return this.fb.group({
       ExpiryDate: [this.getExpiryDate(mo, it), Validators.required],
+      Status: [this.getSimpleFormValue(mo, it, 'Status'), Validators.required],
+      PendingActions: [
+        this.getSimpleFormValue(mo, it, 'PendingActions'),
+        Validators.required
+      ],
       Title: [
         this.getSimpleFormValue(mo, it, 'Title'),
         [

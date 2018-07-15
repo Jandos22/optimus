@@ -14,11 +14,16 @@ import { ExemptionItem } from '../../../../shared/interface/exemptions.model';
   styleUrls: ['exemptions-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="exemptions-list--container" fxFlex
+    <div class="exemptions-list-container" fxFlex
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
-      <app-exemptions-list-item *ngFor="let exemption of exemptions; last as last" [exemption]="exemption"
-        [ngClass]="{ 'exemption-last': last }"
+      <app-exemptions-list-item
+        *ngFor="let exemption of exemptions; last as last"
+        [exemption]="exemption"
+        [ngClass]="{
+          'last-item': last,
+          'status-pending': (exemption.Status === 'Pending')
+        }"
         (openForm)="openForm.emit($event)">
       </app-exemptions-list-item>
 

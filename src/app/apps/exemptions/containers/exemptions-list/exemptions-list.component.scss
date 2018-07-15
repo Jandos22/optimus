@@ -1,16 +1,6 @@
-app-exemptions-item {
-  width: 100%;
+@import '../../../../../colors';
 
-  @media screen and (min-width: 600px) {
-    width: auto;
-  }
-
-  &.exemption-last {
-    margin-right: 16px;
-  }
-}
-
-div.exemptions-list--container {
+.exemptions-list-container {
   margin: 0 auto;
   padding-left: 16px;
   -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -18,5 +8,31 @@ div.exemptions-list--container {
   @media screen and (min-width: 600px) {
     min-width: 600px;
     max-width: 600px;
+  }
+}
+
+app-exemptions-list-item {
+  // display: block;
+  width: 100%;
+  min-height: 54px;
+  max-height: 70px;
+  padding: 0 4px;
+  background: #fcfcfc;
+  // border-bottom: 1px solid $my-blue-200;
+  border-bottom: 1px solid $my-blue-100;
+  border-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 8px;
+
+  @media screen and (min-width: 600px) {
+    // width: auto;
+  }
+
+  &.last-item {
+    margin-right: 16px;
+  }
+
+  &.status-pending {
+    background: $my-yellow-100;
   }
 }

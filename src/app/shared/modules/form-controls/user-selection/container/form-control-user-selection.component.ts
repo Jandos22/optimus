@@ -1,4 +1,3 @@
-import { PeopleLookupService } from './../../../../services/people-lookup.service';
 import {
   Component,
   Input,
@@ -14,6 +13,12 @@ import {
   SimpleChange
 } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+
+// material
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger
+} from '@angular/material';
 
 // rxjs
 import { Observable, combineLatest, Subscription, Subject, from } from 'rxjs';
@@ -39,10 +44,7 @@ import {
 
 // services
 import { SearchUsersService, UtilitiesService } from '../../../../services';
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger
-} from '@angular/material';
+import { PeopleLookupService } from './../../../../services/people-lookup.service';
 
 import * as _ from 'lodash';
 import { element } from '../../../../../../../node_modules/protractor';
@@ -223,7 +225,13 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
     // when opening form in view mode
     // then get IDs array and fetch users' info
     if (this.mode === 'view') {
-      this.handleReporters(this.fg_fields.controls[this.fieldName].value);
+      // prepare input to handle reporters depending on number of users
+      if (this.allowNumberOfUsers === 1) {
+        const id: number = this.fg_fields.controls[this.fieldName].value;
+        this.handleReporters({ results: [id] });
+      } else {
+        this.handleReporters(this.fg_fields.controls[this.fieldName].value);
+      }
     }
   }
 

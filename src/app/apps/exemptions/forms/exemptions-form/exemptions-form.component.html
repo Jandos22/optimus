@@ -11,6 +11,16 @@
             <app-exemptions-form-expiry-date class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
             </app-exemptions-form-expiry-date>
 
+            <!-- Status / 1 column -->
+            <app-exemptions-form-status class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-exemptions-form-status>
+
+        </div>
+
+        <!-- Pending Actions / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="fg_fields.controls['Status'].value === 'Pending'">
+            <app-exemptions-form-pending class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-exemptions-form-pending>
         </div>
 
         <!-- Title / 2 columns -->
@@ -52,7 +62,7 @@
         <!-- Submitter / 2 columns -->
         <div class="group-of-2" fxLayout="column">
             <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
-                Done By
+                Submitted By
             </span>
             <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
                 [mode]="data.mode" [fieldName]="'SubmitterId'" [displayName]="'Submitted By'" [selfUser]="selfUser$ | async"

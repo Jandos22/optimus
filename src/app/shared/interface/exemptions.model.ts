@@ -7,6 +7,8 @@ export interface ExemptionItem extends SpListItem {
   Title?: string;
   Summary?: string;
   ExpiryDate?: Date;
+  Status?: string;
+  PendingActions?: string;
   QuestNumber?: string;
   QuestQPID?: string;
   Location?: LocationEnt; // lookup single

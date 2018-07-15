@@ -60,6 +60,8 @@ export class ExemptionsService {
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',Summary))`;
       url += `or(substringof('${text}',HashTags))`;
+      url += `or(substringof('${text}',PendingActions))`;
+      url += `or(substringof('${text}',Status))`;
       url += `)`;
     }
 
@@ -72,7 +74,7 @@ export class ExemptionsService {
     }
 
     // $orderby
-    url += `&$orderby=ExpiryDate desc`;
+    url += `&$orderby=ExpiryDate asc`;
 
     // $top
     if (top) {
@@ -91,6 +93,8 @@ export class ExemptionsService {
       'Id',
       'ID',
       'ExpiryDate',
+      'Status',
+      'PendingActions',
       'Title',
       'Summary',
       'SubmitterId',
