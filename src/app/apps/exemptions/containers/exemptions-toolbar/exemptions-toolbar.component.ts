@@ -29,9 +29,6 @@ import { FormGroup } from '@angular/forms';
         [fg_params]="fg_params">
     </app-toolbar-button-clear>
 
-    <app-toolbar-button-filters>
-    </app-toolbar-button-filters>
-
     <app-toolbar-button-add
       *ngIf="canCreate()"
       [tooltip]="'Add new project'"

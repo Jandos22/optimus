@@ -25,10 +25,7 @@ export class ExemptionsFormInitService {
     return this.fb.group({
       ExpiryDate: [this.getExpiryDate(mo, it), Validators.required],
       Status: [this.getSimpleFormValue(mo, it, 'Status'), Validators.required],
-      PendingActions: [
-        this.getSimpleFormValue(mo, it, 'PendingActions'),
-        Validators.required
-      ],
+      PendingActions: [this.getSimpleFormValue(mo, it, 'PendingActions')],
       Title: [
         this.getSimpleFormValue(mo, it, 'Title'),
         [

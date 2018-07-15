@@ -1,5 +1,43 @@
 @import '../../../../../colors';
 
+.exemption-days-left {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  // width: 100%;
+  height: 100%;
+  background: #fcfcfc;
+  // border-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+
+  &.expired {
+    width: 100%;
+    background: $my-red-100;
+  }
+
+  &.soon-expires {
+    background: $my-yellow-100;
+  }
+}
+
+.corner-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 1%;
+  background: #fcfcfc;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 .exemption-row-1 {
   margin: 8px 0;
   padding: 0 8px;
@@ -31,11 +69,11 @@
   font-size: 0.75rem;
 
   .status {
-    min-width: 70px;
+    min-width: 72px;
   }
 
   .date {
-    min-width: 70px;
+    min-width: 72px;
     font-size: 0.75rem;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
@@ -55,6 +93,15 @@
         cursor: pointer;
         color: $my-primary-dark;
       }
+    }
+  }
+
+  .days-left {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.75);
+
+    @media screen and (max-width: 374px) {
+      display: none;
     }
   }
 }

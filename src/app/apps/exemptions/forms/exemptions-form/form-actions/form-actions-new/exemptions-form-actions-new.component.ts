@@ -31,7 +31,7 @@ import { ExemptionsFormHttpService } from '../../form-services/exemptions-form-h
   selector: 'app-exemptions-form-actions-new',
   styleUrls: ['exemptions-form-actions-new.component.scss'],
   template: `
-    <button mat-button color="primary" (click)="log()">LOG</button>
+    <!-- <button mat-button color="primary" (click)="log()">LOG</button> --> 
 
     <button mat-button color="primary"
       [disabled]="!fg_fields.valid || savingChanges"

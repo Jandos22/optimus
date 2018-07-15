@@ -34,7 +34,7 @@ import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-
   selector: 'app-exemptions-form-actions-edit',
   styleUrls: ['exemptions-form-actions-edit.component.scss'],
   template: `
-    <button mat-button color="warn" (click)="log()">LOG</button>
+    <!-- <button mat-button color="warn" (click)="log()">LOG</button> -->
 
     <button mat-button color="primary" tabindex="-1"
       [disabled]="!fg_fields.valid || !hasUnsavedFields || savingChanges"
@@ -190,6 +190,7 @@ export class ExemptionsFormActionsEditComponent implements OnInit, OnDestroy {
   }
 
   log() {
+    console.log(this.fg_fields);
     console.log(this.fg_fields.getRawValue());
   }
 }

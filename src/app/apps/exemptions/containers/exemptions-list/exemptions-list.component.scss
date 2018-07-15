@@ -13,13 +13,15 @@
 
 app-exemptions-list-item {
   // display: block;
+  position: relative;
+  z-index: 0;
   width: 100%;
   min-height: 54px;
   max-height: 70px;
   padding: 0 4px;
-  background: #fcfcfc;
-  // border-bottom: 1px solid $my-blue-200;
-  border-bottom: 1px solid $my-blue-100;
+  // background: #fcfcfc;
+  border: 1px solid $my-blue-100;
+  // border-bottom: 1px solid $my-blue-100;
   border-radius: 8px;
   border-top-right-radius: 8px;
   margin-bottom: 8px;
