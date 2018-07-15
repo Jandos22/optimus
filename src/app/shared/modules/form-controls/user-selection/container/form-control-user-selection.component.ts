@@ -1,4 +1,3 @@
-import { PeopleLookupService } from './../../../../services/people-lookup.service';
 import {
   Component,
   Input,
@@ -14,6 +13,12 @@ import {
   SimpleChange
 } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+
+// material
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger
+} from '@angular/material';
 
 // rxjs
 import { Observable, combineLatest, Subscription, Subject, from } from 'rxjs';
@@ -39,10 +44,7 @@ import {
 
 // services
 import { SearchUsersService, UtilitiesService } from '../../../../services';
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger
-} from '@angular/material';
+import { PeopleLookupService } from './../../../../services/people-lookup.service';
 
 import * as _ from 'lodash';
 import { element } from '../../../../../../../node_modules/protractor';
@@ -105,6 +107,7 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   @Input() displayName: string;
   @Input() fg_fields: FormGroup;
   @Input() selfUser: PeopleItem;
+  @Input() allowNumberOfUsers: number;
   @Input() accessLevel: number;
   @Input() mode: FormMode;
 
@@ -143,8 +146,23 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initFormGroup(this.mode);
 
-    const initialLocations = this.fg_fields.get('LocationsId').get('results')
-      .value;
+    let initialLocations = [];
+
+    if (this.fg_fields.get('LocationsId')) {
+      initialLocations = this.fg_fields.get('LocationsId').get('results').value;
+
+      // watch selected locations changes
+      this.locations$ = this.fg_fields
+        .get('LocationsId')
+        .valueChanges.pipe(startWith(initialLocations));
+    } else if (this.fg_fields.get('LocationId')) {
+      initialLocations = [this.fg_fields.get('LocationId').value];
+
+      // watch selected locations changes
+      this.locations$ = this.fg_fields
+        .get('LocationId')
+        .valueChanges.pipe(startWith(initialLocations));
+    }
 
     // watch query text changes
     // pass only text and check if new value is different
@@ -156,10 +174,10 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
       debounceTime(500)
     );
 
-    // watch selected locations changes
-    this.locations$ = this.fg_fields
-      .get('LocationsId')
-      .valueChanges.pipe(startWith(initialLocations));
+    // // watch selected locations changes
+    // this.locations$ = this.fg_fields
+    //   .get('LocationsId')
+    //   .valueChanges.pipe(startWith(initialLocations));
 
     // react whenever watched input change
     this.$query = combineLatest(this.text$, this.locations$)
@@ -207,7 +225,13 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
     // when opening form in view mode
     // then get IDs array and fetch users' info
     if (this.mode === 'view') {
-      this.handleReporters(this.fg_fields.controls[this.fieldName].value);
+      // prepare input to handle reporters depending on number of users
+      if (this.allowNumberOfUsers === 1) {
+        const id: number = this.fg_fields.controls[this.fieldName].value;
+        this.handleReporters({ results: [id] });
+      } else {
+        this.handleReporters(this.fg_fields.controls[this.fieldName].value);
+      }
     }
   }
 
@@ -236,7 +260,15 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
         return id === user.ID;
       });
 
-      return check ? { ...user, selected: true } : user;
+      return check ? { ...user, selected: true } : { ...user, selected: false };
+    });
+  }
+
+  // disable all users (mark as selected),
+  // if selected.length is equal to allowNumberOfUsers
+  disableAll() {
+    this.users = _.map(this.users, function(user) {
+      return { ...user, selected: true };
     });
   }
 
@@ -276,9 +308,16 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
     console.log(success);
     this.searching = false;
     this.users = success;
-    this.disableSelected(
-      this.fg_fields.get(this.fieldName).get('results').value
-    );
+
+    if (this.allowNumberOfUsers === 1) {
+      this.disableSelected(this.fg_fields.get(this.fieldName).value);
+    } else {
+      this.disableSelected(
+        this.fg_fields.get(this.fieldName).get('results').value
+      );
+    }
+
+    this.checkSelectionLimit();
   }
 
   searchUsersError(error) {
@@ -297,17 +336,38 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   }
 
   addSelectedUsers(user: PeopleItem) {
+    console.log('adding user to selected: ' + user.Alias);
+    console.log('limit is:' + this.allowNumberOfUsers);
+
+    // previously selected users
     const selected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
       .value;
 
-    if (selected.length) {
+    console.log('previously selected number of users: ' + selected.length);
+
+    if (selected.length && selected.length < this.allowNumberOfUsers) {
       this.fg_users.get('selectedUsers').patchValue([user, ...selected]);
-    } else {
+    } else if (selected.length === 0) {
       this.fg_users.get('selectedUsers').patchValue([user]);
     }
 
+    const newSelected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+      .value;
+
+    this.checkSelectionLimit();
+
     // neccessary if user already start with small screen size
     this.$resizeEvent.next();
+  }
+
+  checkSelectionLimit() {
+    const newSelected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+      .value;
+
+    if (newSelected.length === this.allowNumberOfUsers) {
+      console.log('limit reached, disable all options');
+      this.disableAll();
+    }
   }
 
   keepOpen() {

@@ -1,5 +1,5 @@
-import { ExemptionsEffects } from './exemptions.effects';
+import { SearchEffects } from './search.effects';
 
-export const effects: any[] = [ExemptionsEffects];
+export const effects: any[] = [SearchEffects];
 
-export * from './exemptions.effects';
+export * from './search.effects';

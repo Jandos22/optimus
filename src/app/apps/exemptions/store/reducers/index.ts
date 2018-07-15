@@ -1,15 +1,21 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
-import * as fromExemptions from './ng-exemptions.reducer';
+import * as fromExemptions from './exemptions.reducer';
+import * as fromParams from './params.reducer';
+import * as fromPagination from './pagination.reducer';
 
 export interface ExemptionsState {
-  NgExemptions: fromExemptions.ExemptionsState;
+  exemptions: fromExemptions.ExemptionsState;
+  params: fromParams.ParamsState;
+  pagination: fromPagination.PaginationState;
 }
 
 export const reducers: ActionReducerMap<ExemptionsState> = {
-  NgExemptions: fromExemptions.reducer
+  exemptions: fromExemptions.reducer,
+  params: fromParams.reducer,
+  pagination: fromPagination.reducer
 };
 
-export const getExemptionsState = createFeatureSelector<ExemptionsState>(
+export const getExemptionsRootState = createFeatureSelector<ExemptionsState>(
   'exemptions'
 );

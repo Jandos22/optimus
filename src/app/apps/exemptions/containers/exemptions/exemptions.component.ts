@@ -1,64 +1,146 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
-
-// state
 import * as fromRoot from '../../../../store';
-import * as fromFeature from '../../store';
-import * as fromExemptionsActions from '../../store/actions/exemptions.actions';
+import * as fromExemptions from '../../store';
+
+// material
+import { MatDialog } from '@angular/material';
+
+// form component
+import { ExemptionsFormComponent } from '../../forms';
 
 // interfaces
-import { Exemption } from '../../../../shared/interface/exemptions.model';
+import {
+  ExemptionsSearchParams,
+  ExemptionItem
+} from '../../../../shared/interface/exemptions.model';
+import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-exemptions',
+  selector: 'app-exemptions.common-app-container',
+  encapsulation: ViewEncapsulation.None,
   template: `
-    <mat-tab-group>
-      <mat-tab label="Exemptions ({{ (exemptions | async).length }})">
-        <app-exemptions-list [exemptions]="exemptions | async"></app-exemptions-list>
-      </mat-tab>
-      <mat-tab label="Groups ({{ (groups | async).length }})">
-        <app-exemptions-groups [groups]="groups"></app-exemptions-groups>
-      </mat-tab>
-    </mat-tab-group>
+    <app-exemptions-header
+      fxFlex="65px" class="common-header"
+      [appName]="appName" [searching]="searching"
+      [accessLevel]="(user$ | async).Position?.AccessLevel"
+      (openForm)="openForm('new', $event)">
+    </app-exemptions-header>
+
+    <app-exemptions-list
+      fxFlex class="common-content"
+      [exemptions]="data" (openForm)="openForm('view', $event)">
+    </app-exemptions-list>
+
+    <app-exemptions-footer fxFlex="49px" class="common-footer"
+      [pagination]="pagination" [top]="params.top" [searching]="searching"
+      (onNext)="onNext()" (onBack)="onBack()">
+    </app-exemptions-footer>
   `,
   styleUrls: ['./exemptions.component.scss']
 })
-export class ExemptionsComponent implements OnInit {
-  // title in header
+export class ExemptionsComponent implements OnInit, OnDestroy {
   appName = 'Exemptions';
-  exemptions: Observable<Exemption[]>;
-  groups: Observable<any>;
+
+  user$: Observable<PeopleItem>;
+
+  $data: Subscription;
+  data: ExemptionItem[];
+
+  $searching: Subscription;
+  searching: boolean;
+
+  $params: Subscription;
+  params: ExemptionsSearchParams;
+
+  $pagination: Subscription;
+  pagination: PaginationState;
 
   constructor(
-    private rootStore: Store<fromRoot.RootState>,
-    private featureStore: Store<fromFeature.ExemptionsState>
+    private store_root: Store<fromRoot.RootState>,
+    private store_exemptions: Store<fromExemptions.ExemptionsState>,
+    public form: MatDialog
   ) {}
 
   ngOnInit() {
-    // update html page title
-    this.rootStore.dispatch(new fromRoot.SetAppName(this.appName));
+    // update html page title and store.root.apps.name
+    this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
 
-    // get exemptions list from store
-    this.exemptions = this.featureStore.pipe(
-      select(fromFeature.getExemptionsList)
-    );
+    this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
 
-    // get grouped exemptions list from store
-    this.groups = this.featureStore.pipe(
-      select(fromFeature.getGroupedExemptionsList)
-    );
+    // main data = array of exemptions
+    this.$data = this.store_exemptions
+      .pipe(select(fromExemptions.selectAllExemptions))
+      .subscribe(data => {
+        this.data = data;
+      });
 
-    // when component starts
-    // request exemptions from server
-    this.getExemptions();
+    this.$pagination = this.store_exemptions
+      .pipe(select(fromExemptions.getPagination))
+      .subscribe(pagination => (this.pagination = pagination));
+
+    this.$searching = this.store_exemptions
+      .select(fromExemptions.getExemptionsSearching)
+      .subscribe(search => {
+        this.searching = search;
+      });
+
+    // monitor params for top
+    this.$params = this.store_exemptions
+      .select(fromExemptions.getParams)
+      .subscribe(params => {
+        this.params = params;
+      });
   }
 
-  getExemptions() {
-    this.featureStore.dispatch(new fromExemptionsActions.GetExemptions('KZTZ'));
+  onNext() {
+    this.store_exemptions.dispatch(
+      new fromExemptions.OnNext(
+        this.pagination.links[this.pagination.currentIndex + 1]
+      )
+    );
+  }
+
+  onBack() {
+    this.store_exemptions.dispatch(
+      new fromExemptions.OnBack(
+        this.pagination.links[this.pagination.currentIndex - 1]
+      )
+    );
+  }
+
+  countTotalItems(params) {
+    if (params) {
+      this.store_exemptions.dispatch(new fromExemptions.BeginCount(params));
+    }
+  }
+
+  openForm(mode, item?): void {
+    const data = { mode, item };
+    const formRef = this.form.open(ExemptionsFormComponent, {
+      data,
+      disableClose: true,
+      autoFocus: false
+    });
+    formRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  ngOnDestroy() {
+    this.$pagination.unsubscribe();
+    this.$data.unsubscribe();
+    this.$params.unsubscribe();
+    this.$searching.unsubscribe();
   }
 }

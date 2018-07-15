@@ -1,29 +1,25 @@
-export interface Exemption {
-  Title: string;
-  Details: string;
-  Exemption_Number: string;
-  Exemption_ID: number;
-  ValidTo: string;
-  Groups: string;
-  Location: string;
+import { SpListItem } from './sp-list-item.model';
+import { LocationEnt } from './locations.model';
+import { PeopleItem } from './people.model';
+
+export interface ExemptionItem extends SpListItem {
+  id?: number;
+  Title?: string;
+  Summary?: string;
+  ExpiryDate?: Date;
+  Status?: string;
+  PendingActions?: string;
+  QuestNumber?: string;
+  QuestQPID?: string;
+  Location?: LocationEnt; // lookup single
+  LocationId?: number; // lookup single
+  HashTags?: string;
+  Submitter?: PeopleItem; // lookup single
+  SubmitterId?: number; // lookup single
 }
 
-export interface ExemptionGroup {
-  Title: string;
-  Location: string;
-}
-
-export interface ExemptionsGrouped {
-  group: string;
-  exemptions: Exemption[];
-}
-
-export interface ExemptionsRaw {
-  Title: string;
-  Details: string;
-  Exemption_Number: string;
-  Exemption_ID: number;
-  ValidTo: Date;
-  Groups: string;
-  Location: string;
+export interface ExemptionsSearchParams {
+  text: string;
+  locations: number[];
+  top: number;
 }

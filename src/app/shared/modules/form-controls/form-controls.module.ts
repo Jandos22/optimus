@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // components
 import { FormControlLocationsComponent } from './locations/form-control-locations.component';
+import { FormControlLocationComponent } from './location/form-control-location.component';
 import { FormControlHashTagsComponent } from './hash-tags/form-control-hash-tags.component';
 
 import { FormControlUserSelectionComponent } from './user-selection/container/form-control-user-selection.component';
@@ -31,6 +32,7 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     FormControlTitleComponent,
     FormControlSummaryComponent,
     FormControlLocationsComponent,
+    FormControlLocationComponent,
     FormControlHashTagsComponent,
     FormControlUserSelectionComponent,
     UserSelectionUserOptionComponent,
@@ -42,6 +44,7 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     FormControlTitleComponent,
     FormControlSummaryComponent,
     FormControlLocationsComponent,
+    FormControlLocationComponent,
     FormControlHashTagsComponent,
     FormControlUserSelectionComponent,
     UserSelectionUserOptionComponent,

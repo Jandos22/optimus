@@ -1,19 +1,5 @@
-import { ExemptionItemCardComponent } from './exemption-item-card/exemption-item-card.component';
-import { ExemptionsDaysLeftComponent } from './exemptions-days-left/exemptions-days-left.component';
-import { ExemptionsStatusComponent } from './exemptions-status/exemptions-status.component';
-import { ExemptionsComponent } from '../containers/exemptions/exemptions.component';
-import { ExemptionGroupComponent } from './exemption-group/exemption-group.component';
+import { ExemptionsListItemComponent } from './exemptions-list-item/exemptions-list-item.component';
 
-export const components: any[] = [
-  ExemptionGroupComponent,
-  ExemptionItemCardComponent,
-  ExemptionsComponent,
-  ExemptionsStatusComponent,
-  ExemptionsDaysLeftComponent
-];
+export const components: any[] = [ExemptionsListItemComponent];
 
-export * from '../containers/exemptions/exemptions.component';
-export * from './exemptions-status/exemptions-status.component';
-export * from '../containers/exemptions/exemptions.component';
-export * from './exemption-group/exemption-group.component';
-export * from './exemption-item-card/exemption-item-card.component';
+export * from './exemptions-list-item/exemptions-list-item.component';

@@ -1,44 +1,149 @@
-import { ApiPath } from '../../../shared/constants';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-// service is used in following module(s)
-import { ExemptionsModule } from '../exemptions.module';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { map } from 'rxjs/operators';
+import { Observable, of, from } from 'rxjs';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: ExemptionsModule
-})
+// constants
+import { ApiPath, WirelinePath } from '../../../shared/constants';
+import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
+
+// interfaces
+import { ExemptionsSearchParams } from '../../../shared/interface/exemptions.model';
+import { SpResponse } from '../../../shared/interface/sp-response.model';
+import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
+
+// services
+import { SharepointService } from '../../../shared/services/sharepoint.service';
+
+@Injectable()
 export class ExemptionsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sp: SharepointService) {}
 
-  // returns all exemptions for a given location
-  getExemptionsOfLocation(location: string) {
-    const url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
+  getDataWithGivenUrl(url) {
     return this.http
       .get(url, {
-        params: new HttpParams().set('$filter', `Location eq '${location}'`)
+        headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
-        map((response: { value: any[] }) => {
-          return response.value;
+        switchMap((response: SpResponse) => {
+          // console.log(response);
+          if (response.d.results) {
+            return of(response);
+          }
         })
       );
   }
 
-  // returns all exemption groups for a given location
-  getExemptionsGroupsOfLocation(location: string) {
-    const url = `${ApiPath}/web/lists/getbytitle('NgExemptionGroups')/items?`;
-    return this.http
-      .get(url, {
-        params: new HttpParams().set('$filter', `Location eq '${location}'`)
-      })
-      .pipe(
-        map((response: { value: any[] }) => {
-          return response.value;
-        })
-      );
+  buildUrl(params: ExemptionsSearchParams, counter?: boolean) {
+    // api url for NgTimeline
+    let url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
+
+    // parameters
+    // # needs to be replaced, otherwise http request to sharepoint will through error
+    const text = params.text.replace('#', '%23');
+    const locations = params.locations;
+    let top = params.top;
+
+    // $select & $expand
+    url += `$select=${this.getSelectFields().toString()}`;
+    url += `&$expand=${this.getExpandFields().toString()}`;
+
+    // $filter
+    if (text || locations.length) {
+      url += `&$filter=`;
+    }
+
+    if (text) {
+      url += `(`;
+      url += `(substringof('${text}',Title))`;
+      url += `or(substringof('${text}',Summary))`;
+      url += `or(substringof('${text}',HashTags))`;
+      url += `or(substringof('${text}',PendingActions))`;
+      url += `or(substringof('${text}',Status))`;
+      url += `)`;
+    }
+
+    if (text && locations.length) {
+      url += 'and';
+    }
+
+    if (locations.length) {
+      url += `${this.getFilterLocations(locations)}`;
+    }
+
+    // $orderby
+    url += `&$orderby=ExpiryDate asc`;
+
+    // $top
+    if (top) {
+      if (counter) {
+        top = 500;
+      }
+      url += `&$top=${top}`;
+    }
+
+    // return combiner url string
+    return url;
+  }
+
+  getSelectFields() {
+    const $select = [
+      'Id',
+      'ID',
+      'ExpiryDate',
+      'Status',
+      'PendingActions',
+      'Title',
+      'Summary',
+      'SubmitterId',
+      'Submitter/ID',
+      'Submitter/Alias',
+      'Submitter/Fullname',
+      'LocationId',
+      'Location/Id',
+      'Location/Title',
+      'QuestNumber',
+      'QuestQPID',
+      'HashTags'
+    ];
+    return $select.toString();
+  }
+
+  getExpandFields() {
+    const $expand = ['Submitter', 'Location'];
+    return $expand.toString();
+  }
+
+  getFilterLocations(locations: number[]) {
+    if (locations.length) {
+      let filter = '';
+      const n = locations.length;
+      let i = 1;
+
+      for (const location of locations) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Locations/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
   }
 }

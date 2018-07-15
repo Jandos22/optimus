@@ -1,0 +1,81 @@
+<span mat-dialog-title style="text-align: center;">
+    Exemption
+</span>
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <!-- Expiry Date / 1 column -->
+            <app-exemptions-form-expiry-date class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-exemptions-form-expiry-date>
+
+            <!-- Status / 1 column -->
+            <app-exemptions-form-status class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-exemptions-form-status>
+
+        </div>
+
+        <!-- Pending Actions / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="fg_fields.controls['Status'].value === 'Pending'">
+            <app-exemptions-form-pending class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-exemptions-form-pending>
+        </div>
+
+        <!-- Title / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap">
+
+            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-title>
+
+        </div>
+
+        <!-- Summary / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-summary>
+        </div>
+
+        <!-- Hash Tags / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('HashTags').value || data.mode !== 'view')">
+            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-form-control-hash-tags>
+        </div>
+
+        <!-- Quest Number and QPID / 2 columns -->
+        <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('QuestNumber').value || data.mode !== 'view')">
+            <app-exemptions-form-quest-number class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+            </app-exemptions-form-quest-number>
+
+            <app-exemptions-form-quest-qpid class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+            </app-exemptions-form-quest-qpid>
+        </div>
+
+        <!-- Location / 1 column -->
+        <div class="group-of-2" fxLayout="row wrap">
+            <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+                [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            </app-form-control-location>
+        </div>
+
+        <!-- Submitter / 2 columns -->
+        <div class="group-of-2" fxLayout="column">
+            <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                Submitted By
+            </span>
+            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
+                [mode]="data.mode" [fieldName]="'SubmitterId'" [displayName]="'Submitted By'" [selfUser]="selfUser$ | async"
+                [allowNumberOfUsers]="1" (onSelectUser)="onSelectUser($event)">
+            </app-form-control-user-selection>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-exemptions-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    </app-exemptions-form-actions>
+</mat-dialog-actions>
