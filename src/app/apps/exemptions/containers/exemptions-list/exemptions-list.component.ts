@@ -1,16 +1,34 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation
+} from '@angular/core';
 
-// interface
-import { Exemption } from '../../../../shared/interface/exemptions.model';
+// interfaces
+import { ExemptionItem } from '../../../../shared/interface/exemptions.model';
 
 @Component({
   selector: 'app-exemptions-list',
   styleUrls: ['exemptions-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `
-    <app-exemption-item-card fxLayout="row" *ngFor="let exemption of exemptions" [exemption]="exemption"></app-exemption-item-card>
-  `
+    <div class="exemptions-list--container" fxFlex
+      fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
+
+      <app-exemptions-list-item *ngFor="let exemption of exemptions; last as last" [exemption]="exemption"
+        [ngClass]="{ 'exemption-last': last }"
+        (openForm)="openForm.emit($event)">
+      </app-exemptions-list-item>
+
+    </div>
+    `
 })
 export class ExemptionsListComponent {
-  @Input() exemptions: Exemption[];
+  @Input() exemptions: ExemptionItem[];
+
+  @Output() openForm = new EventEmitter<ExemptionItem>();
+
   constructor() {}
 }

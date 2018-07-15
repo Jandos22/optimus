@@ -1,4 +1,6 @@
+// my shared modules
 import { SharedModule } from '../../shared/shared.module';
+
 // angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

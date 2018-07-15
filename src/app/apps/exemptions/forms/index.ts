@@ -1,2 +1,5 @@
-export const form_components: any[] = [];
-export const form_containers: any[] = [];
+import { ExemptionsFormComponent } from './exemptions-form/exemptions-form.component';
+
+export const form_dialogs: any[] = [ExemptionsFormComponent];
+
+export * from './exemptions-form/exemptions-form.component';
