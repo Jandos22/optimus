@@ -22,8 +22,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
   template: `
     <mat-nav-list style="margin: -8px 16px 0 16px;">
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
-            class="sidenav-app-component"
-            mat-list-item
+            mat-list-item class="sidenav-app-component"
             [app]="app" (onSidenavClick)="onSidenavClick.emit()">
         </app-sidenav-content-app>
     </mat-nav-list>
@@ -41,7 +40,11 @@ export class SidenavContentComponent implements OnChanges {
   constructor() {}
 
   mapApplications(appsAll: AppItem[], myLocation: LocationEnt) {
+    // check if my location is present
     if (myLocation) {
+      // if my location is available
+      // then create object of apps in use
+      // whose property name equals to NgApps list id
       const appsInUse = _.reduce(
         myLocation.ApplicationsInUse,
         function(acc: Object, app: AppItem) {
@@ -49,6 +52,9 @@ export class SidenavContentComponent implements OnChanges {
         },
         {}
       );
+
+      // go through all apps and add Visible property
+      // which will be true if found in apps in use
       this.appsMap = _.map(appsAll, function(app: AppItem) {
         if (_.has(appsInUse, app.ID)) {
           return { ...app, Visible: true };
@@ -57,7 +63,7 @@ export class SidenavContentComponent implements OnChanges {
         }
       });
     } else {
-      console.log('myLocation: ');
+      console.log('myLocation not found: ');
       console.log(myLocation);
       this.appsMap = [];
     }

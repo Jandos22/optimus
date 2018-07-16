@@ -86,13 +86,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   onToggleHiddenApps() {
-    console.log(this.showHiddenApps);
+    console.log('show hidden apps before: ' + this.showHiddenApps);
     return this.showHiddenApps
       ? (this.showHiddenApps = false)
       : (this.showHiddenApps = true);
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.$userOptimus.unsubscribe();
+  }
 
   onSidenavClick() {
     this.store.dispatch(new layout.ClickSidenav());
