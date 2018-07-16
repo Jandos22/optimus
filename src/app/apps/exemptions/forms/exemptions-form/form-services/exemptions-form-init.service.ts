@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 // services
-import { ValidationService } from './../../../../../validators/validation.service';
+import { ValidationService } from './../../../../../shared/validators/validation.service';
 
 // interfaces
 import { FormMode } from '../../../../../shared/interface/form.model';

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { SidenavProperties } from '../../models/sidenav-properties.m';
+import { SidenavProperties } from './../../shared/interface/layout.model';
 import { WindowProperties } from '../../shared/interface/layout.model';
 
 export const UPDATE_LAYOUT = '[Layout] Update Layout';

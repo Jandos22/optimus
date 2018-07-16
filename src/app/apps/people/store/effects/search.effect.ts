@@ -23,7 +23,7 @@ import {
   PeopleItem,
   UserSearchParams
 } from '../../../../shared/interface/people.model';
-import { SpResponse } from '../../../../models/sp-response.model';
+import { SpResponse } from './../../../../shared/interface/sp-response.model';
 
 @Injectable()
 export class UsersSearchEffects {

@@ -12,3 +12,8 @@ export interface ToSaveOneImageWithFiliname {
 export interface ArrayOfIds {
   results: number[];
 }
+
+export interface SpImage {
+  ArrayBuffer: ArrayBuffer;
+  Filename: string;
+}

@@ -22,9 +22,10 @@ import { ExemptionItem } from '../../../../shared/interface/exemptions.model';
       <!-- Block white background that decreases its width when days left decrease --->
       <div class="exemption-days-left" *ngIf="exemption.Status === 'Approved'"
         [ngStyle]="{ 'width': calcWidth() }"
-        [ngClass]="{ 'expired': checkIfExpired(), 'soon-expires': calcDaysLeft() < 15 }">
+        [ngClass]="{ 'expired': checkIfExpired(), 'soon-expires': (calcDaysLeft() < 15 && !checkIfExpired()) }">
       </div>
       <div class="corner-right" *ngIf="exemption.Status === 'Approved'"
+        [ngClass]="{ 'expired': checkIfExpired() }"
         [hidden]="calcWidth() !== '99%'">
       </div>
 
@@ -41,7 +42,7 @@ import { ExemptionItem } from '../../../../shared/interface/exemptions.model';
           Expired
         </div>
 
-        <div class="date" *ngIf="exemption.Status === 'Approved'"
+        <div class="date" *ngIf="exemption.Status === 'Approved' && !checkIfExpired()"
           matTooltip="Expiry Date">
           {{exemption.ExpiryDate | date: 'mediumDate'}}
         </div>

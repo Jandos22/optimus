@@ -28,7 +28,7 @@ import {
 import { KaizenSearchParams } from '../../../../shared/interface/kaizen.model';
 
 // validators
-import { ValidationService } from '../../../../validators/validation.service';
+import { ValidationService } from '../../../../shared/validators/validation.service';
 
 @Component({
   selector: 'app-kaizen-header',

@@ -27,7 +27,7 @@ import * as fromErrorActions from '../../../../store/actions/errors.actions';
 import { ExemptionsService } from '../../services/exemptions.service';
 
 // interfaces
-import { SpResponse } from '../../../../models/sp-response.model';
+import { SpResponse } from './../../../../shared/interface/sp-response.model';
 import {
   ExemptionItem,
   ExemptionsSearchParams
