@@ -9,10 +9,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { ApiPath, WirelinePath, ProxyPath } from '../constants';
 
 // data models
-import { Photo } from '../../models/photo.model';
 import { FDV } from '../interface/form-digest-value.model';
-import { FormDigestValue } from '../../models';
-import { CurrentUser } from '../../models/current-user.m';
+import { CurrentUser } from './../interface/user.model';
 
 // services
 import { SharepointService } from './sharepoint.service';
@@ -26,16 +24,7 @@ export class UserService {
 
   getLoggedInUser() {
     return new sprLib.user().info();
-    // return this.http.get(`${ApiPath}Web/CurrentUser`);
   }
-
-  // checkLoggedInUserRegistered(alias) {
-  //   let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
-  //   url += `$select=${this.getSelectFields()}`;
-  //   url += `&$expand=${this.getExpandsFields()}`;
-  //   url += `&$filter=Alias eq '${alias}'`;
-  //   return this.http.get(url);
-  // }
 
   checkLoggedInUserRegistered(alias) {
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;

@@ -28,7 +28,7 @@ import {
 import { ExemptionsSearchParams } from '../../../../shared/interface/exemptions.model';
 
 // validators
-import { ValidationService } from '../../../../validators/validation.service';
+import { ValidationService } from '../../../../shared/validators/validation.service';
 
 @Component({
   selector: 'app-exemptions-header',
@@ -81,7 +81,7 @@ export class ExemptionsHeaderComponent implements OnInit, OnDestroy {
 
   resetParamsFormGroup() {
     this.fg_params.get('text').patchValue('');
-    this.fg_params.get('top').patchValue(10);
+    this.fg_params.get('top').patchValue(100);
   }
 
   subscribeToParamsFormGroup() {

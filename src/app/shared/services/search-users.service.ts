@@ -9,7 +9,7 @@ import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
 import { ApiPath } from '../constants';
 import { hk_accept, hv_appjson } from '../constants/headers';
 
-import { SpResponse } from '../interface/sp-response.model';
+import { SpResponse } from './../interface/sp-response.model';
 import { SpGetListItemResult } from '../interface/sp-list-item.model';
 
 // services
@@ -29,21 +29,8 @@ export class SearchUsersService {
   }
 
   getDataWithGivenUrl(url) {
-    const get$ = sprLib.rest({url});
+    const get$ = sprLib.rest({ url });
     return from(get$);
-
-    // return this.http
-    //   .get(url, {
-    //     headers: new HttpHeaders().set(hk_accept, hv_appjson)
-    //   })
-    //   .pipe(
-    //     switchMap((response: SpResponse) => {
-    //       console.log(response.d.results);
-    //       if (response.d.results) {
-    //         return of(response);
-    //       }
-    //     }),
-    //   );
   }
 
   buildUrl(query: SearchParamsUser) {
@@ -102,9 +89,9 @@ export class SearchUsersService {
       'PositionId',
       'Position/Id',
       'Position/Title',
-    //   'RolesId',
-    //   'Roles/Id',
-    //   'Roles/Title',
+      //   'RolesId',
+      //   'Roles/Id',
+      //   'Roles/Title',
       'Attachments',
       'AttachmentFiles'
     ];
@@ -115,8 +102,8 @@ export class SearchUsersService {
     const $expand = [
       'AttachmentFiles',
       'LocationAssigned',
-      'Position',
-    //   'Roles'
+      'Position'
+      //   'Roles'
     ];
     return $expand.toString();
   }

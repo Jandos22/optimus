@@ -6,3 +6,9 @@ export interface WindowProperties {
   isL: boolean;
   isXL: boolean;
 }
+
+export interface SidenavProperties {
+  opened: boolean;
+  mode: string;
+  lockedinclosed: boolean;
+}

@@ -36,6 +36,10 @@
   border-bottom-left-radius: 0;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+
+  &.expired {
+    background: $my-red-100;
+  }
 }
 
 .exemption-row-1 {

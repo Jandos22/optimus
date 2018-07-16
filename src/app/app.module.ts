@@ -58,10 +58,15 @@ import * as fromServices from './shared/services';
 import * as fromPipes from './shared/pipes';
 
 // guards
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from './shared/guards/auth.guard';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule
+} from '@angular/material/core';
 
 import * as fromDateFormats from './shared/date/date.formats';
 
@@ -69,7 +74,7 @@ import * as fromDateFormats from './shared/date/date.formats';
   declarations: [
     AppComponent,
     ...fromLayout.containers,
-    ...fromComponents.components,
+    ...fromComponents.components
   ],
   entryComponents: [fromComponents.ErrorDialogBoxComponent],
   imports: [
@@ -96,14 +101,14 @@ import * as fromDateFormats from './shared/date/date.formats';
     { provide: RouterStateSerializer, useClass: CustomSerializer },
     ...fromServices.services,
     AuthGuard,
-    { provide: DateAdapter, useClass: MatNativeDateModule, deps: [MAT_DATE_LOCALE]},
-    { provide: MAT_DATE_FORMATS, useValue: fromDateFormats.formats},
+    {
+      provide: DateAdapter,
+      useClass: MatNativeDateModule,
+      deps: [MAT_DATE_LOCALE]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: fromDateFormats.formats }
   ],
-  exports: [
-    SharedModule,
-    FontAwesomeModule,
-    SimpleNotificationsModule
-  ],
+  exports: [SharedModule, FontAwesomeModule, SimpleNotificationsModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

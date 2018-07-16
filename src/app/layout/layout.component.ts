@@ -23,7 +23,7 @@ import {
 } from '@angular/material';
 
 // interfaces
-import { SidenavProperties } from '../models/sidenav-properties.m';
+import { SidenavProperties } from './../shared/interface/layout.model';
 import { WindowProperties } from '../shared/interface/layout.model';
 import { BootstrapUser } from '../shared/interface/user.model';
 

@@ -28,7 +28,7 @@ import {
 import { UserSearchParams } from '../../../../shared/interface/people.model';
 
 // validators
-import { ValidationService } from '../../../../validators/validation.service';
+import { ValidationService } from '../../../../shared/validators/validation.service';
 
 @Component({
   selector: 'app-people-header',

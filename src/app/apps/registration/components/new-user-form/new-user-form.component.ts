@@ -38,8 +38,8 @@ import { WirelinePath } from '../../../../shared/constants';
 import { NewUserFormPhotoComponent } from '..';
 
 // services
-import { ValidationService } from '../../../../validators/validation.service';
-import { AsyncValidationService } from '../../../../validators/async-validation.service';
+import { ValidationService } from '../../../../shared/validators/validation.service';
+import { AsyncValidationService } from '../../../../shared/validators/async-validation.service';
 import { NewUserFormHttpService } from './services/new-user-form-http.service';
 import { UserService } from '../../../../shared/services/user.service';
 
