@@ -11,6 +11,8 @@ library.add(fromFontAwesome.fontawesome_icons);
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import { HarcsStatusCheckModule } from './apps/harcs/modules/status-check/harcs-status-check.module';
+import { ExemptionsStatusCheckModule } from './apps/exemptions/modules/status-check/exemptions-status-check.module';
 
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -94,7 +96,10 @@ import * as fromDateFormats from './shared/date/date.formats';
     StoreRouterConnectingModule,
     RegistrationModule,
     MatNativeDateModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    // used in sidenav
+    HarcsStatusCheckModule,
+    ExemptionsStatusCheckModule
   ],
   providers: [
     Title,

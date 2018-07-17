@@ -11,12 +11,18 @@ export interface ParamsState {
   text: string;
   locations: number[];
   top: number;
+  status?: string;
+  afterDate?: Date;
+  beforeDate?: Date;
 }
 
 export const initialState: ParamsState = {
   text: null,
   locations: null,
-  top: null
+  top: null,
+  status: null,
+  afterDate: null,
+  beforeDate: null
 };
 
 export function reducer(

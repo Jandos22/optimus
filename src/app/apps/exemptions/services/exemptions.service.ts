@@ -10,7 +10,10 @@ import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { ExemptionsSearchParams } from '../../../shared/interface/exemptions.model';
+import {
+  ExemptionsSearchParams,
+  ExemptionItem
+} from '../../../shared/interface/exemptions.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
@@ -21,7 +24,7 @@ import { SharepointService } from '../../../shared/services/sharepoint.service';
 export class ExemptionsService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
-  getDataWithGivenUrl(url) {
+  getDataWithNext(url) {
     return this.http
       .get(url, {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
@@ -36,25 +39,44 @@ export class ExemptionsService {
       );
   }
 
+  getData(url) {
+    const get$ = from(sprLib.rest({ url }));
+    return get$ as Observable<ExemptionItem[]>;
+  }
+
   buildUrl(params: ExemptionsSearchParams, counter?: boolean) {
     // api url for NgTimeline
     let url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
 
     // parameters
+
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text.replace('#', '%23');
+    // locations must be ids array
     const locations = params.locations;
     let top = params.top;
+    const status = params.status;
+    // dates start with empty string
+    let beforeDate = '',
+      afterDate = '';
+    // date object need to be converted into string (ISO)
+    if (params.beforeDate) {
+      beforeDate = params.beforeDate.toISOString();
+    }
+    if (params.afterDate) {
+      afterDate = params.afterDate.toISOString();
+    }
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
-    // $filter
-    if (text || locations.length) {
+    // $filter is added if one of these is not empty/null
+    if (text || locations.length || status || beforeDate || afterDate) {
       url += `&$filter=`;
     }
 
+    // text filter configuration
     if (text) {
       url += `(`;
       url += `(substringof('${text}',Title))`;
@@ -65,12 +87,33 @@ export class ExemptionsService {
       url += `)`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
+    // locations filter configuration
+    if (locations.length) {
+      // check if "AND" is needed
+      if (text) {
+        url += 'and';
+      }
+      // finds items with given location
+      url += `${this.getFilterLocations(locations)}`;
     }
 
-    if (locations.length) {
-      url += `${this.getFilterLocations(locations)}`;
+    // status filter configuration
+    if (status) {
+      // check if "AND" is needed
+      if (text || locations.length) {
+        url += 'and';
+      }
+      url += `(Status eq '${status}')`;
+    }
+
+    // beforeDate filter configuration
+    if (beforeDate) {
+      // check if "AND" is needed
+      if (text || locations.length || status) {
+        url += 'and';
+      }
+      // find items with ExpiryDate before given date
+      url += `(ExpiryDate lt datetime'${beforeDate}')`;
     }
 
     // $orderby
@@ -128,7 +171,7 @@ export class ExemptionsService {
           filter += `(`;
         }
 
-        filter += `(Locations/Id eq ${location})`;
+        filter += `(Location/Id eq ${location})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {
