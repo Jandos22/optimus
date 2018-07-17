@@ -23,7 +23,9 @@ import { AppItem } from '../../../shared/interface/applications.model';
     <mat-nav-list style="margin: -8px 16px 0 16px;">
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
             mat-list-item class="sidenav-app-component"
-            [app]="app" (onSidenavClick)="onSidenavClick.emit()">
+            [app]="app" [myLocation]="myLocation"
+            (onSidenavClick)="onSidenavClick.emit()"
+            fxLayout="row nowrap" fxLayoutAling="space-between center">
         </app-sidenav-content-app>
     </mat-nav-list>
     `

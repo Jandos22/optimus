@@ -10,7 +10,10 @@ import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { HarcsSearchParams } from '../../../shared/interface/harcs.model';
+import {
+  HarcsSearchParams,
+  HarcItem
+} from '../../../shared/interface/harcs.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
@@ -21,7 +24,7 @@ import { SharepointService } from '../../../shared/services/sharepoint.service';
 export class HarcsService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
-  getDataWithGivenUrl(url) {
+  getDataWithNext(url) {
     return this.http
       .get(url, {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
@@ -36,24 +39,43 @@ export class HarcsService {
       );
   }
 
+  getData(url) {
+    const get$ = from(sprLib.rest({ url }));
+    return get$ as Observable<HarcItem[]>;
+  }
+
   buildUrl(params: HarcsSearchParams, counter?: boolean) {
     let url = `${ApiPath}/web/lists/getbytitle('NgHarcs')/items?`;
 
     // parameters
+
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text.replace('#', '%23');
+    // locations must be ids array
     const locations = params.locations;
     let top = params.top;
+    const status = params.status;
+
+    let beforeDate = '',
+      afterDate = '';
+
+    if (params.beforeDate) {
+      beforeDate = params.beforeDate.toISOString();
+    }
+    if (params.afterDate) {
+      afterDate = params.afterDate.toISOString();
+    }
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter
-    if (text || locations.length) {
+    if (text || locations.length || beforeDate || status) {
       url += `&$filter=`;
     }
 
+    // text filter configuration
     if (text) {
       url += `(`;
       url += `(substringof('${text}',Title))`;
@@ -63,12 +85,30 @@ export class HarcsService {
       url += `)`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
+    if (locations.length) {
+      // check if "AND" is needed
+      if (text) {
+        url += 'and';
+      }
+      // finds items with given location
+      url += `${this.getFilterLocations(locations)}`;
     }
 
-    if (locations.length) {
-      url += `${this.getFilterLocations(locations)}`;
+    if (status) {
+      // check if "AND" is needed
+      if (text || locations.length) {
+        url += 'and';
+      }
+      url += `(Status eq '${status}')`;
+    }
+
+    if (beforeDate) {
+      // check if "AND" is needed
+      if (text || locations.length || status) {
+        url += 'and';
+      }
+      // find items with ExpiryDate before given date
+      url += `(ExpiryDate lt datetime'${beforeDate}')`;
     }
 
     // $orderby
@@ -125,7 +165,7 @@ export class HarcsService {
           filter += `(`;
         }
 
-        filter += `(Locations/Id eq ${location})`;
+        filter += `(Location/Id eq ${location})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {
