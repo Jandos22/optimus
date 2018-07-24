@@ -10,18 +10,14 @@ import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import {
-  ExemptionsSearchParams,
-  ExemptionItem
-} from '../../../shared/interface/exemptions.model';
+import { JobsSearchParams } from '../../../shared/interface/jobs.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
-import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
 // services
 import { SharepointService } from '../../../shared/services/sharepoint.service';
 
 @Injectable()
-export class ExemptionsService {
+export class JobsService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
   getDataWithNext(url) {
@@ -39,13 +35,8 @@ export class ExemptionsService {
       );
   }
 
-  getData(url) {
-    const get$ = from(sprLib.rest({ url }));
-    return get$ as Observable<ExemptionItem[]>;
-  }
-
-  buildUrl(params: ExemptionsSearchParams, counter?: boolean) {
-    let url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
+  buildUrl(params: JobsSearchParams, counter?: boolean) {
+    let url = `${ApiPath}/web/lists/getbytitle('NgJobs')/items?`;
 
     // parameters
 
@@ -54,7 +45,8 @@ export class ExemptionsService {
     // locations must be ids array
     const locations = params.locations;
     let top = params.top;
-    const status = params.status;
+
+    // job date
     // dates start with empty string
     let beforeDate = '',
       afterDate = '';
@@ -71,19 +63,24 @@ export class ExemptionsService {
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is not empty/null
-    if (text || locations.length || status || beforeDate || afterDate) {
+    if (text || locations.length || beforeDate || afterDate) {
       url += `&$filter=`;
     }
 
-    // text filter configuration
     if (text) {
       url += `(`;
       url += `(substringof('${text}',Title))`;
-      url += `or(substringof('${text}',Summary))`;
-      url += `or(substringof('${text}',HashTags))`;
-      url += `or(substringof('${text}',PendingActions))`;
-      url += `or(substringof('${text}',Status))`;
+      url += `or(substringof('${text}',iDistrict))`;
+      url += `or(substringof('${text}',Well))`;
+      url += `or(substringof('${text}',JSStitle1))`;
+      url += `or(substringof('${text}',JSStitle2))`;
+      url += `or(substringof('${text}',JSSbody1))`;
+      url += `or(substringof('${text}',JSSbody2))`;
       url += `)`;
+    }
+
+    if (text && locations.length) {
+      url += 'and';
     }
 
     // locations filter configuration
@@ -96,27 +93,18 @@ export class ExemptionsService {
       url += `${this.getFilterLocations(locations)}`;
     }
 
-    // status filter configuration
-    if (status) {
+    // beforeDate filter configuration
+    if (beforeDate) {
       // check if "AND" is needed
       if (text || locations.length) {
         url += 'and';
       }
-      url += `(Status eq '${status}')`;
-    }
-
-    // beforeDate filter configuration
-    if (beforeDate) {
-      // check if "AND" is needed
-      if (text || locations.length || status) {
-        url += 'and';
-      }
-      // find items with ExpiryDate before given date
-      url += `(ExpiryDate lt datetime'${beforeDate}')`;
+      // find items with RigUpStart before given date
+      url += `(RigUpStart lt datetime'${beforeDate}')`;
     }
 
     // $orderby
-    url += `&$orderby=ExpiryDate asc`;
+    url += `&$orderby=RigUpStart desc`;
 
     // $top
     if (top) {
@@ -134,27 +122,24 @@ export class ExemptionsService {
     const $select = [
       'Id',
       'ID',
-      'ExpiryDate',
-      'Status',
-      'PendingActions',
       'Title',
-      'Summary',
-      'SubmitterId',
-      'Submitter/ID',
-      'Submitter/Alias',
-      'Submitter/Fullname',
+      'iDistrict',
+      'Well',
+      'RigUpStart',
+      'RigUpEnd',
+      'JSStitle1',
+      'JSStitle2',
+      'JSSbody1',
+      'JSSbody2',
       'LocationId',
       'Location/Id',
-      'Location/Title',
-      'QuestNumber',
-      'QuestQPID',
-      'HashTags'
+      'Location/Title'
     ];
     return $select.toString();
   }
 
   getExpandFields() {
-    const $expand = ['Submitter', 'Location'];
+    const $expand = ['Location'];
     return $expand.toString();
   }
 

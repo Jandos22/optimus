@@ -1,0 +1,48 @@
+app-jobs-form-summary-section {
+  margin-bottom: 1px !important;
+}
+
+.summary-section-container {
+  position: relative;
+  border-radius: 8px;
+  padding: 0 16px;
+
+  &.focused {
+    background: #e3f2fd;
+  }
+
+  &.hover-delete {
+    background: #ffcdd2;
+  }
+}
+
+.section-delete {
+  box-sizing: border-box;
+  width: 40px;
+  padding: 4px 0;
+  height: 65.5px;
+  top: 0;
+  right: 4px;
+  position: absolute;
+
+  & button {
+    &:hover {
+      background: #ffebee;
+    }
+  }
+}
+
+.section-title {
+  // top: -13.5px;
+  // top: 0;
+  width: 100%;
+  min-width: 140px;
+  max-width: calc(100% - 120px);
+}
+
+.section-body {
+  //   top: -27px;
+  // top: -13.5px;
+  top: -9px;
+  // font-size: 12px;
+}

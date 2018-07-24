@@ -14,20 +14,63 @@
   align-content: flex-start;
   height: 100%;
   min-height: 100%;
+  min-width: 208px; // experimental
   overflow-x: hidden;
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
   @media screen and (min-width: 570px) {
     padding-left: 16px;
+    // min-width: 376px; // experimental
+  }
+
+  @media screen and (min-width: 815px) {
+    padding-left: 16px;
+    // min-width: 588px; // experimental
+  }
+
+  .form-group-title {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    margin-right: 16px;
+    margin-bottom: 19px;
   }
 
   div.group-of-2 {
     width: 100%;
 
     @media screen and (min-width: 570px) {
-      min-width: 196px; // 180+16
-      max-width: 392px; // 180*2+16*2
+      min-width: 196px; // 180+16, min 1 column
+      max-width: 392px; // 180*2+16*2, max 2 columns
+    }
+  }
+
+  div.group-of-3 {
+    width: 100%;
+
+    @media screen and (min-width: 570px) {
+      min-width: 392px; // 180+16, min 1 column
+      max-width: 392px; // 180*2+16*2, max 2 columns
+    }
+
+    @media screen and (min-width: 815px) {
+      min-width: 588px; // 180+16, min 1 column
+      max-width: 588px; // 180*3+16*3, max 3 columns
+    }
+
+    div.group-of-1 {
+      width: 100%;
+
+      @media screen and (min-width: 570px) {
+        min-width: 196px; // 180+16, min 1 column
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
+      @media screen and (min-width: 815px) {
+        min-width: 196px; // 180+16, min 1 column
+        max-width: 196px; // 180*2+16*2, max 2 columns
+      }
     }
   }
 }
@@ -44,6 +87,11 @@
     &.take-2-cols {
       min-width: 180px;
       max-width: 376px; // 180+16+180
+    }
+
+    &.take-3-cols {
+      min-width: 180px;
+      max-width: 572px; // 180+16+180+16+180
     }
   }
 }

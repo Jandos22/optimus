@@ -19,6 +19,7 @@ import { FormControlTitleComponent } from './title/form-control-title.component'
 import { FormControlSummaryComponent } from './summary/form-control-summary.component';
 import { FormControlQuestRirComponent } from './quest-rir/form-control-quest-rir.component';
 import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-qpid.component';
+import { FormControlDateTimeComponent } from './date-time-picker/form-control-date-time.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     UserSelectionUserOptionComponent,
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
-    FormControlQuestQpidComponent
+    FormControlQuestQpidComponent,
+    FormControlDateTimeComponent
   ],
   exports: [
     FormControlTitleComponent,
@@ -50,7 +52,8 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     UserSelectionUserOptionComponent,
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
-    FormControlQuestQpidComponent
+    FormControlQuestQpidComponent,
+    FormControlDateTimeComponent
   ],
   providers: []
 })

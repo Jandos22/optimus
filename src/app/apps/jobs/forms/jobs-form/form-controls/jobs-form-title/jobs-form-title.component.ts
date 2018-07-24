@@ -1,4 +1,4 @@
-import { FormMode } from './../../../../shared/interface/form.model';
+import { FormMode } from './../../../../../../shared/interface/form.model';
 import {
   Component,
   Input,
@@ -8,8 +8,8 @@ import {
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-control-title',
-  styleUrls: ['form-control-title.component.scss'],
+  selector: 'app-jobs-form-title',
+  styleUrls: ['jobs-form-title.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -19,15 +19,15 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
         formControlName="Title"
         cdkTextareaAutosize
         #autosize="cdkTextareaAutosize"
-        cdkAutosizeMaxRows="1"
-        cdkAutosizeMaxRows="2">
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="4">
       </textarea>
-      <mat-hint align="end" *ngIf="mode !== 'view'">{{fg_fields.get('Title').value.length}} / 70</mat-hint>
+      <mat-hint align="end" *ngIf="mode !== 'view'">{{fg_fields.get('Title').value.length}} / 140</mat-hint>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
-export class FormControlTitleComponent {
+export class JobsFormTitleComponent {
   @Input() fg_fields: FormGroup;
   @Input() mode: FormMode;
 
@@ -41,17 +41,15 @@ export class FormControlTitleComponent {
     const control = this.fg_fields.controls['Title'];
 
     const required = control.hasError('required');
-    const min = control.hasError('minlength');
+    // const min = control.hasError('minlength');
     const max = control.hasError('maxlength');
 
-    return this.fg_fields.get('Summary').touched
+    return this.fg_fields.get('Title').touched
       ? required
         ? '... is required'
-        : min
-          ? 'minimum 30 characters required'
-          : max
-            ? 'maximum 70 characters allowed'
-            : ''
+        : max
+          ? 'maximum 140 characters allowed'
+          : ''
       : '';
   }
 }

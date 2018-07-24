@@ -25,6 +25,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
+  faClock,
   faUserCircle,
   faSave,
   faImage,
@@ -39,6 +40,7 @@ export const fontawesome_icons = {
   faCheckCircle,
   faChevronLeft,
   faChevronRight,
+  faClock,
   faCog,
   faEllipsisV,
   faExclamationCircle,

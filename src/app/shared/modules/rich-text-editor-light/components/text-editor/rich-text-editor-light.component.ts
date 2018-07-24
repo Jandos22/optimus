@@ -5,15 +5,12 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  Sanitizer,
-  SecurityContext,
   ElementRef,
   ViewChild,
   OnChanges,
   SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-// import { QuillEditorComponent } from 'ngx-quill';
 
 import Quill from 'quill';
 
@@ -53,7 +50,7 @@ export class RichTextEditorLightComponent implements OnInit, OnChanges {
   // for view mode
   @ViewChild('richtext') private richtext: ElementRef;
 
-  constructor(private sanitizer: Sanitizer) {}
+  constructor() {}
 
   ngOnInit() {
     this.initModules();

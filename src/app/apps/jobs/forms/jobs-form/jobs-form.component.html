@@ -1,0 +1,74 @@
+<span mat-dialog-title style="text-align: center;">
+    Job
+</span>
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <!-- takes 3 columns -->
+        <div class="group-of-3" fxLayout="row nowrap">
+
+            <!-- Title / takes 3 columns -->
+            <app-jobs-form-title class="cmn-form-component take-3-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-jobs-form-title>
+
+        </div>
+
+        <!-- takes 3 column -->
+        <div class="group-of-3" fxLayout="row wrap">
+
+            <div class="group-of-1" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                <div class="form-group-title">Job Details</div>
+
+                <app-jobs-form-idistrict class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-idistrict>
+
+                <app-jobs-form-well class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-well>
+
+                <app-form-control-date-time class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RigUpStart'"
+                    [displayName]="'Rig Up Start'">
+                </app-form-control-date-time>
+
+                <app-form-control-date-time class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RigUpEnd'"
+                    [displayName]="'Rig Up End'">
+                </app-form-control-date-time>
+
+                <app-jobs-form-duration class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields"></app-jobs-form-duration>
+            </div>
+
+            <div class="group-of-2" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                <div class="form-group-title">Job Summary</div>
+
+                <app-jobs-form-summary-section class="cmn-form-component take-2-cols" fxLayout="row wrap" fxLayoutAlign="start start" *ngFor="let section of summarySections; let i = index; let last = last"
+                    [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode" [sectionNumber]="i + 1" [last]="last">
+                </app-jobs-form-summary-section>
+
+                <app-add-jobs-form-summary-section fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="end start" class="job-summary-buttons-container"
+                    [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-add-jobs-form-summary-section>
+
+            </div>
+        </div>
+
+        <div class="group-of-3" fxLayout="row wrap">
+
+            <div class="group-of-1" fxLayout="row wrap">
+                <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+                    [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+                </app-form-control-location>
+            </div>
+
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-jobs-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    </app-jobs-form-actions>
+</mat-dialog-actions>
