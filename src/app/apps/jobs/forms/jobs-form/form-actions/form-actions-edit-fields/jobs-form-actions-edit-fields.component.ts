@@ -47,6 +47,26 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .get('iDistrict')
         .valueChanges.pipe(map(iDistrict => ({ iDistrict }))),
 
+      // iDistrict observable
+      this.fg_fields
+        .get('JobType')
+        .valueChanges.pipe(map(JobType => ({ JobType }))),
+
+      // TotalDepth observable
+      this.fg_fields
+        .get('TotalDepth')
+        .valueChanges.pipe(map(TotalDepth => ({ TotalDepth }))),
+
+      // MaxDeviation observable
+      this.fg_fields
+        .get('MaxDeviation')
+        .valueChanges.pipe(map(MaxDeviation => ({ MaxDeviation }))),
+
+      // TotalDepthUnits observable
+      this.fg_fields
+        .get('TotalDepthUnits')
+        .valueChanges.pipe(map(TotalDepthUnits => ({ TotalDepthUnits }))),
+
       // Well observable
       this.fg_fields.get('Well').valueChanges.pipe(map(Well => ({ Well }))),
 
@@ -54,6 +74,11 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       this.fg_fields
         .get('FieldId')
         .valueChanges.pipe(map(FieldId => ({ FieldId }))),
+
+      // ClientId observable
+      this.fg_fields
+        .get('ClientId')
+        .valueChanges.pipe(map(ClientId => ({ ClientId }))),
 
       // RigUpStart observable
       this.fg_fields
@@ -92,6 +117,60 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       this.fg_fields
         .get('JSSbody2')
         .valueChanges.pipe(map(JSSbody2 => ({ JSSbody2 }))),
+
+      // JSStitle3 observable
+      this.fg_fields
+        .get('JSStitle3')
+        .valueChanges.pipe(map(JSStitle3 => ({ JSStitle3 }))),
+      // JSSbody3 observable
+      this.fg_fields
+        .get('JSSbody3')
+        .valueChanges.pipe(map(JSSbody3 => ({ JSSbody3 }))),
+
+      // JSStitle4 observable
+      this.fg_fields
+        .get('JSStitle4')
+        .valueChanges.pipe(map(JSStitle4 => ({ JSStitle4 }))),
+      // JSSbody4 observable
+      this.fg_fields
+        .get('JSSbody4')
+        .valueChanges.pipe(map(JSSbody4 => ({ JSSbody4 }))),
+
+      // JSStitle5 observable
+      this.fg_fields
+        .get('JSStitle5')
+        .valueChanges.pipe(map(JSStitle5 => ({ JSStitle5 }))),
+      // JSSbody5 observable
+      this.fg_fields
+        .get('JSSbody5')
+        .valueChanges.pipe(map(JSSbody5 => ({ JSSbody5 }))),
+
+      // JSStitle6 observable
+      this.fg_fields
+        .get('JSStitle6')
+        .valueChanges.pipe(map(JSStitle6 => ({ JSStitle6 }))),
+      // JSSbody6 observable
+      this.fg_fields
+        .get('JSSbody6')
+        .valueChanges.pipe(map(JSSbody6 => ({ JSSbody6 }))),
+
+      // JSStitle7 observable
+      this.fg_fields
+        .get('JSStitle7')
+        .valueChanges.pipe(map(JSStitle7 => ({ JSStitle7 }))),
+      // JSSbody7 observable
+      this.fg_fields
+        .get('JSSbody7')
+        .valueChanges.pipe(map(JSSbody7 => ({ JSSbody7 }))),
+
+      // JSStitle8 observable
+      this.fg_fields
+        .get('JSStitle8')
+        .valueChanges.pipe(map(JSStitle8 => ({ JSStitle8 }))),
+      // JSSbody8 observable
+      this.fg_fields
+        .get('JSSbody8')
+        .valueChanges.pipe(map(JSSbody8 => ({ JSSbody8 }))),
 
       // LocationId observable
       this.fg_fields

@@ -28,7 +28,7 @@ export class AddJobsFormSummarySectionComponent {
   @Input() mode: FormMode;
 
   // total allowed number of job summary sections
-  sectionsMax = 2;
+  sectionsMax = 8;
 
   // total number of active (visible to user) sections
   sectionsActive = 1;

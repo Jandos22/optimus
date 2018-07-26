@@ -25,7 +25,11 @@ import { Subscription } from 'rxjs';
       fxLayout="row wrap" fxLayoutAlign="start start"
       [ngClass]="{ focused: focused, 'hover-delete': hoverDelete }">
 
-      <mat-form-field [formGroup]="fg_fields" floatLabel="never"
+      <div class="section-title-view" *ngIf="mode === 'view'">
+        {{ fg_fields.controls['JSStitle' + this.sectionNumber].value }}
+      </div>
+
+      <mat-form-field [formGroup]="fg_fields" floatLabel="never" *ngIf="mode !== 'view'"
         class="section-title">
 
         <input tabindex="1"

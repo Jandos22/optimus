@@ -1,3 +1,4 @@
+import { ClientItem } from './clients.model';
 import { SpListItem } from './sp-list-item.model';
 import { LocationEnt } from './locations.model';
 import { PeopleItem } from './people.model';
@@ -7,9 +8,15 @@ export interface JobItem extends SpListItem {
   id?: number;
   Title?: string;
   iDistrict?: string;
+  JobType?: string;
   Well?: string;
   Field?: FieldItem;
   FieldId?: FieldItem;
+  Client?: ClientItem;
+  ClientId?: ClientItem;
+  TotalDepth?: number;
+  TotalDepthUnits?: string;
+  MaxDeviation?: number;
   RigUpStart?: Date;
   RigUpEnd?: Date;
   JobDuration?: number;

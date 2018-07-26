@@ -28,7 +28,7 @@ export class JobsFormInitService {
 
   create_FormGroup_Fields(mo: FormMode, it: JobItem, lo: number) {
     // create section with titles and bodies
-    const summarySections = this.getSummarySections(mo, it, 2);
+    const summarySections = this.getSummarySections(mo, it, 8);
 
     // all lookup fields have "Id" at the end
     return this.fb.group({
@@ -40,8 +40,25 @@ export class JobsFormInitService {
         this.getSimpleFormValue(mo, it, 'iDistrict'),
         Validators.required
       ],
+      JobType: [
+        this.getSimpleFormValue(mo, it, 'JobType'),
+        Validators.required
+      ],
       Well: [this.getSimpleFormValue(mo, it, 'Well'), Validators.required],
       FieldId: [this.getFieldId(mo, it), Validators.required],
+      ClientId: [this.getFieldId(mo, it), Validators.required],
+      TotalDepth: [
+        this.getSimpleFormValue(mo, it, 'TotalDepth'),
+        Validators.required
+      ],
+      TotalDepthUnits: [
+        this.getSimpleFormValue(mo, it, 'TotalDepthUnits'),
+        Validators.required
+      ],
+      MaxDeviation: [
+        this.getSimpleFormValue(mo, it, 'MaxDeviation'),
+        Validators.required
+      ],
       RigUpStart: [this.getRigUpStartDate(mo, it), Validators.required],
       RigUpEnd: [this.getRigUpEndDate(mo, it), Validators.required],
       JobDuration: [this.getJobDuration(mo, it), Validators.required],
@@ -49,6 +66,18 @@ export class JobsFormInitService {
       ...summarySections,
       LocationId: [this.getLocationId(mo, it, lo), Validators.required]
     });
+  }
+
+  // get field value & condition
+  getSimpleFormValue(mode: FormMode, item: JobItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: item[field], disabled: true };
+      case 'edit':
+        return { value: item[field], disabled: false };
+    }
   }
 
   getFieldId(mode: FormMode, item: JobItem) {
@@ -59,6 +88,17 @@ export class JobsFormInitService {
         return { value: item.FieldId, disabled: true };
       case 'edit':
         return { value: item.FieldId, disabled: false };
+    }
+  }
+
+  getClientId(mode: FormMode, item: JobItem) {
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: item.ClientId, disabled: true };
+      case 'edit':
+        return { value: item.ClientId, disabled: false };
     }
   }
 
@@ -85,7 +125,7 @@ export class JobsFormInitService {
       ];
     });
 
-    const bodies: any[] = _.times(2, (i: number) => {
+    const bodies: any[] = _.times(sections, (i: number) => {
       const n = i + 1;
       return [
         ['JSSbody' + n],
@@ -97,18 +137,6 @@ export class JobsFormInitService {
     const mergedBodies = _.fromPairs(bodies);
 
     return { ...mergedTitles, ...mergedBodies };
-  }
-
-  // get field value & condition
-  getSimpleFormValue(mode: FormMode, item: JobItem, field: string) {
-    switch (mode) {
-      case 'new':
-        return '';
-      case 'view':
-        return { value: item[field], disabled: true };
-      case 'edit':
-        return { value: item[field], disabled: false };
-    }
   }
 
   // get date field value (today) & condition

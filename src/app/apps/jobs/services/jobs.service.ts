@@ -74,8 +74,20 @@ export class JobsService {
       url += `or(substringof('${text}',Well))`;
       url += `or(substringof('${text}',JSStitle1))`;
       url += `or(substringof('${text}',JSStitle2))`;
+      url += `or(substringof('${text}',JSStitle3))`;
+      url += `or(substringof('${text}',JSStitle4))`;
+      url += `or(substringof('${text}',JSStitle5))`;
+      url += `or(substringof('${text}',JSStitle6))`;
+      url += `or(substringof('${text}',JSStitle7))`;
+      url += `or(substringof('${text}',JSStitle8))`;
       url += `or(substringof('${text}',JSSbody1))`;
       url += `or(substringof('${text}',JSSbody2))`;
+      url += `or(substringof('${text}',JSSbody3))`;
+      url += `or(substringof('${text}',JSSbody4))`;
+      url += `or(substringof('${text}',JSSbody5))`;
+      url += `or(substringof('${text}',JSSbody6))`;
+      url += `or(substringof('${text}',JSSbody7))`;
+      url += `or(substringof('${text}',JSSbody8))`;
       url += `)`;
     }
 
@@ -124,19 +136,39 @@ export class JobsService {
       'ID',
       'Title',
       'iDistrict',
+      'JobType',
       'Well',
       'Field',
       'FieldId',
       'Field/Id',
       'Field/Title',
+      'Client',
+      'ClientId',
+      'Client/Id',
+      'Client/Title',
+      'TotalDepth',
+      'TotalDepthUnits',
+      'MaxDeviation',
       'RigUpStart',
       'RigUpEnd',
       'JobDuration',
       'SummarySections',
       'JSStitle1',
       'JSStitle2',
+      'JSStitle3',
+      'JSStitle4',
+      'JSStitle5',
+      'JSStitle6',
+      'JSStitle7',
+      'JSStitle8',
       'JSSbody1',
       'JSSbody2',
+      'JSSbody3',
+      'JSSbody4',
+      'JSSbody5',
+      'JSSbody6',
+      'JSSbody7',
+      'JSSbody8',
       'LocationId',
       'Location/Id',
       'Location/Title'
@@ -145,7 +177,7 @@ export class JobsService {
   }
 
   getExpandFields() {
-    const $expand = ['Location', 'Field'];
+    const $expand = ['Location', 'Field', 'Client'];
     return $expand.toString();
   }
 

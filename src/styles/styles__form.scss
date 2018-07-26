@@ -73,6 +73,40 @@
       }
     }
   }
+
+  div.group-of-4 {
+    width: 100%;
+
+    @media screen and (min-width: 570px) {
+      min-width: 392px; //
+      max-width: 392px; // 180*2+16*2, take 2 columns
+    }
+
+    @media screen and (min-width: 815px) {
+      min-width: 588px; //
+      max-width: 588px; // 180*3+16*3, take 3 columns
+    }
+
+    @media screen and (min-width: 1060px) {
+      min-width: 784px; //
+      max-width: 784px; // 180*4+16*4, take 4 columns
+    }
+
+    // group of 2 inside of group of 4
+    div.group-of-2 {
+      width: 100%;
+
+      @media screen and (min-width: 570px) {
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
+      @media screen and (min-width: 815px) {
+        max-width: 588px; // 180*3+16*3, take 3 columns
+      }
+      @media screen and (min-width: 1060px) {
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
+    }
+  }
 }
 
 .cmn-form-component {
@@ -92,6 +126,10 @@
     &.take-3-cols {
       min-width: 180px;
       max-width: 572px; // 180+16+180+16+180
+    }
+    &.take-4-cols {
+      min-width: 180px;
+      max-width: 768px; // 180 * 4 + 16 * 3
     }
   }
 }

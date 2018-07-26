@@ -22,6 +22,7 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
 import { FormControlDateTimeComponent } from './date-time-picker/form-control-date-time.component';
 
 import { FormControlFieldPickerComponent } from './field-picker/form-control-field-picker.component';
+import { FormControlClientPickerComponent } from './client-picker/form-control-client-picker.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { FormControlFieldPickerComponent } from './field-picker/form-control-fie
     FormControlQuestRirComponent,
     FormControlQuestQpidComponent,
     FormControlDateTimeComponent,
-    FormControlFieldPickerComponent
+    FormControlFieldPickerComponent,
+    FormControlClientPickerComponent
   ],
   exports: [
     FormControlTitleComponent,
@@ -57,7 +59,8 @@ import { FormControlFieldPickerComponent } from './field-picker/form-control-fie
     FormControlQuestRirComponent,
     FormControlQuestQpidComponent,
     FormControlDateTimeComponent,
-    FormControlFieldPickerComponent
+    FormControlFieldPickerComponent,
+    FormControlClientPickerComponent
   ],
   providers: []
 })
