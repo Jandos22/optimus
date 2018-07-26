@@ -21,7 +21,8 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
         *ngFor="let job of jobs; last as last"
         [job]="job"
         [ngClass]="{'last-item': last}"
-        (openForm)="openForm.emit($event)">
+        (openForm)="openForm.emit($event)"
+        fxLayout="row nowrap">
       </app-jobs-list-item>
 
     </div>

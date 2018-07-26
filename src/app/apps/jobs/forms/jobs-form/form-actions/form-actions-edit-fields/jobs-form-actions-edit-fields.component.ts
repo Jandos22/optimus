@@ -50,6 +50,11 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       // Well observable
       this.fg_fields.get('Well').valueChanges.pipe(map(Well => ({ Well }))),
 
+      // FieldId observable
+      this.fg_fields
+        .get('FieldId')
+        .valueChanges.pipe(map(FieldId => ({ FieldId }))),
+
       // RigUpStart observable
       this.fg_fields
         .get('RigUpStart')
@@ -64,6 +69,11 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       this.fg_fields
         .get('JobDuration')
         .valueChanges.pipe(map(JobDuration => ({ JobDuration }))),
+
+      // SummarySections observable
+      this.fg_fields
+        .get('SummarySections')
+        .valueChanges.pipe(map(SummarySections => ({ SummarySections }))),
 
       // JSStitle1 observable
       this.fg_fields

@@ -5,7 +5,9 @@ import {
   Input,
   ViewEncapsulation,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -47,7 +49,7 @@ interface DateTime {
         [placeholder]="displayName"
         [matDatepicker]="picker"
         formControlName="Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="mode === 'view'"></mat-datepicker-toggle>
       <mat-datepicker #picker [disabled]="mode === 'view'"></mat-datepicker>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
@@ -78,7 +80,7 @@ interface DateTime {
   <!-- <div><button mat-button (click)="log()">LOG</button></div> -->
   `
 })
-export class FormControlDateTimeComponent implements OnInit {
+export class FormControlDateTimeComponent implements OnInit, OnChanges {
   @Input() fg_fields: FormGroup;
   @Input() mode: FormMode;
   @Input() fieldName: string;
@@ -109,6 +111,13 @@ export class FormControlDateTimeComponent implements OnInit {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    // watch mode changes
+    if (changes.mode) {
+      this.initialize(this.fg_fields.controls[this.fieldName].value);
+    }
+  }
+
   initialize(date: Date) {
     // check if date is empty
     const emptyDate = date ? false : true;
@@ -123,10 +132,26 @@ export class FormControlDateTimeComponent implements OnInit {
     }
 
     this.fg_DateTime = this.fb.group({
-      Date: [emptyDate ? startOfDay(new Date()) : date, Validators.required],
+      Date: [
+        {
+          value: emptyDate ? startOfDay(new Date()) : date,
+          disabled: this.getDateState(this.mode)
+        },
+        Validators.required
+      ],
       Hours: emptyDate ? '00' : hours,
       Minutes: emptyDate ? '00' : minutes
     });
+  }
+
+  createDateTimeFormGroup() {}
+
+  getDateState(mode: FormMode) {
+    if (mode === 'view') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   convert(rawDateTime: DateTime) {

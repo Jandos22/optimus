@@ -125,8 +125,14 @@ export class JobsService {
       'Title',
       'iDistrict',
       'Well',
+      'Field',
+      'FieldId',
+      'Field/Id',
+      'Field/Title',
       'RigUpStart',
       'RigUpEnd',
+      'JobDuration',
+      'SummarySections',
       'JSStitle1',
       'JSStitle2',
       'JSSbody1',
@@ -139,7 +145,7 @@ export class JobsService {
   }
 
   getExpandFields() {
-    const $expand = ['Location'];
+    const $expand = ['Location', 'Field'];
     return $expand.toString();
   }
 

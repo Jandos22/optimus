@@ -27,6 +27,10 @@
                 <app-jobs-form-well class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-jobs-form-well>
 
+                <app-form-control-field-picker class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [initial]="data.item?.Field"
+                    [mode]="data.mode">
+                </app-form-control-field-picker>
+
                 <app-form-control-date-time class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RigUpStart'"
                     [displayName]="'Rig Up Start'">
                 </app-form-control-date-time>
@@ -46,8 +50,8 @@
                     [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode" [sectionNumber]="i + 1" [last]="last">
                 </app-jobs-form-summary-section>
 
-                <app-add-jobs-form-summary-section fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="end start" class="job-summary-buttons-container"
-                    [fg_fields]="fg_fields" [mode]="data.mode">
+                <app-add-jobs-form-summary-section *ngIf="data.mode !== 'view'" fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="end start"
+                    class="job-summary-buttons-container" [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-add-jobs-form-summary-section>
 
             </div>

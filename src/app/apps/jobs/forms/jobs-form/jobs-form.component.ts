@@ -96,7 +96,7 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
     this.$mode.next(this.data.mode);
 
-    this.setupFormObservables();
+    // this.setupFormObservables();
   }
 
   setupSubscriptions() {
@@ -107,6 +107,7 @@ export class JobsFormComponent implements OnInit, OnDestroy {
     this.$mode.subscribe(mode => {
       console.log('mode changed to: ' + mode);
       this.data.mode = mode;
+      console.log('data item used:');
       console.log(this.data.item);
 
       this.createFormGroups(mode, this.data.item, this.locationAssignedId);
@@ -141,7 +142,7 @@ export class JobsFormComponent implements OnInit, OnDestroy {
     this.locations$ = this.store_root.select(fromRoot.selectAllLocations);
   }
 
-  setupFormObservables() {
+  setupFormWatchers() {
     // this regulates how many job summary sections to show
     this.$summarySections = this.fg_fields.controls[
       'SummarySections'
@@ -151,15 +152,30 @@ export class JobsFormComponent implements OnInit, OnDestroy {
         this.summarySections = _.times(sections, (i: number) => {
           return i + 1;
         });
+        console.log(
+          'summary sections count changed to: ' + this.summarySections
+        );
       });
   }
 
+  removeFormWatchers() {
+    if (this.$summarySections) {
+      this.$summarySections.unsubscribe();
+    }
+  }
+
   createFormGroups(m: FormMode, it: JobItem, lo: number) {
+    // remove old form watchers if any
+    this.removeFormWatchers();
+
     // create 1 form group
     this.fg_fields = this.formInitService.create_FormGroup_Fields(m, it, lo);
 
     console.log('created 1 form group:');
     console.log(this.fg_fields);
+
+    console.log('refresh watchers of form group fields');
+    this.setupFormWatchers();
   }
 
   switchFormMode(mode: FormMode) {
@@ -185,6 +201,7 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
+    this.$mode.unsubscribe();
     this.$window.unsubscribe();
     this.$locationAssignedId.unsubscribe();
   }

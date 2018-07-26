@@ -25,7 +25,7 @@ import * as differenceInMinutes from 'date-fns/difference_in_minutes';
 
         <span matSuffix>hours</span>
 
-        <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
+        <!-- <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error> -->
 
     </mat-form-field>
     `

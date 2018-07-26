@@ -37,7 +37,7 @@ import { Subscription } from 'rxjs';
         <mat-error *ngIf="hasErrorInTitle">{{ errorMessageTitle }}</mat-error>
       </mat-form-field>
 
-      <div class='section-delete'>
+      <div class='section-delete' *ngIf="mode !== 'view'">
         <button mat-icon-button matTooltip='Delete Summary Section'
           *ngIf="last"
           tabindex="-1"

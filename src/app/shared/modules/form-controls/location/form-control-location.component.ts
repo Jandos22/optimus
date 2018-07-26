@@ -18,7 +18,7 @@ import { LocationEnt } from '../../../../shared/interface/locations.model';
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_fields">
       <mat-select [disabled]="mode === 'view'"
-        placeholder="Locations"
+        placeholder="Location"
         formControlName="LocationId">
         <mat-option
           *ngFor="let item of locations | selectLocations: locationAssignedId : accessLevel"

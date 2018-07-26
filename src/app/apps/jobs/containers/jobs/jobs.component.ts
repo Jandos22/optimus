@@ -124,6 +124,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   openForm(mode, item?): void {
     const data = { mode, item };
+    console.log(data);
     const formRef = this.form.open(JobsFormComponent, {
       data,
       disableClose: true,

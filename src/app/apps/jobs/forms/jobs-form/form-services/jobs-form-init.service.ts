@@ -30,6 +30,7 @@ export class JobsFormInitService {
     // create section with titles and bodies
     const summarySections = this.getSummarySections(mo, it, 2);
 
+    // all lookup fields have "Id" at the end
     return this.fb.group({
       Title: [
         this.getSimpleFormValue(mo, it, 'Title'),
@@ -40,6 +41,7 @@ export class JobsFormInitService {
         Validators.required
       ],
       Well: [this.getSimpleFormValue(mo, it, 'Well'), Validators.required],
+      FieldId: [this.getFieldId(mo, it), Validators.required],
       RigUpStart: [this.getRigUpStartDate(mo, it), Validators.required],
       RigUpEnd: [this.getRigUpEndDate(mo, it), Validators.required],
       JobDuration: [this.getJobDuration(mo, it), Validators.required],
@@ -49,14 +51,25 @@ export class JobsFormInitService {
     });
   }
 
+  getFieldId(mode: FormMode, item: JobItem) {
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: item.FieldId, disabled: true };
+      case 'edit':
+        return { value: item.FieldId, disabled: false };
+    }
+  }
+
   getSummarySectionsCount(mode: FormMode, item: JobItem) {
     switch (mode) {
       case 'new':
         return 1;
       case 'view':
-        return item['SummarySections'];
+        return item.SummarySections;
       case 'edit':
-        return item['SummarySections'];
+        return item.SummarySections;
     }
   }
 
@@ -76,7 +89,7 @@ export class JobsFormInitService {
       const n = i + 1;
       return [
         ['JSSbody' + n],
-        [this.getSimpleFormValue(mo, it, 'JSSbody' + n), max70]
+        [this.getSimpleFormValue(mo, it, 'JSSbody' + n), max255]
       ];
     });
 

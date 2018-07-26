@@ -72,9 +72,13 @@ export class AddJobsFormSummarySectionComponent {
 
   onAddSection() {
     const sections = this.fg_fields.controls['SummarySections'];
-    const initial = sections.value;
+    const initial: number = sections.value;
 
     if (initial < this.sectionsMax) {
+      console.log(
+        'summary section change from ' + initial + ' to ' + (initial + 1)
+      );
+      console.log('maximum allowed sections is ' + this.sectionsMax);
       this.fg_fields.controls['SummarySections'].patchValue(initial + 1);
     } else {
       console.log('cannot exceed max sections: ' + this.sectionsMax);
