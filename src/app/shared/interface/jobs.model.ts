@@ -14,6 +14,8 @@ export interface JobItem extends SpListItem {
   FieldId?: FieldItem;
   Client?: ClientItem;
   ClientId?: ClientItem;
+  Rig?: ClientItem;
+  RigId?: ClientItem;
   TotalDepth?: number;
   TotalDepthUnits?: string;
   MaxDeviation?: number;
