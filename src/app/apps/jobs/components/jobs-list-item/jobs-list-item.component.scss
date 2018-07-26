@@ -45,8 +45,8 @@
   }
 
   .iDistrict {
-    min-width: 72px;
-    max-width: 72px;
+    min-width: 78px;
+    max-width: 78px;
     font-size: 0.75rem;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
@@ -56,6 +56,20 @@
       cursor: pointer;
       color: $my-primary-dark;
     }
+  }
+
+  .rig {
+    // min-width: 72px;
+    max-width: 84px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* number of lines to show */
   }
 
   .field {

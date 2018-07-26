@@ -45,8 +45,9 @@ export class JobsFormInitService {
         Validators.required
       ],
       Well: [this.getSimpleFormValue(mo, it, 'Well'), Validators.required],
-      FieldId: [this.getFieldId(mo, it), Validators.required],
-      ClientId: [this.getFieldId(mo, it), Validators.required],
+      FieldId: [this.getSimpleId(mo, it, 'FieldId'), Validators.required],
+      ClientId: [this.getSimpleId(mo, it, 'ClientId'), Validators.required],
+      RigId: [this.getSimpleId(mo, it, 'RigId'), Validators.required],
       TotalDepth: [
         this.getSimpleFormValue(mo, it, 'TotalDepth'),
         Validators.required
@@ -80,25 +81,14 @@ export class JobsFormInitService {
     }
   }
 
-  getFieldId(mode: FormMode, item: JobItem) {
+  getSimpleId(mode: FormMode, item: JobItem, control: string) {
     switch (mode) {
       case 'new':
         return '';
       case 'view':
-        return { value: item.FieldId, disabled: true };
+        return { value: item[control], disabled: true };
       case 'edit':
-        return { value: item.FieldId, disabled: false };
-    }
-  }
-
-  getClientId(mode: FormMode, item: JobItem) {
-    switch (mode) {
-      case 'new':
-        return '';
-      case 'view':
-        return { value: item.ClientId, disabled: true };
-      case 'edit':
-        return { value: item.ClientId, disabled: false };
+        return { value: item[control], disabled: false };
     }
   }
 

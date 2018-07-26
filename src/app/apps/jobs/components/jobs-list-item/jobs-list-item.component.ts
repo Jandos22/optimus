@@ -42,6 +42,12 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
           </div>
 
           <!--
+          <div class="rig" matTooltip="Rig">
+            {{ job.Rig?.Title }}
+          </div>
+          -->
+
+          <!--
           <div fxFlex class="field"
             matTooltip="Field">
             {{ job.Field }}

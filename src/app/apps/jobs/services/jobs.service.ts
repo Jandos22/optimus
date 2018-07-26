@@ -72,6 +72,9 @@ export class JobsService {
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',iDistrict))`;
       url += `or(substringof('${text}',Well))`;
+      url += `or(substringof('${text}',Field))`;
+      url += `or(substringof('${text}',Client))`;
+      url += `or(substringof('${text}',Rig))`;
       url += `or(substringof('${text}',JSStitle1))`;
       url += `or(substringof('${text}',JSStitle2))`;
       url += `or(substringof('${text}',JSStitle3))`;
@@ -146,6 +149,10 @@ export class JobsService {
       'ClientId',
       'Client/Id',
       'Client/Title',
+      'Rig',
+      'RigId',
+      'Rig/Id',
+      'Rig/Title',
       'TotalDepth',
       'TotalDepthUnits',
       'MaxDeviation',
@@ -177,7 +184,7 @@ export class JobsService {
   }
 
   getExpandFields() {
-    const $expand = ['Location', 'Field', 'Client'];
+    const $expand = ['Location', 'Field', 'Client', 'Rig'];
     return $expand.toString();
   }
 

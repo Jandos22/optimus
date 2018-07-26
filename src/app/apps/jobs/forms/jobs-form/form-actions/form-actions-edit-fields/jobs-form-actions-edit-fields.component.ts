@@ -80,6 +80,9 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .get('ClientId')
         .valueChanges.pipe(map(ClientId => ({ ClientId }))),
 
+      // RigId observable
+      this.fg_fields.get('RigId').valueChanges.pipe(map(RigId => ({ RigId }))),
+
       // RigUpStart observable
       this.fg_fields
         .get('RigUpStart')
