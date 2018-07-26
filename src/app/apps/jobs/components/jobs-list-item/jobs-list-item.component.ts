@@ -20,7 +20,15 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="job__container" fxFlex="100" fxLayout="row nowrap">
-      <div class="job-col-body" fxFlex="100">
+      <!-- color depends on Job Type: OH or CH -->
+      <div class="jobtype" fxFlex="8px" [matTooltip]="'Job Type: ' + job.JobType"
+        [ngClass]="{
+          ch: (job.JobType === 'CH'),
+          oh: (job.JobType === 'OH')
+        }">
+      </div>
+
+      <div class="job-col-body" fxFlex="calc(100% - 8px)">
         <div class="job-row-1" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="12px">
 
           <div class="date"
@@ -29,7 +37,7 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
           </div>
 
           <div class="iDistrict" (click)="openJRI(job.iDistrict)"
-            matTooltip="iDistrict Number">
+            matTooltip="open JRI">
             iD: {{ job.iDistrict }}
           </div>
 
