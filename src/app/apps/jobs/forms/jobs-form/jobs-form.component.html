@@ -62,6 +62,9 @@
                 <app-jobs-form-duration class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields">
                 </app-jobs-form-duration>
 
+                <app-jobs-form-tools-used class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [toolNames]="toolNames$ | async">
+                </app-jobs-form-tools-used>
+
                 <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
                     [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
                 </app-form-control-location>

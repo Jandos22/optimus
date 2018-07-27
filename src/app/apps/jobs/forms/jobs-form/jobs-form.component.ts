@@ -43,6 +43,7 @@ import { FormMode } from '../../../../shared/interface/form.model';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { PeopleItem } from '../../../../shared/interface/people.model';
+import { ToolItem } from '../../../../shared/interface/tools.model';
 
 @Component({
   selector: 'app-jobs-form',
@@ -72,6 +73,7 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
   // selectables
   locations$: Observable<LocationEnt[]>;
+  toolNames$: Observable<ToolItem[]>;
 
   // Form Mode is Subject
   $mode: Subject<FormMode>;
@@ -140,6 +142,9 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
     // get selectable locations
     this.locations$ = this.store_root.select(fromRoot.selectAllLocations);
+
+    // get selectable tool names
+    this.toolNames$ = this.store_root.pipe(select(fromJobs.selectAllToolNames));
   }
 
   setupFormWatchers() {

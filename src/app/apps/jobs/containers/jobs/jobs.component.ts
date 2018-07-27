@@ -73,6 +73,9 @@ export class JobsComponent implements OnInit, OnDestroy {
     // update html page title and store.root.apps.name
     this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
 
+    // fetch ToolNames list from database
+    this.store_root.dispatch(new fromJobs.FetchToolNames());
+
     this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
 
     // main data = array of jobs

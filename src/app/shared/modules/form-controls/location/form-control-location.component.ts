@@ -21,7 +21,7 @@ import { LocationEnt } from '../../../../shared/interface/locations.model';
         placeholder="Location"
         formControlName="LocationId">
         <mat-option
-          *ngFor="let item of locations | selectLocations: locationAssignedId : accessLevel"
+          *ngFor="let item of locations"
           [value]="item.id">
             {{ item.Title }}
         </mat-option>

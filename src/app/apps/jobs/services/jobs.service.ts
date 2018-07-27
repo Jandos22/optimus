@@ -159,6 +159,9 @@ export class JobsService {
       'RigUpStart',
       'RigUpEnd',
       'JobDuration',
+      'ToolsUsedId',
+      'ToolsUsed/Id',
+      'ToolsUsed/Title',
       'SummarySections',
       'JSStitle1',
       'JSStitle2',
@@ -184,7 +187,7 @@ export class JobsService {
   }
 
   getExpandFields() {
-    const $expand = ['Location', 'Field', 'Client', 'Rig'];
+    const $expand = ['Location', 'Field', 'Client', 'Rig', 'ToolsUsed'];
     return $expand.toString();
   }
 

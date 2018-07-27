@@ -3,6 +3,7 @@ import { SpListItem } from './sp-list-item.model';
 import { LocationEnt } from './locations.model';
 import { PeopleItem } from './people.model';
 import { FieldItem } from './fields.model';
+import { ToolItem } from './tools.model';
 
 export interface JobItem extends SpListItem {
   id?: number;
@@ -22,6 +23,9 @@ export interface JobItem extends SpListItem {
   RigUpStart?: Date;
   RigUpEnd?: Date;
   JobDuration?: number;
+  ToolsUsed?: {
+    results: ToolItem[]; // lookup multiple
+  };
   SummarySections?: number;
   JSStitle1?: string;
   JSStitle2?: string;

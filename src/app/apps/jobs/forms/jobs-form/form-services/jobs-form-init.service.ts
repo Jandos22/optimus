@@ -63,6 +63,9 @@ export class JobsFormInitService {
       RigUpStart: [this.getRigUpStartDate(mo, it), Validators.required],
       RigUpEnd: [this.getRigUpEndDate(mo, it), Validators.required],
       JobDuration: [this.getJobDuration(mo, it), Validators.required],
+      ToolsUsedId: this.fb.group({
+        results: [this.getMultiSelectId(mo, it, 'ToolsUsedId')]
+      }),
       SummarySections: [this.getSummarySectionsCount(mo, it)],
       ...summarySections,
       LocationId: [this.getLocationId(mo, it, lo), Validators.required]
@@ -78,6 +81,17 @@ export class JobsFormInitService {
         return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled: false };
+    }
+  }
+
+  getMultiSelectId(mode: FormMode, item: JobItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return [];
+      case 'view':
+        return item[field].results;
+      case 'edit':
+        return item[field].results;
     }
   }
 

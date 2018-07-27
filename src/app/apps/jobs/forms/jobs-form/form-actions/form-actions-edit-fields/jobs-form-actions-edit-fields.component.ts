@@ -98,6 +98,11 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .get('JobDuration')
         .valueChanges.pipe(map(JobDuration => ({ JobDuration }))),
 
+      // ToolsUsedId observable
+      this.fg_fields
+        .get('ToolsUsedId')
+        .valueChanges.pipe(map(ToolsUsedId => ({ ToolsUsedId }))),
+
       // SummarySections observable
       this.fg_fields
         .get('SummarySections')

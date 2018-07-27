@@ -1,3 +1,4 @@
+import { JobsFormToolsUsedComponent } from './jobs-form-tools-used/jobs-form-tools-used.component';
 import { JobsFormDurationComponent } from './jobs-form-duration/jobs-form-duration.component';
 import { JobsFormIdistrictComponent } from './jobs-form-idistrict/jobs-form-idistrict.component';
 import { JobsFormWellComponent } from './jobs-form-well/jobs-form-well.component';
@@ -19,7 +20,8 @@ export const forms_controls: any[] = [
   JobsFormDurationComponent,
   JobsFormJobTypeComponent,
   JobsFormTotalDepthComponent,
-  JobsFormMaxDevComponent
+  JobsFormMaxDevComponent,
+  JobsFormToolsUsedComponent
 ];
 
 export * from './jobs-form-title/jobs-form-title.component';
@@ -32,3 +34,4 @@ export * from './jobs-form-duration/jobs-form-duration.component';
 export * from './jobs-form-job-type/jobs-form-job-type.component';
 export * from './jobs-form-total-depth/jobs-form-total-depth.component';
 export * from './jobs-form-max-dev/jobs-form-max-dev.component';
+export * from './jobs-form-tools-used/jobs-form-tools-used.component';
