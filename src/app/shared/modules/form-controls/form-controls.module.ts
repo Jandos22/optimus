@@ -19,6 +19,11 @@ import { FormControlTitleComponent } from './title/form-control-title.component'
 import { FormControlSummaryComponent } from './summary/form-control-summary.component';
 import { FormControlQuestRirComponent } from './quest-rir/form-control-quest-rir.component';
 import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-qpid.component';
+import { FormControlDateTimeComponent } from './date-time-picker/form-control-date-time.component';
+
+import { FormControlFieldPickerComponent } from './field-picker/form-control-field-picker.component';
+import { FormControlClientPickerComponent } from './client-picker/form-control-client-picker.component';
+import { FormControlRigPickerComponent } from './rig-picker/form-control-rig-picker.component';
 
 @NgModule({
   imports: [
@@ -38,7 +43,11 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     UserSelectionUserOptionComponent,
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
-    FormControlQuestQpidComponent
+    FormControlQuestQpidComponent,
+    FormControlDateTimeComponent,
+    FormControlFieldPickerComponent,
+    FormControlClientPickerComponent,
+    FormControlRigPickerComponent
   ],
   exports: [
     FormControlTitleComponent,
@@ -50,7 +59,11 @@ import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-q
     UserSelectionUserOptionComponent,
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
-    FormControlQuestQpidComponent
+    FormControlQuestQpidComponent,
+    FormControlDateTimeComponent,
+    FormControlFieldPickerComponent,
+    FormControlClientPickerComponent,
+    FormControlRigPickerComponent
   ],
   providers: []
 })

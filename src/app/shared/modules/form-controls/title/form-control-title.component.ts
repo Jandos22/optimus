@@ -38,12 +38,20 @@ export class FormControlTitleComponent {
   }
 
   get errorMessage() {
-    const required = this.fg_fields.get('Title').hasError('required');
+    const control = this.fg_fields.controls['Title'];
 
-    return this.fg_fields.get('Title').touched
+    const required = control.hasError('required');
+    const min = control.hasError('minlength');
+    const max = control.hasError('maxlength');
+
+    return this.fg_fields.get('Summary').touched
       ? required
-        ? 'Title is required'
-        : ''
+        ? '... is required'
+        : min
+          ? 'minimum 30 characters required'
+          : max
+            ? 'maximum 70 characters allowed'
+            : ''
       : '';
   }
 }

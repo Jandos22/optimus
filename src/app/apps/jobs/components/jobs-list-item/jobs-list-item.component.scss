@@ -1,0 +1,121 @@
+@import '../../../../../colors';
+
+.job__container {
+  border-radius: 8px;
+  min-height: 54px;
+  max-height: 86px;
+  background: $my-grey-50;
+
+  .jobtype {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    &.oh {
+      background: #80d8ff;
+    }
+
+    &.ch {
+      background: #ffd180;
+    }
+  }
+}
+
+.job-col-body {
+  // width: 100%;
+  height: 100%;
+  // min-width: 100%;
+  min-height: 100%;
+  padding: 0 8px;
+}
+
+.job-row-1 {
+  margin: 8px 0 4px 0;
+  // padding: 0 8px;
+  height: 18px;
+  max-height: 18px;
+  font-size: 0.75rem;
+
+  .date {
+    min-width: 72px;
+    max-width: 72px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+  }
+
+  .iDistrict {
+    min-width: 78px;
+    max-width: 78px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+
+  .rig {
+    // min-width: 72px;
+    max-width: 84px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* number of lines to show */
+  }
+
+  .field {
+    min-width: 72px;
+    // max-width: 72px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+  }
+}
+
+.job-row-2 {
+  margin: 4px 0 8px 0;
+  // padding: 0 8px;
+  min-height: 16px;
+  max-height: 48px;
+
+  .well {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.875);
+    line-height: 16px;
+    min-width: 72px;
+    max-width: 72px;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+
+  .title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.875);
+    line-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+}

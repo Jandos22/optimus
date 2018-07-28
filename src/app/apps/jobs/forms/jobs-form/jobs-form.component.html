@@ -1,0 +1,134 @@
+<span mat-dialog-title style="text-align: center;">
+    Job
+</span>
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <!-- takes 4 columns when space available -->
+        <div class="group-of-4" fxLayout="row wrap" fxLayoutAlign="start start">
+
+            <!-- Well / takes 1 column -->
+            <app-jobs-form-well class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-jobs-form-well>
+
+            <!-- Title / takes 3 columns -->
+            <app-jobs-form-title class="cmn-form-component take-3-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-jobs-form-title>
+
+        </div>
+
+        <!-- takes 4 columns -->
+        <div class="group-of-4" fxLayout="row wrap">
+
+            <div class="group-of-2" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                <!-- SECTION -->
+                <div class="form-group-title">Job Details</div>
+
+                <app-jobs-form-idistrict class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-idistrict>
+
+                <app-jobs-form-job-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-job-type>
+
+                <app-form-control-field-picker class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [initial]="data.item?.Field"
+                    [mode]="data.mode">
+                </app-form-control-field-picker>
+
+                <app-form-control-client-picker class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [initial]="data.item?.Client"
+                    [mode]="data.mode">
+                </app-form-control-client-picker>
+
+                <app-form-control-rig-picker class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [initial]="data.item?.Rig"
+                    [mode]="data.mode">
+                </app-form-control-rig-picker>
+
+                <app-jobs-form-ftl class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+                </app-jobs-form-ftl>
+
+                <!-- SECTION -->
+                <div class="form-group-title">Time & Location</div>
+
+                <app-form-control-date-time class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RigUpStart'"
+                    [displayName]="'Rig Up Start'">
+                </app-form-control-date-time>
+
+                <app-form-control-date-time class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RigUpEnd'"
+                    [displayName]="'Rig Up End'">
+                </app-form-control-date-time>
+
+                <app-jobs-form-duration class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
+                </app-jobs-form-duration>
+
+                <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+                    [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+                </app-form-control-location>
+
+                <!-- SECTION -->
+                <div class="form-group-title">Well Info</div>
+
+                <app-jobs-form-total-depth class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start" fxLayoutGap="4px"
+                    [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-total-depth>
+
+                <app-jobs-form-max-dev class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start" fxLayoutGap="4px"
+                    [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-max-dev>
+
+                <!-- SECTION -->
+                <div class="form-group-title">People</div>
+
+                <!-- Engineers / 1 column -->
+                <div class="group-of-1" fxLayout="column">
+                    <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                        Engineers
+                    </span>
+                    <app-form-control-user-selection class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
+                        [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="4"
+                        (onSelectUser)="onSelectEngineer($event)" [id]="1">
+                    </app-form-control-user-selection>
+                </div>
+
+                <!-- Operators / 1 column -->
+                <div class="group-of-1" fxLayout="column">
+                    <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                        Operators
+                    </span>
+                    <app-form-control-user-selection class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
+                        [fieldName]="'OperatorsId'" [displayName]="'Operators'" [allowNumberOfUsers]="12" (onSelectUser)="onSelectOperator($event)"
+                        [id]="2">
+                    </app-form-control-user-selection>
+                </div>
+
+            </div>
+
+            <div class="group-of-2" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                <!-- SECTION -->
+                <div class="form-group-title">Job Summary</div>
+
+                <app-jobs-form-tools-used class="cmn-form-component take-2-cols" *ngIf="data.mode !== 'view'" fxLayout="row" [fg_fields]="fg_fields"
+                    [mode]="data.mode" [toolNames]="toolNames$ | async">
+                </app-jobs-form-tools-used>
+
+                <app-jobs-form-summary-section class="cmn-form-component take-2-cols" fxLayout="row wrap" fxLayoutAlign="start start" *ngFor="let section of summarySections; let i = index; let last = last"
+                    [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode" [sectionNumber]="i + 1" [last]="last">
+                </app-jobs-form-summary-section>
+
+                <app-add-jobs-form-summary-section *ngIf="data.mode !== 'view'" fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="end start"
+                    class="job-summary-buttons-container" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-add-jobs-form-summary-section>
+
+            </div>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-jobs-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    </app-jobs-form-actions>
+</mat-dialog-actions>

@@ -45,7 +45,6 @@ export class ExemptionsService {
   }
 
   buildUrl(params: ExemptionsSearchParams, counter?: boolean) {
-    // api url for NgTimeline
     let url = `${ApiPath}/web/lists/getbytitle('NgExemptions')/items?`;
 
     // parameters

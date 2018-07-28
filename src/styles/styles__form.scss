@@ -14,20 +14,99 @@
   align-content: flex-start;
   height: 100%;
   min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  min-width: 208px; // experimental
+  overflow: hidden;
+  // overflow-x: hidden;
+  // overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
   @media screen and (min-width: 570px) {
     padding-left: 16px;
+    // min-width: 376px; // experimental
+  }
+
+  @media screen and (min-width: 815px) {
+    padding-left: 16px;
+    // min-width: 588px; // experimental
+  }
+
+  .form-group-title {
+    // color: rgba(0, 0, 0, 0.75);
+    color: #e65100;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    margin-right: 16px;
+    margin-bottom: 19px;
   }
 
   div.group-of-2 {
     width: 100%;
 
     @media screen and (min-width: 570px) {
-      min-width: 196px; // 180+16
-      max-width: 392px; // 180*2+16*2
+      min-width: 196px; // 180+16, min 1 column
+      max-width: 392px; // 180*2+16*2, max 2 columns
+    }
+  }
+
+  div.group-of-3 {
+    width: 100%;
+
+    @media screen and (min-width: 570px) {
+      min-width: 392px; // 180+16, min 1 column
+      max-width: 392px; // 180*2+16*2, max 2 columns
+    }
+
+    @media screen and (min-width: 815px) {
+      min-width: 588px; // 180+16, min 1 column
+      max-width: 588px; // 180*3+16*3, max 3 columns
+    }
+
+    div.group-of-1 {
+      width: 100%;
+
+      @media screen and (min-width: 570px) {
+        min-width: 196px; // 180+16, min 1 column
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
+      @media screen and (min-width: 815px) {
+        min-width: 196px; // 180+16, min 1 column
+        max-width: 196px; // 180*2+16*2, max 2 columns
+      }
+    }
+  }
+
+  div.group-of-4 {
+    width: 100%;
+
+    @media screen and (min-width: 570px) {
+      min-width: 392px; //
+      max-width: 392px; // 180*2+16*2, take 2 columns
+    }
+
+    @media screen and (min-width: 815px) {
+      min-width: 588px; //
+      max-width: 588px; // 180*3+16*3, take 3 columns
+    }
+
+    @media screen and (min-width: 1060px) {
+      min-width: 784px; //
+      max-width: 784px; // 180*4+16*4, take 4 columns
+    }
+
+    // group of 2 inside of group of 4
+    div.group-of-2 {
+      width: 100%;
+
+      @media screen and (min-width: 570px) {
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
+      @media screen and (min-width: 815px) {
+        max-width: 588px; // 180*3+16*3, take 3 columns
+      }
+      @media screen and (min-width: 1060px) {
+        max-width: 392px; // 180*2+16*2, max 2 columns
+      }
     }
   }
 }
@@ -44,6 +123,15 @@
     &.take-2-cols {
       min-width: 180px;
       max-width: 376px; // 180+16+180
+    }
+
+    &.take-3-cols {
+      min-width: 180px;
+      max-width: 572px; // 180+16+180+16+180
+    }
+    &.take-4-cols {
+      min-width: 180px;
+      max-width: 768px; // 180 * 4 + 16 * 3
     }
   }
 }
