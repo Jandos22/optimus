@@ -35,6 +35,7 @@ export class PeopleLookupService {
       'Name',
       'Surname',
       'Fullname',
+      'Shortname',
       'Alias',
       'Attachments',
       'AttachmentFiles',

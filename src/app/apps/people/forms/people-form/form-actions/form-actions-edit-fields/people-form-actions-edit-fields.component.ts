@@ -58,6 +58,11 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       // Gin observable
       this.fg_fields.get('Gin').valueChanges.pipe(map(Gin => ({ Gin }))),
 
+      // Shortname observable
+      this.fg_fields
+        .get('Shortname')
+        .valueChanges.pipe(map(Shortname => ({ Shortname }))),
+
       // LocationAssignedId observable
       this.fg_fields
         .get('LocationAssignedId')

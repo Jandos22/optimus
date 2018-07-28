@@ -63,6 +63,10 @@ export class PeopleFormInitService {
         ],
         this.uniqueGin.bind(this)
       ],
+      Shortname: [
+        this.getSimpleFormValue(mode, item, 'Shortname'),
+        Validators.required
+      ],
       LocationAssignedId: [
         this.getSimpleFormValue(mode, item, 'LocationAssignedId'),
         Validators.required

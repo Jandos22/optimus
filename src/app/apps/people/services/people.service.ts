@@ -35,7 +35,7 @@ export class PeopleService {
           if (response.d.results) {
             return of(response);
           }
-        }),
+        })
         // errors (if any) are caught in search effects
       );
   }
@@ -244,6 +244,7 @@ export class PeopleService {
       'Name',
       'Surname',
       'Fullname',
+      'Shortname',
       'Email',
       'Gin',
       'LocationAssigned/Id',
