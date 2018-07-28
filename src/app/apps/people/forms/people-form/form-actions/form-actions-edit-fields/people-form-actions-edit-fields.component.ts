@@ -41,16 +41,37 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fc_changes$ = merge(
+      // Name observable
       this.fg_fields.get('Name').valueChanges.pipe(map(Name => ({ Name }))),
+
+      // Surname observable
       this.fg_fields
         .get('Surname')
         .valueChanges.pipe(map(Surname => ({ Surname }))),
+
+      // Alias observable
       this.fg_fields.get('Alias').valueChanges.pipe(map(Alias => ({ Alias }))),
+
+      // Email observable
       this.fg_fields.get('Email').valueChanges.pipe(map(Email => ({ Email }))),
+
+      // Gin observable
       this.fg_fields.get('Gin').valueChanges.pipe(map(Gin => ({ Gin }))),
+
+      // Shortname observable
+      this.fg_fields
+        .get('Shortname')
+        .valueChanges.pipe(map(Shortname => ({ Shortname }))),
+
+      // LocationAssignedId observable
       this.fg_fields
         .get('LocationAssignedId')
-        .valueChanges.pipe(map(id => ({ LocationAssignedId: id })))
+        .valueChanges.pipe(map(id => ({ LocationAssignedId: id }))),
+
+      // PositionId observable
+      this.fg_fields
+        .get('PositionId')
+        .valueChanges.pipe(map(PositionId => ({ PositionId })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$

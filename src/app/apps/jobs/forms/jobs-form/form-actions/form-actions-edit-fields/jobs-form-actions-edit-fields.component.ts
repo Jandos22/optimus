@@ -47,7 +47,7 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .get('iDistrict')
         .valueChanges.pipe(map(iDistrict => ({ iDistrict }))),
 
-      // iDistrict observable
+      // JobType observable
       this.fg_fields
         .get('JobType')
         .valueChanges.pipe(map(JobType => ({ JobType }))),

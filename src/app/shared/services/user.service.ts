@@ -70,6 +70,7 @@ export class UserService {
       'Name',
       'Surname',
       'Fullname',
+      'Shortname',
       'Alias',
       'Attachments',
       'AttachmentFiles',

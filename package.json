@@ -7,7 +7,7 @@
     "start": "ng serve --proxy-config ./config/proxy.conf.json",
     "serve": "node ./config/server.js",
     "build": "ng build --prod --build-optimizer --base-href /sites/wireline/optimus/index.aspx",
-    "build-dev": "ng build --prod --build-optimizer --stats-json --base-href /sites/wireline/optimus/index.aspx",
+    "build-dev": "ng build --prod --build-optimizer --stats-json --base-href /sites/wireline/dev/index.aspx",
     "analyzer": "webpack-bundle-analyzer dist/stats.json",
     "test": "ng test",
     "lint": "ng lint",

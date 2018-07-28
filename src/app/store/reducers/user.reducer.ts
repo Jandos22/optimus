@@ -93,10 +93,13 @@ export const getUserOptimus = (state: UserState) => state.optimus;
 // user access level depends on position he/she holds
 export const getUserAccessLevel = (state: UserState) => {
   if (state.optimus) {
-    return state.optimus.Position.AccessLevel;
+    if (state.optimus.Position) {
+      return state.optimus.Position.AccessLevel;
+    } else {
+      return 1; // lowest access level
+    }
   } else {
-    // lowest access level
-    return 1;
+    return 1; // lowest access level
   }
 };
 

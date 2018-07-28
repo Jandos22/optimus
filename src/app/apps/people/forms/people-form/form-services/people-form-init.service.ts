@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
@@ -14,7 +15,7 @@ import { take, switchMap, map } from 'rxjs/operators';
 // services
 import { ValidationService } from '../../../../../shared/validators/validation.service';
 import { AsyncValidationService } from '../../../../../shared/validators/async-validation.service';
-import { PeopleFormValueService } from './people-form-value.service';
+// import { PeopleFormValueService } from './people-form-value.service';
 import { PeopleFormPhotoService } from './people-form-photo.service';
 
 // interfaces
@@ -24,33 +25,36 @@ import { FormMode } from '../../../../../shared/interface/form.model';
 @Injectable()
 export class PeopleFormInitService {
   constructor(
-    private formValueService: PeopleFormValueService,
+    private fb: FormBuilder,
+    // private formValueService: PeopleFormValueService,
     private asyncValidators: AsyncValidationService,
     private photoService: PeopleFormPhotoService
   ) {}
 
   create_FormGroup_Fields(mode: FormMode, item: PeopleItem) {
-    item = this.formValueService.createPeopleItemObject(mode, item);
-    return new FormGroup({
-      Name: new FormControl(
-        this.formValueService.initFieldValue(mode, item.Name),
+    // create item via new class
+    // item = this.formValueService.createPeopleItemObject(mode, item);
+    console.log('[People Form] Creating form group with:');
+    console.log(item);
+    console.log('[People Form] when mode is: ' + mode);
+
+    return this.fb.group({
+      Name: [this.getSimpleFormValue(mode, item, 'Name'), Validators.required],
+      Surname: [
+        this.getSimpleFormValue(mode, item, 'Surname'),
         Validators.required
-      ),
-      Surname: new FormControl(
-        this.formValueService.initFieldValue(mode, item.Surname),
-        Validators.required
-      ),
-      Alias: new FormControl(
-        this.formValueService.initDisabledFieldValue(mode, item.Alias),
+      ],
+      Alias: [
+        this.getDisabledFieldValue(mode, item, 'Alias'),
         Validators.required,
         this.uniqueAlias.bind(this)
-      ),
-      Email: new FormControl(
-        this.formValueService.initEmailValue(mode, item.Email),
+      ],
+      Email: [
+        this.getDisabledFieldValue(mode, item, 'Email', '@slb.com'),
         Validators.required
-      ),
-      Gin: new FormControl(
-        this.formValueService.initDisabledFieldValue(mode, item.Gin),
+      ],
+      Gin: [
+        this.getDisabledFieldValue(mode, item, 'Gin'),
         [
           Validators.required,
           Validators.minLength(8),
@@ -58,11 +62,19 @@ export class PeopleFormInitService {
           ValidationService.onlyNumbers
         ],
         this.uniqueGin.bind(this)
-      ),
-      LocationAssignedId: new FormControl(
-        this.formValueService.initFieldValue(mode, item.LocationAssignedId),
+      ],
+      Shortname: [
+        this.getSimpleFormValue(mode, item, 'Shortname'),
         Validators.required
-      )
+      ],
+      LocationAssignedId: [
+        this.getSimpleFormValue(mode, item, 'LocationAssignedId'),
+        Validators.required
+      ],
+      PositionId: [
+        this.getSimpleFormValue(mode, item, 'PositionId'),
+        Validators.required
+      ]
     });
   }
 
@@ -82,6 +94,36 @@ export class PeopleFormInitService {
         PhotoUrl: new FormControl(this.photoService.getPhotoUrl(item)),
         ArrayBuffer: new FormControl(new ArrayBuffer(0))
       });
+    }
+  }
+
+  // get field value & condition
+  getSimpleFormValue(mode: FormMode, item: PeopleItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: item[field], disabled: true };
+      case 'edit':
+        return { value: item[field], disabled: false };
+    }
+  }
+
+  // when form control need to stay disabled even in edit mode
+  // fields like Alias, Email and Gin cannot be updated
+  getDisabledFieldValue(
+    mode: FormMode,
+    item: any,
+    field: string,
+    appendix?: string
+  ) {
+    switch (mode) {
+      case 'new':
+        return '' + appendix ? appendix : '';
+      case 'view':
+        return { value: item[field], disabled: true };
+      case 'edit':
+        return { value: item[field], disabled: true };
     }
   }
 
