@@ -23,8 +23,9 @@ import {
 } from 'rxjs/operators';
 
 // ngrx
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
+import * as fromPeople from '../../store';
 
 // material
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -32,12 +33,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // form services
 import { PeopleFormInitService } from './form-services/people-form-init.service';
 import { PeopleFormValueService } from './form-services/people-form-value.service';
-import { PeopleFormSizeService } from './form-services/people-form-size.service';
+// import { PeopleFormSizeService } from './form-services/people-form-size.service';
 import { PeopleFormPhotoService } from './form-services/people-form-photo.service';
 import { PeopleFormHttpService } from './form-services/people-form-http.service';
 
 // interfaces
-import { PeopleItem } from '../../../../shared/interface/people.model';
+import {
+  PeopleItem,
+  UserPosition
+} from '../../../../shared/interface/people.model';
 import { FormMode } from '../../../../shared/interface/form.model';
 
 // dialog components
@@ -46,15 +50,16 @@ import {
   UserPhotoState
 } from '../people-form-photo-picker/people-form-photo-picker.component';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
+// import { getUserAccessLevel } from '../../../../store/reducers/user.reducer';
 
 @Component({
   selector: 'app-people-form',
-  styleUrls: ['people-form.component.css'],
+  styleUrls: ['people-form.component.scss'],
   templateUrl: './people-form.component.html',
   providers: [
     PeopleFormInitService,
     PeopleFormValueService,
-    PeopleFormSizeService,
+    // PeopleFormSizeService,
     PeopleFormPhotoService,
     PeopleFormHttpService
   ]
@@ -70,10 +75,14 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
   // subscribe to window from root store
   // used to update form size dynamically
-  $window: Subscription;
+  // $window: Subscription;
 
   // select locations list from store to for selection input
   $locations: Observable<any>;
+  peoplePositions$: Observable<UserPosition[]>;
+
+  // user access level
+  ual$: Observable<number>;
 
   // Form Mode is Subject
   $mode: Subject<FormMode>;
@@ -85,7 +94,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     private _root_store: Store<fromRoot.RootState>,
     private initFormService: PeopleFormInitService,
     public formRef: MatDialogRef<PeopleFormComponent>,
-    private formSizeService: PeopleFormSizeService,
+    // private formSizeService: PeopleFormSizeService,
     @Inject(MAT_DIALOG_DATA) public data: { mode: FormMode; item?: PeopleItem }
   ) {}
 
@@ -101,17 +110,24 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
       this.updateFormTitle(mode);
     });
 
-    // get locations list from root store
+    // SELECTABLE OBSERVABLES
     this.$locations = this._root_store.select(fromRoot.selectAllLocations);
+    this.peoplePositions$ = this._root_store.pipe(
+      select(fromPeople.selectAllPeoplePositions)
+    );
 
+    // USER ACCESS LEVEL
+    this.ual$ = this._root_store.pipe(select(fromRoot.getUserAccessLevel));
+
+    // CHANGE FORM MODE during ngOnInit()
     this.$mode.next(this.data.mode);
 
     // on each breakpoint change, update size of form dialog
-    this.$window = this._root_store
-      .select(fromRoot.getLayoutWindow)
-      .subscribe(window => {
-        this.formRef.updateSize(this.formSizeService.width(window));
-      });
+    // this.$window = this._root_store
+    //   .select(fromRoot.getLayoutWindow)
+    //   .subscribe(window => {
+    //     this.formRef.updateSize(this.formSizeService.width(window));
+    //   });
 
     // when alias changed, also update email
     this.alias$ = this.fg_fields
@@ -187,7 +203,7 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
     this.$mode.unsubscribe();
-    this.$window.unsubscribe();
+    // this.$window.unsubscribe();
     this.alias$.unsubscribe();
   }
 }

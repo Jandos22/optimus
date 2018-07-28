@@ -1,7 +1,0 @@
-/* due to fxLayoutGap, the right most child also has a gap
- to put objects in the middle we shift   */
-@media screen and (min-width: 600px) {
-  .people-form__items--center {
-    padding-left: 16px;
-  }
-}

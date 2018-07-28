@@ -5,6 +5,7 @@ import { PeopleFormAliasComponent } from './people-form-alias/people-form-alias.
 import { PeopleFormEmailComponent } from './people-form-email/people-form-email.component';
 import { PeopleFormGinComponent } from './people-form-gin/people-form-gin.component';
 import { PeopleFormLocationComponent } from './people-form-location/people-form-location.component';
+import { PeopleFormPositionComponent } from './people-form-position/people-form-position.component';
 
 export const forms_controls: any[] = [
   PeopleFormNameComponent,
@@ -13,7 +14,8 @@ export const forms_controls: any[] = [
   PeopleFormEmailComponent,
   PeopleFormGinComponent,
   PeopleFormLocationComponent,
-  PeopleFormPhotoComponent
+  PeopleFormPhotoComponent,
+  PeopleFormPositionComponent
 ];
 
 export * from './people-form-name/people-form-name.component';
@@ -23,3 +25,4 @@ export * from './people-form-email/people-form-email.component';
 export * from './people-form-photo/people-form-photo.component';
 export * from './people-form-gin/people-form-gin.component';
 export * from './people-form-location/people-form-location.component';
+export * from './people-form-position/people-form-position.component';

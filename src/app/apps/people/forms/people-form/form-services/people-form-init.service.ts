@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+  FormBuilder,
   FormGroup,
   FormControl,
   Validators,
@@ -24,16 +25,19 @@ import { FormMode } from '../../../../../shared/interface/form.model';
 @Injectable()
 export class PeopleFormInitService {
   constructor(
+    private fb: FormBuilder,
     private formValueService: PeopleFormValueService,
     private asyncValidators: AsyncValidationService,
     private photoService: PeopleFormPhotoService
   ) {}
 
   create_FormGroup_Fields(mode: FormMode, item: PeopleItem) {
+    // create item via new class
     item = this.formValueService.createPeopleItemObject(mode, item);
-    return new FormGroup({
+
+    return this.fb.group({
       Name: new FormControl(
-        this.formValueService.initFieldValue(mode, item.Name),
+        this.getSimpleFormValue(mode, item, 'Name'),
         Validators.required
       ),
       Surname: new FormControl(
@@ -62,7 +66,11 @@ export class PeopleFormInitService {
       LocationAssignedId: new FormControl(
         this.formValueService.initFieldValue(mode, item.LocationAssignedId),
         Validators.required
-      )
+      ),
+      PositionId: [
+        this.getSimpleFormValue(mode, item, 'PositionId'),
+        Validators.required
+      ]
     });
   }
 
@@ -82,6 +90,18 @@ export class PeopleFormInitService {
         PhotoUrl: new FormControl(this.photoService.getPhotoUrl(item)),
         ArrayBuffer: new FormControl(new ArrayBuffer(0))
       });
+    }
+  }
+
+  // get field value & condition
+  getSimpleFormValue(mode: FormMode, item: PeopleItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: item[field], disabled: true };
+      case 'edit':
+        return { value: item[field], disabled: false };
     }
   }
 

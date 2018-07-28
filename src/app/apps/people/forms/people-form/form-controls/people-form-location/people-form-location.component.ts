@@ -8,16 +8,18 @@ import { FormGroup } from '@angular/forms';
 
 // interfaces
 import { LocationEnt } from '../../../../../../shared/interface/locations.model';
+import { FormMode } from '../../../../../../shared/interface/form.model';
 
 @Component({
   selector: 'app-people-form-location',
-  styleUrls: ['people-form-location.component.css'],
+  styleUrls: ['people-form-location.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [formGroup]="parent" fxFlex class="my-form-field_container">
+    <div [formGroup]="fg_fields" fxFlex class="my-form-field_container">
         <mat-form-field fxFlexFill>
-          <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId">
+          <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId"
+            [disabled]="mode === 'view' || ual < 3">
             <mat-option *ngFor="let item of locations" [value]="item.id">
                 {{ item.Title }}
             </mat-option>
@@ -28,21 +30,23 @@ import { LocationEnt } from '../../../../../../shared/interface/locations.model'
     `
 })
 export class PeopleFormLocationComponent {
-  @Input() parent: FormGroup;
+  @Input() fg_fields: FormGroup;
   @Input() locations: LocationEnt[];
-  @Input() disabled: boolean;
+  @Input() mode: FormMode;
+  @Input() ual: number; // user access level
+  // @Input() disabled: boolean;
 
   constructor() {}
 
   get hasError() {
-    return this.parent.get('LocationAssignedId').invalid;
+    return this.fg_fields.get('LocationAssignedId').invalid;
   }
 
   get errorMessage() {
-    const required = this.parent.controls['LocationAssignedId'].hasError(
+    const required = this.fg_fields.controls['LocationAssignedId'].hasError(
       'required'
     );
-    return this.parent.controls['LocationAssignedId'].touched
+    return this.fg_fields.controls['LocationAssignedId'].touched
       ? required
         ? '... is required'
         : ''

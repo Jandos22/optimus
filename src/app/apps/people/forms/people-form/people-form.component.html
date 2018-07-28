@@ -1,24 +1,49 @@
 <span mat-dialog-title style="text-align: center;">{{ Title }}</span>
-<mat-dialog-content fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap.gt-xs="16px">
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <div class="group-of-4" fxLayout="row wrap" fxLayoutAlign="start start">
+
+            <div class="group-of-1 take-2-when-2" fxLayout="row wrap" fxLayoutAlign="center start">
+                <app-people-form-photo class="cmn-form-component" *ngIf="fg_photo" [fg_photo]="fg_photo" [mode]="data.mode" (photoChanged)="photoChanged($event)">
+                </app-people-form-photo>
+            </div>
+
+            <div class="group-of-3" fxLayout="row wrap" fxLayoutAlign="start start">
+                <app-people-form-name class="cmn-form-component" [parent]="fg_fields">
+                </app-people-form-name>
+
+                <app-people-form-surname class="cmn-form-component" [parent]="fg_fields">
+                </app-people-form-surname>
+
+                <app-people-form-alias class="cmn-form-component" [parent]="fg_fields">
+                </app-people-form-alias>
+
+                <app-people-form-email class="cmn-form-component" [parent]="fg_fields">
+                </app-people-form-email>
+
+                <app-people-form-gin class="cmn-form-component" [parent]="fg_fields">
+                </app-people-form-gin>
+
+                <app-people-form-location class="cmn-form-component" [fg_fields]="fg_fields" [mode]="data.mode" [locations]="$locations | async"
+                    [ual]="ual$ | async">
+                </app-people-form-location>
+
+                <div class="group-of-3">
+
+                    <div class="form-group-title">Job Duties</div>
+
+                    <app-people-form-position class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [ual]="ual$ | async" [mode]="data.mode"
+                        [positions]="peoplePositions$ | async">
+                    </app-people-form-position>
+
+                </div>
+            </div>
+
+        </div>
 
 
-    <div fxLayout="row" fxLayoutAlign="center start" fxFlex="134px" fxFlex.gt-xs="180px">
-        <app-people-form-photo *ngIf="fg_photo" [fg_photo]="fg_photo" [mode]="data.mode" (photoChanged)="photoChanged($event)">
-        </app-people-form-photo>
-    </div>
-
-
-    <div fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex.gt-xs fxLayoutGap.gt-xs="16px" class="people-form__items--center">
-
-        <app-people-form-name fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-name>
-        <app-people-form-surname fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-surname>
-        <app-people-form-alias fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-alias>
-        <app-people-form-email fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-email>
-        <app-people-form-gin fxFlex.gt-xs="180px" [parent]="fg_fields"></app-people-form-gin>
-        <!-- <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="locations" [disabled]="locationDisabled">
-        </app-people-form-location> -->
-        <app-people-form-location fxFlex.gt-xs="180px" [parent]="fg_fields" [locations]="$locations | async">
-        </app-people-form-location>
 
     </div>
 

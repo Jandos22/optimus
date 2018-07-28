@@ -107,6 +107,9 @@ export class PeopleComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.params = params;
       });
+
+    // fetch people positions to use in forms
+    this.store_root.dispatch(new fromPeople.FetchPeoplePositions());
   }
 
   onNext() {

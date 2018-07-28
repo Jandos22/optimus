@@ -87,7 +87,7 @@ export interface SearchParamsUser {
   top?: number;
 }
 
-export interface UserPosition {
+export interface UserPosition extends SpListItem {
   Title: string;
   AccessLevel: number;
 }

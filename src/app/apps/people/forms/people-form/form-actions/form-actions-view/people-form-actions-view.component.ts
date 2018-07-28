@@ -11,7 +11,7 @@ import * as fromPeople from '../../../../store';
   selector: 'app-people-form-actions-view',
   styleUrls: ['people-form-actions-view.component.scss'],
   template: `
-    <button mat-button tabindex="-1"
+    <button mat-button tabindex="-1" color="primary"
       (click)="switchFormMode.emit('edit')">
       EDIT
     </button>
