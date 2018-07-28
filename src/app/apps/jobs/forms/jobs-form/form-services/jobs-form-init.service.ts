@@ -64,6 +64,22 @@ export class JobsFormInitService {
         this.getSimpleFormValue(mo, it, 'TotalDepthUnits'),
         Validators.required
       ],
+      HoleSize: [
+        this.getSimpleFormValue(mo, it, 'HoleSize'),
+        Validators.required
+      ],
+      HoleSizeUnits: [
+        this.getSimpleFormValue(mo, it, 'HoleSizeUnits'),
+        Validators.required
+      ],
+      MudWeight: [
+        this.getSimpleFormValue(mo, it, 'MudWeight'),
+        Validators.required
+      ],
+      MudWeightUnits: [
+        this.getSimpleFormValue(mo, it, 'MudWeightUnits'),
+        Validators.required
+      ],
       MaxDeviation: [
         this.getSimpleFormValue(mo, it, 'MaxDeviation'),
         Validators.required

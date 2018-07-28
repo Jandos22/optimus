@@ -59,24 +59,42 @@ export class JobsFormTotalDepthComponent
   // TD = Total Depth
   totalDepth = new FormControl('');
 
+  defaultValue = '0'; // meters
+  defaultUnits = 'm'; // meters
+
+  initialValue: number;
+  initialUnits: string;
+
   $unitsChanges: Subscription;
   $tdChanges: Subscription;
 
   constructor(private convert: ConverterService) {}
 
   ngOnInit() {
-    // when form control inits
-    // then first check units
     // if mode is new, then default to meters
     if (this.mode === 'new') {
-      this.fg_fields.controls['TotalDepthUnits'].patchValue('m');
+      this.fg_fields.controls['TotalDepthUnits'].patchValue(this.defaultUnits);
+      this.fg_fields.controls['TotalDepth'].patchValue(this.defaultValue);
+    } else {
+      // if mode is view or edit, then need to remember initial values
+      // so that if user decides to cancel editing, we can restore previous values
+      this.initialValue = this.fg_fields.controls['TotalDepth'].value;
+      this.initialUnits = this.fg_fields.controls['TotalDepthUnits'].value;
     }
 
-    // this.maybeStartSubscriptions();
-
     this.initLocal();
+  }
 
-    // this.startSubscriptions();
+  resetToInitial() {
+    this.totalDepth.patchValue(this.initialValue);
+
+    if (this.initialUnits === 'ft') {
+      this.totalDepth.patchValue(
+        this.rtz(this.convert.minft(this.initialValue).toFixed(2))
+      );
+    } else if (this.initialUnits === 'm') {
+      this.totalDepth.patchValue(this.rtz(this.initialValue.toFixed(2)));
+    }
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -85,6 +103,7 @@ export class JobsFormTotalDepthComponent
       console.log('mode change detected');
       if (c.mode.currentValue === 'view') {
         this.totalDepth.disable();
+        this.resetToInitial();
       } else {
         this.totalDepth.enable();
       }
@@ -96,6 +115,9 @@ export class JobsFormTotalDepthComponent
   ngOnDestroy() {
     if (this.$unitsChanges) {
       this.$unitsChanges.unsubscribe();
+    }
+    if (this.$tdChanges) {
+      this.$tdChanges.unsubscribe();
     }
   }
 
@@ -122,13 +144,25 @@ export class JobsFormTotalDepthComponent
         console.log(prev_td);
 
         if (units[0] === 'm' && units[1] === 'ft') {
-          this.totalDepth.patchValue(this.convert.minft(prev_td).toFixed(2));
+          this.totalDepth.patchValue(
+            this.rtz(this.convert.minft(prev_td).toFixed(2))
+          );
         } else if (units[0] === 'ft' && units[1] === 'm') {
-          this.totalDepth.patchValue(this.convert.ftinm(prev_td).toFixed(2));
-        } else if (units[0] === '' && units[1] === 'm') {
-          this.totalDepth.patchValue(prev_td.toFixed(2));
-        } else if (units[0] === '' && units[1] === 'ft') {
-          this.totalDepth.patchValue(this.convert.minft(prev_td).toFixed(2));
+          this.totalDepth.patchValue(
+            this.rtz(this.convert.ftinm(prev_td).toFixed(2))
+          );
+        } else if (!units[0] && units[1] === 'm') {
+          this.totalDepth.patchValue(this.rtz(prev_td.toFixed(2)));
+          // if totalDepth was already filled, but units where missing
+          // then update totalDepth as soon as users selects units
+          this.fg_fields.controls['TotalDepth'].patchValue(prev_td);
+        } else if (!units[0] && units[1] === 'ft') {
+          this.totalDepth.patchValue(this.rtz(prev_td.toFixed(2)));
+          // if totalDepth was already filled, but units where missing
+          // then update totalDepth as soon as users selects units
+          this.fg_fields.controls['TotalDepth'].patchValue(
+            this.convert.ppg2kgpermcub(prev_td)
+          );
         }
       });
 
@@ -150,7 +184,7 @@ export class JobsFormTotalDepthComponent
   initLocal() {
     const units: string = this.fg_fields.controls['TotalDepthUnits'].value;
     const td: number = this.fg_fields.controls['TotalDepth'].value;
-    // if job has TD then assign value according to it's units
+
     if (td) {
       switch (units) {
         case 'm':
@@ -165,6 +199,37 @@ export class JobsFormTotalDepthComponent
           this.totalDepth.patchValue(td.toFixed(2));
           break;
       }
+    }
+  }
+
+  // remove trailing zeros
+  rtz(string: string) {
+    const hasDot = _.find(string, v => v === '.');
+    const number = _.toNumber(string);
+    const isInteger = _.isInteger(number);
+
+    // console.log(string);
+    // console.log(number);
+    // console.log(isInteger);
+    // console.log(hasDot);
+
+    if (isInteger) {
+      return number.toFixed(0);
+    } else if (!isInteger && hasDot === '.') {
+      // create string array without trailing zeros
+      const stripped = _.dropRightWhile(string, v => v === '0' || v === '.');
+      console.log(stripped);
+
+      // stringify an array, creates one string with values separated by commas
+      const stringified = _.toString(stripped);
+      console.log(stringified);
+
+      // remove commas
+      const re = /,/g;
+
+      return _.replace(stringified, re, '');
+    } else {
+      return string;
     }
   }
 

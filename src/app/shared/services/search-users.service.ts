@@ -3,7 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { throwError, of, from } from 'rxjs';
-import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
+import {
+  map,
+  mergeMap,
+  catchError,
+  switchMap,
+  take,
+  retry
+} from 'rxjs/operators';
 
 // constants
 import { ApiPath } from '../constants';
@@ -24,7 +31,7 @@ export class SearchUsersService {
 
   searchUsers(query) {
     const url = this.buildUrl(query);
-    const search$ = this.getDataWithGivenUrl(url);
+    const search$ = this.getDataWithGivenUrl(url).pipe(retry(3));
     return search$;
   }
 
@@ -34,12 +41,14 @@ export class SearchUsersService {
   }
 
   buildUrl(query: SearchParamsUser) {
+    console.log(query);
     // api url for NgPeople
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     // parameters
     const text = query.text.replace('#', '%23');
     const locations = query.locations;
+    const top = query.top;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
@@ -66,8 +75,13 @@ export class SearchUsersService {
       url += `${this.getFilterLocationAssigned(locations)}`;
     }
 
+    // return first "top" number of results
+    if (top) {
+      url += `&$top=${top}`;
+    }
+
     // $orderby
-    url += `&$orderby=Name asc`;
+    url += `&$orderby=Surname asc`;
 
     // return combiner url string
     return url;
@@ -81,6 +95,7 @@ export class SearchUsersService {
       'Name',
       'Surname',
       'Fullname',
+      'Shortname',
       'Email',
       'Gin',
       'LocationAssignedId',

@@ -31,7 +31,7 @@ import { FormGroup } from '@angular/forms';
 
     <app-toolbar-button-add
       *ngIf="canCreate()"
-      [tooltip]="'Add new project'"
+      [tooltip]="'Add new Job'"
       (openForm)="openForm.emit()">
     </app-toolbar-button-add>
     `

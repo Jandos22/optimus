@@ -167,6 +167,7 @@ export class PeopleFormHttpService {
       'Name',
       'Surname',
       'Fullname',
+      'Shortname',
       'Email',
       'Gin',
       'LocationAssigned/Id',
