@@ -10,10 +10,10 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-people-form-name',
-  styleUrls: ['people-form-name.component.css'],
+  styleUrls: ['people-form-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <div [formGroup]="parent" fxFlex class="my-form-field_container">
+  <div [formGroup]="fg_fields" fxFlex class="my-form-field_container">
     <mat-form-field fxFlexFill>
         <input matInput placeholder="Name" formControlName="Name" autocomplete="off">
         <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
@@ -22,22 +22,20 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
   `
 })
 export class PeopleFormNameComponent {
-  @Input() parent: FormGroup;
+  @Input() fg_fields: FormGroup;
   // @Input() mode: FormMode;
 
   constructor() {}
 
   get hasError() {
-    return this.parent.get('Name').invalid;
+    return this.fg_fields.controls['Name'].invalid;
   }
 
   get errorMessage() {
-    const required = this.parent.get('Name').hasError('required');
+    const control = this.fg_fields.controls['Name'];
 
-    return this.parent.get('Name').touched
-      ? required
-        ? 'Name is required'
-        : ''
-      : '';
+    const required = control.hasError('required');
+
+    return control.touched ? (required ? 'Name is required' : '') : '';
   }
 }

@@ -32,7 +32,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // form services
 import { PeopleFormInitService } from './form-services/people-form-init.service';
-import { PeopleFormValueService } from './form-services/people-form-value.service';
+// import { PeopleFormValueService } from './form-services/people-form-value.service';
 // import { PeopleFormSizeService } from './form-services/people-form-size.service';
 import { PeopleFormPhotoService } from './form-services/people-form-photo.service';
 import { PeopleFormHttpService } from './form-services/people-form-http.service';
@@ -58,7 +58,7 @@ import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-
   templateUrl: './people-form.component.html',
   providers: [
     PeopleFormInitService,
-    PeopleFormValueService,
+    // PeopleFormValueService,
     // PeopleFormSizeService,
     PeopleFormPhotoService,
     PeopleFormHttpService
@@ -104,11 +104,15 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
     // when Form Mode changes initialize form groups
     this.$mode.subscribe(mode => {
       console.log('mode changed to: ' + mode);
+      console.log(this.data.item);
       this.data.mode = mode;
       this.initialize_FormGroup_Fields(mode, this.data.item);
       this.initialize_FormGroup_Photo(mode, this.data.item);
       this.updateFormTitle(mode);
     });
+
+    // CHANGE FORM MODE during ngOnInit()
+    this.$mode.next(this.data.mode);
 
     // SELECTABLE OBSERVABLES
     this.$locations = this._root_store.select(fromRoot.selectAllLocations);
@@ -118,9 +122,6 @@ export class PeopleFormComponent implements OnInit, OnDestroy {
 
     // USER ACCESS LEVEL
     this.ual$ = this._root_store.pipe(select(fromRoot.getUserAccessLevel));
-
-    // CHANGE FORM MODE during ngOnInit()
-    this.$mode.next(this.data.mode);
 
     // on each breakpoint change, update size of form dialog
     // this.$window = this._root_store
