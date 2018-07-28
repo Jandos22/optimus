@@ -24,6 +24,9 @@ import { FormControlDateTimeComponent } from './date-time-picker/form-control-da
 import { FormControlFieldPickerComponent } from './field-picker/form-control-field-picker.component';
 import { FormControlClientPickerComponent } from './client-picker/form-control-client-picker.component';
 import { FormControlRigPickerComponent } from './rig-picker/form-control-rig-picker.component';
+import { FormControlPeopleSelectorComponent } from './people-selector/form-control-people-selector.component';
+import { PeopleSelectorOptionComponent } from './people-selector/option/people-selector-option.component';
+import { PeopleSelectorSelectedComponent } from './people-selector/selected/people-selector-selected.component';
 
 @NgModule({
   imports: [
@@ -47,7 +50,11 @@ import { FormControlRigPickerComponent } from './rig-picker/form-control-rig-pic
     FormControlDateTimeComponent,
     FormControlFieldPickerComponent,
     FormControlClientPickerComponent,
-    FormControlRigPickerComponent
+    FormControlRigPickerComponent,
+    // People Selector
+    FormControlPeopleSelectorComponent,
+    PeopleSelectorOptionComponent,
+    PeopleSelectorSelectedComponent
   ],
   exports: [
     FormControlTitleComponent,
@@ -63,7 +70,11 @@ import { FormControlRigPickerComponent } from './rig-picker/form-control-rig-pic
     FormControlDateTimeComponent,
     FormControlFieldPickerComponent,
     FormControlClientPickerComponent,
-    FormControlRigPickerComponent
+    FormControlRigPickerComponent,
+    // People Selector
+    FormControlPeopleSelectorComponent,
+    PeopleSelectorOptionComponent,
+    PeopleSelectorSelectedComponent
   ],
   providers: []
 })

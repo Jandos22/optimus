@@ -23,7 +23,7 @@ import * as differenceInMinutes from 'date-fns/difference_in_minutes';
             formControlName="JobDuration"
             autocomplete="off">
 
-        <span matSuffix>hours</span>
+        <span matSuffix class="hours">hours</span>
 
         <!-- <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error> -->
 

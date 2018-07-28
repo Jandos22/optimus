@@ -20,6 +20,10 @@ export interface JobItem extends SpListItem {
   Ftl?: string;
   TotalDepth?: number;
   TotalDepthUnits?: string;
+  HoleSize?: number;
+  HoleSizeUnits?: string;
+  MudWeight?: number;
+  MudWeightUnits?: string;
   MaxDeviation?: number;
   RigUpStart?: Date;
   RigUpEnd?: Date;

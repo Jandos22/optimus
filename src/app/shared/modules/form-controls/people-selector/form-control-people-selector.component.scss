@@ -1,0 +1,130 @@
+@import '../../../../../colors';
+
+.people-selector-field {
+  width: 100%;
+
+  @media screen and (min-width: 570px) {
+    margin-right: 16px;
+    min-width: 180px; // 180+16, min 1 column
+    max-width: 180px; // 180*2+16*2, max 2 columns
+  }
+}
+
+.people-selector-selected-item {
+  height: 48px;
+  width: 100%;
+  margin-bottom: 4px;
+
+  @media screen and (min-width: 570px) {
+    margin-right: 8px;
+    min-width: 180px; // 180+16, min 1 column
+    max-width: 180px; // 180*2+16*2, max 2 columns
+  }
+}
+
+.people-selector-option-container {
+  min-width: 100%;
+  width: 100%;
+}
+
+.people-selector-selected-container {
+  min-width: 100%;
+  width: 100%;
+  border-radius: 4px;
+  // background: #ccc;
+  padding: 4px;
+
+  &.overContainer {
+    background: #eeeeee;
+
+    &.overDelete {
+      background: #ffcdd2;
+    }
+  }
+}
+
+div.people-selector-photo-container {
+  width: 36px;
+  height: 36px;
+
+  img.photo {
+    border-radius: 50%;
+    height: 36px !important;
+    width: 36px !important;
+  }
+}
+
+.people-selector-user-info {
+  height: 40px;
+  width: 100%;
+
+  div.fullname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.shortname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.second_line {
+    height: 16px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .text {
+      line-height: 16px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+
+    .delete {
+      position: absolute;
+      height: 16px;
+      top: -5px;
+      right: 0;
+      padding: 4px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.people-selector-suffix-chip {
+  padding: 4px 8px;
+  margin: 0;
+  border-radius: 24px;
+  font-size: 14px;
+  line-height: 16px;
+  height: 16px;
+  width: 24px;
+  text-align: center;
+  background: #efefef;
+  background: transparent;
+}
+
+.people-selector-selected {
+  background: $my-blue-50;
+}

@@ -1,8 +1,13 @@
 .job-duration {
   position: relative;
+
+  .hours {
+    font-size: 13px;
+  }
 }
 
 .job-duration__input {
+  top: 8px;
   left: 24px;
   position: absolute;
 }

@@ -156,6 +156,10 @@ export class JobsService {
       'Ftl',
       'TotalDepth',
       'TotalDepthUnits',
+      'HoleSize',
+      'HoleSizeUnits',
+      'MudWeight',
+      'MudWeightUnits',
       'MaxDeviation',
       'RigUpStart',
       'RigUpEnd',
@@ -198,7 +202,15 @@ export class JobsService {
   }
 
   getExpandFields() {
-    const $expand = ['Location', 'Field', 'Client', 'Rig', 'ToolsUsed', 'Engineers', 'Operators'];
+    const $expand = [
+      'Location',
+      'Field',
+      'Client',
+      'Rig',
+      'ToolsUsed',
+      'Engineers',
+      'Operators'
+    ];
     return $expand.toString();
   }
 

@@ -72,6 +72,14 @@
                     [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-jobs-form-total-depth>
 
+                <app-jobs-form-hole-size class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start" fxLayoutGap="4px"
+                    [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-hole-size>
+
+                <app-jobs-form-mud-weight class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start" fxLayoutGap="4px"
+                    [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-jobs-form-mud-weight>
+
                 <app-jobs-form-max-dev class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start" fxLayoutGap="4px"
                     [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-jobs-form-max-dev>
@@ -84,21 +92,21 @@
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                         Engineers
                     </span>
-                    <app-form-control-user-selection class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
+                    <app-form-control-people-selector class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
                         [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="4"
                         (onSelectUser)="onSelectEngineer($event)" [id]="1">
-                    </app-form-control-user-selection>
+                    </app-form-control-people-selector>
                 </div>
 
-                <!-- Operators / 1 column -->
-                <div class="group-of-1" fxLayout="column">
+                <!-- Operators / 3 column -->
+                <div class="group-of-3" fxLayout="row wrap" fxLayoutAlign="start start">
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                         Operators
                     </span>
-                    <app-form-control-user-selection class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
+                    <app-form-control-people-selector class="cmn-form-component take-2-cols" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
                         [fieldName]="'OperatorsId'" [displayName]="'Operators'" [allowNumberOfUsers]="12" (onSelectUser)="onSelectOperator($event)"
                         [id]="2">
-                    </app-form-control-user-selection>
+                    </app-form-control-people-selector>
                 </div>
 
             </div>
@@ -108,15 +116,15 @@
                 <!-- SECTION -->
                 <div class="form-group-title">Job Summary</div>
 
-                <app-jobs-form-tools-used class="cmn-form-component take-2-cols" *ngIf="data.mode !== 'view'" fxLayout="row" [fg_fields]="fg_fields"
+                <app-jobs-form-tools-used class="cmn-form-component take-3-cols" *ngIf="data.mode !== 'view'" fxLayout="row" [fg_fields]="fg_fields"
                     [mode]="data.mode" [toolNames]="toolNames$ | async">
                 </app-jobs-form-tools-used>
 
-                <app-jobs-form-summary-section class="cmn-form-component take-2-cols" fxLayout="row wrap" fxLayoutAlign="start start" *ngFor="let section of summarySections; let i = index; let last = last"
+                <app-jobs-form-summary-section class="cmn-form-component take-3-cols" fxLayout="row wrap" fxLayoutAlign="start start" *ngFor="let section of summarySections; let i = index; let last = last"
                     [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode" [sectionNumber]="i + 1" [last]="last">
                 </app-jobs-form-summary-section>
 
-                <app-add-jobs-form-summary-section *ngIf="data.mode !== 'view'" fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="end start"
+                <app-add-jobs-form-summary-section *ngIf="data.mode !== 'view'" fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="center start"
                     class="job-summary-buttons-container" [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-add-jobs-form-summary-section>
 

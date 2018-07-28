@@ -57,15 +57,40 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .get('TotalDepth')
         .valueChanges.pipe(map(TotalDepth => ({ TotalDepth }))),
 
-      // MaxDeviation observable
-      this.fg_fields
-        .get('MaxDeviation')
-        .valueChanges.pipe(map(MaxDeviation => ({ MaxDeviation }))),
-
       // TotalDepthUnits observable
       this.fg_fields
         .get('TotalDepthUnits')
         .valueChanges.pipe(map(TotalDepthUnits => ({ TotalDepthUnits }))),
+
+      // HoleSize observable
+      this.fg_fields
+        .get('HoleSize')
+        .valueChanges.pipe(map(HoleSize => ({ HoleSize }))),
+
+      // HoleSizeUnits observable
+      this.fg_fields
+        .get('HoleSizeUnits')
+        .valueChanges.pipe(map(HoleSizeUnits => ({ HoleSizeUnits }))),
+
+      // MudWeight observable
+      this.fg_fields
+        .get('MudWeight')
+        .valueChanges.pipe(map(MudWeight => ({ MudWeight }))),
+
+      // MudWeightUnits observable
+      this.fg_fields
+        .get('MudWeightUnits')
+        .valueChanges.pipe(map(MudWeightUnits => ({ MudWeightUnits }))),
+
+      // HoleSizeUnits observable
+      this.fg_fields
+        .get('HoleSizeUnits')
+        .valueChanges.pipe(map(HoleSizeUnits => ({ HoleSizeUnits }))),
+
+      // MaxDeviation observable
+      this.fg_fields
+        .get('MaxDeviation')
+        .valueChanges.pipe(map(MaxDeviation => ({ MaxDeviation }))),
 
       // Well observable
       this.fg_fields.get('Well').valueChanges.pipe(map(Well => ({ Well }))),
