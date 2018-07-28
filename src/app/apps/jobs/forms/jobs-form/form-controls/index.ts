@@ -9,6 +9,7 @@ import { AddJobsFormSummarySectionComponent } from './buttons/add-jobs-form-summ
 import { JobsFormJobTypeComponent } from './jobs-form-job-type/jobs-form-job-type.component';
 import { JobsFormTotalDepthComponent } from './jobs-form-total-depth/jobs-form-total-depth.component';
 import { JobsFormMaxDevComponent } from './jobs-form-max-dev/jobs-form-max-dev.component';
+import { JobsFormFtlComponent } from './jobs-form-ftl/jobs-form-ftl.component';
 
 export const forms_controls: any[] = [
   JobsFormTitleComponent,
@@ -21,7 +22,8 @@ export const forms_controls: any[] = [
   JobsFormJobTypeComponent,
   JobsFormTotalDepthComponent,
   JobsFormMaxDevComponent,
-  JobsFormToolsUsedComponent
+  JobsFormToolsUsedComponent,
+  JobsFormFtlComponent
 ];
 
 export * from './jobs-form-title/jobs-form-title.component';
@@ -35,3 +37,4 @@ export * from './jobs-form-job-type/jobs-form-job-type.component';
 export * from './jobs-form-total-depth/jobs-form-total-depth.component';
 export * from './jobs-form-max-dev/jobs-form-max-dev.component';
 export * from './jobs-form-tools-used/jobs-form-tools-used.component';
+export * from './jobs-form-ftl/jobs-form-ftl.component';

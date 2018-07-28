@@ -17,6 +17,7 @@ export interface JobItem extends SpListItem {
   ClientId?: ClientItem;
   Rig?: ClientItem;
   RigId?: ClientItem;
+  Ftl?: string;
   TotalDepth?: number;
   TotalDepthUnits?: string;
   MaxDeviation?: number;
@@ -33,6 +34,12 @@ export interface JobItem extends SpListItem {
   JSSbody2?: string;
   Location?: LocationEnt; // lookup single
   LocationId?: number; // lookup single
+  EngineersId?: {
+    results: PeopleItem[]; // lookup multiple
+  };
+  OperatorsId?: {
+    results: PeopleItem[]; // lookup multiple
+  };
 }
 
 export interface JobsSearchParams {

@@ -83,6 +83,9 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       // RigId observable
       this.fg_fields.get('RigId').valueChanges.pipe(map(RigId => ({ RigId }))),
 
+      // Ftl observable
+      this.fg_fields.get('Ftl').valueChanges.pipe(map(Ftl => ({ Ftl }))),
+
       // RigUpStart observable
       this.fg_fields
         .get('RigUpStart')
@@ -183,7 +186,17 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       // LocationId observable
       this.fg_fields
         .get('LocationId')
-        .valueChanges.pipe(map(LocationId => ({ LocationId })))
+        .valueChanges.pipe(map(LocationId => ({ LocationId }))),
+
+      // EngineersId observable
+      this.fg_fields
+        .get('EngineersId')
+        .valueChanges.pipe(map(EngineersId => ({ EngineersId }))),
+
+      // OperatorsId observable
+      this.fg_fields
+        .get('OperatorsId')
+        .valueChanges.pipe(map(OperatorsId => ({ OperatorsId })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$

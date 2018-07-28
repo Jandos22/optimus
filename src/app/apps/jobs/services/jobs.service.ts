@@ -153,6 +153,7 @@ export class JobsService {
       'RigId',
       'Rig/Id',
       'Rig/Title',
+      'Ftl',
       'TotalDepth',
       'TotalDepthUnits',
       'MaxDeviation',
@@ -181,13 +182,23 @@ export class JobsService {
       'JSSbody8',
       'LocationId',
       'Location/Id',
-      'Location/Title'
+      'Location/Title',
+      'EngineersId',
+      'Engineers/Id',
+      'Engineers/ID',
+      'Engineers/Alias',
+      'Engineers/Fullname',
+      'OperatorsId',
+      'Operators/Id',
+      'Operators/ID',
+      'Operators/Alias',
+      'Operators/Fullname'
     ];
     return $select.toString();
   }
 
   getExpandFields() {
-    const $expand = ['Location', 'Field', 'Client', 'Rig', 'ToolsUsed'];
+    const $expand = ['Location', 'Field', 'Client', 'Rig', 'ToolsUsed', 'Engineers', 'Operators'];
     return $expand.toString();
   }
 

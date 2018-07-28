@@ -64,9 +64,9 @@
             <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                 Submitted By
             </span>
-            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [accessLevel]="accessLevel$ | async"
-                [mode]="data.mode" [fieldName]="'SubmitterId'" [displayName]="'Submitted By'" [selfUser]="selfUser$ | async"
-                [allowNumberOfUsers]="1" (onSelectUser)="onSelectUser($event)">
+            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
+                [fieldName]="'SubmitterId'" [displayName]="'Submitted By'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="1"
+                (onSelectUser)="onSelectUser($event)">
             </app-form-control-user-selection>
         </div>
 

@@ -48,6 +48,14 @@ export class JobsFormInitService {
       FieldId: [this.getSimpleId(mo, it, 'FieldId'), Validators.required],
       ClientId: [this.getSimpleId(mo, it, 'ClientId'), Validators.required],
       RigId: [this.getSimpleId(mo, it, 'RigId'), Validators.required],
+      Ftl: [
+        this.getSimpleFormValue(mo, it, 'Ftl'),
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10)
+        ]
+      ],
       TotalDepth: [
         this.getSimpleFormValue(mo, it, 'TotalDepth'),
         Validators.required
@@ -68,7 +76,13 @@ export class JobsFormInitService {
       }),
       SummarySections: [this.getSummarySectionsCount(mo, it)],
       ...summarySections,
-      LocationId: [this.getLocationId(mo, it, lo), Validators.required]
+      LocationId: [this.getLocationId(mo, it, lo), Validators.required],
+      EngineersId: this.fb.group({
+        results: [this.getMultiSelectPeople(mo, it, 'EngineersId')]
+      }),
+      OperatorsId: this.fb.group({
+        results: [this.getMultiSelectPeople(mo, it, 'OperatorsId')]
+      })
     });
   }
 
@@ -92,6 +106,17 @@ export class JobsFormInitService {
         return item[field].results;
       case 'edit':
         return item[field].results;
+    }
+  }
+
+  getMultiSelectPeople(mode: FormMode, item: JobItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return [];
+      case 'view':
+        return { value: item[field].results, disabled: true };
+      case 'edit':
+        return { value: item[field].results, disabled: false };
     }
   }
 

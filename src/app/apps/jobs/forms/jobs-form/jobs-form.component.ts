@@ -200,6 +200,20 @@ export class JobsFormComponent implements OnInit, OnDestroy {
   //   this.fg_fields.get('SubmitterId').patchValue(selected[0]);
   // }
 
+  onSelectEngineer(selected: number[]) {
+    this.fg_fields
+      .get('EngineersId')
+      .get('results')
+      .patchValue(selected);
+  }
+
+  onSelectOperator(selected: number[]) {
+    this.fg_fields
+      .get('OperatorsId')
+      .get('results')
+      .patchValue(selected);
+  }
+
   closeForm($event) {
     this.formRef.close($event);
   }

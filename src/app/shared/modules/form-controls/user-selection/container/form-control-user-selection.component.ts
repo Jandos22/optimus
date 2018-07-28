@@ -57,7 +57,7 @@ import { TimelineEventReporters } from '../../../../interface/timeline.model';
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field id="refWidth" *ngIf="mode !== 'view'"
+    <mat-form-field [id]="'refWidth' + id" *ngIf="mode !== 'view'"
       fxFlex="65.5px" [formGroup]="fg_users">
 
       <input matInput
@@ -106,10 +106,11 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   @Input() fieldName: string;
   @Input() displayName: string;
   @Input() fg_fields: FormGroup;
-  @Input() selfUser: PeopleItem;
+  @Input() selfUser?: PeopleItem; // used to add self in selected by default
   @Input() allowNumberOfUsers: number;
-  @Input() accessLevel: number;
+  // @Input() accessLevel: number;
   @Input() mode: FormMode;
+  @Input() id: number; // used to assign to reference id
 
   @Output() onSelectUser = new EventEmitter<number[]>();
 
@@ -196,7 +197,7 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(100),
         map(any => {
-          return document.getElementById('refWidth').clientWidth;
+          return document.getElementById('refWidth' + this.id).clientWidth;
         })
       )
       .subscribe(refWidth => this.setMaxWidth(refWidth));
