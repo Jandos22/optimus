@@ -88,18 +88,18 @@
                 <div class="form-group-title">People</div>
 
                 <!-- Engineers / 1 column -->
-                <div class="group-of-1" fxLayout="column">
+                <div class="t2-w2-t1-w3-t2-w4" fxLayout="row wrap" fxLayoutAlign="start start">
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                         Engineers
                     </span>
-                    <app-form-control-people-selector class="cmn-form-component" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
-                        [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="4"
-                        (onSelectUser)="onSelectEngineer($event)" [id]="1">
+                    <app-form-control-people-selector class="cmn-form-component t2-w2-t1-w3-t2-w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                        [mode]="data.mode" [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async"
+                        [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)" [id]="1">
                     </app-form-control-people-selector>
                 </div>
 
                 <!-- Operators / 3 column -->
-                <div class="group-of-3" fxLayout="row wrap" fxLayoutAlign="start start">
+                <div class="t2-w2-t2-w3-t2-w4" fxLayout="row wrap" fxLayoutAlign="start start">
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                         Operators
                     </span>

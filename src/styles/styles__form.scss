@@ -271,3 +271,37 @@
   overflow: overlay !important;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+.t2-w2-t2-w3-t2-w4 {
+  width: 100%;
+
+  @media screen and (min-width: 570px) {
+    min-width: 392px; // 180*2+16*2, 2 columns
+    max-width: 392px; // 180*2+16*2, 2 columns
+  }
+  @media screen and (min-width: 815px) {
+    min-width: 392px; // 180*3+16*3, 3 columns
+    max-width: 392px; // 180*3+16*3, 3 columns
+  }
+  @media screen and (min-width: 1060px) {
+    min-width: 392px; // 180*2+16*2, 2 columns
+    max-width: 392px; // 180*2+16*2, 2 columns
+  }
+}
+
+.t2-w2-t1-w3-t2-w4 {
+  width: 100%;
+
+  @media screen and (min-width: 570px) {
+    min-width: 392px; // 180*2+16*2, 2 columns
+    max-width: 392px; // 180*2+16*2, 2 columns
+  }
+  @media screen and (min-width: 815px) {
+    min-width: 196px; // 180*3+16*3, 3 columns
+    max-width: 196px; // 180*3+16*3, 3 columns
+  }
+  @media screen and (min-width: 1060px) {
+    min-width: 392px; // 180*2+16*2, 2 columns
+    max-width: 392px; // 180*2+16*2, 2 columns
+  }
+}
