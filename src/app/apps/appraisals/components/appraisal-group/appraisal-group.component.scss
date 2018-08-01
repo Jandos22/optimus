@@ -69,7 +69,9 @@ $small: 600px;
     }
 
     .key-factors {
-      width: 100%;
+      // width: 100%;
+      min-width: 180px;
+      max-width: 200px;
       min-height: 60px;
       border-radius: 4px;
       padding: 4px;
@@ -146,7 +148,9 @@ $small: 600px;
     }
 
     .key-skills {
-      width: 100%;
+      // width: 100%;
+      min-width: 180px;
+      max-width: 200px;
       min-height: 60px;
       border-radius: 4px;
       padding: 4px;

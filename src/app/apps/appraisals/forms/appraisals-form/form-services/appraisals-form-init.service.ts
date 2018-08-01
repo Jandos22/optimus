@@ -91,10 +91,13 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'WinchDrivingDetails'),
         Validators.maxLength(255)
       ],
-      DidRopeSocket: [this.getSimpleValue(mo, it, 'DidRopeSocket')],
-      DidRopeSocketH2S: [this.getSimpleValue(mo, it, 'DidRopeSocketH2S')],
-      DidCollector: [this.getSimpleValue(mo, it, 'DidCollector')],
-      DidHead: [this.getSimpleValue(mo, it, 'DidHead')],
+      DidRopeSocket: [this.getSimpleBooleen(mo, it, 'DidRopeSocket'), false],
+      DidRopeSocketH2S: [
+        this.getSimpleBooleen(mo, it, 'DidRopeSocketH2S'),
+        false
+      ],
+      DidCollector: [this.getSimpleBooleen(mo, it, 'DidCollector'), false],
+      DidHead: [this.getSimpleBooleen(mo, it, 'DidHead'), false],
       LocationId: [this.getLocationId(mo, it, lo), Validators.required]
     });
   }
@@ -109,6 +112,24 @@ export class AppraisalsFormInitService {
     switch (mode) {
       case 'new':
         return '';
+      case 'view':
+        return { value: item[field], disabled };
+      case 'edit':
+        return { value: item[field], disabled };
+    }
+  }
+
+  // get field value & condition
+  getSimpleBooleen(
+    mode: FormMode,
+    item: AppraisalItem,
+    field: string,
+    disabled?: boolean,
+    defaultValue?: boolean
+  ) {
+    switch (mode) {
+      case 'new':
+        return defaultValue;
       case 'view':
         return { value: item[field], disabled };
       case 'edit':

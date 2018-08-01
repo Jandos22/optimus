@@ -27,8 +27,8 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
       <div class="appraisal-item-container" *ngFor="let appraisal of job.appraisals"
         fxLayout="row wrap" fxLayoutAlign="start start">
 
-        <div class="given-for" fxFlex="180px">
-          <app-view-person [viewPerson]="appraisal.GivenFor"></app-view-person>
+        <div class="given-for" fxFlex="100%" fxFlex.gt-xs="180px">
+          <app-appraisal-given-for [viewPerson]="appraisal.GivenFor"></app-appraisal-given-for>
         </div>
 
         <div class="scores" fxFlex fxLayout="row wrap" fxLayoutAlign="start start">
@@ -53,7 +53,7 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
 
             <div [ngClass]="['key-factor', appraisal.Quality]" [matTooltip]="appraisal.QualityDetails">
               <div class="score">{{ appraisal.Quality }}</div>
-              <div class="factor">quality.</div>
+              <div class="factor">quality</div>
             </div>
 
             <div [ngClass]="['key-factor', appraisal.WinchDriving]" [matTooltip]="appraisal.WinchDrivingDetails">

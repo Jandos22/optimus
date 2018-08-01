@@ -131,8 +131,6 @@ export class AppraisalsService {
       'GivenFor/Id',
       'GivenFor/Fullname',
       'GivenFor/Shortname',
-      // 'GivenFor/PositionId',
-      // 'GivenFor/LocationAssignedId',
       'GivenBy',
       'GivenById',
       'GivenBy/Id',

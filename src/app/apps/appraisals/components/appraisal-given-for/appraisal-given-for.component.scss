@@ -2,26 +2,61 @@
   border-radius: 4px;
   padding: 4px;
   width: 100%;
+  position: relative;
 
   &:hover {
     background: #eeeeee;
+  }
+
+  .button-to-quest {
+    color: rgba(0, 0, 0, 0.625);
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    @media screen and (min-width: 600px) {
+      color: rgba(0, 0, 0, 0.625);
+      position: relative;
+      margin-top: 16px !important;
+    }
   }
 }
 
 .person-photo-container {
   width: 36px;
   height: 36px;
+  margin-right: 8px;
+  position: relative;
+
+  @media screen and (min-width: 600px) {
+    height: 100px !important;
+    width: 100px !important;
+    padding-left: 8px;
+    margin-right: 0;
+    margin-left: 32px;
+  }
 
   img.photo {
     border-radius: 50%;
     height: 36px !important;
     width: 36px !important;
+
+    @media screen and (min-width: 600px) {
+      height: 100px !important;
+      width: 100px !important;
+    }
   }
 }
 
 .person-info {
   height: 40px;
   width: 100%;
+
+  @media screen and (min-width: 600px) {
+    min-height: 60px;
+    max-height: 60px;
+    padding: 20px 8px 8px 0px;
+  }
 
   div.fullname {
     line-height: 20px;
