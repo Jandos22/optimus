@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { Observable, of, from } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
 
 // constants
 import { ApiPath, WirelinePath } from '../../../shared/constants';
@@ -26,8 +26,9 @@ export class JobsService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
+        retry(3),
         switchMap((response: SpResponse) => {
-          // console.log(response);
+          console.log(response);
           if (response.d.results) {
             return of(response);
           }
@@ -94,9 +95,9 @@ export class JobsService {
       url += `)`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
-    }
+    // if (text && locations.length) {
+    //   url += 'and';
+    // }
 
     // locations filter configuration
     if (locations.length) {

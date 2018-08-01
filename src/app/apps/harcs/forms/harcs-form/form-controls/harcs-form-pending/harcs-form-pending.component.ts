@@ -19,7 +19,7 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
           formControlName="PendingActions"
           cdkTextareaAutosize
           #autosize="cdkTextareaAutosize"
-          cdkAutosizeMaxRows="1"
+          cdkAutosizeMinRows="1"
           cdkAutosizeMaxRows="3">
         </textarea>
         <mat-hint align="end" *ngIf="mode !== 'view'">

@@ -40,25 +40,29 @@ export class SearchUsersService {
     return from(get$);
   }
 
-  buildUrl(query: SearchParamsUser) {
-    console.log(query);
-    // api url for NgPeople
+  buildUrl(params: SearchParamsUser) {
+    console.log(params);
+
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
-    // parameters
-    const text = query.text.replace('#', '%23');
-    const locations = query.locations;
-    const top = query.top;
+    // filters
+    const text = params.text.replace('#', '%23'); // otherwise http request will throw error
+    const locations = params.locations; // locations must be ids array
+    const positions = params.positions; // locations must be ids array
+
+    const top = params.top;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandsFields().toString()}`;
 
-    // $filter
-    if (text || locations.length) {
+    // $filter add when any of these filter options present
+    if (text || locations.length || positions) {
       url += `&$filter=`;
     }
 
+    // text will search only in these fields
+    // too many fields to search may slow down response time
     if (text) {
       url += `((substringof('${text}',Name))`;
       url += `or(substringof('${text}',Surname))`;
@@ -67,23 +71,35 @@ export class SearchUsersService {
       url += `or(substringof('${text}',Gin)))`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
-    }
-
+    // locations filter configuration
+    // check if "AND" is needed
+    // finds items with given location
     if (locations.length) {
+      if (text) {
+        url += 'and';
+      }
       url += `${this.getFilterLocationAssigned(locations)}`;
     }
 
-    // return first "top" number of results
-    if (top) {
-      url += `&$top=${top}`;
+    // positions filter configuration
+    // check if "AND" is needed
+    // finds items with given positions
+    if (positions.length) {
+      if (text || positions.length) {
+        url += 'and';
+      }
+      url += `${this.getFilterPositions(positions)}`;
     }
 
     // $orderby
     url += `&$orderby=Surname asc`;
 
-    // return combiner url string
+    // $top
+    if (top) {
+      url += `&$top=${top}`;
+    }
+
+    // return combined url string
     return url;
   }
 
@@ -148,6 +164,37 @@ export class SearchUsersService {
         }
 
         // if last iteration, then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterPositions(positions: number[]) {
+    if (positions.length) {
+      let filter = '';
+      const n = positions.length;
+      let i = 1;
+
+      for (const position of positions) {
+        // if multiple positions then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Position/Id eq ${position})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
         if (n > 1 && i === n) {
           filter += `)`;
         }

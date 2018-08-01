@@ -10,7 +10,9 @@ export interface PeopleItem extends SpListItem {
   Gin?: string;
   LocationAssigned?: { Title?: string };
   LocationAssignedId?: number;
-  LocationsOfInterestId?: number[];
+  LocationsOfInterestId?: {
+    results?: number[];
+  };
   Fullname?: string;
   Shortname?: string;
   Position?: UserPosition;
@@ -83,12 +85,14 @@ export interface UserSearchParams {
   query: string;
   locations: number[];
   top?: number;
+  positions?: number[];
 }
 
 export interface SearchParamsUser {
   text: string;
   locations: number[];
   top?: number;
+  positions?: number[];
 }
 
 export interface UserPosition extends SpListItem {

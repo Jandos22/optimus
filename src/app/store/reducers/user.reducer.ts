@@ -73,7 +73,9 @@ export function reducer(
         ...state,
         optimus: {
           ...state.optimus,
-          LocationsOfInterestId: action.payload
+          LocationsOfInterestId: {
+            results: action.payload
+          }
         }
       };
 

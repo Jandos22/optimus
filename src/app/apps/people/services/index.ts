@@ -4,7 +4,7 @@ import { PeopleFormHttpService } from '../forms/people-form/form-services';
 import { PeoplePositionsService } from './people-positions.service';
 
 export const services: any[] = [
-  PeopleService,
+  // PeopleService,
   PeopleFormHttpService,
   PeoplePositionsService
 ];

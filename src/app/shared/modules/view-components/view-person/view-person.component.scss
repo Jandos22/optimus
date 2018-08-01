@@ -1,0 +1,66 @@
+.person-container {
+  border-radius: 4px;
+  padding: 4px;
+  width: 100%;
+
+  &:hover {
+    background: #eeeeee;
+  }
+}
+
+.person-photo-container {
+  width: 36px;
+  height: 36px;
+
+  img.photo {
+    border-radius: 50%;
+    height: 36px !important;
+    width: 36px !important;
+  }
+}
+
+.person-info {
+  height: 40px;
+  width: 100%;
+
+  div.fullname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.shortname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.secondary {
+    height: 16px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .text {
+      line-height: 16px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+  }
+}

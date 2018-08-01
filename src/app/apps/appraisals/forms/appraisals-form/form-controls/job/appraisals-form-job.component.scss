@@ -1,0 +1,33 @@
+.appraisals-job-selection-toolbar {
+  padding: 0 16px;
+  min-height: 48px;
+  max-height: 48px;
+
+  .toolbar-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e65100;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
+.appraisals-job-option {
+  span {
+    font-size: 13px;
+  }
+}
+
+.appraisals-job-trigger {
+  span {
+    font-size: 13px;
+  }
+}
+
+.appraisals-job-middot {
+  padding-left: 4px;
+  padding-right: 4px;
+}

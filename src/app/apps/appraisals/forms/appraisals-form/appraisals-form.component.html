@@ -1,0 +1,99 @@
+<div class="form-title-container" fxLayout="row nowrap" fxLayoutAlign="start start">
+    <div fxFlex class="form-title">Appraisal</div>
+    <app-form-control-location fxFlex="88px" class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields"
+        [mode]="data.mode" [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async"
+        [exclude]="['Global', 'TEST']">
+    </app-form-control-location>
+</div>
+
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="cmn-form-container">
+
+        <div class="con4" fxLayout="row wrap" fxLayoutAlign="start start">
+
+            <app-appraisals-form-date class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-appraisals-form-date>
+
+            <app-appraisals-form-job class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-appraisals-form-job>
+
+        </div>
+
+        <div class="con4" fxLayout="row wrap" fxLayoutAlign="start start">
+
+            <div class="con1" fxLayout="row wrap" fxLayoutAlign="start start">
+                <app-form-control-people-selector class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
+                    [fieldName]="'GivenForId'" [displayName]="'Appraisal for'" [allowNumberOfUsers]="1" [includeOnly]="includeOnlyOperators"
+                    (onSelectUser)="onSelectGivenFor($event)" [singleLocation]="true">
+                </app-form-control-people-selector>
+
+                <app-form-control-people-selector class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
+                    [fieldName]="'GivenById'" [displayName]="'Appraisal by'" [allowNumberOfUsers]="1" [includeOnly]="includeOnlyEngineers"
+                    [selfUser]="selfUser$ | async" (onSelectUser)="onSelectGivenBy($event)" [singleLocation]="true">
+                </app-form-control-people-selector>
+            </div>
+
+            <div class="con3" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                <app-appraisals-form-overall-performance class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-overall-performance>
+
+                <app-appraisals-form-further-development class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-further-development>
+
+                <!-- SECTION -->
+                <div class="form-group-title">Key Factors</div>
+
+                <app-appraisals-form-safety class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-appraisals-form-safety>
+
+                <app-appraisals-form-proactivity class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-appraisals-form-proactivity>
+
+                <app-appraisals-form-quality class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-appraisals-form-quality>
+
+                <app-appraisals-form-winch class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-appraisals-form-winch>
+
+                <!-- SECTION -->
+                <div class="form-group-title">Key Skills</div>
+
+                <app-appraisals-form-did-ropesocket class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-did-ropesocket>
+
+                <app-appraisals-form-did-ropesocket-h2s class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-did-ropesocket-h2s>
+
+                <app-appraisals-form-did-collector class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-did-collector>
+
+                <app-appraisals-form-did-head class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode">
+                </app-appraisals-form-did-head>
+
+                <!-- SECTION -->
+                <div class="form-group-title" style="margin-top: 16px;">Comments</div>
+
+                <app-appraisals-form-operator-comments class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
+                    [mode]="data.mode">
+                </app-appraisals-form-operator-comments>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-appraisals-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    </app-appraisals-form-actions>
+</mat-dialog-actions>

@@ -99,24 +99,20 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
 })
 export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
   @Input() placeholder: string;
-  @Input() fieldName: string;
-  @Input() displayName: string;
+  @Input() fieldName: string; // form control name
+  @Input() displayName: string; // label name
   @Input() fg_fields: FormGroup;
   @Input() selfUser?: PeopleItem; // used to add self in selected by default
   @Input() allowNumberOfUsers: number;
   @Input() mode: FormMode;
-  @Input() id: number; // used to assign to reference id
+  @Input() singleLocation: boolean; // Location or Locations
+  @Input() includeOnly: number[]; // array with People Positions, like ['FE','GFE']
 
   @Output() onSelectUser = new EventEmitter<number[]>();
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
   @ViewChild('formField') el_FormField: ElementRef;
-
-  // notifies subscribers each time screen size change
-  // used to dynamically set maxWidth of fullname of selected users
-  // necessary on small screens no trim users fullname
-  // $resizeEvent = new Subject();
 
   // form group for autocomplete input
   fg_users: FormGroup;
@@ -125,6 +121,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
   users: PeopleItem[] = [];
   searching: boolean;
+  limitReached: boolean;
 
   // search query consists of
   text$: Observable<string>;
@@ -145,33 +142,21 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
     console.log(this.fg_users);
 
-    let initialLocations = [];
-
-    if (
-      this.fg_fields.controls['LocationsId'] &&
-      this.fg_fields.controls['LocationsId'].value
-    ) {
-      initialLocations = this.fg_fields.get('LocationsId').get('results').value;
-
-      // watch selected locations changes
+    // watch location/locations changes
+    // start with inital value from fg_fields
+    // log in console whenever location selection changed
+    if (!this.singleLocation) {
       this.locations$ = this.fg_fields.controls[
         'LocationsId'
       ].valueChanges.pipe(
-        startWith(initialLocations),
+        startWith(this.fg_fields.get('LocationsId').get('results').value),
         tap(v => console.log(v))
       );
-    } else if (
-      this.fg_fields.controls['LocationId'] &&
-      this.fg_fields.controls['LocationId'].value
-    ) {
-      initialLocations = [this.fg_fields.get('LocationId').value];
-
-      console.log(initialLocations);
-
-      // watch selected location changes
+    } else if (this.singleLocation) {
       this.locations$ = this.fg_fields.controls['LocationId'].valueChanges.pipe(
-        startWith(initialLocations),
-        map((location: number) => [location])
+        startWith(this.fg_fields.get('LocationId').value),
+        map((location: number) => [location]),
+        tap(v => console.log(v))
       );
     }
 
@@ -196,24 +181,19 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     // react whenever watched input change
     this.$query = combineLatest(this.text$, this.locations$, this.top$)
       .pipe(
-        map(q => {
+        map((q: SearchParamsUser) => {
+          // compose params
+          console.log(this.includeOnly);
           return { text: q[0], locations: q[1], top: q[2] };
-        })
+        }),
+        map(
+          (q: SearchParamsUser) =>
+            this.includeOnly.length ? { ...q, positions: this.includeOnly } : q
+        )
       )
       .subscribe((query: SearchParamsUser) => {
         this.searchUsers(query);
       });
-
-    // wait 100ms, no need to run flow on every pixel change
-    // get width of parent container and pass it to calc maxWidth
-    // this.$resizeEvent
-    //   .pipe(
-    //     debounceTime(100),
-    //     map(any => {
-    //       return document.getElementById('refWidth' + this.id).clientWidth;
-    //     })
-    //   )
-    //   .subscribe(refWidth => this.setMaxWidth(refWidth));
 
     // listen to selected users and when get user
     // then map to ids, then loop through users and disable selected
@@ -370,9 +350,6 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
       .value;
 
     this.checkSelectionLimit();
-
-    // neccessary if user already start with small screen size
-    // this.$resizeEvent.next();
   }
 
   checkSelectionLimit() {
@@ -381,15 +358,21 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
     if (newSelected.length === this.allowNumberOfUsers) {
       console.log('limit reached, disable all options');
+      this.limitReached = true;
       this.disableAll();
+    } else {
+      this.limitReached = false;
     }
   }
 
   keepOpen() {
     const self = this;
-    setTimeout(function() {
-      self.autoComplete.openPanel();
-    }, 500);
+    // don't reopen if user selected and limit reached
+    if (!this.limitReached) {
+      setTimeout(function() {
+        self.autoComplete.openPanel();
+      }, 100);
+    }
   }
 
   resetText() {
@@ -421,24 +404,6 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  //   this.$resizeEvent.next();
-  // }
-
-  setMaxWidth(refWidth: number) {
-    const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
-
-    // iterate every selected user
-    // span.fullname has id ('user'+ ID)
-    // calculate maxWidth, ref min rest elements widths (92)
-    // set calculate maxWidth to the html element
-    _.forEach(selected, function(user) {
-      const maxWidth = `max-width: ${refWidth - 92}px;`;
-      document.getElementById('user' + user.ID).setAttribute('style', maxWidth);
-    });
-  }
-
   handleReporters(reporters: { results?: number[] }) {
     console.log(reporters);
 
@@ -460,14 +425,12 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
         .subscribe(v => {
           console.log(v);
           this.fg_users.controls['selectedUsers'].patchValue(v);
-          // this.reps = v as PeopleItem[];
         });
     }
   }
 
   ngOnDestroy() {
     this.$query.unsubscribe();
-    // this.$resizeEvent.unsubscribe();
     this.$fc_selectedUsers.unsubscribe();
   }
 }

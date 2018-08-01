@@ -20,7 +20,9 @@ import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.mode
 // services
 import { SharepointService } from '../../../shared/services/sharepoint.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PeopleService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
@@ -188,37 +190,52 @@ export class PeopleService {
   }
 
   buildUrl(params: UserSearchParams, counter?: boolean) {
-    // api url for NgPeople
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
-    // parameters
-    const query = params.query.replace('#', '%23');
-    const locations = params.locations;
+    // filters
+    const text = params.query.replace('#', '%23'); // otherwise http request will throw error
+    const locations = params.locations; // locations must be ids array
+    const positions = params.positions ? params.positions : []; // locations must be ids array
+
     let top = params.top;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandsFields().toString()}`;
 
-    // $filter
-    if (query || locations.length) {
+    // $filter add when any of these filter options present
+    if (text || locations.length || positions) {
       url += `&$filter=`;
     }
 
-    if (query) {
-      url += `((substringof('${query}',Name))`;
-      url += `or(substringof('${query}',Surname))`;
-      url += `or(substringof('${query}',Alias))`;
-      url += `or(substringof('${query}',Email))`;
-      url += `or(substringof('${query}',Gin)))`;
+    // text will search only in these fields
+    // too many fields to search may slow down response time
+    if (text) {
+      url += `((substringof('${text}',Name))`;
+      url += `or(substringof('${text}',Surname))`;
+      url += `or(substringof('${text}',Alias))`;
+      url += `or(substringof('${text}',Email))`;
+      url += `or(substringof('${text}',Gin)))`;
     }
 
-    if (query && locations.length) {
-      url += 'and';
-    }
-
+    // locations filter configuration
+    // check if "AND" is needed
+    // finds items with given location
     if (locations.length) {
+      if (text) {
+        url += 'and';
+      }
       url += `${this.getFilterLocationAssigned(locations)}`;
+    }
+
+    // positions filter configuration
+    // check if "AND" is needed
+    // finds items with given positions
+    if (positions.length) {
+      if (text || positions.length) {
+        url += 'and';
+      }
+      url += `${this.getFilterPositions(positions)}`;
     }
 
     // $orderby
@@ -232,7 +249,7 @@ export class PeopleService {
       url += `&$top=${top}`;
     }
 
-    // return combiner url string
+    // return combined url string
     return url;
   }
 
@@ -285,6 +302,37 @@ export class PeopleService {
         }
 
         filter += `(LocationAssigned/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterPositions(positions: number[]) {
+    if (positions.length) {
+      let filter = '';
+      const n = positions.length;
+      let i = 1;
+
+      for (const position of positions) {
+        // if multiple positions then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Position/Id eq ${position})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {
