@@ -48,18 +48,27 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
             </div>
 
             <div [ngClass]="['key-factor', appraisal.Proactivity]" [matTooltip]="appraisal.ProactivityDetails">
-              <div class="score">{{ appraisal.Proactivity }}</div>
-              <div class="factor">proact.</div>
+              <div class="score" *ngIf="appraisal.Proactivity !== 'A'">{{ appraisal.Proactivity }}</div>
+              <div class="score" *ngIf="appraisal.Proactivity === 'A'" [ngClass]="{'A': (appraisal.Proactivity === 'A')}">
+                <fa-icon [icon]="['fas', 'star']"></fa-icon>
+              </div>
+              <div class="factor" [ngClass]="{'A': (appraisal.Proactivity === 'A')}">proact.</div>
             </div>
 
             <div [ngClass]="['key-factor', appraisal.Quality]" [matTooltip]="appraisal.QualityDetails">
-              <div class="score">{{ appraisal.Quality }}</div>
-              <div class="factor">quality</div>
+              <div class="score" *ngIf="appraisal.Quality !== 'A'">{{ appraisal.Quality }}</div>
+              <div class="score" *ngIf="appraisal.Quality === 'A'" [ngClass]="{'A': (appraisal.Quality === 'A')}">
+                <fa-icon [icon]="['fas', 'star']"></fa-icon>
+              </div>
+              <div class="factor" [ngClass]="{'A': (appraisal.Quality === 'A')}">quality</div>
             </div>
 
             <div [ngClass]="['key-factor', appraisal.WinchDriving]" [matTooltip]="appraisal.WinchDrivingDetails">
-              <div class="score">{{ appraisal.WinchDriving }}</div>
-              <div class="factor">winch</div>
+              <div class="score" *ngIf="appraisal.WinchDriving !== 'A'">{{ appraisal.WinchDriving }}</div>
+              <div class="score" *ngIf="appraisal.WinchDriving === 'A'" [ngClass]="{'A': (appraisal.WinchDriving === 'A')}">
+                <fa-icon [icon]="['fas', 'star']"></fa-icon>
+              </div>
+              <div class="factor" [ngClass]="{'A': (appraisal.QualWinchDrivingity === 'A')}">winch</div>
             </div>
 
           </div>

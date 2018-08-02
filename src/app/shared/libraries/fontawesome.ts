@@ -28,6 +28,7 @@ import {
 
 import {
   faClock,
+  faEdit,
   faUserCircle,
   faSave,
   faImage,
@@ -44,6 +45,7 @@ export const fontawesome_icons = {
   faChevronRight,
   faClock,
   faCog,
+  faEdit,
   faEllipsisV,
   faExclamationCircle,
   faEye,

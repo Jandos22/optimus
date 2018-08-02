@@ -17,7 +17,7 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
   template: `
     <div [formGroup]="fg_fields" fxFlex="100">
       <mat-checkbox formControlName="DidCollector" color="primary" [disabled]="disabled">
-        Prepared Collector
+      <div class="appraisal-skill-description">Prepared Collector</div>
       </mat-checkbox>
     </div>
   `

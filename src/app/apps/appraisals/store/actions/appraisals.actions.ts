@@ -9,7 +9,8 @@ export enum AppraisalsActionTypes {
   COUNT_APPRAISALS_TOTAL = '[Appraisals] Count Total (since next url is present)',
   ADD_ONE_APPRAISAL = '[Appraisals] Add One Appraisal',
   INSERT_ONE_APPRAISAL = '[Appraisals] Insert One Appraisal (in beginning)',
-  UPDATE_ONE_APPRAISAL = '[Appraisals] Update One Appraisal'
+  UPDATE_ONE_APPRAISAL = '[Appraisals] Update One Appraisal',
+  DELETE_ONE_APPRAISAL = '[Appraisals] Delete One Appraisal'
 }
 
 export class SearchAppraisalsStart implements Action {
@@ -45,6 +46,11 @@ export class UpdateOneAppraisal implements Action {
   constructor(public id: number, public changes: AppraisalItem) {}
 }
 
+export class DeleteOneAppraisal implements Action {
+  readonly type = AppraisalsActionTypes.DELETE_ONE_APPRAISAL;
+  constructor(public id: number) {}
+}
+
 export type AppraisalsActionsUnion =
   | SearchAppraisalsStart
   | SearchAppraisalsSuccess
@@ -52,4 +58,5 @@ export type AppraisalsActionsUnion =
   | CountAppraisalsTotal
   | AddOneAppraisal
   | InsertOneAppraisal
-  | UpdateOneAppraisal;
+  | UpdateOneAppraisal
+  | DeleteOneAppraisal;

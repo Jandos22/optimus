@@ -63,6 +63,10 @@ export function reducer(
       );
     }
 
+    case AppraisalsActionTypes.DELETE_ONE_APPRAISAL: {
+      return adapter.removeOne(action.id, state);
+    }
+
     default:
       return state;
   }
