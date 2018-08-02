@@ -25,7 +25,8 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
       </div>
 
       <div class="appraisal-item-container" *ngFor="let appraisal of job.appraisals"
-        fxLayout="row wrap" fxLayoutAlign="start start">
+        fxLayout="row wrap" fxLayoutAlign="start start"
+        (click)="openForm.emit(appraisal)">
 
         <div class="given-for" fxFlex="100%" fxFlex.gt-xs="180px">
           <app-appraisal-given-for [viewPerson]="appraisal.GivenFor"></app-appraisal-given-for>

@@ -35,7 +35,7 @@ import { startWith } from 'rxjs/operators';
         </button>
 
         <button mat-button [matMenuTriggerFor]="menu" [color]="color"
-          class="skill-value-button"
+          class="skill-value-button" [disabled]="mode === 'view'"
           [ngClass]="{
             A: skillValue === 'A',
             B: skillValue === 'B',

@@ -1,24 +1,28 @@
-import { take, retry } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import {
-  JobsSearchParams,
-  JobItem
-} from './../../../../../../shared/interface/jobs.model';
-import { FormMode } from '../../../../../../shared/interface/form.model';
 import {
   Component,
   Input,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+// rxjs
+import { take, retry } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import * as subDays from 'date-fns/sub_days';
 import * as endOfToday from 'date-fns/end_of_today';
 
 // interfaces
 import { LocationEnt } from '../../../../../../shared/interface/locations.model';
+import {
+  JobsSearchParams,
+  JobItem
+} from './../../../../../../shared/interface/jobs.model';
+import { FormMode } from '../../../../../../shared/interface/form.model';
 
 // services
 import { JobsService } from '../../../../../jobs/services';
@@ -55,9 +59,10 @@ import { JobsService } from '../../../../../jobs/services';
     `,
   providers: [JobsService]
 })
-export class AppraisalsFormJobComponent implements OnInit {
+export class AppraisalsFormJobComponent implements OnInit, OnChanges {
   @Input() fg_fields: FormGroup;
   @Input() mode: FormMode;
+  @Input() job: JobItem;
 
   fieldName = 'JobId';
   jobs: JobItem[] = [];
@@ -74,13 +79,34 @@ export class AppraisalsFormJobComponent implements OnInit {
   ngOnInit() {
     // when mode is new or edit
     // start editing logic
-    if (this.mode === 'new' || this.mode === 'edit') {
-      this.onEditStart();
+    // if (this.mode === 'new' || this.mode === 'edit') {
+    //   this.onEditStart();
+    // }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // react to form mode change
+    if (changes.mode.currentValue) {
+      this.onModeChange(changes.mode.currentValue);
     }
   }
 
+  onModeChange(mode: FormMode) {
+    if (this.mode === 'new' || this.mode === 'edit') {
+      this.startEditMode();
+    } else if (this.mode === 'view') {
+      this.startViewMode();
+    }
+  }
+
+  startViewMode() {
+    console.log(this.job);
+    // fill jobs with this selected job
+    this.jobs = [this.job];
+  }
+
   // launched from ngOnInit or ngOnChanges if form mode changes
-  onEditStart() {
+  startEditMode() {
     // fetch list of applicable jobs for selection
     this.fetchJobs();
   }

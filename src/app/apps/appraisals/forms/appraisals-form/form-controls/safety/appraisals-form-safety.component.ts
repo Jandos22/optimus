@@ -34,8 +34,8 @@ import { startWith } from 'rxjs/operators';
           <span class='fa_regular'><fa-icon [icon]="['fas', 'star']"></fa-icon></span>
         </button>
 
-        <button mat-button [matMenuTriggerFor]="menu" [color]="color"
-          class="skill-value-button"
+        <button mat-button [matMenuTriggerFor]="menu"
+          class="skill-value-button" [disabled]="mode === 'view'"
           [ngClass]="{
             A: skillValue === 'A',
             B: skillValue === 'B',

@@ -103,7 +103,7 @@ export class AppraisalGivenForComponent implements OnChanges {
     this.photo = this.userPhoto(person[0]);
     this.gin = person[0].Gin;
     this.fullname = person[0].Fullname;
-    console.log(person);
+    // console.log(person);
     // this.cd.detectChanges();
   }
 

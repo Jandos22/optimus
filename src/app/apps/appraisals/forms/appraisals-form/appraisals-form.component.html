@@ -15,7 +15,8 @@
             <app-appraisals-form-date class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode">
             </app-appraisals-form-date>
 
-            <app-appraisals-form-job class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-appraisals-form-job class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode"
+                [job]="data.item?.Job">
             </app-appraisals-form-job>
 
         </div>
@@ -23,11 +24,17 @@
         <div class="con4" fxLayout="row wrap" fxLayoutAlign="start start">
 
             <div class="con1" fxLayout="row wrap" fxLayoutAlign="start start">
+                <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                    Appraisal For
+                </span>
                 <app-form-control-people-selector class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
                     [fieldName]="'GivenForId'" [displayName]="'Appraisal for'" [allowNumberOfUsers]="1" [includeOnly]="includeOnlyOperators"
                     (onSelectUser)="onSelectGivenFor($event)" [singleLocation]="true">
                 </app-form-control-people-selector>
 
+                <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
+                    Appraisal By
+                </span>
                 <app-form-control-people-selector class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
                     [fieldName]="'GivenById'" [displayName]="'Appraisal by'" [allowNumberOfUsers]="1" [includeOnly]="includeOnlyEngineers"
                     [selfUser]="selfUser$ | async" (onSelectUser)="onSelectGivenBy($event)" [singleLocation]="true">
@@ -36,10 +43,12 @@
 
             <div class="con3" fxLayout="row wrap" fxLayoutAlign="start start">
 
+                <!-- Overall Performance -->
                 <app-appraisals-form-overall-performance class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
                     [mode]="data.mode">
                 </app-appraisals-form-overall-performance>
 
+                <!-- Further Development -->
                 <app-appraisals-form-further-development class="cmn-form-component t2w2-t2w3-t3w4" fxLayout="row wrap" [fg_fields]="fg_fields"
                     [mode]="data.mode">
                 </app-appraisals-form-further-development>

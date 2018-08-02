@@ -108,6 +108,7 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
     this.$params = params$
       .pipe(
         map(params => {
+          console.log('params updated');
           console.log(params);
           return {
             text: params[0],
@@ -117,7 +118,6 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((params: AppraisalsSearchParams) => {
-        console.log('params updated');
         // this action updates store > jobs.params
         // this action is intercepted in search effects
         // search effects triggers chain of actions needed

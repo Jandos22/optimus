@@ -90,8 +90,8 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
 
     // array of appraisal groups
     this.appraisalGroups$ = this.store_appraisals.pipe(
-      select(fromAppraisals.getAppraisalGroups),
-      tap(v => console.log(v))
+      select(fromAppraisals.getAppraisalGroups)
+      // tap(v => console.log(v))
     );
 
     this.$pagination = this.store_appraisals

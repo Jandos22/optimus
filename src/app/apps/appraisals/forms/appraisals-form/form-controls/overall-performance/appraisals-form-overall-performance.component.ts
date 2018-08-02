@@ -20,7 +20,7 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
           cdkTextareaAutosize
           #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="4">
+          cdkAutosizeMaxRows="10">
         </textarea>
         <mat-hint align="end" *ngIf="mode !== 'view' && !isEmpty">
           {{fg_fields.get('OverallPerformance').value?.length }} / 255

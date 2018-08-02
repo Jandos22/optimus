@@ -79,7 +79,7 @@ export class GroupsEffects {
         return { Id, Well, Title, RigUpStart, appraisals: value };
       });
 
-      console.log(jobsFlattened);
+      // console.log(jobsFlattened);
 
       return jobsFlattened;
     }),

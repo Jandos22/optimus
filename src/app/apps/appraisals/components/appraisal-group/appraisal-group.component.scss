@@ -47,6 +47,11 @@ $small: 600px;
   margin-bottom: 8px;
   border: 1px solid #ddd;
 
+  &:hover {
+    cursor: pointer;
+    background: #f4f4f4;
+  }
+
   .given-for {
     width: 100%;
     padding: 2px 4px;

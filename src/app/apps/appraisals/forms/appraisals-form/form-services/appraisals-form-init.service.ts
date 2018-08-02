@@ -91,13 +91,10 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'WinchDrivingDetails'),
         Validators.maxLength(255)
       ],
-      DidRopeSocket: [this.getSimpleBooleen(mo, it, 'DidRopeSocket'), false],
-      DidRopeSocketH2S: [
-        this.getSimpleBooleen(mo, it, 'DidRopeSocketH2S'),
-        false
-      ],
-      DidCollector: [this.getSimpleBooleen(mo, it, 'DidCollector'), false],
-      DidHead: [this.getSimpleBooleen(mo, it, 'DidHead'), false],
+      DidRopeSocket: this.getSimpleBooleen(mo, it, 'DidRopeSocket'),
+      DidRopeSocketH2S: this.getSimpleBooleen(mo, it, 'DidRopeSocketH2S'),
+      DidCollector: this.getSimpleBooleen(mo, it, 'DidCollector'),
+      DidHead: this.getSimpleBooleen(mo, it, 'DidHead'),
       LocationId: [this.getLocationId(mo, it, lo), Validators.required]
     });
   }
@@ -113,27 +110,23 @@ export class AppraisalsFormInitService {
       case 'new':
         return '';
       case 'view':
-        return { value: item[field], disabled };
+        return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled };
     }
   }
 
   // get field value & condition
-  getSimpleBooleen(
-    mode: FormMode,
-    item: AppraisalItem,
-    field: string,
-    disabled?: boolean,
-    defaultValue?: boolean
-  ) {
+  getSimpleBooleen(mode: FormMode, item: AppraisalItem, field: string) {
     switch (mode) {
       case 'new':
-        return defaultValue;
+        return false;
       case 'view':
-        return { value: item[field], disabled };
+        const valueView = item[field] === null ? false : item[field];
+        return valueView;
       case 'edit':
-        return { value: item[field], disabled };
+        const valueEdit = item[field] === null ? false : item[field];
+        return valueEdit;
     }
   }
 
