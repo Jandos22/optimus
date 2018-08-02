@@ -1,3 +1,4 @@
+import { AppraisalRights } from './../../../store/effects/rights.effects';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -14,6 +15,7 @@ import { AppraisalItem } from '../../../../../shared/interface/appraisals.model'
   template: `
     <app-appraisals-form-actions-view
       *ngIf="mode === 'view'"
+      [position]="position" [isAppraisalAuthor]="isAppraisalAuthor"
       (closeForm)="closeForm.emit()"
       (switchFormMode)="switchFormMode.emit($event)">
     </app-appraisals-form-actions-view>
@@ -37,6 +39,8 @@ export class AppraisalsFormActionsComponent {
   @Input() mode: FormMode;
   @Input() fg_fields: FormGroup;
   @Input() initialFields: AppraisalItem;
+  @Input() position: AppraisalRights;
+  @Input() isAppraisalAuthor: boolean;
 
   @Output() switchFormMode = new EventEmitter<any>();
   @Output() closeForm = new EventEmitter<any>();

@@ -30,7 +30,7 @@ import { FormGroup } from '@angular/forms';
     </app-toolbar-button-clear>
 
     <app-toolbar-button-add
-      *ngIf="canCreate()"
+      *ngIf="isFEFS"
       [tooltip]="'Create new Appraisal'"
       (openForm)="openForm.emit()">
     </app-toolbar-button-add>
@@ -40,7 +40,7 @@ export class AppraisalsToolbarComponent {
   @Input() appName: string;
   @Input() searching: boolean;
   @Input() fg_params: FormGroup;
-  @Input() accessLevel: number;
+  @Input() isFEFS: boolean;
 
   @Output() openForm = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
@@ -52,12 +52,12 @@ export class AppraisalsToolbarComponent {
     this.fg_params.reset();
   }
 
-  canCreate() {
-    // later change this, so that only FEs can create appraisals
-    if (this.accessLevel) {
-      return this.accessLevel === 3 ? true : false;
-    } else {
-      return false;
-    }
-  }
+  // canCreate() {
+  //   // later change this, so that only FEs can create appraisals
+  //   if (this.accessLevel) {
+  //     return this.accessLevel === 3 ? true : false;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

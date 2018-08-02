@@ -15,6 +15,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromAppraisals from '../../store';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { Subscription, combineLatest } from 'rxjs';
 import {
@@ -24,11 +26,16 @@ import {
   map
 } from 'rxjs/operators';
 
-// interfaces
-import { AppraisalsSearchParams } from '../../../../shared/interface/appraisals.model';
+import { people_fefs } from './../../../../shared/constants/ids-fefs';
+import { people_op } from '../../../../shared/constants/ids-op';
 
 // validators
 import { ValidationService } from '../../../../shared/validators/validation.service';
+
+// interfaces
+import { AppraisalsSearchParams } from '../../../../shared/interface/appraisals.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
+import { AppraisalRights } from '../../store';
 
 @Component({
   selector: 'app-appraisals-header',
@@ -40,7 +47,7 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
       fxFlex fxFlex.gt-xs="568px"
       fxLayout="row nowrap" fxLayoutAlign="start center"
       [appName]="appName" [fg_params]="fg_params" [searching]="searching"
-      [accessLevel]="accessLevel"
+      [isFEFS]="position?.isFEFS"
       (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('text').invalid }">
@@ -50,7 +57,8 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
 export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
   @Input() appName: string;
   @Input() searching: boolean;
-  @Input() accessLevel: number;
+  @Input() currentUser: PeopleItem;
+  @Input() position: AppraisalRights;
 
   @Output() openForm = new EventEmitter<any>();
 
@@ -66,16 +74,24 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
     private store_appraisals: Store<fromAppraisals.AppraisalsState>,
     private store_root: Store<fromRoot.RootState>
   ) {
+    // this.initializeParamsFormGroup();
+    // this.subscribeToParamsFormGroup();
+    // this.resetParamsFormGroup();
+  }
+
+  ngOnInit() {
     this.initializeParamsFormGroup();
     this.subscribeToParamsFormGroup();
     this.resetParamsFormGroup();
+    this.subscribeToSelectedLocations();
   }
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
       text: ['', ValidationService.onlySearchable],
       locations: [''],
-      top: []
+      top: [],
+      ...this.getGivenForByParams()
     });
   }
 
@@ -110,11 +126,17 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
         map(params => {
           console.log('params updated');
           console.log(params);
-          return {
+
+          const newParams = {
+            ...this.fg_params.value,
             text: params[0],
             locations: params[1],
             top: params[2]
           };
+
+          console.log(newParams);
+
+          return newParams;
         })
       )
       .subscribe((params: AppraisalsSearchParams) => {
@@ -124,10 +146,6 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
         // to request jobs from server and load them in store
         this.store_appraisals.dispatch(new fromAppraisals.UpdateParams(params));
       });
-  }
-
-  ngOnInit() {
-    this.subscribeToSelectedLocations();
   }
 
   subscribeToSelectedLocations() {
@@ -145,6 +163,37 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
 
   onBlur() {
     this.focus = false;
+  }
+
+  getGivenForByParams() {
+    // both should start with null
+    // this means CAN FIND ALL APPRAISALS
+    let givenfor = null;
+    let givenby = null;
+
+    // field engineers and specialist
+    // can find only self created appraisals
+    if (this.position.isFEFS) {
+      givenby = this.currentUser.Id;
+    }
+
+    // operators
+    // can find only appraisals created for them
+    if (this.position.isOP) {
+      givenfor = this.currentUser.Id;
+    }
+
+    // if current user don't fall in any category
+    // then let him/her find self old appraisals
+    if (
+      !this.position.isFEFS &&
+      !this.position.isOP &&
+      !this.position.isReviewer
+    ) {
+      givenby = this.currentUser.Id;
+    }
+
+    return { givenfor: givenfor, givenby: givenby };
   }
 
   ngOnDestroy() {

@@ -102,7 +102,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-appraisals-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
+    <app-appraisals-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" [position]="position$ | async" [isAppraisalAuthor]="isAppraisalAuthor" (closeForm)="closeForm($event)"
         (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
     </app-appraisals-form-actions>
 </mat-dialog-actions>

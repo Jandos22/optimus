@@ -44,6 +44,7 @@ export class AppraisalsService {
     const text = params.text.replace('#', '%23');
     // locations must be ids array
     const locations = params.locations;
+    const givenby = params.givenby;
     let top = params.top;
 
     // job date
@@ -63,7 +64,7 @@ export class AppraisalsService {
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is not empty/null
-    if (text || locations.length || beforeDate || afterDate) {
+    if (text || locations.length || givenby || beforeDate || afterDate) {
       url += `&$filter=`;
     }
 
@@ -89,10 +90,20 @@ export class AppraisalsService {
       url += `${this.getFilterLocations(locations)}`;
     }
 
+    // givenby filter configuration
+    if (givenby) {
+      // check if "AND" is needed
+      if (text || locations.length) {
+        url += 'and';
+      }
+      // finds items with given location
+      url += `(GivenBy/Id eq ${givenby})`;
+    }
+
     // beforeDate filter configuration
     if (beforeDate) {
       // check if "AND" is needed
-      if (text || locations.length) {
+      if (text || locations.length || givenby) {
         url += 'and';
       }
       // find items with RigUpStart before given date

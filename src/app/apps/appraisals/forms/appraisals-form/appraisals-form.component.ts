@@ -1,3 +1,5 @@
+import { people_op } from './../../../../shared/constants/ids-op';
+import { AppraisalRights } from './../../store/effects/rights.effects';
 import {
   Component,
   OnInit,
@@ -49,6 +51,7 @@ import { FormMode } from '../../../../shared/interface/form.model';
 import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
 import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { PeopleItem } from '../../../../shared/interface/people.model';
+import { people_fefs } from '../../../../shared/constants/ids-fefs';
 
 @Component({
   selector: 'app-appraisals-form',
@@ -63,14 +66,16 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
   fg_fields: FormGroup;
 
   accessLevel$: Observable<number>;
-  includeOnlyOperators = [3, 20, 21, 22, 23, 24];
-  includeOnlyEngineers = [4, 5, 6, 7, 8];
+  includeOnlyOperators = people_op;
+  includeOnlyEngineers = people_fefs;
 
   $locationAssignedId: Subscription;
   locationAssignedId: number;
 
   // get self optimus account
   selfUser$: Observable<PeopleItem>;
+  position$: Observable<AppraisalRights>;
+  isAppraisalAuthor: boolean;
 
   // selectables
   locations$: Observable<LocationEnt[]>;
@@ -80,7 +85,7 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
-    private store_jobs: Store<fromAppraisals.AppraisalsState>,
+    private store_appraisals: Store<fromAppraisals.AppraisalsState>,
     private formInitService: AppraisalsFormInitService,
     public formRef: MatDialogRef<AppraisalsFormComponent>,
     @Inject(MAT_DIALOG_DATA)
@@ -116,7 +121,22 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
     // all observables end with $ suffix
 
     // get self user item to use in project reporters selection
-    this.selfUser$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
+    this.selfUser$ = this.store_root.pipe(
+      select(fromRoot.getUserOptimus),
+      // check if this appraisal is given by current user
+      // so that only him/her can edit it
+      tap((user: PeopleItem) => {
+        if (this.data.mode === 'view') {
+          this.isAppraisalAuthor = user.Id === this.data.item.GivenById;
+        }
+      })
+    );
+
+    // array of appraisal groups
+    this.position$ = this.store_appraisals.pipe(
+      select(fromAppraisals.getAppraisalPositionsCheck),
+      tap(v => console.log(v))
+    );
 
     // get and observe user's access level
     this.accessLevel$ = this.store_root.pipe(
@@ -132,9 +152,9 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
     this.locations$ = this.store_root.select(fromRoot.selectAllLocations);
   }
 
-  setupFormWatchers() {}
+  // setupFormWatchers() {}
 
-  removeFormWatchers() {}
+  // removeFormWatchers() {}
 
   createFormGroups(m: FormMode, it: AppraisalItem, lo: number) {
     console.log('started creating form group');
@@ -143,7 +163,7 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
     console.log(lo);
 
     // remove old form watchers if any
-    this.removeFormWatchers();
+    // this.removeFormWatchers();
 
     // create 1 form group
     this.fg_fields = this.formInitService.create_FormGroup_Fields(m, it, lo);
@@ -151,8 +171,8 @@ export class AppraisalsFormComponent implements OnInit, OnDestroy {
     console.log('created 1 form group:');
     console.log(this.fg_fields);
 
-    console.log('refresh watchers of form group fields');
-    this.setupFormWatchers();
+    // console.log('refresh watchers of form group fields');
+    // this.setupFormWatchers();
   }
 
   switchFormMode(mode: FormMode) {

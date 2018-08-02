@@ -36,6 +36,8 @@ $con4: calc(180px * 4 + 16px * 4);
 }
 
 .con2 {
+  width: 100%;
+
   @media screen and (min-width: $bp2) {
     min-width: $con2;
     max-width: $con2;
@@ -43,6 +45,8 @@ $con4: calc(180px * 4 + 16px * 4);
 }
 
 .con3 {
+  width: 100%;
+
   @media screen and (min-width: $bp2) {
     min-width: $con2;
     max-width: $con2;
@@ -64,6 +68,8 @@ $con4: calc(180px * 4 + 16px * 4);
 }
 
 .con4 {
+  width: 100%;
+
   @media screen and (min-width: $bp2) {
     min-width: $con2;
     max-width: $con2;

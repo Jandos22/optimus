@@ -17,7 +17,7 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
   template: `
     <div [formGroup]="fg_fields" fxFlex="100">
       <mat-checkbox formControlName="DidRopeSocket" color="primary" [disabled]="disabled">
-        Prepared RopeSocket (Standard)
+        <div class="appraisal-skill-description">Prepared RopeSocket (Standard)</div>
       </mat-checkbox>
     </div>
   `

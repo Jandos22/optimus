@@ -37,7 +37,14 @@ export const getIsRegistered = createSelector(
   fromUser.getIsRegistered
 );
 export const getUserId = createSelector(getUserState, fromUser.getUserId);
+export const getSelfOptimusId = createSelector(
+  getUserState,
+  fromUser.getSelfOptimusId
+);
 export const getInitials = createSelector(getUserState, fromUser.getInitials);
-export const getUserLocationAssignedId = createSelector(getUserState, fromUser.getUserLocationAssignedId);
+export const getUserLocationAssignedId = createSelector(
+  getUserState,
+  fromUser.getUserLocationAssignedId
+);
 // export const getPhoto = createSelector(getUserState, fromUser.getPhoto);
 // export const getPhotoUrl = createSelector(getUserState, fromUser.getPhotoUrl);

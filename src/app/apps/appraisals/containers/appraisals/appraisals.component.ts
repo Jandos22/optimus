@@ -24,6 +24,7 @@ import {
 } from '../../../../shared/interface/appraisals.model';
 import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
+import { AppraisalRights } from '../../store';
 
 @Component({
   selector: 'app-appraisals.common-app-container',
@@ -32,7 +33,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     <app-appraisals-header
       fxFlex="65px" class="common-header"
       [appName]="appName" [searching]="searching"
-      [accessLevel]="(user$ | async).Position?.AccessLevel"
+      [currentUser]="user$ | async"
+      [position]="position$ | async"
       (openForm)="openForm('new', $event)">
     </app-appraisals-header>
 
@@ -58,6 +60,8 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
   appraisalGroups$: Observable<AppraisalGroupItem[]>;
   data: AppraisalGroupItem[];
 
+  position$: Observable<AppraisalRights>;
+
   $searching: Subscription;
   searching: boolean;
 
@@ -77,7 +81,16 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
     // update html page title and store.root.apps.name
     this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
 
-    this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
+    this.user$ = this.store_root.pipe(
+      select(fromRoot.getUserOptimus),
+      // when current optimus user object arrives
+      // check his/her rights for appraisals
+      tap((user: PeopleItem) => {
+        this.store_appraisals.dispatch(
+          new fromAppraisals.CheckRights(user.PositionId)
+        );
+      })
+    );
 
     // array of appraisals
     this.$appraisals = this.store_appraisals
@@ -92,6 +105,12 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
     this.appraisalGroups$ = this.store_appraisals.pipe(
       select(fromAppraisals.getAppraisalGroups)
       // tap(v => console.log(v))
+    );
+
+    // array of appraisal groups
+    this.position$ = this.store_appraisals.pipe(
+      select(fromAppraisals.getAppraisalPositionsCheck),
+      tap(v => console.log(v))
     );
 
     this.$pagination = this.store_appraisals

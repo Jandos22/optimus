@@ -183,7 +183,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
       .pipe(
         map((q: SearchParamsUser) => {
           // compose params
-          console.log(this.includeOnly);
+          // console.log(this.includeOnly);
           return { text: q[0], locations: q[1], top: q[2] };
         }),
         map(
@@ -286,7 +286,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
   searchUsers(query: SearchParamsUser) {
     console.log('search users started');
-    console.log(query);
+    // console.log(query);
     this.searching = true;
     const search$ = this.srv.searchUsers(query);
 

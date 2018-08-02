@@ -13,6 +13,8 @@ export interface ParamsState {
   top: number;
   afterDate?: Date;
   beforeDate?: Date;
+  givenfor: number;
+  givenby: number;
 }
 
 export const initialState: ParamsState = {
@@ -20,7 +22,9 @@ export const initialState: ParamsState = {
   locations: null,
   top: null,
   afterDate: null,
-  beforeDate: null
+  beforeDate: null,
+  givenfor: null,
+  givenby: null
 };
 
 export function reducer(

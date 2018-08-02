@@ -48,8 +48,8 @@ export class UserService {
     if (
       loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint'
     ) {
-      loginName = 'dismagulov@slb.com';
-      spId = 9;
+      loginName = 'azhumagazina@slb.com';
+      spId = 13;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');
