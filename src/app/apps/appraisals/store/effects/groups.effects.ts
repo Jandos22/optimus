@@ -12,7 +12,7 @@ import {
   catchError,
   take,
   reduce,
-  withLatestFrom,
+  // withLatestFrom,
   groupBy,
   toArray
 } from 'rxjs/operators';

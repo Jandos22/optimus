@@ -25,6 +25,7 @@
               "src/styles.scss",
               "src/styles/styles__form.scss",
               "src/styles/form__layout.scss",
+              "src/styles/filters.scss",
               "src/styles/quill.snow.css"
             ],
             "scripts": [

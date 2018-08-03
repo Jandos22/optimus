@@ -3,7 +3,7 @@ import { TimelineEventComponent } from './timeline-event/timeline-event.componen
 import { TimelineEventReportersComponent } from './timeline-event-reporters/timeline-event-reporters.component';
 import { TimelineToolbarButtonAddComponent } from './toolbar-button-add/timeline-toolbar-button-add.component';
 import { TimelineToolbarInputSearchComponent } from './toolbar-input-search/timeline-toolbar-input-search.component';
-import { TimelineToolbarButtonFiltersComponent } from './toolbar-button-filters/timeline-toolbar-button-filters.component';
+// import { TimelineToolbarButtonFiltersComponent } from './toolbar-button-filters/timeline-toolbar-button-filters.component';
 import { TimelineToolbarButtonClearComponent } from './toolbar-button-clear/timeline-toolbar-button-clear.component';
 
 export const components: any[] = [
@@ -12,14 +12,14 @@ export const components: any[] = [
   TimelineToolbarButtonMenuComponent,
   TimelineToolbarInputSearchComponent,
   TimelineToolbarButtonAddComponent,
-  TimelineToolbarButtonFiltersComponent,
+  // TimelineToolbarButtonFiltersComponent,
   TimelineToolbarButtonClearComponent
 ];
 
 export * from './timeline-event/timeline-event.component';
 export * from './timeline-event-reporters/timeline-event-reporters.component';
 export * from './toolbar-button-add/timeline-toolbar-button-add.component';
-export * from './toolbar-button-filters/timeline-toolbar-button-filters.component';
+// export * from './toolbar-button-filters/timeline-toolbar-button-filters.component';
 export * from './toolbar-button-menu/timeline-toolbar-button-menu.component';
 export * from './toolbar-input-search/timeline-toolbar-input-search.component';
 export * from './toolbar-button-clear/timeline-toolbar-button-clear.component';

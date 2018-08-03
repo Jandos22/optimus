@@ -21,7 +21,7 @@ import { SharepointService } from '../../../shared/services/sharepoint.service';
 export class TimelineService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
 
-  getDataWithGivenUrl(url) {
+  getDataWithNext(url) {
     return this.http
       .get(url, {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
@@ -37,36 +37,36 @@ export class TimelineService {
   }
 
   buildUrl(params: TimelineSearchParams, counter?: boolean) {
-    // api url for NgTimeline
     let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items?`;
 
     // parameters
-    const query = params.query.replace('#', '%23');
-    const locations = params.locations;
-    let top = params.top;
+    const text = params.text ? params.text.replace('#', '%23') : null;
+    // locations must be ids array
+    const locations = params.locations ? params.locations : [];
+    // if top is missing then default is 100
+    let top = params.top ? params.top : 100;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
-    // $filter
-    if (query || locations.length) {
+    // $filter is added if one of these is true
+    if (text || locations.length) {
       url += `&$filter=`;
     }
 
-    if (query) {
+    if (text) {
       url += `(`;
-      url += `(substringof('${query}',Title))`;
-      url += `or(substringof('${query}',Summary))`;
-      url += `or(substringof('${query}',HashTags))`;
+      url += `(substringof('${text}',Title))`;
+      url += `or(substringof('${text}',Summary))`;
+      url += `or(substringof('${text}',HashTags))`;
       url += `)`;
     }
 
-    if (query && locations.length) {
-      url += 'and';
-    }
-
     if (locations.length) {
+      if (text) {
+        url += 'and';
+      }
       url += `${this.getFilterLocations(locations)}`;
     }
 
@@ -101,6 +101,7 @@ export class TimelineService {
       'EventReporters/Fullname',
       'LocationsId',
       'Locations/Id',
+      'Locations/Title',
       'Attachments',
       'AttachmentFiles',
       'RichText',

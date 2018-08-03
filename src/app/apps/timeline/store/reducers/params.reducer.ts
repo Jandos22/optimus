@@ -8,14 +8,14 @@ import {
 import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface ParamsState {
+  text: string;
   locations: number[];
-  query: string;
   top: number;
 }
 
 export const initialState: ParamsState = {
+  text: null,
   locations: null,
-  query: null,
   top: null
 };
 

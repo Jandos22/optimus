@@ -26,7 +26,9 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
               <mdc-card-media-content fxLayout="column" fxLayoutAlign="start start"
                 class="event-card__media-content">
                 <div class="event__type" fxLayout="row" fxLayoutGap="8px">
-                  <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
+                  <!-- <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon> -->
+                  <span>{{ event.Locations?.results[0].Title }}</span>
+                  <span>&middot;</span>
                   <span>{{ event.EventType.Title }}</span>
                 </div>
               </mdc-card-media-content>

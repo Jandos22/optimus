@@ -5,4 +5,9 @@ export interface LocationEnt extends SpListItem {
   id: number;
   Title: string;
   ApplicationsInUse: AppItem[];
+  PositionInList: number;
+  HasLocationsId: number[];
+  HasLocations: {
+    results: LocationEnt[];
+  };
 }

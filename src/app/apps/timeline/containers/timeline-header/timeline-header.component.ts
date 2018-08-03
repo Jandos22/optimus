@@ -41,10 +41,17 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
       fxLayout="row nowrap" fxLayoutAlign="start center"
       [appName]="appName" [fg_params]="fg_params" [searching]="searching"
       [accessLevel]="accessLevel"
-      (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
+      (onFocus)="onFocus()" (onBlur)="onBlur()"
+      (openForm)="openForm.emit()" (toggleFilters)="toggleFilters.emit()"
       [ngClass]="{  focused: focus,
-                    invalid: fg_params.get('query').invalid }">
+                    invalid: fg_params.get('text').invalid }">
     </app-timeline-toolbar>
+
+    <!--
+    <app-toolbar-button-filters class="filters-at-end"
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
+    -->
     `
 })
 export class TimelineHeaderComponent implements OnInit, OnDestroy {
@@ -53,6 +60,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
   @Input() accessLevel: number;
 
   @Output() openForm = new EventEmitter<any>();
+  @Output() toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
@@ -73,46 +81,50 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
-      query: ['', ValidationService.onlySearchable],
-      locations: [''],
-      top: []
+      text: ['', ValidationService.onlySearchable]
+      // locations: [''],
+      // top: []
     });
   }
 
   resetParamsFormGroup() {
-    this.fg_params.get('query').patchValue('');
-    this.fg_params.get('top').patchValue(10);
+    this.fg_params.get('text').patchValue('');
+    // this.fg_params.get('top').patchValue(10);
   }
 
   subscribeToParamsFormGroup() {
     // don't pass value after each keystroke, but wait for 600ms
     // don't pass value if it didn't change
-    const query$ = this.fg_params.get('query').valueChanges.pipe(
-      filter(query => {
-        return this.fg_params.get('query').valid;
+    const text$ = this.fg_params.get('text').valueChanges.pipe(
+      filter(text => {
+        return this.fg_params.get('text').valid;
       }),
       debounceTime(600),
       distinctUntilChanged()
     );
 
-    const locations$ = this.fg_params
-      .get('locations')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const locations$ = this.fg_params
+    //   .get('locations')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const top$ = this.fg_params
-      .get('top')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const top$ = this.fg_params
+    //   .get('top')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const params$ = combineLatest(query$, locations$, top$);
+    const params$ = combineLatest(
+      text$
+      // locations$,
+      // top$
+    );
 
     this.$params = params$
       .pipe(
         map(params => {
           console.log(params);
           return {
-            query: params[0],
-            locations: params[1],
-            top: params[2]
+            text: params[0]
+            // locations: params[1],
+            // top: params[2]
           };
         })
       )
@@ -135,7 +147,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
     this.$selectedLocations = this.store_root
       .pipe(select(fromRoot.selectSelectedId))
       .subscribe(location => {
-        this.fg_params.get('locations').setValue(location);
+        // this.fg_params.get('locations').setValue(location);
       });
   }
 

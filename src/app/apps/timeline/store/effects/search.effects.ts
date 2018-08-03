@@ -53,8 +53,15 @@ export class SearchEffects {
     map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
+    withLatestFrom(this.store$.pipe(select(fromTimeline.getParams))),
+    map((merged: any[]) => {
+      const prevParams = merged[0];
+      const currParams = merged[1];
+      const newParams = { ...prevParams, ...currParams };
+      return newParams;
+    }),
     map((params: TimelineSearchParams) => {
-      this.params = params;
+      console.log(params);
       return this.srv.buildUrl(params);
     }),
     mergeMap(url => {
@@ -77,7 +84,7 @@ export class SearchEffects {
       };
     }),
     switchMap(merged => {
-      const getUsers$ = this.srv.getDataWithGivenUrl(merged.action.url);
+      const getUsers$ = this.srv.getDataWithNext(merged.action.url);
       return getUsers$.pipe(
         mergeMap((response: SpResponse) => {
           // collection of actions that will be dispatched
@@ -134,7 +141,7 @@ export class SearchEffects {
       return this.srv.buildUrl(this.params, true);
     }),
     switchMap(url => {
-      return this.srv.getDataWithGivenUrl(url).pipe(
+      return this.srv.getDataWithNext(url).pipe(
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
             return new fromPaginationActions.UpdateTotalExist(0);

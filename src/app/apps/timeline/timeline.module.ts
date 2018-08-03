@@ -24,6 +24,9 @@ import * as fromContainers from './containers';
 // components
 import * as fromComponents from './components';
 
+// filters
+import * as fromFilters from './containers/timeline-filters/content';
+
 // forms
 import * as fromForms from './forms'; // must go in entry components
 import * as fromFormControls from './forms/timeline-form/form-controls';
@@ -39,6 +42,7 @@ import * as fromPipes from '../../shared/pipes';
 import { FormControlsModule } from './../../shared/modules/form-controls/form-controls.module';
 import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
+import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 
 // routes
 export const timelineRoutes: Routes = [
@@ -59,6 +63,7 @@ export const timelineRoutes: Routes = [
     SimpleNotificationsModule,
     // form control modules
     FormControlsModule,
+    ToolbarButtonsModule,
     RichTextEditorLightModule,
     FormControlImagePickerModule
   ],
@@ -66,6 +71,7 @@ export const timelineRoutes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
+    ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromFormControls.forms_controls,
     ...fromFormActions.form_actions
