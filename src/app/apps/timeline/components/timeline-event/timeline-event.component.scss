@@ -21,19 +21,22 @@
   width: 100%;
 
   @media screen and (min-width: 600px) {
-    max-width: 276px !important;
+    // max-width: 276px !important; // half-size of container
+    max-width: 368px !important;
   }
 }
 
 .event-card__media-content {
-  background: rgba(0, 0, 0, 0.4);
+  // background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(rgba(10, 110, 220, 0.625), transparent);
+  height: 60px;
 }
 
 .event__type {
   // height: 42px;
   font-size: 0.875rem;
   padding: 16px;
-  color: #ddd;
+  color: #fafafa;
 
   &.noimage {
     padding: 0;
