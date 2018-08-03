@@ -48,7 +48,7 @@ export class SearchUsersService {
     // filters
     const text = params.text.replace('#', '%23'); // otherwise http request will throw error
     const locations = params.locations; // locations must be ids array
-    const positions = params.positions; // locations must be ids array
+    const positions = params.positions ? params.positions : []; // locations must be ids array
 
     const top = params.top;
 

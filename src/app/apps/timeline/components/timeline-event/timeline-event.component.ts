@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 // constants
-import { ApiPath, PathSlbSp } from '../../../../shared/constants';
+import { ApiPath, PathSlbSp, PathOptimus } from '../../../../shared/constants';
 
 // interfaces
 import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
@@ -20,7 +20,7 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
     <mdc-card class="event-card__container">
         <div fxLayout="column" fxLayout.gt-xs="row">
             <mdc-card-media fxFlex="125px" fxFlex.gt-xs="200px"
-              [square]="true" *ngIf="event.Attachments"
+              [square]="true"
               [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
 
               <mdc-card-media-content fxLayout="column" fxLayoutAlign="start start"
@@ -34,12 +34,6 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
             </mdc-card-media>
             <div fxLayout="column" fxLayoutAlign="start"
               [ngClass]="(event.Attachments ? 'event-card__hasimage' : 'event-card__noimage')">
-
-                <div *ngIf="!event.Attachments"
-                  class="event__type noimage" fxLayout="row" fxLayoutGap="8px">
-                  <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon>
-                  <span>{{ event.EventType.Title }}</span>
-                </div>
 
                 <div class="event__title" (click)="openForm.emit(event)">
                   {{ event.Title }}
@@ -73,8 +67,13 @@ export class TimelineEventComponent {
     let path = '';
     if (this.event.Attachments) {
       path = this.event.AttachmentFiles.results[0].ServerRelativeUrl;
+      return ApiPath.startsWith('_') ? `${PathSlbSp}`.concat(path) : path;
+    } else {
+      const picture = this.getEventBackground(this.event.EventType.Title);
+      path = 'assets/timeline' + picture;
+      return ApiPath.startsWith('_') ? path : `${PathOptimus}/`.concat(path);
+      // return path;
     }
-    return ApiPath.startsWith('_') ? `${PathSlbSp}`.concat(path) : path;
   }
 
   getFaIconName(eventType: string) {
@@ -87,6 +86,19 @@ export class TimelineEventComponent {
 
       default:
         return 'bullhorn';
+    }
+  }
+
+  getEventBackground(eventType: string) {
+    switch (eventType) {
+      case 'General':
+        return '/general.png';
+
+      case 'Equipment IN':
+        return '/equipment_in_v3.png';
+
+      default:
+        return '/general.png';
     }
   }
 
