@@ -78,7 +78,11 @@ import * as fromDateFormats from './shared/date/date.formats';
     ...fromLayout.containers,
     ...fromComponents.components
   ],
-  entryComponents: [fromComponents.ErrorDialogBoxComponent],
+  entryComponents: [
+    fromComponents.ErrorDialogBoxComponent,
+    fromComponents.DeleteListItemComponent,
+    fromComponents.DeleteListItemRetryComponent
+  ],
   imports: [
     AppRoutingModule,
     BrowserModule,

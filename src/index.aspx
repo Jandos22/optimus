@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-title" content="Optimus">
 
   <!-- PC and Android icon -->
-  <link rel="icon" type="image/x-icon" href="assets/icons/favicon8_32p.png">
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.png">
 
   <!-- iOS homescreen icon -->
   <link rel="apple-touch-icon" href="assets/icons/favicon8_iphone.png">

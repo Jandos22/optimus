@@ -146,6 +146,22 @@
   }
 }
 
+.common-form-actions-container {
+  width: 100%;
+
+  .form-actions-view {
+    width: 100%;
+  }
+
+  .form-actions-new {
+    width: 100%;
+  }
+
+  .form-actions-edit {
+    width: 100%;
+  }
+}
+
 .cmn-form-component {
   width: 100%;
   margin-bottom: 9.5px;
@@ -176,6 +192,22 @@
   padding-bottom: 4px;
   margin-bottom: 4px;
   // border-bottom: 1px solid #ccc;
+}
+
+.form-title-container {
+  width: 100%;
+  height: 45.5px;
+  max-height: 45.5px;
+  margin-bottom: 16px;
+
+  .form-title {
+    padding-top: 13.5px;
+    font: 500 20px/32px Roboto, 'Helvetica Neue', sans-serif;
+
+    @media screen and (min-width: 570px) {
+      margin-left: 16px;
+    }
+  }
 }
 
 .cmn-form-control-title {
@@ -286,6 +318,71 @@
   @media screen and (min-width: 1060px) {
     min-width: 392px; // 180*2+16*2, 2 columns
     max-width: 392px; // 180*2+16*2, 2 columns
+  }
+}
+
+.fill-w1 {
+  width: 100%;
+}
+
+.fill-w2 {
+  width: 100%;
+}
+
+.fill-w3 {
+  width: 100%;
+}
+
+.fill-w4 {
+  width: 100%;
+}
+
+.t1-w2 {
+  @media screen and (min-width: 570px) {
+    min-width: 196px;
+    max-width: 196px;
+  }
+}
+
+.t1-w3 {
+  @media screen and (min-width: 815px) {
+    min-width: 196px; //
+    max-width: 196px; // 180*3+16*3, take 3 columns
+  }
+}
+
+.t1-w4 {
+  @media screen and (min-width: 1060px) {
+    min-width: 196px; // 180*2+16*2, 2 columns
+    max-width: 196px; // 180*4+16*4, 2 columns
+  }
+}
+
+.t2-w2 {
+  @media screen and (min-width: 570px) {
+    min-width: 392px; // 180*2+16*2, 2 columns
+    max-width: 392px; // 180*2+16*2, 2 columns
+  }
+}
+
+.t3-w3 {
+  @media screen and (min-width: 815px) {
+    min-width: 588px; //
+    max-width: 588px; // 180*3+16*3, take 3 columns
+  }
+}
+
+.t3-w4 {
+  @media screen and (min-width: 1060px) {
+    min-width: 588px;
+    max-width: 588px;
+  }
+}
+
+.t4-w4 {
+  @media screen and (min-width: 1060px) {
+    min-width: 784px; // 180*2+16*2, 2 columns
+    max-width: 784px; // 180*4+16*4, 2 columns
   }
 }
 

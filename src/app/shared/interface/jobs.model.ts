@@ -47,9 +47,9 @@ export interface JobItem extends SpListItem {
 }
 
 export interface JobsSearchParams {
-  text: string;
-  locations: number[];
-  top: number;
+  text?: string;
+  locations?: number[];
+  top?: number;
   afterDate?: Date;
   beforeDate?: Date;
 }

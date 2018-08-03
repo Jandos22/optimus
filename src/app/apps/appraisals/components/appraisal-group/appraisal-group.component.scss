@@ -1,0 +1,254 @@
+@import '../../../../../colors';
+
+// breakpoints
+$small: 600px;
+
+.appraisal-group-container {
+  width: 100%;
+
+  .job-container {
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 8px;
+
+    .job-date {
+      min-width: 82px;
+      max-width: 82px;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.625);
+    }
+
+    .job-title {
+      width: 100%;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.875);
+    }
+  }
+}
+
+.section-title {
+  width: 100%;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 500;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.54);
+  padding-bottom: 4px;
+}
+
+.appraisal-item-container {
+  width: 100%; // max 568px
+  border-radius: 8px;
+  min-height: 44px;
+  max-height: 86px;
+  background: $my-grey-50;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+
+  &:hover {
+    cursor: pointer;
+    background: #f4f4f4;
+  }
+
+  .given-for {
+    width: 100%;
+    padding: 2px 4px;
+
+    @media screen and (min-width: $small) {
+      min-width: 180px;
+      max-width: 180px;
+      margin-right: 2px;
+    }
+  }
+
+  .scores {
+    min-width: 200px;
+    width: 100%;
+    padding: 2px 4px;
+
+    @media screen and (min-width: $small) {
+      min-width: 200px;
+      // margin-right: 8px;
+    }
+
+    .key-factors {
+      // width: 100%;
+      min-width: 180px;
+      max-width: 200px;
+      min-height: 60px;
+      border-radius: 4px;
+      padding: 4px;
+
+      // &:hover {
+      //   background: #eeeeee;
+      // }
+
+      @media screen and (min-width: $small) {
+        min-width: 180px;
+        max-width: 180px;
+        margin-right: 8px;
+      }
+
+      .key-factor {
+        border-radius: 4px;
+        min-width: 40px;
+        max-width: 40px;
+        height: 28px;
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 500;
+        background: #eeeeee; // default background
+        text-align: center;
+        margin-bottom: 4px;
+
+        .factor {
+          text-align: center;
+          line-height: 8px;
+          font-size: 8px;
+          font-weight: 300;
+
+          &.A {
+            color: #fff59d;
+          }
+        }
+
+        .score {
+          text-align: center;
+          line-height: 18px;
+          font-size: 12px;
+          font-weight: 400;
+
+          &.A {
+            color: #fff59d;
+          }
+        }
+
+        &.N\/A {
+          background: #eeeeee;
+          color: rgba(0, 0, 0, 0.54);
+        }
+
+        &.A {
+          background: #03a9f4;
+          color: white;
+        }
+
+        &.B {
+          background: #03a9f4;
+          color: white;
+        }
+
+        &.C {
+          background: #c8e6c9;
+          color: rgba(0, 0, 0, 0.625);
+        }
+
+        &.D {
+          background: #ffa4a2;
+          color: black;
+        }
+      }
+    }
+
+    .key-skills {
+      // width: 100%;
+      min-width: 180px;
+      max-width: 200px;
+      min-height: 60px;
+      border-radius: 4px;
+      padding: 4px;
+
+      // &:hover {
+      //   background: #eeeeee;
+      // }
+
+      @media screen and (min-width: $small) {
+        min-width: 180px;
+        max-width: 180px;
+        margin-right: 8px;
+      }
+
+      .key-skill {
+        border-radius: 4px;
+        min-width: 40px;
+        max-width: 40px;
+        height: 28px;
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 500;
+        background: #eeeeee; // default background
+        text-align: center;
+        margin-bottom: 4px;
+
+        &.did {
+          background: #d1c4e9;
+          color: rgba(0, 0, 0, 0.625);
+        }
+
+        .top {
+          text-align: center;
+          line-height: 12px;
+          font-size: 8px;
+          font-weight: 300;
+          color: rgba(0, 0, 0, 0.625);
+        }
+
+        .skill {
+          text-align: center;
+          line-height: 14px;
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(0, 0, 0, 0.625);
+        }
+      }
+    }
+
+    .comments-container {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 4px;
+      padding: 4px;
+
+      // &:hover {
+      //   background: #eeeeee;
+      // }
+
+      @media screen and (min-width: $small) {
+        min-width: 180px;
+        max-width: 180px;
+        margin-right: 8px;
+      }
+
+      .comments {
+        font-size: 12px;
+        line-height: 13.5px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+    }
+
+    .appraisal-by {
+      width: 100%;
+      min-height: 45.5px;
+      border-radius: 4px;
+      padding: 4px;
+
+      // &:hover {
+      //   background: #eeeeee;
+      // }
+
+      @media screen and (min-width: $small) {
+        min-width: 180px;
+        max-width: 180px;
+        margin-right: 8px;
+      }
+
+      .engineer {
+        font-size: 12px;
+        line-height: 13.5px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+    }
+  }
+}

@@ -31,7 +31,7 @@ import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-li
         [fg_fields]="fg_fields"
         [fg_photo]="fg_photo"
         [initialFields]="initialFields"
-        (updateFormGroupFields)="updateFormGroupFields.emit($event)"
+        (updateDataItem)="updateDataItem.emit($event)"
         (updateFormGroupPhoto)="updateFormGroupPhoto.emit($event)"
         (switchFormMode)="switchFormMode.emit($event)">
     </app-people-form-actions-edit>
@@ -44,7 +44,7 @@ export class PeopleFormActionsComponent {
   @Input() initialFields: PeopleItem;
 
   @Output() switchFormMode = new EventEmitter<any>();
-  @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+  @Output() updateDataItem = new EventEmitter<PeopleItem>();
   @Output()
   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
   @Output() closeUserForm = new EventEmitter<any>();

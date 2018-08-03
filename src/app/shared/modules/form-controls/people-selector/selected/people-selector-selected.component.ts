@@ -34,7 +34,7 @@ import { UtilitiesService } from './../../../../services/utilities.service';
             <div class="second_line" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="4px">
                 <span class="text">{{ user.LocationAssigned.Title }} &middot; {{ user.Position.Title}}</span>
                 <div class="delete" *ngIf="overContainer && mode !== 'view'"
-                    matTooltip="remove from this list"
+                    matTooltip="unselect"
                     (mouseenter)="onMouseOverDelete()"
                     (mouseleave)="onMouseLeaveDelete()"
                     (click)="removeSelectedUser.emit(user.ID)">

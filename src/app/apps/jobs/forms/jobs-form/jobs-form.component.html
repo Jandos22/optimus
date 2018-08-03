@@ -94,7 +94,7 @@
                     </span>
                     <app-form-control-people-selector class="cmn-form-component t2-w2-t1-w3-t2-w4" fxLayout="row wrap" [fg_fields]="fg_fields"
                         [mode]="data.mode" [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async"
-                        [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)" [id]="1">
+                        [singleLocation]="true" [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)" [id]="1">
                     </app-form-control-people-selector>
                 </div>
 
@@ -104,8 +104,8 @@
                         Operators
                     </span>
                     <app-form-control-people-selector class="cmn-form-component take-2-cols" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
-                        [fieldName]="'OperatorsId'" [displayName]="'Operators'" [allowNumberOfUsers]="12" (onSelectUser)="onSelectOperator($event)"
-                        [id]="2">
+                        [fieldName]="'OperatorsId'" [displayName]="'Operators'" [allowNumberOfUsers]="12" [singleLocation]="true"
+                        (onSelectUser)="onSelectOperator($event)" [id]="2">
                     </app-form-control-people-selector>
                 </div>
 

@@ -128,7 +128,9 @@ export class AuthGuard implements OnDestroy {
 
     // meanwhile update user's locations of interest
     this.store.dispatch(
-      new a_in_locations.UpdateSelected(optimusUser.LocationsOfInterestId)
+      new a_in_locations.UpdateSelected(
+        optimusUser.LocationsOfInterestId.results
+      )
     );
 
     // grant permission for navigation

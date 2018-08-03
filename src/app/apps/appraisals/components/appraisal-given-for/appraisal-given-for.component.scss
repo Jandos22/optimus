@@ -1,0 +1,101 @@
+.person-container {
+  border-radius: 4px;
+  padding: 4px;
+  width: 100%;
+  position: relative;
+
+  // &:hover {
+  //   background: #eeeeee;
+  // }
+
+  .button-to-quest {
+    color: rgba(0, 0, 0, 0.625);
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    @media screen and (min-width: 600px) {
+      color: rgba(0, 0, 0, 0.625);
+      position: relative;
+      margin-top: 16px !important;
+    }
+  }
+}
+
+.person-photo-container {
+  width: 36px;
+  height: 36px;
+  margin-right: 8px;
+  position: relative;
+
+  @media screen and (min-width: 600px) {
+    height: 100px !important;
+    width: 100px !important;
+    padding-left: 8px;
+    margin-right: 0;
+    margin-left: 32px;
+  }
+
+  img.photo {
+    border-radius: 50%;
+    height: 36px !important;
+    width: 36px !important;
+
+    @media screen and (min-width: 600px) {
+      height: 100px !important;
+      width: 100px !important;
+    }
+  }
+}
+
+.person-info {
+  height: 40px;
+  width: 100%;
+
+  @media screen and (min-width: 600px) {
+    min-height: 60px;
+    max-height: 60px;
+    padding: 20px 8px 8px 0px;
+  }
+
+  div.fullname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.shortname {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 116px;
+    max-width: 200px;
+    color: rgba(0, 0, 0, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div.secondary {
+    height: 16px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .text {
+      line-height: 16px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+  }
+}

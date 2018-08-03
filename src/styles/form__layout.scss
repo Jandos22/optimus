@@ -1,0 +1,180 @@
+// screen > 570px  can fit 2 column
+// screen > 815px  can fit 3 columns
+// screen > 1060px can fit 4 columns
+
+// width = 196px   take 1 column    180 + 16p
+// width = 392px   take 2 columns   180 + 16p + 180 + 16p
+// width = 588px   take 3 columns   180 * 3 + 16p * 3
+// width = 784px   take 4 columns   180 * 4 + 16p * 4
+
+// class "t2w2" means take 2 columns when 2 can be taken
+
+// breakpoints
+$bp2: 570px;
+$bp3: 815px;
+$bp4: 1060px;
+
+// components widths
+$col1: calc(180px);
+$col2: calc(180px * 2 + 16px * 1);
+$col3: calc(180px * 3 + 16px * 2);
+$col4: calc(180px * 4 + 16px * 3);
+
+// containers widths
+$con1: calc(180px + 16px);
+$con2: calc(180px * 2 + 16px * 2);
+$con3: calc(180px * 3 + 16px * 3);
+$con4: calc(180px * 4 + 16px * 4);
+
+.con1 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $con1;
+    max-width: $con1;
+  }
+}
+
+.con2 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $con2;
+    max-width: $con2;
+  }
+}
+
+.con3 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $con2;
+    max-width: $con2;
+
+    .con2 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $con3;
+    max-width: $con3;
+
+    .con2 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+  }
+}
+
+.con4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $con2;
+    max-width: $con2;
+
+    .con2 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+    .con3 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $con3;
+    max-width: $con3;
+
+    .con2 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+    .con3 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $con4;
+    max-width: $con4;
+
+    .con2 {
+      min-width: $con2;
+      max-width: $con2;
+    }
+    .con3 {
+      min-width: $con3;
+      max-width: $con3;
+    }
+  }
+}
+
+.t1w2-t1w3-t1w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col1;
+    max-width: $col1;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col1;
+    max-width: $col1;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col1;
+    max-width: $col1;
+  }
+}
+
+.t1w2-t2w3-t3w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col1;
+    max-width: $col1;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col3;
+    max-width: $col3;
+  }
+}
+
+.t2w2-t2w3-t3w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col3;
+    max-width: $col3;
+  }
+}
+
+.t2w2-t3w3-t4w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col3;
+    max-width: $col3;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col4;
+    max-width: $col4;
+  }
+}

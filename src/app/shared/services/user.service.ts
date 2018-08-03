@@ -50,6 +50,8 @@ export class UserService {
     ) {
       loginName = 'dismagulov@slb.com';
       spId = 9;
+      // loginName = 'dismagulov@slb.com';
+      // spId = 9
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');

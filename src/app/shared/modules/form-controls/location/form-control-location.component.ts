@@ -21,7 +21,7 @@ import { LocationEnt } from '../../../../shared/interface/locations.model';
         placeholder="Location"
         formControlName="LocationId">
         <mat-option
-          *ngFor="let item of locations"
+          *ngFor="let item of locations | filterLocations: exclude"
           [value]="item.id">
             {{ item.Title }}
         </mat-option>
@@ -36,6 +36,7 @@ export class FormControlLocationComponent {
   @Input() accessLevel: number;
   @Input() locations: LocationEnt[];
   @Input() mode: FormMode;
+  @Input() exclude: string[];
 
   constructor() {}
 

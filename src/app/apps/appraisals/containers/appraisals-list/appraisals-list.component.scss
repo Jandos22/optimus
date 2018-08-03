@@ -1,0 +1,31 @@
+@import '../../../../../colors';
+
+.appraisals-list-container {
+  margin: 0 auto;
+  padding-left: 16px;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  @media screen and (min-width: 600px) {
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
+
+app-appraisal-group {
+  // display: block;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  // min-height: 54px;
+  border-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 8px;
+
+  @media screen and (min-width: 600px) {
+    width: 100%;
+  }
+
+  &.last-item {
+    margin-right: 16px;
+  }
+}

@@ -20,7 +20,7 @@ import {
   JobsSearchParams,
   JobItem
 } from '../../../../shared/interface/jobs.model';
-import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
+import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({

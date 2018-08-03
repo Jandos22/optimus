@@ -4,12 +4,14 @@ export interface ParamsState {
   query: string;
   locations: number[];
   top: number;
+  positions: number[];
 }
 
 export const initialState: ParamsState = {
   query: null,
   locations: null,
-  top: null
+  top: null,
+  positions: null
 };
 
 export function reducer(

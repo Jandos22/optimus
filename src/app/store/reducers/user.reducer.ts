@@ -73,7 +73,9 @@ export function reducer(
         ...state,
         optimus: {
           ...state.optimus,
-          LocationsOfInterestId: action.payload
+          LocationsOfInterestId: {
+            results: action.payload
+          }
         }
       };
 
@@ -105,6 +107,7 @@ export const getUserAccessLevel = (state: UserState) => {
 
 // from optimus
 export const getUserId = (state: UserState) => state.optimus.Id;
+export const getSelfOptimusId = (state: UserState) => state.optimus.Id;
 
 export const getUserLocationAssignedId = (state: UserState) => {
   if (state.optimus) {

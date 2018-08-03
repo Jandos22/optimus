@@ -1,0 +1,67 @@
+.appraisals-skill-container {
+  min-width: 100%;
+  width: 100%;
+}
+
+.appraisals-row-main {
+  min-width: 100%;
+  width: 100%;
+
+  .skill-title {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 16px;
+  }
+
+  button.mat-button.skill-value-button {
+    // padding: 0;
+    min-width: 60px;
+    max-width: 60px;
+    z-index: 1;
+
+    &.NA {
+      background: white;
+      color: grey;
+    }
+
+    &.A {
+      background: #03a9f4;
+      color: white;
+    }
+
+    &.B {
+      background: #03a9f4;
+      color: white;
+    }
+
+    &.C {
+      background: #52c7b8;
+      color: black;
+    }
+
+    &.D {
+      background: #ffa4a2;
+      color: black;
+    }
+  }
+}
+
+.appraisal-option-description-container {
+  max-width: calc(100% - 60px);
+
+  .description {
+    white-space: normal;
+    font-size: 12px;
+    line-height: 14px;
+    word-wrap: normal;
+  }
+}
+
+.appraisal-description-container {
+  margin-top: -13.5px;
+}
+
+.appraisal-skill-description {
+  white-space: normal;
+  font-size: 13px;
+  line-height: 14px !important;
+}

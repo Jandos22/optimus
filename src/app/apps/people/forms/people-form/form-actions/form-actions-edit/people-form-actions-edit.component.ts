@@ -66,7 +66,8 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   @Input() initialFields: PeopleItem;
 
   @Output() switchFormMode = new EventEmitter<any>();
-  @Output() updateFormGroupFields = new EventEmitter<PeopleItem>();
+
+  @Output() updateDataItem = new EventEmitter<PeopleItem>();
   @Output()
   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
 
@@ -86,7 +87,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_people: Store<fromPeople.PeopleState>,
-    private httpService: PeopleFormHttpService
+    private spHttp: PeopleFormHttpService
   ) {
     console.log('people-form-actions-edit: initialized');
   }
@@ -141,7 +142,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   saveChangesFields() {
     console.log(this.unsavedFields);
 
-    this.$saveChangesFields = this.httpService
+    this.$saveChangesFields = this.spHttp
       .updatePeopleItem(this.unsavedFields)
       .pipe(take(1))
       .subscribe(
@@ -154,19 +155,53 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
 
   // * success saving updated fields
   saveChangesFieldsSuccess(success: PeopleItem) {
+    console.log('successfully saved fields:');
+    console.log(success);
+
     this.$saveChangesFields.unsubscribe();
     this.unsavedFields = {};
     this.hasUnsavedFields = false;
 
-    // update form group fields
-    // what about initial fields? if form will stay in edit mode
-    this.updateFormGroupFields.emit(success);
+    this.getAllFieldsOfUpdatedItem(success);
+  }
+
+  getAllFieldsOfUpdatedItem(updatedItem: PeopleItem) {
+    console.log('getting all fields of updated item:');
+
+    this.spHttp
+      .getUserById(updatedItem.ID)
+      .pipe(take(1))
+      .subscribe(
+        success =>
+          this.getAllFieldsOfUpdatedItemSuccees(success[0] as PeopleItem),
+        error => this.getAllFieldsOfUpdatedItemError(error),
+        () => console.log('completed getting all fields of updated item')
+      );
+  }
+
+  getAllFieldsOfUpdatedItemSuccees(fullItem: PeopleItem) {
+    console.log('successfully got all fields of updated item:');
+    console.log(fullItem);
+
+    // now you want to update data.item
+    // in case user will want to hit EDIT button again
+    this.updateDataItem.emit(fullItem);
 
     // update user entity in state
     this.store_people.dispatch(
-      new fromUsersActions.UpdateOneUser(success.ID, success)
+      new fromUsersActions.UpdateOneUser(fullItem.ID, fullItem)
     );
-    this.switchModeToViewOrKeepEditing();
+
+    // function that checks if anything left to save
+    // if yes, it will run save workflows
+    // if not, then switch mode to view
+    this.finalize();
+  }
+
+  getAllFieldsOfUpdatedItemError(error) {
+    this.savingChanges = false;
+    console.log(error);
+    this.store_root.dispatch(new fromErrorActions.DisplayError(error));
   }
 
   // * error when saving updated fields
@@ -179,7 +214,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
 
   saveNewPhoto(unsavedPhoto: ToSaveUserPhoto) {
     console.log(unsavedPhoto);
-    this.$saveNewPhoto = this.httpService
+    this.$saveNewPhoto = this.spHttp
       .saveNewPhoto(unsavedPhoto)
       .subscribe(
         success => this.saveNewPhotoSuccess(success),
@@ -192,7 +227,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
     this.$saveNewPhoto.unsubscribe();
     this.updateFormGroupPhoto.emit(this.modifyNewPhotoObject(newPhoto));
     this.hasUnsavedPhoto = false;
-    this.switchModeToViewOrKeepEditing();
+    this.finalize();
 
     const changes: PeopleItem = {
       Attachments: true,
@@ -213,7 +248,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
     ] as SpListItemAttachmentFiles[];
   }
 
-  switchModeToViewOrKeepEditing() {
+  finalize() {
     if (this.hasUnsavedFields || this.hasUnsavedPhoto) {
       this.savingChanges = true;
       this.saveNewPhoto(this.fg_photo.value);
