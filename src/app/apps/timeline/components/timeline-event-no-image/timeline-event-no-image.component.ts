@@ -22,7 +22,7 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
       <div class="event-location-and-type"
         fxLayout="row wrap" fxLayoutAlign="start center"
-        fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between center">
+        fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between start">
 
         <div class="date" fxFlex="82px" fxFlex.gt-xs="167px">{{ event.EventDate | date: 'mediumDate' }}</div>
 

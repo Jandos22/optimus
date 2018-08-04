@@ -4,7 +4,8 @@ import {
   OnInit,
   ViewEncapsulation,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 // forms
@@ -22,18 +23,23 @@ import * as fromTimeline from '../../store';
 // interface
 import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { TimelineSearchParams } from '../../../../shared/interface/timeline.model';
+import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-timeline-filters',
   styleUrls: ['timeline-filters.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-timeline-filters-header fxFlex="65px" class="common-filters-header"
         (toggleFilters)="toggleFilters.emit()">
     </app-timeline-filters-header>
 
     <app-timeline-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async">
+        [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
+        [selfUser]="selfUser$ | async"
+        (updateLocationsofinterest)="updateLocationsofinterest($event)"
+        (onSelectEventReporters)="onSelectEventReporters($event)">
     </app-timeline-filters-content>
 
     <app-timeline-filters-footer fxFlex="49px" class="common-filters-footer">
@@ -45,6 +51,8 @@ export class TimelineFiltersComponent implements OnInit {
 
   fg_filters: FormGroup;
   $fg_filters: Subscription;
+
+  selfUser$: Observable<PeopleItem>;
 
   // from store.root.locations.selected
   $locofinterest: Subscription;
@@ -69,6 +77,9 @@ export class TimelineFiltersComponent implements OnInit {
       select(fromRoot.selectLocationsSelectedIds),
       tap(locations => this.updateFgFiltersLocations(locations))
     );
+
+    // get self user item to use in project reporters selection
+    this.selfUser$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
   }
 
   startSubscriptions() {
@@ -91,11 +102,23 @@ export class TimelineFiltersComponent implements OnInit {
   createFormGroup() {
     this.fg_filters = this.fb.group({
       locations: '',
-      top: 100
+      top: 100,
+      eventTypes: '',
+      eventReporters: ''
     });
   }
 
   updateFgFiltersLocations(locations: number[]) {
+    console.log(locations);
     this.fg_filters.controls['locations'].patchValue(locations);
+  }
+
+  updateLocationsofinterest(locations: number[]) {
+    console.log(locations);
+    this.store_root.dispatch(new fromRoot.UpdateSelected(locations));
+  }
+
+  onSelectEventReporters(eventReporters: number[]) {
+    this.fg_filters.controls['eventReporters'].patchValue(eventReporters);
   }
 }

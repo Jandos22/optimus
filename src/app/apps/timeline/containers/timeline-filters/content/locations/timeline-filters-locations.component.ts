@@ -2,6 +2,8 @@ import {
   Component,
   Input,
   OnInit,
+  Output,
+  EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy,
   ChangeDetectorRef
@@ -54,8 +56,9 @@ import { LocationsService } from '../../../../../../shared/services/locations.se
 export class TimelineFiltersLocationsComponent implements OnInit {
   @Input() fg_filters: FormGroup;
   @Input() locofinterest: number;
-  // @Input() accessLevel: number;
   @Input() exclude: string[];
+
+  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
 
   // fc_locations = new FormControl([])
   locations: LocationEnt[] = [];
@@ -74,36 +77,11 @@ export class TimelineFiltersLocationsComponent implements OnInit {
   ngOnInit() {
     this.$fc_locations = this.fg_filters.controls['locations'].valueChanges
       .pipe(
+        tap(locations => this.updateLocationsofinterest.emit(locations)),
         startWith(this.fg_filters.controls['locations'].value)
-        // pairwise(),
-        // distinctUntilChanged(),
-        // debounceTime(20)
       )
       .subscribe((selected: number[]) => {
         this.onlyOneLocationLeftSelected(selected);
-        // console.log(change);
-        // const prev = change[0];
-        // const curr = change[1];
-
-        // const wasSelected = this.wasAlreadySelected(prev, this.current.Id);
-        // const isLocationGroup = this.isLocationGroup(this.current);
-        // const isSame = this.isEqualSelections(this.futureClone, curr);
-
-        // force selection of child locations
-        // if (isLocationGroup && !wasSelected) {
-        //   const merged = [...curr, ...this.current.HasLocationsId];
-        //   const removedDuplicates = _.uniq(merged);
-        //   this.futureClone = [...removedDuplicates];
-        //   this.updateFcLocations(removedDuplicates);
-        //   // force unselection of child locations
-        // } else if (isLocationGroup && wasSelected && !isSame) {
-        //   console.log('unselect child locations');
-
-        // }
-
-        // console.log(wasSelected);
-        // console.log(isLocationGroup);
-        // console.log(isSame);
       });
   }
 
@@ -115,18 +93,6 @@ export class TimelineFiltersLocationsComponent implements OnInit {
   thisId(Id: number) {
     return Id === this.fg_filters.controls['locations'].value[0] ? true : false;
   }
-
-  // isEqualSelections(prev: number[], curr: number[]) {
-  //   return _.isEqual(prev, curr) ? true : false;
-  // }
-
-  // isLocationGroup(location: LocationEnt) {
-  //   if (location.HasLocationsId.length) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   fetch() {
     this.fetching = true;
@@ -152,16 +118,6 @@ export class TimelineFiltersLocationsComponent implements OnInit {
     this.locations = [];
     this.cd.detectChanges();
   }
-
-  // onOptionClick(selected: LocationEnt) {
-  // console.log(selected.Id);
-  // this.current = selected;
-  // }
-
-  // wasAlreadySelected(prevIds: number[], currId: number) {
-  //   const wasSelected = _.find(prevIds, (prevId: number) => prevId === currId);
-  //   return wasSelected ? true : false;
-  // }
 
   updateFcLocations(locations: number[]) {
     this.fg_filters.controls['locations'].patchValue(locations);

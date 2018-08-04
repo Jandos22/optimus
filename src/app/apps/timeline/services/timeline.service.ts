@@ -43,6 +43,10 @@ export class TimelineService {
     const text = params.text ? params.text.replace('#', '%23') : null;
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
+    // eventTypes must be ids array
+    const eventTypes = params.eventTypes ? params.eventTypes : [];
+    // eventReporters must be ids array
+    const eventReporters = params.eventReporters ? params.eventReporters : [];
     // if top is missing then default is 100
     let top = params.top ? params.top : 100;
 
@@ -68,6 +72,20 @@ export class TimelineService {
         url += 'and';
       }
       url += `${this.getFilterLocations(locations)}`;
+    }
+
+    if (eventTypes.length) {
+      if (text || locations.length) {
+        url += 'and';
+      }
+      url += `${this.getFilterEventTypes(eventTypes)}`;
+    }
+
+    if (eventReporters.length) {
+      if (text || locations.length || eventTypes.length) {
+        url += 'and';
+      }
+      url += `${this.getFilterEventReporters(eventReporters)}`;
     }
 
     // $orderby
@@ -134,6 +152,68 @@ export class TimelineService {
         }
 
         filter += `(Locations/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterEventTypes(eventTypes: number[]) {
+    if (eventTypes.length) {
+      let filter = '';
+      const n = eventTypes.length;
+      let i = 1;
+
+      for (const eventType of eventTypes) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(EventType/Id eq ${eventType})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterEventReporters(eventReporters: number[]) {
+    if (eventReporters.length) {
+      let filter = '';
+      const n = eventReporters.length;
+      let i = 1;
+
+      for (const eventReporter of eventReporters) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(EventReporters/Id eq ${eventReporter})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {

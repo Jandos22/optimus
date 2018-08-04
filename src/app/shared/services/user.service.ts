@@ -50,12 +50,12 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com';
       // spId = 9;
-      // loginName = 'zombayev@slb.com';
-      // spId = 167;
+      loginName = 'zombayev@slb.com';
+      spId = 167;
       // loginName = 'azhussipov@slb.com';
       // spId = 6;
-      loginName = 'cmarcotte@slb.com';
-      spId = 209;
+      // loginName = 'cmarcotte@slb.com';
+      // spId = 209;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');

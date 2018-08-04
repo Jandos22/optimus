@@ -26,6 +26,8 @@ export interface TimelineSearchParams {
   text: string;
   locations: number[];
   top: number;
+  eventTypes?: number[];
+  eventReporters?: number[];
 }
 
 export interface TimelineEventType extends SpListItem {

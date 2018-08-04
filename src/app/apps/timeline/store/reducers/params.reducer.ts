@@ -11,12 +11,16 @@ export interface ParamsState {
   text: string;
   locations: number[];
   top: number;
+  eventTypes: number[];
+  eventReporters: number[];
 }
 
 export const initialState: ParamsState = {
   text: null,
   locations: null,
-  top: null
+  top: null,
+  eventTypes: null,
+  eventReporters: null
 };
 
 export function reducer(
