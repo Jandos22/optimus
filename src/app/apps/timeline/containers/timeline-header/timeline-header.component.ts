@@ -46,12 +46,6 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('text').invalid }">
     </app-timeline-toolbar>
-
-    <!--
-    <app-toolbar-button-filters class="filters-at-end"
-      (toggleFilters)="toggleFilters.emit()">
-    </app-toolbar-button-filters>
-    -->
     `
 })
 export class TimelineHeaderComponent implements OnInit, OnDestroy {
@@ -65,7 +59,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
+  // $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
 
@@ -139,16 +133,16 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscribeToSelectedLocations();
+    // this.subscribeToSelectedLocations();
   }
 
   subscribeToSelectedLocations() {
     // subscribe to store and update selected location on change
-    this.$selectedLocations = this.store_root
-      .pipe(select(fromRoot.selectSelectedId))
-      .subscribe(location => {
-        // this.fg_params.get('locations').setValue(location);
-      });
+    // this.$selectedLocations = this.store_root
+    //   .pipe(select(fromRoot.selectSelectedId))
+    //   .subscribe(location => {
+    //     // this.fg_params.get('locations').setValue(location);
+    //   });
   }
 
   onFocus() {
@@ -161,6 +155,6 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    this.$selectedLocations.unsubscribe();
+    // this.$selectedLocations.unsubscribe();
   }
 }

@@ -30,7 +30,7 @@ import { FormGroup } from '@angular/forms';
     </app-timeline-toolbar-button-clear>
 
     <app-timeline-toolbar-button-add
-      *ngIf="canCreate()"
+      *ngIf="canCreate()" matTooltip="Post new event"
       (openForm)="openForm.emit()">
     </app-timeline-toolbar-button-add>
 

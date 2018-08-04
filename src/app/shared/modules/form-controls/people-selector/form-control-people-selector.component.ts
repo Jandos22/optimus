@@ -55,7 +55,8 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field [id]="'refWidth' + id" *ngIf="mode !== 'view'"
-      class="people-selector-field" [formGroup]="fg_users">
+      class="people-selector-field" [formGroup]="fg_users"
+      [ngClass]="{ 'forFilters': forFilters }">
 
       <input matInput
         #autoCompleteInput
@@ -468,10 +469,12 @@ export class FormControlPeopleSelectorComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.doReset.currentValue) {
-      console.log('reset');
-      if (changes.doReset.currentValue !== changes.doReset.previousValue) {
-        this.fg_users.get('selectedUsers').patchValue([]);
+    if (changes.doReset) {
+      if (changes.doReset.currentValue) {
+        console.log('reset');
+        if (changes.doReset.currentValue !== changes.doReset.previousValue) {
+          this.fg_users.get('selectedUsers').patchValue([]);
+        }
       }
     }
   }

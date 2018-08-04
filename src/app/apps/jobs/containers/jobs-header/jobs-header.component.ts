@@ -41,7 +41,8 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
       fxLayout="row nowrap" fxLayoutAlign="start center"
       [appName]="appName" [fg_params]="fg_params" [searching]="searching"
       [accessLevel]="accessLevel"
-      (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
+      (onFocus)="onFocus()" (onBlur)="onBlur()"
+      (openForm)="openForm.emit()" (toggleFilters)="toggleFilters.emit()"
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('text').invalid }">
     </app-jobs-toolbar>
@@ -53,6 +54,7 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
   @Input() accessLevel: number;
 
   @Output() openForm = new EventEmitter<any>();
+  @Output() toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
@@ -73,15 +75,15 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
-      text: ['', ValidationService.onlySearchable],
-      locations: [''],
-      top: []
+      text: ['', ValidationService.onlySearchable]
+      // locations: [''],
+      // top: []
     });
   }
 
   resetParamsFormGroup() {
     this.fg_params.get('text').patchValue('');
-    this.fg_params.get('top').patchValue(100);
+    // this.fg_params.get('top').patchValue(100);
   }
 
   subscribeToParamsFormGroup() {
@@ -95,24 +97,28 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
 
-    const locations$ = this.fg_params
-      .get('locations')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const locations$ = this.fg_params
+    //   .get('locations')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const top$ = this.fg_params
-      .get('top')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const top$ = this.fg_params
+    //   .get('top')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const params$ = combineLatest(text$, locations$, top$);
+    const params$ = combineLatest(
+      text$
+      // locations$,
+      // top$
+    );
 
     this.$params = params$
       .pipe(
         map(params => {
           console.log(params);
           return {
-            text: params[0],
-            locations: params[1],
-            top: params[2]
+            text: params[0]
+            // locations: params[1],
+            // top: params[2]
           };
         })
       )
@@ -127,16 +133,16 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscribeToSelectedLocations();
+    // this.subscribeToSelectedLocations();
   }
 
   subscribeToSelectedLocations() {
     // subscribe to store and update selected location on change
-    this.$selectedLocations = this.store_root
-      .pipe(select(fromRoot.selectSelectedId))
-      .subscribe(location => {
-        this.fg_params.get('locations').setValue(location);
-      });
+    // this.$selectedLocations = this.store_root
+    //   .pipe(select(fromRoot.selectSelectedId))
+    //   .subscribe(location => {
+    //     this.fg_params.get('locations').setValue(location);
+    //   });
   }
 
   onFocus() {
@@ -149,6 +155,6 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    this.$selectedLocations.unsubscribe();
+    // this.$selectedLocations.unsubscribe();
   }
 }

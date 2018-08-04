@@ -42,10 +42,14 @@ export class JobsService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text.replace('#', '%23');
+    const text = params.text ? params.text.replace('#', '%23') : null;
+    const well = params.well ? params.well.replace('#', '%23') : null;
     // locations must be ids array
-    const locations = params.locations;
-    let top = params.top;
+    const locations = params.locations ? params.locations : [];
+    // engineers must be ids array
+    const engineers = params.engineers ? params.engineers : [];
+    // if top is missing then default is 100
+    let top = params.top ? params.top : 100;
 
     // job date
     // dates start with empty string
@@ -64,7 +68,14 @@ export class JobsService {
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is not empty/null
-    if (text || locations.length || beforeDate || afterDate) {
+    if (
+      text ||
+      locations.length ||
+      beforeDate ||
+      afterDate ||
+      well ||
+      engineers.length
+    ) {
       url += `&$filter=`;
     }
 
@@ -95,10 +106,6 @@ export class JobsService {
       url += `)`;
     }
 
-    // if (text && locations.length) {
-    //   url += 'and';
-    // }
-
     // locations filter configuration
     if (locations.length) {
       // check if "AND" is needed
@@ -117,6 +124,23 @@ export class JobsService {
       }
       // find items with RigUpStart before given date
       url += `(RigUpStart lt datetime'${beforeDate}')`;
+    }
+
+    // well filter configuration
+    if (well) {
+      // check if "AND" is needed
+      if (text || locations.length || beforeDate) {
+        url += 'and';
+      }
+      // finds items with given location
+      url += `${this.getFilterWell(well)}`;
+    }
+
+    if (engineers.length) {
+      if (text || locations.length || beforeDate.length || well) {
+        url += 'and';
+      }
+      url += `${this.getFilterEngineers(engineers)}`;
     }
 
     // $orderby
@@ -228,6 +252,45 @@ export class JobsService {
         }
 
         filter += `(Location/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterWell(well: string) {
+    if (well) {
+      return `(substringof('${well}',Well))`;
+    } else {
+      return '';
+    }
+  }
+
+  getFilterEngineers(engineers: number[]) {
+    if (engineers.length) {
+      let filter = '';
+      const n = engineers.length;
+      let i = 1;
+
+      for (const engineer of engineers) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Engineers/Id eq ${engineer})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {

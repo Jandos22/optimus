@@ -1,6 +1,10 @@
-<span mat-dialog-title style="text-align: center;">
-    Job
-</span>
+<div class="form-title-container" fxLayout="row nowrap" fxLayoutAlign="start start">
+    <div fxFlex class="form-title">Jobs</div>
+    <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+        [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+    </app-form-control-location>
+</div>
+
 <mat-dialog-content class="common-mat-dialog-content">
 
     <div class="cmn-form-container">
@@ -60,10 +64,11 @@
 
                 <app-jobs-form-duration class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
                 </app-jobs-form-duration>
-
+                <!--
                 <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
                     [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
                 </app-form-control-location>
+            -->
 
                 <!-- SECTION -->
                 <div class="form-group-title">Well Info</div>
@@ -94,7 +99,7 @@
                     </span>
                     <app-form-control-people-selector class="cmn-form-component t2-w2-t1-w3-t2-w4" fxLayout="row wrap" [fg_fields]="fg_fields"
                         [mode]="data.mode" [fieldName]="'EngineersId'" [displayName]="'Engineers'" [selfUser]="selfUser$ | async"
-                        [singleLocation]="true" [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)" [id]="1">
+                        [singleLocation]="true" [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)" [id]="1" [includeOnly]="engineers">
                     </app-form-control-people-selector>
                 </div>
 
@@ -105,7 +110,7 @@
                     </span>
                     <app-form-control-people-selector class="cmn-form-component take-2-cols" fxLayout="row wrap" [fg_fields]="fg_fields" [mode]="data.mode"
                         [fieldName]="'OperatorsId'" [displayName]="'Operators'" [allowNumberOfUsers]="12" [singleLocation]="true"
-                        (onSelectUser)="onSelectOperator($event)" [id]="2">
+                        (onSelectUser)="onSelectOperator($event)" [id]="2" [includeOnly]="operators">
                     </app-form-control-people-selector>
                 </div>
 
