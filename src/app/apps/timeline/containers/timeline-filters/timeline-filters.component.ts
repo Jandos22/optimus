@@ -37,12 +37,13 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
     <app-timeline-filters-content fxFlex class="common-filters-content"
         [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async"
+        [selfUser]="selfUser$ | async" [doReset]="doReset"
         (updateLocationsofinterest)="updateLocationsofinterest($event)"
         (onSelectEventReporters)="onSelectEventReporters($event)">
     </app-timeline-filters-content>
 
-    <app-timeline-filters-footer fxFlex="49px" class="common-filters-footer">
+    <app-timeline-filters-footer fxFlex="49px" class="common-filters-footer"
+      (onResetFilters)="onResetFilters($event)">
     </app-timeline-filters-footer>
     `
 })
@@ -57,6 +58,8 @@ export class TimelineFiltersComponent implements OnInit {
   // from store.root.locations.selected
   $locofinterest: Subscription;
   locofinterest$: Observable<number[]>;
+
+  doReset = false;
 
   constructor(
     private fb: FormBuilder,
@@ -120,5 +123,11 @@ export class TimelineFiltersComponent implements OnInit {
 
   onSelectEventReporters(eventReporters: number[]) {
     this.fg_filters.controls['eventReporters'].patchValue(eventReporters);
+  }
+
+  onResetFilters(event) {
+    this.doReset = this.doReset ? false : true;
+    this.fg_filters.controls['eventTypes'].patchValue([]);
+    this.fg_filters.controls['eventReporters'].patchValue([]);
   }
 }

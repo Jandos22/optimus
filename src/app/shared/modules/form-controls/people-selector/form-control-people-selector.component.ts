@@ -3,6 +3,8 @@ import {
   Input,
   OnInit,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
   ViewEncapsulation,
   ChangeDetectionStrategy,
   Output,
@@ -104,7 +106,8 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
     </app-people-selector-selected>
     `
 })
-export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
+export class FormControlPeopleSelectorComponent
+  implements OnInit, OnDestroy, OnChanges {
   @Input() placeholder: string;
   @Input() fieldName: string; // form control name
   @Input() displayName: string; // label name
@@ -117,6 +120,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
   // used in apps filters only
   @Input() forFilters: boolean; // Location or Locations
+  @Input() doReset: boolean;
   selfSelected: boolean;
   tooltipSelectMe = 'Select Me';
 
@@ -461,5 +465,14 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.$query.unsubscribe();
     this.$fc_selectedUsers.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.doReset.currentValue) {
+      console.log('reset');
+      if (changes.doReset.currentValue !== changes.doReset.previousValue) {
+        this.fg_users.get('selectedUsers').patchValue([]);
+      }
+    }
   }
 }

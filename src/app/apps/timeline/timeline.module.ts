@@ -44,6 +44,9 @@ import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 
+// Filter Controls
+import { FilterControlsModule } from './../../shared/modules/filter-controls/locations/form-controls.module';
+
 // routes
 export const timelineRoutes: Routes = [
   { path: '', component: fromContainers.TimelineComponent }
@@ -64,6 +67,7 @@ export const timelineRoutes: Routes = [
     // form control modules
     FormControlsModule,
     ToolbarButtonsModule,
+    FilterControlsModule,
     RichTextEditorLightModule,
     FormControlImagePickerModule
   ],

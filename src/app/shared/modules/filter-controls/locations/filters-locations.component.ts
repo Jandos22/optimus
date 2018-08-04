@@ -26,14 +26,14 @@ import {
 } from 'rxjs/operators';
 
 // interfaces
-import { LocationEnt } from '../../../../../../shared/interface/locations.model';
+import { LocationEnt } from '../../../../shared/interface/locations.model';
 
 // services
-import { LocationsService } from '../../../../../../shared/services/locations.service';
+import { LocationsService } from '../../../../shared/services/locations.service';
 
 @Component({
-  selector: 'app-timeline-filters-locations',
-  styleUrls: ['timeline-filters-locations.component.scss'],
+  selector: 'app-filters-locations',
+  styleUrls: ['filters-locations.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -49,11 +49,10 @@ import { LocationsService } from '../../../../../../shared/services/locations.se
             {{ item.Title }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
     `
 })
-export class TimelineFiltersLocationsComponent implements OnInit {
+export class FiltersLocationsComponent implements OnInit {
   @Input() fg_filters: FormGroup;
   @Input() locofinterest: number;
   @Input() exclude: string[];
@@ -121,18 +120,5 @@ export class TimelineFiltersLocationsComponent implements OnInit {
 
   updateFcLocations(locations: number[]) {
     this.fg_filters.controls['locations'].patchValue(locations);
-  }
-
-  get hasError() {
-    return this.fg_filters.get('locations').invalid;
-  }
-
-  get errorMessage() {
-    const required = this.fg_filters.controls['locations'].hasError('required');
-    return this.fg_filters.controls['locations'].touched
-      ? required
-        ? '... is required'
-        : ''
-      : '';
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-timeline-filters-footer',
@@ -6,10 +6,11 @@ import { Component } from '@angular/core';
   template: `
     <div class="filters-footer-container"
       fxLayout="row nowrap" fxLayoutAlign="end center">
-      <button mat-button>RESET</button>
+      <button mat-button (click)="onResetFilters.emit()">RESET</button>
     </div>
     `
 })
 export class TimelineFiltersFooterComponent {
+  @Output() onResetFilters = new EventEmitter<any>();
   constructor() {}
 }
