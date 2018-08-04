@@ -15,10 +15,10 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="timeline__events__list--container" fxFlex
-      fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
+      fxLayout="row wrap" fxLayoutAlign="start start">
 
-      <app-timeline-event *ngFor="let event of events; last as last" [event]="event"
-        [ngClass]="{ 'event-last': last }"
+      <app-timeline-event fx *ngFor="let event of events; last as last" [event]="event"
+        class="timeline-event-container"
         (openForm)="openForm.emit($event)">
       </app-timeline-event>
 

@@ -13,7 +13,9 @@ export interface TimelineEventItem extends SpListItem {
   EventReportersId?: TimelineEventReportersId;
   EventType?: TimelineEventType;
   EventTypeId?: number[];
-  Locations?: LocationEnt[];
+  Locations?: {
+    results?: LocationEnt[];
+  };
   LocationsId?: TimelineLocationsId;
   HashTags?: string;
   // pseudo field

@@ -13,29 +13,49 @@ import { ApiPath, PathSlbSp, PathOptimus } from '../../../../shared/constants';
 import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
 @Component({
-  selector: 'app-timeline-event',
-  styleUrls: ['timeline-event.component.scss'],
+  selector: 'app-timeline-event-has-image',
+  styleUrls: ['timeline-event-has-image.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <mdc-card class="event-card__container" fxLayout="column" fxLayout.gt-xs="row">
+    <mdc-card-media *ngIf="hasImage"
+      fxFlex="125px" fxFlex.gt-xs="200px"
+      [square]="true"
+      [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
 
-      <!-- if event has image -->
-      <app-timeline-event-has-image *ngIf="hasImage"
-        [event]="event" (openForm)="openForm.emit($event)"
-        fxLayout="column" fxLayout.gt-xs="row">
-      </app-timeline-event-has-image>
+      <mdc-card-media-content fxLayout="column" fxLayoutAlign="start start"
+        class="event-card__media-content">
+        <div class="event__type" fxLayout="row" fxLayoutGap="8px">
+          <!-- <fa-icon [icon]="['fas', getFaIconName(event.EventType.Title)]"></fa-icon> -->
+          <span>{{ event.Locations?.results[0].Title }}</span>
+          <span>&middot;</span>
+          <span>{{ event.EventType.Title }}</span>
+        </div>
+      </mdc-card-media-content>
 
-      <!-- if event has no image -->
-      <app-timeline-event-no-image *ngIf="!hasImage"
-        [event]="event" (openForm)="openForm.emit($event)"
-        fxLayout="row wrap" fxLayoutAlign="start start"
-        class="timeline-event-no-image">
-      </app-timeline-event-no-image>
+    </mdc-card-media>
+    <div fxLayout="column" fxLayoutAlign="start"
+      [ngClass]="(event.Attachments ? 'event-card__hasimage' : 'event-card__noimage')">
 
-    </mdc-card>
+        <div class="event__title" (click)="openForm.emit(event)">
+          {{ event.Title }}
+        </div>
+
+        <span class="event__summary" (click)="openForm.emit(event)">
+          {{ event.Summary }}
+        </span>
+
+        <div class="event__hashtags" *ngIf="event.HashTags">{{ event.HashTags }}</div>
+
+        <div fxFlex></div>
+
+        <app-timeline-event-reporters
+          class="event-card__reporters--container"
+            [reporters]="event.EventReporters.results" [eventDate]="event.EventDate">
+        </app-timeline-event-reporters>
+    </div>
     `
 })
-export class TimelineEventComponent {
+export class TimelineEventHasImageComponent {
   @Input() event: TimelineEventItem;
 
   @Output() openForm = new EventEmitter<TimelineEventItem>();

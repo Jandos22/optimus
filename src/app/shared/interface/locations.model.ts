@@ -8,6 +8,6 @@ export interface LocationEnt extends SpListItem {
   PositionInList: number;
   HasLocationsId: number[];
   HasLocations: {
-    results: LocationEnt[];
+    results?: LocationEnt[];
   };
 }
