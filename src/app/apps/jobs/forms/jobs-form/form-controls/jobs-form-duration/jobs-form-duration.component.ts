@@ -49,10 +49,8 @@ export class JobsFormDurationComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    // watch mode changes
-    if (changes.mode.currentValue === 'view') {
-      // do nothing
-    }
+    // calculator should start only when editing
+    // in view mode, just display hours
     if (
       changes.mode.currentValue === 'edit' ||
       changes.mode.currentValue === 'new'
@@ -79,6 +77,8 @@ export class JobsFormDurationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.$calculator.unsubscribe();
+    if (this.$calculator) {
+      this.$calculator.unsubscribe();
+    }
   }
 }

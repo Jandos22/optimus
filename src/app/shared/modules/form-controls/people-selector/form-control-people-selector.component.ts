@@ -125,6 +125,11 @@ export class FormControlPeopleSelectorComponent
   selfSelected: boolean;
   tooltipSelectMe = 'Select Me';
 
+  // single or multiple SP look up field
+  // single has array of values
+  // multiple has results property, then array of values
+  // @Input() isSingleLookup: boolean;
+
   @Output() onSelectUser = new EventEmitter<number[]>();
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
@@ -333,12 +338,16 @@ export class FormControlPeopleSelectorComponent
     this.searching = false;
     this.users = success;
 
-    if (this.allowNumberOfUsers === 1) {
+    if (this.forFilters) {
       this.disableSelected(this.fg_fields.get(this.fieldName).value);
     } else {
-      this.disableSelected(
-        this.fg_fields.get(this.fieldName).get('results').value
-      );
+      if (this.allowNumberOfUsers === 1) {
+        this.disableSelected(this.fg_fields.get(this.fieldName).value);
+      } else {
+        this.disableSelected(
+          this.fg_fields.get(this.fieldName).get('results').value
+        );
+      }
     }
 
     this.checkSelectionLimit();

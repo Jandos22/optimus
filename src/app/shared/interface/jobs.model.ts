@@ -54,4 +54,5 @@ export interface JobsSearchParams {
   beforeDate?: Date;
   well?: string;
   engineers?: number[];
+  operators?: number[];
 }

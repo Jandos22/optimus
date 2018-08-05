@@ -39,7 +39,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
         [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
         [selfUser]="selfUser$ | async" [doReset]="doReset"
         (updateLocationsofinterest)="updateLocationsofinterest($event)"
-        (onSelectEngineers)="onSelectEngineers($event)">
+        (onSelectEngineers)="onSelectEngineers($event)"
+        (onSelectOperators)="onSelectOperators($event)">
     </app-jobs-filters-content>
 
     <app-jobs-filters-footer fxFlex="49px" class="common-filters-footer"
@@ -104,10 +105,11 @@ export class JobsFiltersComponent implements OnInit {
 
   createFormGroup() {
     this.fg_filters = this.fb.group({
-      locations: '',
+      locations: [{ value: [] }],
       top: 100,
       well: '',
-      engineers: ''
+      engineers: [{ value: [] }],
+      operators: [{ value: [] }]
     });
   }
 
@@ -123,6 +125,10 @@ export class JobsFiltersComponent implements OnInit {
 
   onSelectEngineers(engineers: number[]) {
     this.fg_filters.controls['engineers'].patchValue(engineers);
+  }
+
+  onSelectOperators(operators: number[]) {
+    this.fg_filters.controls['operators'].patchValue(operators);
   }
 
   onResetFilters(event) {

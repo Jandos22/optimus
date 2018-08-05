@@ -46,10 +46,14 @@ export class JobsService {
     const well = params.well ? params.well.replace('#', '%23') : null;
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
-    // engineers must be ids array
+    // people arrays must be ids array
     const engineers = params.engineers ? params.engineers : [];
+    const operators = params.operators ? params.operators : [];
     // if top is missing then default is 100
     let top = params.top ? params.top : 100;
+
+    // count filters
+    let countFilters = 0;
 
     // job date
     // dates start with empty string
@@ -80,6 +84,7 @@ export class JobsService {
     }
 
     if (text) {
+      countFilters++;
       url += `(`;
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',iDistrict))`;
@@ -109,9 +114,10 @@ export class JobsService {
     // locations filter configuration
     if (locations.length) {
       // check if "AND" is needed
-      if (text) {
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       // finds items with given location
       url += `${this.getFilterLocations(locations)}`;
     }
@@ -119,9 +125,10 @@ export class JobsService {
     // beforeDate filter configuration
     if (beforeDate) {
       // check if "AND" is needed
-      if (text || locations.length) {
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       // find items with RigUpStart before given date
       url += `(RigUpStart lt datetime'${beforeDate}')`;
     }
@@ -129,18 +136,30 @@ export class JobsService {
     // well filter configuration
     if (well) {
       // check if "AND" is needed
-      if (text || locations.length || beforeDate) {
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       // finds items with given location
       url += `${this.getFilterWell(well)}`;
     }
 
     if (engineers.length) {
-      if (text || locations.length || beforeDate.length || well) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       url += `${this.getFilterEngineers(engineers)}`;
+    }
+
+    if (operators.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterOperators(operators)}`;
     }
 
     // $orderby
@@ -291,6 +310,37 @@ export class JobsService {
         }
 
         filter += `(Engineers/Id eq ${engineer})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterOperators(operators: number[]) {
+    if (operators.length) {
+      let filter = '';
+      const n = operators.length;
+      let i = 1;
+
+      for (const operator of operators) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Operators/Id eq ${operator})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {

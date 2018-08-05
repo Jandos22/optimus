@@ -15,6 +15,7 @@ export interface ParamsState {
   beforeDate?: Date;
   well?: string;
   engineers?: number[];
+  operators?: number[];
 }
 
 export const initialState: ParamsState = {
@@ -24,7 +25,8 @@ export const initialState: ParamsState = {
   afterDate: null,
   beforeDate: null,
   well: null,
-  engineers: null
+  engineers: null,
+  operators: null
 };
 
 export function reducer(
