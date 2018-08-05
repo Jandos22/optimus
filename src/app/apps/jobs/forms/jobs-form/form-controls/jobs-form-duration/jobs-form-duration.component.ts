@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { FormMode } from './../../../../../../shared/interface/form.model';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { startWith } from 'rxjs/operators';
@@ -30,15 +38,27 @@ import * as differenceInMinutes from 'date-fns/difference_in_minutes';
     </mat-form-field>
     `
 })
-export class JobsFormDurationComponent implements OnInit, OnDestroy {
+export class JobsFormDurationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() fg_fields: FormGroup;
+  @Input() mode: FormMode;
 
   $calculator: Subscription;
 
   constructor() {}
 
-  ngOnInit() {
-    this.startCalculator();
+  ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    // watch mode changes
+    if (changes.mode.currentValue === 'view') {
+      // do nothing
+    }
+    if (
+      changes.mode.currentValue === 'edit' ||
+      changes.mode.currentValue === 'new'
+    ) {
+      this.startCalculator();
+    }
   }
 
   startCalculator() {
