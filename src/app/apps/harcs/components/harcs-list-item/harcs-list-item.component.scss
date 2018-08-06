@@ -42,6 +42,20 @@
   }
 }
 
+.harc-inner-container {
+  width: 100%;
+
+  .harc-body {
+    width: calc(100% - 48px);
+    // background: #bababa;
+  }
+
+  .harc-pic {
+    width: 48px;
+    height: 48px;
+  }
+}
+
 .harc-row-1 {
   margin: 8px 0;
   padding: 0 8px;

@@ -20,7 +20,8 @@ export interface HarcsSearchParams {
   text: string;
   locations: number[];
   top: number;
-  status?: string;
+  status?: string[];
   afterDate?: Date;
   beforeDate?: Date;
+  pic?: number[];
 }

@@ -53,6 +53,13 @@ export class SearchEffects {
     map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
+    withLatestFrom(this.store$.pipe(select(fromHarcs.getParams))),
+    map((merged: any[]) => {
+      const prevParams = merged[0];
+      const currParams = merged[1];
+      const newParams = { ...prevParams, ...currParams };
+      return newParams;
+    }),
     map((params: HarcsSearchParams) => {
       this.params = params;
       return this.srv.buildUrl(params);

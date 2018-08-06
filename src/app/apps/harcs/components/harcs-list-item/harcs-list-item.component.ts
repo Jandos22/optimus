@@ -29,34 +29,41 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
         [hidden]="calcWidth() !== '99%'">
       </div>
 
-      <div class="harc-row-1">
-        <div class="title" (click)="openForm.emit(harc)">{{harc.Title}}</div>
-      </div>
-      <div class="harc-row-2" fxLayout="row nowrap" fxLayoutGap="12px">
+      <div class="harc-inner-container" fxLayout="row wrap" fxLayoutAlign="start start">
+        <div class="harc-body">
+          <div class="harc-row-1">
+            <div class="title" (click)="openForm.emit(harc)">{{harc.Title}}</div>
+          </div>
+          <div class="harc-row-2" fxLayout="row nowrap" fxLayoutGap="12px">
 
-        <div class="status" *ngIf="harc.Status === 'Pending'">
-          {{harc.Status}}
+            <div class="status" *ngIf="harc.Status === 'Pending'">
+              {{harc.Status}}
+            </div>
+
+            <div class="status" *ngIf="checkIfExpired() && harc.Status !== 'Pending'">
+              Expired
+            </div>
+
+            <div class="date" *ngIf="harc.Status === 'Approved' && !checkIfExpired()"
+              matTooltip="Expiry Date">
+              {{harc.ExpiryDate | date: 'mediumDate'}}
+            </div>
+
+            <!-- <div>&middot;</div> -->
+            <div class="quest"
+              [matTooltip]="getQuestTooltip()"
+              [ngClass]="{ link: hasQuestQPID() }"
+              (click)="openQuest()">
+              {{harc.QuestNumber}}
+            </div>
+
+            <!-- <div class="days-left" [hidden]="(daysLeftText ? false : true)">&middot;</div> -->
+            <div class="days-left" [hidden]="(daysLeftText ? false : true)">{{ daysLeftText }}</div>
+
+          </div>
         </div>
 
-        <div class="status" *ngIf="checkIfExpired()">
-          Expired
-        </div>
-
-        <div class="date" *ngIf="harc.Status === 'Approved' && !checkIfExpired()"
-          matTooltip="Expiry Date">
-          {{harc.ExpiryDate | date: 'mediumDate'}}
-        </div>
-
-        <!-- <div>&middot;</div> -->
-        <div class="quest"
-          [matTooltip]="getQuestTooltip()"
-          [ngClass]="{ link: hasQuestQPID() }"
-          (click)="openQuest()">
-          {{harc.QuestNumber}}
-        </div>
-
-        <!-- <div class="days-left" [hidden]="(daysLeftText ? false : true)">&middot;</div> -->
-        <div class="days-left" [hidden]="(daysLeftText ? false : true)">{{ daysLeftText }}</div>
+        <app-harcs-pic class="harc-pic" [pic]="harc.PIC"></app-harcs-pic>
 
       </div>
     `

@@ -59,7 +59,8 @@
                 PIC
             </span>
             <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
-                [fieldName]="'PICId'" [displayName]="'HARC PIC'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="1" (onSelectUser)="onSelectUser($event)">
+                [fieldName]="'PICId'" [displayName]="'Person In Charge'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="1"
+                (onSelectUser)="onSelectUser($event)">
             </app-form-control-user-selection>
         </div>
 

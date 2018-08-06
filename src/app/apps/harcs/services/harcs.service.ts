@@ -9,6 +9,12 @@ import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
+import * as _ from 'lodash';
+
+import * as startOfToday from 'date-fns/start_of_today';
+import * as endOfToday from 'date-fns/end_of_today';
+import * as addDays from 'date-fns/add_days';
+
 // interfaces
 import {
   HarcsSearchParams,
@@ -50,33 +56,29 @@ export class HarcsService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text.replace('#', '%23');
+    const text = params.text ? params.text.replace('#', '%23') : null;
     // locations must be ids array
-    const locations = params.locations;
+    const locations = params.locations ? params.locations : [];
+    const pic = params.pic ? params.pic : [];
+    const status = params.status ? params.status : [];
+
     let top = params.top;
-    const status = params.status;
 
-    let beforeDate = '',
-      afterDate = '';
-
-    if (params.beforeDate) {
-      beforeDate = params.beforeDate.toISOString();
-    }
-    if (params.afterDate) {
-      afterDate = params.afterDate.toISOString();
-    }
+    // count filters
+    let countFilters = 0;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter
-    if (text || locations.length || beforeDate || status) {
+    if (text || locations.length || pic.length || status) {
       url += `&$filter=`;
     }
 
     // text filter configuration
     if (text) {
+      countFilters++;
       url += `(`;
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',HashTags))`;
@@ -87,28 +89,30 @@ export class HarcsService {
 
     if (locations.length) {
       // check if "AND" is needed
-      if (text) {
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       // finds items with given location
       url += `${this.getFilterLocations(locations)}`;
     }
 
-    if (status) {
+    if (pic.length) {
       // check if "AND" is needed
-      if (text || locations.length) {
+      if (countFilters > 0) {
         url += 'and';
       }
-      url += `(Status eq '${status}')`;
+      countFilters++;
+      url += `(PIC/Id eq ${pic[0]})`;
     }
 
-    if (beforeDate) {
+    if (status.length) {
       // check if "AND" is needed
-      if (text || locations.length || status) {
+      if (countFilters > 0) {
         url += 'and';
       }
-      // find items with ExpiryDate before given date
-      url += `(ExpiryDate lt datetime'${beforeDate}')`;
+      countFilters++;
+      url += `(${this.getFilterStatus(status)})`;
     }
 
     // $orderby
@@ -182,5 +186,105 @@ export class HarcsService {
 
       return filter;
     }
+  }
+
+  getFilterStatus(status: string[]) {
+    console.log(status);
+    const approved = this.findApproved(status) ? true : false;
+    const pending = this.findPending(status) ? true : false;
+    const expired = this.findExpired(status) ? true : false;
+    const soonExpire = this.findSoonExpire(status) ? true : false;
+
+    let filters = '';
+    let countFilters = 0;
+    console.log('approved: ' + approved);
+    console.log('pending: ' + pending);
+    console.log('expired: ' + expired);
+    console.log('soon expire: ' + soonExpire);
+
+    if (approved) {
+      if (countFilters > 0) {
+        filters += `or`;
+      }
+      countFilters++;
+      filters += this.getFilterStatusApproved();
+    }
+
+    if (pending) {
+      if (countFilters > 0) {
+        filters += `or`;
+      }
+      countFilters++;
+      filters += this.getFilterStatusPending();
+    }
+
+    if (expired) {
+      if (countFilters > 0) {
+        filters += `or`;
+      }
+      countFilters++;
+      filters += this.getFilterStatusExpired();
+    }
+
+    if (soonExpire) {
+      if (countFilters > 0) {
+        filters += `or`;
+      }
+      countFilters++;
+      filters += this.getFilterStatusSoonExpire();
+    }
+
+    return filters;
+  }
+
+  getFilterStatusApproved() {
+    let filter = `((Status eq 'Approved')`;
+    filter += `and(ExpiryDate gt datetime'${endOfToday().toISOString()}'))`;
+    return filter;
+  }
+
+  getFilterStatusPending() {
+    const filter = `(Status eq 'Pending')`;
+    return filter;
+  }
+
+  getFilterStatusExpired() {
+    let filter = `((Status eq 'Approved')`;
+    const date = startOfToday().toISOString();
+    filter += `and(ExpiryDate lt datetime'${date}'))`;
+    return filter;
+  }
+
+  getFilterStatusSoonExpire() {
+    let filter = `((Status eq 'Approved')`;
+    const before = addDays(startOfToday(), 14).toISOString();
+    const after = startOfToday().toISOString();
+    filter += `and(ExpiryDate lt datetime'${before}')`;
+    filter += `and(ExpiryDate gt datetime'${after}'))`;
+    return filter;
+  }
+
+  findApproved(status: string[]) {
+    return _.find(status, (s: string) => {
+      return s === 'Approved';
+    });
+  }
+
+  findPending(status: string[]) {
+    return _.find(status, (s: string) => {
+      return s === 'Pending';
+    });
+  }
+
+  findExpired(status: string[]) {
+    return _.find(status, (s: string) => {
+      return s === 'Expired';
+    });
+  }
+
+  findSoonExpire(status: string[]) {
+    return _.find(status, (s: string) => {
+      return s === 'Soon Expire';
+    });
   }
 }

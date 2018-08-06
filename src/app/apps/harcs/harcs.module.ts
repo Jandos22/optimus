@@ -24,6 +24,9 @@ import * as fromContainers from './containers';
 // components
 import * as fromComponents from './components';
 
+// filters
+import * as fromFilters from './containers/harcs-filters/content';
+
 // forms
 import * as fromForms from './forms'; // must go in entry components
 import * as fromFormControls from './forms/harcs-form/form-controls';
@@ -35,6 +38,7 @@ import * as fromServices from './services';
 // form modules
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/locations/form-controls.module';
 
 // routes
 export const harcsRoutes: Routes = [
@@ -55,6 +59,7 @@ export const harcsRoutes: Routes = [
     SimpleNotificationsModule,
     // form control modules
     FormControlsModule,
+    FilterControlsModule,
     // toolbar modules
     ToolbarButtonsModule
   ],
@@ -62,6 +67,7 @@ export const harcsRoutes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
+    ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromFormControls.forms_controls,
     ...fromFormActions.form_actions

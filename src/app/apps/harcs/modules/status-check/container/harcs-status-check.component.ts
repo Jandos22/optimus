@@ -23,7 +23,7 @@ import { HarcItem } from './../../../../../shared/interface/harcs.model';
 
     <button *ngIf="expired && !expiredRefreshing && !pendingError && !expiredError"
         mat-button color="warn"
-        class='status-check-button warn' matTooltip='Expired HARCs'
+        class='status-check-button warn' matTooltip='Expired or Soon Expire HARCs'
         fxLayout="row" fxLayoutAlign="center center">
         <div class="warn">{{ expired }}</div>
     </button>
@@ -75,7 +75,7 @@ export class HarcsStatusCheckComponent implements OnInit {
       text: '',
       locations: [this.myLocation.ID],
       top: 99,
-      status: 'Pending'
+      status: ['Pending']
     };
 
     // build url with given params
@@ -117,8 +117,8 @@ export class HarcsStatusCheckComponent implements OnInit {
       text: '',
       locations: [this.myLocation.ID],
       top: 500,
-      status: 'Approved',
-      beforeDate: startOfToday()
+      status: ['Expired', 'Soon Expire']
+      // beforeDate: startOfToday()
     };
 
     // build url with given params

@@ -59,7 +59,6 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  // $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
 
@@ -132,18 +131,7 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {
-    // this.subscribeToSelectedLocations();
-  }
-
-  subscribeToSelectedLocations() {
-    // subscribe to store and update selected location on change
-    // this.$selectedLocations = this.store_root
-    //   .pipe(select(fromRoot.selectSelectedId))
-    //   .subscribe(location => {
-    //     // this.fg_params.get('locations').setValue(location);
-    //   });
-  }
+  ngOnInit() {}
 
   onFocus() {
     this.focus = true;
@@ -155,6 +143,5 @@ export class TimelineHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    // this.$selectedLocations.unsubscribe();
   }
 }

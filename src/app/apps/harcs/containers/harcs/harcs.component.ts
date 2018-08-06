@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  HostBinding
+} from '@angular/core';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -24,14 +30,15 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-harcs.common-app-container',
+  selector: 'app-harcs.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-harcs-header
       fxFlex="65px" class="common-header"
       [appName]="appName" [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
-      (openForm)="openForm('new', $event)">
+      (openForm)="openForm('new', $event)"
+      (toggleFilters)="toggleFilters()">
     </app-harcs-header>
 
     <app-harcs-list
@@ -43,6 +50,13 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       [pagination]="pagination" [top]="params.top" [searching]="searching"
       (onNext)="onNext()" (onBack)="onBack()">
     </app-harcs-footer>
+
+    <!-- FILTERS -->
+    <app-harcs-filters class="common-filters-container"
+      [style.display]="(showFilters ? 'flex' : 'none')"
+      fxLayout="column" fxLayoutAlign="start start"
+      (toggleFilters)="toggleFilters()">
+    </app-harcs-filters>
   `,
   styleUrls: ['./harcs.component.scss']
 })
@@ -62,6 +76,9 @@ export class HarcsComponent implements OnInit, OnDestroy {
 
   $pagination: Subscription;
   pagination: PaginationState;
+
+  // when showFilters toggle it toggles class in host element
+  @HostBinding('class.filtersOpened') showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -135,6 +152,14 @@ export class HarcsComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         console.log(res);
       });
+  }
+
+  toggleFilters() {
+    if (this.showFilters) {
+      this.showFilters = false;
+    } else {
+      this.showFilters = true;
+    }
   }
 
   ngOnDestroy() {
