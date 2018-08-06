@@ -1,7 +1,8 @@
 import {
   faAngleDown,
-  faBullhorn,
   faBars,
+  faBug,
+  faBullhorn,
   faCheckCircle,
   faChevronLeft,
   faChevronRight,
@@ -16,6 +17,7 @@ import {
   faMoneyCheckAlt,
   faPlaneArrival,
   faPlus,
+  faRegistered,
   faSearch,
   faSpinner,
   faStar,
@@ -38,6 +40,7 @@ import {
 
 export const fontawesome_icons = {
   faAngleDown,
+  faBug,
   faBullhorn,
   faBars,
   faCheckCircle,
@@ -57,6 +60,7 @@ export const fontawesome_icons = {
   faMoneyCheckAlt,
   faPlaneArrival,
   faPlus,
+  faRegistered,
   faSave,
   faSearch,
   faSpinner,

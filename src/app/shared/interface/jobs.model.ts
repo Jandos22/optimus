@@ -52,4 +52,7 @@ export interface JobsSearchParams {
   top?: number;
   afterDate?: Date;
   beforeDate?: Date;
+  well?: string;
+  engineers?: number[];
+  operators?: number[];
 }

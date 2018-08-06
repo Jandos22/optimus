@@ -78,12 +78,61 @@ app-layout {
   min-width: 100%;
   overflow: hidden;
   background: #e3f2fd;
+  // position
+  // position: relative;
+}
+
+// v2 for filters right menu
+.common-app-v2-container {
+  // properties as flex container
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+  // other styles
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  background: #e3f2fd;
+  // position
+
+  &.filtersOpened {
+    @media screen and (min-width: 856px) {
+      width: calc(100% - 256px);
+      min-width: calc(100% - 256px);
+      max-width: calc(100% - 256px);
+    }
+  }
+}
+
+.common-body-container {
+  // properties as flex container
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+  // other styles
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  background: #e3f2fd;
 }
 
 .common-header {
   border-bottom: 1px solid $my-blue-100;
   padding: 0 16px;
   // height: 65px;
+  position: relative;
 }
 
 .common-content {

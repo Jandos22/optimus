@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  HostBinding
+} from '@angular/core';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -24,14 +30,15 @@ import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-jobs.common-app-container',
+  selector: 'app-jobs.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-jobs-header
       fxFlex="65px" class="common-header"
       [appName]="appName" [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
-      (openForm)="openForm('new', $event)">
+      (openForm)="openForm('new', $event)"
+      (toggleFilters)="toggleFilters()">
     </app-jobs-header>
 
     <app-jobs-list
@@ -43,6 +50,12 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       [pagination]="pagination" [top]="params.top" [searching]="searching"
       (onNext)="onNext()" (onBack)="onBack()">
     </app-jobs-footer>
+
+    <app-jobs-filters class="common-filters-container"
+      [style.display]="(showFilters ? 'flex' : 'none')"
+      fxLayout="column" fxLayoutAlign="start start"
+      (toggleFilters)="toggleFilters()">
+    </app-jobs-filters>
   `,
   styleUrls: ['./jobs.component.scss']
 })
@@ -62,6 +75,9 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   $pagination: Subscription;
   pagination: PaginationState;
+
+  // when showFilters toggle it toggles class in host element
+  @HostBinding('class.filtersOpened') showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -139,6 +155,14 @@ export class JobsComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         console.log(res);
       });
+  }
+
+  toggleFilters() {
+    if (this.showFilters) {
+      this.showFilters = false;
+    } else {
+      this.showFilters = true;
+    }
   }
 
   ngOnDestroy() {

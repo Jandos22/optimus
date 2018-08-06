@@ -50,14 +50,19 @@ export class LocationsService {
     return [
       'Id',
       'Title',
+      'PositionInList',
       'ApplicationsInUse/ID',
       'ApplicationsInUse/Title',
       'ApplicationsInUse/RouterLink',
-      'ApplicationsInUse/AppPositionNumber'
+      'ApplicationsInUse/AppPositionNumber',
+      'HasLocations',
+      'HasLocationsId',
+      'HasLocations/Title',
+      'HasLocations/Id'
     ].toString();
   }
 
   expandFields() {
-    return ['ApplicationsInUse'].toString();
+    return ['ApplicationsInUse', 'HasLocations'].toString();
   }
 }

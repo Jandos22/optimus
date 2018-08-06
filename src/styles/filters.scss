@@ -1,0 +1,70 @@
+@import '../colors';
+
+.common-filters-container {
+  position: absolute;
+  //   transition: all 0.25s linear;
+  top: 0;
+  right: 0;
+  width: 256px;
+  height: 100%;
+  background: $my-blue-50;
+  z-index: 2001; // above common-searching-indicator 2000
+  border-left: 1px solid $my-blue-100;
+}
+
+.common-filters-header {
+  //   border-bottom: 1px solid $my-blue-100;
+  padding: 0 16px;
+  width: 100%;
+
+  .filters-toolbar-container {
+    margin: 8px auto;
+    height: 48px;
+    // padding: 0 4px;
+    border-radius: 4px;
+    // background: $my-blue-100;
+
+    .toolbar-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}
+
+.common-filters-content {
+  display: block !important;
+  width: 100%;
+  padding: 16px;
+  overflow-y: auto;
+  overflow: overlay;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  .filters-content-container {
+    // margin: 8px auto;
+    height: 100%;
+    // padding: 0 4px;
+    border-radius: 4px;
+    background: $my-blue-50;
+  }
+}
+
+.common-filters-footer {
+  // border-top: 1px solid $my-blue-100;
+  padding: 0 16px;
+  width: 100%;
+
+  .filters-footer-container {
+    margin: 4px auto;
+    height: 40px;
+    // padding: 0 4px;
+    border-radius: 4px;
+    // background: $my-blue-100;
+  }
+}
+
+.filters-at-end {
+  position: absolute;
+  top: 12px;
+  right: 8px;
+}

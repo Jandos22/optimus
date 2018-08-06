@@ -22,6 +22,9 @@ import * as fromContainers from './containers';
 // components
 import * as fromComponents from './components';
 
+// filters
+import * as fromFilters from './containers/jobs-filters/content';
+
 // forms
 import * as fromForms from './forms'; // must go in entry components
 import * as fromJobsFormControls from './forms/jobs-form/form-controls';
@@ -36,6 +39,7 @@ import * as fromPipes from '../../shared/pipes';
 // form modules
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/locations/form-controls.module';
 
 // routes
 export const jobsRoutes: Routes = [
@@ -55,12 +59,14 @@ export const jobsRoutes: Routes = [
     // form control modules
     FormControlsModule,
     // toolbar modules
-    ToolbarButtonsModule
+    ToolbarButtonsModule,
+    FilterControlsModule
   ],
   providers: [...fromServices.services],
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
+    ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromJobsFormControls.forms_controls,
     ...fromJobsFormActions.form_actions

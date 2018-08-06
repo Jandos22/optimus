@@ -1,8 +1,4 @@
-import {
-  PathSlbSp,
-  ApiPath,
-  PathOptimus
-} from '../../../../shared/constants';
+import { PathSlbSp, ApiPath, PathOptimus } from '../../../../shared/constants';
 import {
   Component,
   Input,
@@ -85,7 +81,7 @@ export class TimelineEventReportersComponent
           }, [])
         )
         .subscribe(v => {
-          console.log(v);
+          // console.log(v);
           this.reps = v as PeopleItem[];
         });
     }

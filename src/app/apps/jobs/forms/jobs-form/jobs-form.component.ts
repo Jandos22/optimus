@@ -45,6 +45,10 @@ import { LocationEnt } from '../../../../shared/interface/locations.model';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 import { ToolItem } from '../../../../shared/interface/tools.model';
 
+// people group ids
+import { people_op } from './../../../../shared/constants/ids-op';
+import { people_fefs } from '../../../../shared/constants/ids-fefs';
+
 @Component({
   selector: 'app-jobs-form',
   styleUrls: ['jobs-form.component.scss'],
@@ -80,6 +84,9 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
   $summarySections: Subscription;
   summarySections: number[];
+
+  engineers = people_fefs;
+  operators = people_op;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,

@@ -40,6 +40,11 @@ export const selectSelectedId = createSelector(
   fromLocations.selectSelectedId
 );
 
+export const selectLocationsSelectedIds = createSelector(
+  getLocationsState,
+  fromLocations.selectSelectedId
+);
+
 export const getSelectedLocations = createSelector(
   selectLocationsEntities,
   selectSelectedId,

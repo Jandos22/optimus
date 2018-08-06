@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  HostBinding
+} from '@angular/core';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -24,14 +30,17 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-timeline.common-app-container',
+  selector: 'app-timeline.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
+    <!-- CONTENT -->
+
     <app-timeline-header
       fxFlex="65px" class="common-header"
       [appName]="appName" [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
-      (openForm)="openForm('new', $event)">
+      (openForm)="openForm('new', $event)"
+      (toggleFilters)="toggleFilters()">
     </app-timeline-header>
 
     <app-timeline-events-list
@@ -43,6 +52,13 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       [pagination]="pagination" [top]="params.top" [searching]="searching"
       (onNext)="onNext()" (onBack)="onBack()">
     </app-timeline-footer>
+
+    <!-- FILTERS -->
+    <app-timeline-filters class="common-filters-container"
+      [style.display]="(showFilters ? 'flex' : 'none')"
+      fxLayout="column" fxLayoutAlign="start start"
+      (toggleFilters)="toggleFilters()">
+    </app-timeline-filters>
   `,
   styleUrls: ['./timeline.component.scss']
 })
@@ -62,6 +78,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   $pagination: Subscription;
   pagination: PaginationState;
+
+  // when showFilters toggle it toggles class in host element
+  @HostBinding('class.filtersOpened') showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -138,6 +157,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         console.log(res);
       });
+  }
+
+  toggleFilters() {
+    console.log(this.showFilters);
+    if (this.showFilters) {
+      this.showFilters = false;
+    } else {
+      this.showFilters = true;
+    }
+    console.log(this.showFilters);
   }
 
   ngOnDestroy() {

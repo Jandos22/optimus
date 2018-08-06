@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
         <input class="common-toolbar-input-search"
             type="text"
             [placeholder]="appName"
-            formControlName="query"
+            formControlName="text"
             autocomplete="off"
             (focus)="onFocus.emit()" (blur)="onBlur.emit()">
     </div>
@@ -25,11 +25,11 @@ export class TimelineToolbarInputSearchComponent {
   constructor() {}
 
   clearQuery() {
-    this.fg_params.get('query').patchValue('');
+    this.fg_params.get('text').patchValue('');
   }
 
   errorMessage() {
-    const control = this.fg_params.controls['query'];
+    const control = this.fg_params.controls['text'];
 
     const onlySearchable = control.hasError('onlySearchable');
 

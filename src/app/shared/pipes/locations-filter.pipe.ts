@@ -15,9 +15,16 @@ export class LocationsFilterPipe implements PipeTransform {
     console.log(exclude);
 
     // filter through array and check condition to pass
-    return locations.filter(location => {
+    const locationsFiltered = locations.filter(location => {
       const toExclude = _.find(exclude, exc => exc === location.Title);
       return !toExclude;
     });
+
+    const locationsSorted = _.sortBy(
+      locationsFiltered,
+      (l: LocationEnt) => l.PositionInList
+    );
+
+    return locationsSorted;
   }
 }

@@ -25,17 +25,18 @@ import { FormGroup } from '@angular/forms';
     </app-timeline-toolbar-input-search>
 
     <app-timeline-toolbar-button-clear
-        *ngIf="fg_params.get('query').value"
+        *ngIf="fg_params.get('text').value"
         [fg_params]="fg_params">
     </app-timeline-toolbar-button-clear>
 
-    <app-timeline-toolbar-button-filters>
-    </app-timeline-toolbar-button-filters>
-
     <app-timeline-toolbar-button-add
-      *ngIf="canCreate()"
+      *ngIf="canCreate()" matTooltip="Post new event"
       (openForm)="openForm.emit()">
     </app-timeline-toolbar-button-add>
+
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
     `
 })
 export class TimelineToolbarComponent {
@@ -45,6 +46,7 @@ export class TimelineToolbarComponent {
   @Input() accessLevel: number;
 
   @Output() openForm = new EventEmitter<any>();
+  @Output() toggleFilters = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
   @Output() onBlur = new EventEmitter<any>();
 

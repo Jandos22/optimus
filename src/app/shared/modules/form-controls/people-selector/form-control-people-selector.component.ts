@@ -3,6 +3,8 @@ import {
   Input,
   OnInit,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
   ViewEncapsulation,
   ChangeDetectionStrategy,
   Output,
@@ -53,7 +55,8 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field [id]="'refWidth' + id" *ngIf="mode !== 'view'"
-      class="people-selector-field" [formGroup]="fg_users">
+      class="people-selector-field" [formGroup]="fg_users"
+      [ngClass]="{ 'forFilters': forFilters }">
 
       <input matInput
         #autoCompleteInput
@@ -88,6 +91,13 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
 
     </mat-form-field>
 
+    <!-- button to select self -->
+    <div class='filter-button-select-self' *ngIf="forFilters"
+      fxLayout="row nowrap" fxLayoutAlign="center center"
+      [matTooltip]="tooltipSelectMe" (click)="addSelfToSelected(selfUser)">
+      <fa-icon [icon]="['fas', 'user']"></fa-icon>
+    </div>
+
     <app-people-selector-selected
       *ngFor="let user of this.fg_users.get('selectedUsers').value"
       fxLayout="row nowrap" fxLayoutAlign="start center"
@@ -97,7 +107,8 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
     </app-people-selector-selected>
     `
 })
-export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
+export class FormControlPeopleSelectorComponent
+  implements OnInit, OnDestroy, OnChanges {
   @Input() placeholder: string;
   @Input() fieldName: string; // form control name
   @Input() displayName: string; // label name
@@ -107,6 +118,17 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
   @Input() mode: FormMode;
   @Input() singleLocation: boolean; // Location or Locations
   @Input() includeOnly: number[]; // array with People Positions, like ['FE','GFE']
+
+  // used in apps filters only
+  @Input() forFilters: boolean; // Location or Locations
+  @Input() doReset: boolean;
+  selfSelected: boolean;
+  tooltipSelectMe = 'Select Me';
+
+  // single or multiple SP look up field
+  // single has array of values
+  // multiple has results property, then array of values
+  // @Input() isSingleLookup: boolean;
 
   @Output() onSelectUser = new EventEmitter<number[]>();
 
@@ -145,17 +167,23 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     // watch location/locations changes
     // start with inital value from fg_fields
     // log in console whenever location selection changed
-    if (!this.singleLocation) {
+    if (!this.singleLocation && !this.forFilters) {
       this.locations$ = this.fg_fields.controls[
         'LocationsId'
       ].valueChanges.pipe(
         startWith(this.fg_fields.get('LocationsId').get('results').value),
         tap(v => console.log(v))
       );
-    } else if (this.singleLocation) {
+    } else if (this.singleLocation && !this.forFilters) {
       this.locations$ = this.fg_fields.controls['LocationId'].valueChanges.pipe(
         startWith(this.fg_fields.get('LocationId').value),
         map((location: number) => [location]),
+        tap(v => console.log(v))
+      );
+    } else if (this.forFilters) {
+      this.locations$ = this.fg_fields.controls['locations'].valueChanges.pipe(
+        startWith(this.fg_fields.get('locations').value),
+        map((locations: number[]) => [...locations]),
         tap(v => console.log(v))
       );
     }
@@ -174,7 +202,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     // pass only text and check if new value is different
     // also wait 500 ms until passing new value
     this.top$ = this.fg_users.get('top').valueChanges.pipe(
-      startWith(25),
+      startWith(100),
       distinctUntilChanged()
     );
 
@@ -212,7 +240,7 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
 
     // when opening new form
     // then add user to selected automatically
-    if (this.mode === 'new') {
+    if (this.mode === 'new' && !this.forFilters) {
       this.addSelfToSelected(this.selfUser);
     }
 
@@ -240,8 +268,14 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
   }
 
   addSelfToSelected(self: PeopleItem) {
-    if (self) {
+    if (self && !this.selfSelected) {
+      this.selfSelected = true;
       this.addSelectedUsers(self);
+      this.tooltipSelectMe = 'Unselect Me';
+    } else if (self && this.selfSelected) {
+      this.removeSelectedUser(self.Id);
+      this.selfSelected = false;
+      this.tooltipSelectMe = 'Select Me';
     }
   }
 
@@ -304,12 +338,16 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     this.searching = false;
     this.users = success;
 
-    if (this.allowNumberOfUsers === 1) {
+    if (this.forFilters) {
       this.disableSelected(this.fg_fields.get(this.fieldName).value);
     } else {
-      this.disableSelected(
-        this.fg_fields.get(this.fieldName).get('results').value
-      );
+      if (this.allowNumberOfUsers === 1) {
+        this.disableSelected(this.fg_fields.get(this.fieldName).value);
+      } else {
+        this.disableSelected(
+          this.fg_fields.get(this.fieldName).get('results').value
+        );
+      }
     }
 
     this.checkSelectionLimit();
@@ -392,6 +430,11 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
     this.enableUnselected(id);
     // overwrite previously selected users
     this.fg_users.get('selectedUsers').patchValue(filtered);
+
+    if (id === this.selfUser.Id) {
+      this.selfSelected = false;
+      this.tooltipSelectMe = 'Select Me';
+    }
   }
 
   getCountSelectedUsers() {
@@ -432,5 +475,16 @@ export class FormControlPeopleSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.$query.unsubscribe();
     this.$fc_selectedUsers.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.doReset) {
+      if (changes.doReset.currentValue) {
+        console.log('reset');
+        if (changes.doReset.currentValue !== changes.doReset.previousValue) {
+          this.fg_users.get('selectedUsers').patchValue([]);
+        }
+      }
+    }
   }
 }

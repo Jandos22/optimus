@@ -13,7 +13,9 @@ export interface TimelineEventItem extends SpListItem {
   EventReportersId?: TimelineEventReportersId;
   EventType?: TimelineEventType;
   EventTypeId?: number[];
-  Locations?: LocationEnt[];
+  Locations?: {
+    results?: LocationEnt[];
+  };
   LocationsId?: TimelineLocationsId;
   HashTags?: string;
   // pseudo field
@@ -21,9 +23,11 @@ export interface TimelineEventItem extends SpListItem {
 }
 
 export interface TimelineSearchParams {
-  query: string;
+  text: string;
   locations: number[];
   top: number;
+  eventTypes?: number[];
+  eventReporters?: number[];
 }
 
 export interface TimelineEventType extends SpListItem {

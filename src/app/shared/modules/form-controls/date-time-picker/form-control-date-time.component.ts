@@ -77,7 +77,6 @@ interface DateTime {
     </mat-form-field>
 
   </div>
-  <!-- <div><button mat-button (click)="log()">LOG</button></div> -->
   `
 })
 export class FormControlDateTimeComponent implements OnInit, OnChanges {
@@ -102,8 +101,11 @@ export class FormControlDateTimeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initialize(this.fg_fields.controls[this.fieldName].value);
+    // this.initialize(this.fg_fields.controls[this.fieldName].value);
+    // this.startDateTimeConverter();
+  }
 
+  startDateTimeConverter() {
     this.converter = this.fg_DateTime.valueChanges.subscribe(
       (rawDateTime: DateTime) => {
         this.convert(rawDateTime);
@@ -113,8 +115,15 @@ export class FormControlDateTimeComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     // watch mode changes
-    if (changes.mode) {
+    if (changes.mode.currentValue === 'view') {
       this.initialize(this.fg_fields.controls[this.fieldName].value);
+    }
+    if (
+      changes.mode.currentValue === 'edit' ||
+      changes.mode.currentValue === 'new'
+    ) {
+      this.initialize(this.fg_fields.controls[this.fieldName].value);
+      this.startDateTimeConverter();
     }
   }
 
@@ -144,7 +153,7 @@ export class FormControlDateTimeComponent implements OnInit, OnChanges {
     });
   }
 
-  createDateTimeFormGroup() {}
+  // createDateTimeFormGroup() {}
 
   getDateState(mode: FormMode) {
     if (mode === 'view') {

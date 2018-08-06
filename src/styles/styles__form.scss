@@ -171,6 +171,12 @@
     min-width: 180px;
     max-width: 180px;
 
+    &.people-filter {
+      margin: 0;
+      min-width: 223px;
+      max-width: 223px;
+    }
+
     &.take-2-cols {
       min-width: 180px;
       max-width: 376px; // 180+16+180

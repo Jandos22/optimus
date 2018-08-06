@@ -11,8 +11,8 @@ import {
   mergeMap,
   catchError,
   take,
-  reduce,
-  withLatestFrom
+  reduce
+  // withLatestFrom
 } from 'rxjs/operators';
 
 // lodash
