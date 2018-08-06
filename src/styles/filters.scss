@@ -68,3 +68,24 @@
   top: 12px;
   right: 8px;
 }
+
+.forFilters {
+  margin-right: 0;
+  min-width: 180px; // 180+16, min 1 column
+  max-width: 180px; // 180*2+16*2, max 2 columns
+}
+
+.quick-filter-button {
+  color: rgba(0, 0, 0, 0.54);
+  margin-top: 9.5px;
+  margin-left: 5px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+
+  &:hover {
+    background: $my-blue-100;
+    color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+}

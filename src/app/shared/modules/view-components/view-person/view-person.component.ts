@@ -79,7 +79,7 @@ export class ViewPersonComponent implements OnChanges {
     $fetch.pipe(take(1)).subscribe(person => this.fetchPersonSuccess(person));
   }
 
-  fetchPersonSuccess(person: PeopleItem) {
+  fetchPersonSuccess(person: PeopleItem[]) {
     this.$person.next({ ...person[0] });
     this.photo = this.userPhoto(person[0]);
     console.log(person);

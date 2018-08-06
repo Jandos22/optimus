@@ -44,7 +44,7 @@ export class FormControlTitleComponent {
     const min = control.hasError('minlength');
     const max = control.hasError('maxlength');
 
-    return this.fg_fields.get('Summary').touched
+    return this.fg_fields.get('Title').touched
       ? required
         ? '... is required'
         : min

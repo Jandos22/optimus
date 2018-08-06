@@ -34,6 +34,10 @@ import { FormGroup } from '@angular/forms';
       [tooltip]="'Add new HARC'"
       (openForm)="openForm.emit()">
     </app-toolbar-button-add>
+
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
     `
 })
 export class HarcsToolbarComponent {
@@ -43,6 +47,7 @@ export class HarcsToolbarComponent {
   @Input() accessLevel: number;
 
   @Output() openForm = new EventEmitter<any>();
+  @Output() toggleFilters = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
   @Output() onBlur = new EventEmitter<any>();
 

@@ -29,7 +29,7 @@ export class PeopleLookupService {
     return getUserById$.pipe(
       retry(3),
       take(1),
-      map(user => user as PeopleItem)
+      map(user => user as PeopleItem[])
     );
   }
 }
