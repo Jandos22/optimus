@@ -26,6 +26,36 @@ $con2: calc(180px * 2 + 16px * 2);
 $con3: calc(180px * 3 + 16px * 3);
 $con4: calc(180px * 4 + 16px * 4);
 
+.my-form-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap; // only one line
+  // alignment along the main axix
+  justify-content: flex-start;
+  // alignment along the cross axis
+  align-items: flex-start;
+  // align flex container's lines within when there is extra space in the cross-axis
+  align-content: flex-start;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  @media screen and (min-width: 570px) {
+    padding-left: 16px;
+  }
+
+  .form-group-title {
+    // color: rgba(0, 0, 0, 0.75);
+    color: #e65100;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    margin-right: 16px;
+    margin-bottom: 19px;
+  }
+}
+
 .con1 {
   width: 100%;
 
@@ -69,6 +99,11 @@ $con4: calc(180px * 4 + 16px * 4);
 
 .con4 {
   width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  place-content: flex-start;
+  align-items: flex-start;
 
   @media screen and (min-width: $bp2) {
     min-width: $con2;
@@ -142,6 +177,40 @@ $con4: calc(180px * 4 + 16px * 4);
   @media screen and (min-width: $bp4) {
     min-width: $col3;
     max-width: $col3;
+  }
+}
+
+.t2w2-t1w3-t2w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col1;
+    max-width: $col1;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+}
+
+.t2w2-t2w3-t2w4 {
+  width: 100%;
+
+  @media screen and (min-width: $bp2) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp3) {
+    min-width: $col2;
+    max-width: $col2;
+  }
+  @media screen and (min-width: $bp4) {
+    min-width: $col2;
+    max-width: $col2;
   }
 }
 
