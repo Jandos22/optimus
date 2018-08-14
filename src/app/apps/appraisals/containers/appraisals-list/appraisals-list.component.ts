@@ -1,4 +1,3 @@
-import { AppraisalGroupItem } from './../../../../shared/interface/appraisals.model';
 import {
   Component,
   Input,
@@ -9,6 +8,7 @@ import {
 
 // interfaces
 import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
+import { AppraisalGroupItem } from './../../../../shared/interface/appraisals.model';
 
 @Component({
   selector: 'app-appraisals-list',
