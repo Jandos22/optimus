@@ -1,0 +1,45 @@
+.selected-user {
+  width: 45.5px;
+  height: 45.5px;
+  margin-right: 8px;
+
+  .selected-user-photo {
+    width: 45.5px;
+    height: 45.5px;
+    border-radius: 50%;
+  }
+}
+
+.select-user-input {
+  width: calc(100% - 53.5px);
+}
+
+.user-option {
+  font-size: 13px;
+}
+
+.user-option-container {
+  width: 100%;
+  max-height: 48px;
+
+  .photo-container {
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+
+    .user-photo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+  }
+
+  .fullname {
+    width: 100%;
+    max-height: 40px;
+    line-height: 16px;
+    text-align: left;
+    word-break: normal;
+    white-space: normal;
+  }
+}

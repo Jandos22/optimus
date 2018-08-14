@@ -67,9 +67,7 @@ export class GroupsEffects {
       // map it into array of jobs
       // where each value object has appraisals property
       const jobsFlattened = _.flatMap(jobsArray, function(
-        value: AppraisalItem[],
-        index,
-        jobs
+        value: AppraisalItem[]
       ) {
         const appraisal = value[0];
         const Id = appraisal.JobId;
@@ -79,9 +77,18 @@ export class GroupsEffects {
         return { Id, Well, Title, RigUpStart, appraisals: value };
       });
 
-      // console.log(jobsFlattened);
+      // now let's sort jobs/appraisal by job date in ascending order
+      const jobsSorted = _.sortBy(jobsFlattened, job => {
+        return job.RigUpStart;
+      });
 
-      return jobsFlattened;
+      // recent jobs should be first
+      const jobsReversed = _.reverse(jobsSorted);
+
+      console.log(jobsReversed);
+      console.log(jobsFlattened);
+
+      return jobsReversed;
     }),
     map(jobs => new fromGroupsActions.GroupAppraisalsByJobsSuccess(jobs))
   );

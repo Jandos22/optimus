@@ -49,17 +49,21 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
     `
 })
 export class JobsHeaderComponent implements OnInit, OnDestroy {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() accessLevel: number;
+  @Input()
+  appName: string;
+  @Input()
+  searching: boolean;
+  @Input()
+  accessLevel: number;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Output()
+  openForm = new EventEmitter<any>();
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
 
@@ -114,7 +118,8 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
     this.$params = params$
       .pipe(
         map(params => {
-          console.log(params);
+          // console.log('params updated');
+          // console.log(params);
           return {
             text: params[0]
             // locations: params[1],
@@ -123,7 +128,7 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((params: JobsSearchParams) => {
-        console.log('params updated');
+        // console.log('params updated');
         // this action updates store > jobs.params
         // this action is intercepted in search effects
         // search effects triggers chain of actions needed
@@ -132,18 +137,7 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {
-    // this.subscribeToSelectedLocations();
-  }
-
-  subscribeToSelectedLocations() {
-    // subscribe to store and update selected location on change
-    // this.$selectedLocations = this.store_root
-    //   .pipe(select(fromRoot.selectSelectedId))
-    //   .subscribe(location => {
-    //     this.fg_params.get('locations').setValue(location);
-    //   });
-  }
+  ngOnInit() {}
 
   onFocus() {
     this.focus = true;
@@ -155,6 +149,5 @@ export class JobsHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    // this.$selectedLocations.unsubscribe();
   }
 }

@@ -250,5 +250,24 @@ $small: 600px;
         color: rgba(0, 0, 0, 0.75);
       }
     }
+
+    .date-submitted {
+      width: 100%;
+      min-height: 45.5px;
+      border-radius: 4px;
+      padding: 4px;
+
+      @media screen and (min-width: $small) {
+        min-width: 180px;
+        max-width: 180px;
+        margin-right: 8px;
+      }
+
+      .date {
+        font-size: 12px;
+        line-height: 13.5px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+    }
   }
 }

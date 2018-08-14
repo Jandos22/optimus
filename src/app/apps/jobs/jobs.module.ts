@@ -39,7 +39,7 @@ import * as fromPipes from '../../shared/pipes';
 // form modules
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
-import { FilterControlsModule } from '../../shared/modules/filter-controls/locations/form-controls.module';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
 
 // routes
 export const jobsRoutes: Routes = [

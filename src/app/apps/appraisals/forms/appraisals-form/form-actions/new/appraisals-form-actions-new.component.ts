@@ -31,7 +31,9 @@ import { AppraisalsFormHttpService } from '../../form-services/appraisals-form-h
   selector: 'app-appraisals-form-actions-new',
   styleUrls: ['appraisals-form-actions-new.component.scss'],
   template: `
+    <!--
     <button mat-button color="primary" (click)="log()">LOG</button>
+    -->
 
     <button mat-button color="primary"
       [disabled]="!fg_fields.valid || savingChanges"
@@ -48,9 +50,11 @@ import { AppraisalsFormHttpService } from '../../form-services/appraisals-form-h
     `
 })
 export class AppraisalsFormActionsNewComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
+  @Input()
+  fg_fields: FormGroup;
 
-  @Output() closeForm = new EventEmitter<any>();
+  @Output()
+  closeForm = new EventEmitter<any>();
 
   // activates spinner
   savingChanges = false;

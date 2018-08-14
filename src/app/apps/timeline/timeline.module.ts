@@ -26,6 +26,7 @@ import * as fromComponents from './components';
 
 // filters
 import * as fromFilters from './containers/timeline-filters/content';
+import { FilterControlsModule } from './../../shared/modules/filter-controls/form-controls.module';
 
 // forms
 import * as fromForms from './forms'; // must go in entry components
@@ -43,9 +44,6 @@ import { FormControlsModule } from './../../shared/modules/form-controls/form-co
 import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor-light/rich-text-editor-light.module';
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
-
-// Filter Controls
-import { FilterControlsModule } from './../../shared/modules/filter-controls/locations/form-controls.module';
 
 // routes
 export const timelineRoutes: Routes = [

@@ -28,7 +28,7 @@ export class JobsService {
       .pipe(
         retry(3),
         switchMap((response: SpResponse) => {
-          console.log(response);
+          // console.log(response);
           if (response.d.results) {
             return of(response);
           }

@@ -1,6 +1,12 @@
 import { AppraisalGroupItem } from './../../../../shared/interface/appraisals.model';
 
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  HostBinding
+} from '@angular/core';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -27,7 +33,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 import { AppraisalRights } from '../../store';
 
 @Component({
-  selector: 'app-appraisals.common-app-container',
+  selector: 'app-appraisals.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-appraisals-header
@@ -35,7 +41,8 @@ import { AppraisalRights } from '../../store';
       [appName]="appName" [searching]="searching"
       [currentUser]="user$ | async"
       [position]="position$ | async"
-      (openForm)="openForm('new', $event)">
+      (openForm)="openForm('new', $event)"
+      (toggleFilters)="toggleFilters()">
     </app-appraisals-header>
 
     <app-appraisals-list
@@ -47,6 +54,15 @@ import { AppraisalRights } from '../../store';
       [pagination]="pagination" [top]="params.top" [searching]="searching"
       (onNext)="onNext()" (onBack)="onBack()">
     </app-appraisals-footer>
+
+    <!-- FILTERS -->
+    <app-appraisals-filters class="common-filters-container"
+      [style.display]="(showFilters ? 'flex' : 'none')"
+      fxLayout="column" fxLayoutAlign="start start"
+      [currentUser]="user$ | async"
+      [position]="position$ | async"
+      (toggleFilters)="toggleFilters()">
+    </app-appraisals-filters>
   `,
   styleUrls: ['./appraisals.component.scss']
 })
@@ -70,6 +86,10 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
 
   $pagination: Subscription;
   pagination: PaginationState;
+
+  // when showFilters toggle it toggles class in host element
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -167,6 +187,14 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         console.log(res);
       });
+  }
+
+  toggleFilters() {
+    if (this.showFilters) {
+      this.showFilters = false;
+    } else {
+      this.showFilters = true;
+    }
   }
 
   ngOnDestroy() {

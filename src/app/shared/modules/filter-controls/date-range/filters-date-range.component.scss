@@ -1,0 +1,14 @@
+.clear-date {
+  color: rgba(0, 0, 0, 0.54);
+  margin-top: 12px;
+  margin-left: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  &:hover {
+    background: #bbdefb;
+    color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+}

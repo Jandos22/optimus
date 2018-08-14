@@ -5,7 +5,11 @@ import {
   EventEmitter,
   ChangeDetectionStrategy
 } from '@angular/core';
+
 import { FormGroup } from '@angular/forms';
+
+// import * as jsPDF from 'jspdf';
+import * as html2pdf from 'html2pdf.js';
 
 @Component({
   selector: 'app-appraisals-toolbar',
@@ -29,22 +33,39 @@ import { FormGroup } from '@angular/forms';
         [fg_params]="fg_params">
     </app-toolbar-button-clear>
 
+    <app-toolbar-button-save
+      (onSave)="print()">
+    </app-toolbar-button-save>
+
     <app-toolbar-button-add
       *ngIf="isFEFS"
       [tooltip]="'Create new Appraisal'"
       (openForm)="openForm.emit()">
     </app-toolbar-button-add>
+
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
     `
 })
 export class AppraisalsToolbarComponent {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() fg_params: FormGroup;
-  @Input() isFEFS: boolean;
+  @Input()
+  appName: string;
+  @Input()
+  searching: boolean;
+  @Input()
+  fg_params: FormGroup;
+  @Input()
+  isFEFS: boolean;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Output()
+  openForm = new EventEmitter<any>();
+  @Output()
+  toggleFilters = new EventEmitter<any>();
+  @Output()
+  onFocus = new EventEmitter<any>();
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 
@@ -52,12 +73,20 @@ export class AppraisalsToolbarComponent {
     this.fg_params.reset();
   }
 
-  // canCreate() {
-  //   // later change this, so that only FEs can create appraisals
-  //   if (this.accessLevel) {
-  //     return this.accessLevel === 3 ? true : false;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  print() {
+    const element = document.getElementById('PrintAppraisals');
+
+    const opt = {
+      margin: 1,
+      filename: 'appraisals.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf()
+      .from(element)
+      .set(opt)
+      .save();
+  }
 }
