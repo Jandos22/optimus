@@ -116,16 +116,23 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
             <div class="comments">{{ appraisal.FurtherDevelopment }}</div>
           </div>
 
-          <!-- Operator's Comments-->
+          <!-- Operator's Comments
           <div class="comments-container" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="4px">
             <div class="section-title">Operators Comments</div>
             <div class="comments"></div>
           </div>
+          -->
 
           <!-- Appraisal By -->
           <div class="appraisal-by" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="4px">
             <div class="section-title">Appraisal By</div>
             <div class="engineer">{{ appraisal.GivenBy.Shortname }}</div>
+          </div>
+
+          <!-- Date Submitted -->
+          <div class="date-submitted" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="4px">
+            <div class="section-title">Date Submitted</div>
+            <div class="date">{{ appraisal.Date | date: 'mediumDate' }}</div>
           </div>
 
         </div>
@@ -135,10 +142,13 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
     `
 })
 export class AppraisalGroupComponent {
-  @Input() job: AppraisalGroupItem;
-  @Input() last: boolean;
+  @Input()
+  job: AppraisalGroupItem;
+  @Input()
+  last: boolean;
 
-  @Output() openForm = new EventEmitter<AppraisalItem>();
+  @Output()
+  openForm = new EventEmitter<AppraisalItem>();
 
   constructor() {}
 }

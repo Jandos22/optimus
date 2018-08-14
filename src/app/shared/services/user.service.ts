@@ -56,6 +56,8 @@ export class UserService {
       // spId = 6;
       // loginName = 'cmarcotte@slb.com';
       // spId = 209;
+      // loginName = 'myergazin@slb.com';
+      // spId = 210;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');

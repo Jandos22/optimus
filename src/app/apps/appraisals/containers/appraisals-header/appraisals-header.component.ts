@@ -26,8 +26,8 @@ import {
   map
 } from 'rxjs/operators';
 
-import { people_fefs } from './../../../../shared/constants/ids-fefs';
-import { people_op } from '../../../../shared/constants/ids-op';
+// import { people_fefs } from './../../../../shared/constants/ids-fefs';
+// import { people_op } from '../../../../shared/constants/ids-op';
 
 // validators
 import { ValidationService } from '../../../../shared/validators/validation.service';
@@ -49,23 +49,34 @@ import { AppraisalRights } from '../../store';
       [appName]="appName" [fg_params]="fg_params" [searching]="searching"
       [isFEFS]="position?.isFEFS"
       (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
+      (toggleFilters)="toggleFilters.emit()"
       [ngClass]="{  focused: focus,
                     invalid: fg_params.get('text').invalid }">
     </app-appraisals-toolbar>
     `
 })
 export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() currentUser: PeopleItem;
-  @Input() position: AppraisalRights;
+  @Input()
+  appName: string;
 
-  @Output() openForm = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  currentUser: PeopleItem;
+
+  @Input()
+  position: AppraisalRights;
+
+  @Output()
+  openForm = new EventEmitter<any>();
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
 
@@ -73,31 +84,26 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store_appraisals: Store<fromAppraisals.AppraisalsState>,
     private store_root: Store<fromRoot.RootState>
-  ) {
-    // this.initializeParamsFormGroup();
-    // this.subscribeToParamsFormGroup();
-    // this.resetParamsFormGroup();
-  }
+  ) {}
 
   ngOnInit() {
     this.initializeParamsFormGroup();
     this.subscribeToParamsFormGroup();
     this.resetParamsFormGroup();
-    this.subscribeToSelectedLocations();
   }
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
-      text: ['', ValidationService.onlySearchable],
-      locations: [''],
-      top: [],
-      ...this.getGivenForByParams()
+      text: ['', ValidationService.onlySearchable]
+      // locations: [''],
+      // top: [],
+      // ...this.getGivenForByParams()
     });
   }
 
   resetParamsFormGroup() {
     this.fg_params.get('text').patchValue('');
-    this.fg_params.get('top').patchValue(100);
+    // this.fg_params.get('top').patchValue(100);
   }
 
   subscribeToParamsFormGroup() {
@@ -111,15 +117,19 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
 
-    const locations$ = this.fg_params
-      .get('locations')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const locations$ = this.fg_params
+    //   .get('locations')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const top$ = this.fg_params
-      .get('top')
-      .valueChanges.pipe(distinctUntilChanged());
+    // const top$ = this.fg_params
+    //   .get('top')
+    //   .valueChanges.pipe(distinctUntilChanged());
 
-    const params$ = combineLatest(text$, locations$, top$);
+    const params$ = combineLatest(
+      text$
+      // locations$,
+      // top$
+    );
 
     this.$params = params$
       .pipe(
@@ -127,33 +137,21 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
           console.log('params updated');
           console.log(params);
 
-          const newParams = {
+          return {
             ...this.fg_params.value,
-            text: params[0],
-            locations: params[1],
-            top: params[2]
+            text: params[0]
+            // locations: params[1],
+            // top: params[2]
           };
-
-          console.log(newParams);
-
-          return newParams;
         })
       )
       .subscribe((params: AppraisalsSearchParams) => {
+        // console.log('params updated');
         // this action updates store > jobs.params
         // this action is intercepted in search effects
         // search effects triggers chain of actions needed
         // to request jobs from server and load them in store
         this.store_appraisals.dispatch(new fromAppraisals.UpdateParams(params));
-      });
-  }
-
-  subscribeToSelectedLocations() {
-    // subscribe to store and update selected location on change
-    this.$selectedLocations = this.store_root
-      .pipe(select(fromRoot.selectSelectedId))
-      .subscribe(location => {
-        this.fg_params.get('locations').setValue(location);
       });
   }
 
@@ -198,6 +196,5 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    this.$selectedLocations.unsubscribe();
   }
 }

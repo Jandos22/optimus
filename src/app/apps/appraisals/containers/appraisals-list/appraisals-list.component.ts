@@ -15,7 +15,7 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
   styleUrls: ['appraisals-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="appraisals-list-container" fxFlex
+    <div class="appraisals-list-container" fxFlex id="PrintAppraisals"
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
       <app-appraisal-group
@@ -30,9 +30,11 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
     `
 })
 export class AppraisalsListComponent {
-  @Input() appraisalGroups: AppraisalGroupItem[];
+  @Input()
+  appraisalGroups: AppraisalGroupItem[];
 
-  @Output() openForm = new EventEmitter<AppraisalItem>();
+  @Output()
+  openForm = new EventEmitter<AppraisalItem>();
 
   constructor() {}
 }

@@ -39,6 +39,7 @@ export interface AppraisalsSearchParams {
   afterDate?: Date;
   beforeDate?: Date;
   givenby?: number; // FE Optimus Account Id (NgPeople)
+  givenfor?: number; // FE Optimus Account Id (NgPeople)
 }
 
 export interface AppraisalSkillItem {

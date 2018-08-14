@@ -26,6 +26,7 @@ export class AppraisalsService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
+        retry(3),
         switchMap((response: SpResponse) => {
           // console.log(response);
           if (response.d.results) {
@@ -41,16 +42,22 @@ export class AppraisalsService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text.replace('#', '%23');
+    const text = params.text ? params.text.replace('#', '%23') : null;
     // locations must be ids array
-    const locations = params.locations;
-    const givenby = params.givenby;
-    let top = params.top;
+    const locations = params.locations ? params.locations : [];
+    // people must be just id number or null
+    const givenby = params.givenby ? params.givenby : null;
+    const givenfor = params.givenfor ? params.givenfor : null;
+    // if top is missing then default is 100
+    let top = params.top ? params.top : 100;
 
-    // job date
+    // count filters
+    let countFilters = 0;
+
     // dates start with empty string
     let beforeDate = '',
       afterDate = '';
+
     // date object need to be converted into string (ISO)
     if (params.beforeDate) {
       beforeDate = params.beforeDate.toISOString();
@@ -64,11 +71,19 @@ export class AppraisalsService {
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is not empty/null
-    if (text || locations.length || givenby || beforeDate || afterDate) {
+    if (
+      text ||
+      locations.length ||
+      givenby ||
+      givenfor ||
+      beforeDate ||
+      afterDate
+    ) {
       url += `&$filter=`;
     }
 
     if (text) {
+      countFilters++;
       url += `(`;
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',OverallPerformance))`;
@@ -76,38 +91,55 @@ export class AppraisalsService {
       url += `)`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
-    }
-
     // locations filter configuration
     if (locations.length) {
       // check if "AND" is needed
-      if (text) {
+      if (countFilters > 0) {
         url += 'and';
       }
+      countFilters++;
       // finds items with given location
       url += `${this.getFilterLocations(locations)}`;
-    }
-
-    // givenby filter configuration
-    if (givenby) {
-      // check if "AND" is needed
-      if (text || locations.length) {
-        url += 'and';
-      }
-      // finds items with given location
-      url += `(GivenBy/Id eq ${givenby})`;
     }
 
     // beforeDate filter configuration
     if (beforeDate) {
       // check if "AND" is needed
-      if (text || locations.length || givenby) {
+      if (countFilters > 0) {
         url += 'and';
       }
-      // find items with RigUpStart before given date
+      countFilters++;
       url += `(Date lt datetime'${beforeDate}')`;
+    }
+
+    // afterDate filter configuration
+    if (afterDate) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `(Date gt datetime'${afterDate}')`;
+    }
+
+    // givenfor filter configuration
+    if (givenfor) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `(GivenFor/Id eq ${givenfor})`;
+    }
+
+    // givenby filter configuration
+    if (givenby) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `(GivenBy/Id eq ${givenby})`;
     }
 
     // $orderby
@@ -171,13 +203,7 @@ export class AppraisalsService {
   }
 
   getExpandFields() {
-    const $expand = [
-      'Location',
-      'Job',
-      'GivenFor',
-      // 'GivenFor/Position',
-      'GivenBy'
-    ];
+    const $expand = ['Location', 'Job', 'GivenFor', 'GivenBy'];
     return $expand.toString();
   }
 

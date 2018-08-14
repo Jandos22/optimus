@@ -43,7 +43,8 @@ import { AppraisalsService } from '../../../services';
         *ngIf="mode === 'new'"
         (closeForm)="closeForm.emit($event)"
         [fg_fields]="fg_fields"
-        class="form-actions-new">
+        class="form-actions-new"
+        fxLayout="row nowrap" fxLayoutAlign="end center">
     </app-appraisals-form-actions-new>
 
     <app-appraisals-form-actions-edit
@@ -57,17 +58,25 @@ import { AppraisalsService } from '../../../services';
     `
 })
 export class AppraisalsFormActionsComponent {
-  @Input() mode: FormMode;
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: AppraisalItem;
-  @Input() position: AppraisalRights;
-  @Input() isAppraisalAuthor: boolean;
+  @Input()
+  mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: AppraisalItem;
+  @Input()
+  position: AppraisalRights;
+  @Input()
+  isAppraisalAuthor: boolean;
 
-  @Output() switchFormMode = new EventEmitter<any>();
-  @Output() closeForm = new EventEmitter<any>();
+  @Output()
+  switchFormMode = new EventEmitter<any>();
+  @Output()
+  closeForm = new EventEmitter<any>();
 
   // triggered after saving fields and/or image
-  @Output() updateDataItem = new EventEmitter<AppraisalItem>();
+  @Output()
+  updateDataItem = new EventEmitter<AppraisalItem>();
 
   constructor(
     private store_appraisals: Store<fromAppraisals.AppraisalsState>,

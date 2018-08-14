@@ -34,30 +34,34 @@ import { FormGroup } from '@angular/forms';
       [tooltip]="'Create new Appraisal'"
       (openForm)="openForm.emit()">
     </app-toolbar-button-add>
+
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
     `
 })
 export class AppraisalsToolbarComponent {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() fg_params: FormGroup;
-  @Input() isFEFS: boolean;
+  @Input()
+  appName: string;
+  @Input()
+  searching: boolean;
+  @Input()
+  fg_params: FormGroup;
+  @Input()
+  isFEFS: boolean;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Output()
+  openForm = new EventEmitter<any>();
+  @Output()
+  toggleFilters = new EventEmitter<any>();
+  @Output()
+  onFocus = new EventEmitter<any>();
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 
   onClear() {
     this.fg_params.reset();
   }
-
-  // canCreate() {
-  //   // later change this, so that only FEs can create appraisals
-  //   if (this.accessLevel) {
-  //     return this.accessLevel === 3 ? true : false;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }

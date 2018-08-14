@@ -22,6 +22,10 @@ import * as fromContainers from './containers';
 // components
 import * as fromComponents from './components';
 
+// filters
+import * as fromFilters from './containers/appraisals-filters/content';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
+
 // forms
 import * as fromForms from './forms'; // must go in entry components
 import * as fromAppraisalsFormControls from './forms/appraisals-form/form-controls';
@@ -57,12 +61,14 @@ export const appraisalsRoutes: Routes = [
     FormControlsModule,
     // toolbar modules
     ToolbarButtonsModule,
-    SharedViewComponentsModule
+    SharedViewComponentsModule,
+    FilterControlsModule
   ],
   providers: [...fromServices.services],
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
+    ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromAppraisalsFormControls.forms_controls,
     ...fromAppraisalsFormActions.form_actions
