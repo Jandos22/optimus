@@ -135,3 +135,14 @@ export interface OrderStatus extends SpListItem {
   Title: string;
   PositionInList: number;
 }
+
+export interface OrderLineItem {
+  line?: string;
+  title?: string;
+  qty?: number;
+  pn?: string;
+  orderNumber?: string;
+  orderStatusId?: string;
+  orderStatus?: OrderStatus;
+  comments?: string;
+}

@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 
 // interfaces
-import { OrderItem } from '../../../../shared/interface/orders.model';
+import {
+  OrderItem,
+  OrderStatus
+} from '../../../../shared/interface/orders.model';
 
 @Component({
   selector: 'app-orders-list',
@@ -22,6 +25,7 @@ import { OrderItem } from '../../../../shared/interface/orders.model';
         *ngFor="let order of orders; last as last"
         [order]="order"
         [ngClass]="{'last-item': last}"
+        [orderStatuses]="orderStatuses"
         (openForm)="openForm.emit($event)">
       </app-orders-list-item>
 
@@ -29,9 +33,14 @@ import { OrderItem } from '../../../../shared/interface/orders.model';
     `
 })
 export class OrdersListComponent {
-  @Input() orders: OrderItem[];
+  @Input()
+  orders: OrderItem[];
 
-  @Output() openForm = new EventEmitter<OrderItem>();
+  @Input()
+  orderStatuses: OrderStatus[];
+
+  @Output()
+  openForm = new EventEmitter<OrderItem>();
 
   constructor() {}
 }

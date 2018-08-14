@@ -8,7 +8,7 @@ import {
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -24,7 +24,8 @@ import { OrdersFormComponent } from '../../forms';
 // interfaces
 import {
   OrdersSearchParams,
-  OrderItem
+  OrderItem,
+  OrderStatus
 } from '../../../../shared/interface/orders.model';
 import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
@@ -43,7 +44,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
     <app-orders-list
       fxFlex class="common-content"
-      [orders]="data" (openForm)="openForm('view', $event)">
+      [orders]="data" [orderStatuses]="orderStatuses$ | async"
+      (openForm)="openForm('view', $event)">
     </app-orders-list>
 
     <app-orders-footer fxFlex="49px" class="common-footer"
@@ -76,8 +78,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
   $pagination: Subscription;
   pagination: PaginationState;
 
+  orderStatuses$: Observable<OrderStatus[]>;
+
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened') showFilters = false;
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -91,6 +96,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     // fetch OrderStatuses list from database
     this.store_root.dispatch(new fromOrders.FetchOrderStatuses());
+
+    this.orderStatuses$ = this.store_orders.pipe(
+      select(fromOrders.selectAllOrderStatuses)
+    );
 
     this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
 

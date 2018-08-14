@@ -91,7 +91,7 @@ export class SearchEffects {
           const dispatch = [];
 
           if (response.d.results.length) {
-            // when users received, map them to add "id" property for @ngrx/entity
+            // when orders received, add "id" property for @ngrx/entity
             const orders = _.reduce(
               response.d.results,
               function(acc: OrderItem[], item: OrderItem) {

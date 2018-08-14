@@ -28,7 +28,7 @@ import { FormMode } from './../../../../../../shared/interface/form.model';
           matTooltip='check status via Track My Order'
           matSuffix
           *ngIf="isPurchaseOrder"
-          (click)="openTMO()">
+          (click)="openTMO(fg_fields.controls[this.fieldName].value)">
           <span class='fa_regular'><fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon></span>
         </button>
 
@@ -68,5 +68,12 @@ export class OrdersFormLnOrderNumberComponent {
     return str.length === 1 && str.match(/[0-9]/i);
   }
 
-  openTMO() {}
+  openTMO(orderNumber: string) {
+    if (orderNumber) {
+      window.open(
+        `https://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
+        '_blank'
+      );
+    }
+  }
 }

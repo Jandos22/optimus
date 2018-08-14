@@ -207,6 +207,7 @@ export class OrdersService {
       'Requestor/Id',
       'Requestor/Shortname',
       'Requestor/Fullname',
+      'ActiveLineItems',
       // #1
       'Ln01_Title',
       'Ln01_Qty',
