@@ -1,0 +1,33 @@
+.orders-line-items-header {
+  width: 100%;
+  margin-right: 16px;
+  margin-bottom: 19px;
+
+  .title {
+    color: #e65100;
+    font-size: 16px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .flag {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    width: 40px;
+    margin-right: 16px;
+
+    @media screen and (min-width: 520px) {
+      min-width: 160px;
+      max-width: 160px;
+    }
+  }
+}
+
+.toggle-last-updated-flag-text {
+  display: none;
+
+  @media screen and (min-width: 520px) {
+    display: inline;
+  }
+}

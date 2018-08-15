@@ -1,0 +1,19 @@
+.selected-user {
+  width: 45.5px;
+  height: 45.5px;
+  margin-right: 8px;
+
+  .selected-user-photo {
+    width: 45.5px;
+    height: 45.5px;
+    border-radius: 50%;
+  }
+}
+
+.select-user-input {
+  width: calc(100% - 53.5px);
+}
+
+.user-option {
+  font-size: 13px;
+}

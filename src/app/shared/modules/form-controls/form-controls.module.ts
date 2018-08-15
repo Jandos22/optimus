@@ -1,3 +1,4 @@
+import { FcPeopleSelectorSingleComponent } from './people-selector-single/fc-people-selector-single.component';
 // modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,10 @@ import { FormControlClientPickerComponent } from './client-picker/form-control-c
 import { FormControlRigPickerComponent } from './rig-picker/form-control-rig-picker.component';
 import { FormControlPeopleSelectorComponent } from './people-selector/form-control-people-selector.component';
 import { PeopleSelectorOptionComponent } from './people-selector/option/people-selector-option.component';
+
+// People Selector Single
 import { PeopleSelectorSelectedComponent } from './people-selector/selected/people-selector-selected.component';
+import { FcPeopleSelectorSingleFetchComponent } from './people-selector-single/fc-people-selector-single-fetch';
 
 @NgModule({
   imports: [
@@ -54,7 +58,10 @@ import { PeopleSelectorSelectedComponent } from './people-selector/selected/peop
     // People Selector
     FormControlPeopleSelectorComponent,
     PeopleSelectorOptionComponent,
-    PeopleSelectorSelectedComponent
+    PeopleSelectorSelectedComponent,
+    // People Selector Single
+    FcPeopleSelectorSingleComponent,
+    FcPeopleSelectorSingleFetchComponent
   ],
   exports: [
     FormControlTitleComponent,
@@ -74,7 +81,10 @@ import { PeopleSelectorSelectedComponent } from './people-selector/selected/peop
     // People Selector
     FormControlPeopleSelectorComponent,
     PeopleSelectorOptionComponent,
-    PeopleSelectorSelectedComponent
+    PeopleSelectorSelectedComponent,
+    // People Selector Single
+    FcPeopleSelectorSingleComponent,
+    FcPeopleSelectorSingleFetchComponent
   ],
   providers: []
 })

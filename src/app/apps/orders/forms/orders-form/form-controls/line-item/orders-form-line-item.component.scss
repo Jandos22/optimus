@@ -1,0 +1,180 @@
+.lineitem-inner-container {
+  width: 100%;
+  border-radius: 4px;
+  background: #eee;
+  border: 1px solid #ccc;
+  position: relative;
+  overflow: hidden;
+
+  &.order-placed {
+    background: #fff;
+    // border: 1px solid #ccc;
+  }
+
+  &.pending-approval,
+  &.waiting-gl {
+    background: #ffc107;
+  }
+
+  &.fmt-confirmed,
+  &.po-created,
+  &.gl-released,
+  &.customs-clearance {
+    background: #ffee58;
+  }
+
+  &.received {
+    background: #a5d6a7;
+  }
+
+  &.cancelled {
+    background: #ffcdd2;
+  }
+
+  .index {
+    width: 32px;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.625);
+    text-align: start;
+    padding: 12px 0 7px 8px;
+    line-height: 18px;
+  }
+
+  .main {
+    width: calc(100% - 40px);
+    padding: 5px 0;
+    position: relative;
+    min-height: 85.5px;
+
+    .control {
+      max-height: 40px;
+      overflow: hidden;
+    }
+
+    .part-number {
+      width: calc(100% - 62px);
+      margin: 0 8px;
+
+      @media screen and (min-width: 815px) {
+        // @media screen and (min-width: 1060px) {
+        min-width: 142px;
+        max-width: 142px;
+      }
+    }
+
+    .quantity {
+      width: 38px;
+      margin-right: 8px;
+    }
+
+    .title {
+      width: calc(100% - 16px);
+      margin: 0 8px;
+
+      @media screen and (min-width: 815px) {
+        margin: 0 8px 0 0;
+        width: calc(100% - 212px);
+      }
+
+      @media screen and (min-width: 1060px) {
+        margin: 0 8px 0 0;
+        // width: calc(100% - 378px);
+        width: calc(100% - 418px);
+      }
+    }
+
+    .order-number {
+      width: calc(100% - 16px);
+      margin: 0 8px;
+
+      @media screen and (min-width: 815px) {
+        min-width: 188px;
+        max-width: 188px;
+        margin: 0 8px;
+      }
+
+      @media screen and (min-width: 1060px) {
+        min-width: 198px;
+        max-width: 198px;
+        margin: 0 8px 0 0;
+      }
+    }
+
+    .comments {
+      width: calc(100% - 16px);
+      margin: -13.5px 8px 0 8px;
+
+      @media screen and (min-width: 1060px) {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: calc(100% - 222px);
+        margin: -13.5px 8px 0 8px;
+      }
+    }
+
+    .order-status {
+      width: calc(100% - 16px);
+      margin: 0 8px;
+
+      @media screen and (min-width: 815px) {
+        width: calc(100% - 212px);
+        margin: 0 8px 0 0;
+      }
+
+      @media screen and (min-width: 1060px) {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        min-width: 158px;
+        max-width: 158px;
+        margin: 0 8px 0 0;
+      }
+    }
+
+    .btn-remove {
+      width: 60px;
+      height: 60px;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.25);
+      background: #fafafa;
+      line-height: 38px;
+      border-radius: 50%;
+      border: 1px solid #eaeaea;
+      text-align: start;
+
+      position: absolute;
+      bottom: -30px;
+      right: -30px;
+
+      &:hover {
+        cursor: pointer;
+        color: #e57373;
+        background: #ffcdd2;
+        border: 1px solid #ef9a9a;
+      }
+
+      &:active {
+        cursor: pointer;
+        color: #f44336;
+        background: #ffcdd2;
+        border: 1px solid #ef9a9a;
+      }
+
+      .ng-fa-icon {
+        margin-left: 14px;
+      }
+    }
+  }
+}
+
+.minus13 {
+  margin-top: -13.5px;
+}
+
+.orders-btn-add-line-item {
+  &:hover {
+    background: #b9f6ca;
+  }
+}

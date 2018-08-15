@@ -1,0 +1,30 @@
+app-orders-links {
+  width: 100%;
+}
+
+.orders-links-container {
+  width: 100%;
+  height: 20px;
+  //   background: #ccc;
+  margin: 0px 8px 16px 8px;
+
+  .link-active {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #0069c0;
+    // color: rgba(0, 0, 0, 0.625);
+
+    &:hover {
+      cursor: pointer;
+      color: #0069c0;
+    }
+  }
+
+  .link-inactive {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}

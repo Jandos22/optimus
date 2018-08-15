@@ -23,6 +23,7 @@ import {
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -47,7 +48,8 @@ const matModules: any[] = [
   MatDatepickerModule,
   MatAutocompleteModule,
   MatNativeDateModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatSlideToggleModule
 ];
 
 @NgModule({

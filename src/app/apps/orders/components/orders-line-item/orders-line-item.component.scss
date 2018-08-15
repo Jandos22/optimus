@@ -1,0 +1,157 @@
+.view-lineitem-inner-container {
+  width: 100%;
+  padding: 4px;
+  font-size: 12px;
+  // border-top: 1px solid #ccc;
+  // border-bottom: 1px solid #ccc;
+  min-height: 40px;
+  border-radius: 4px;
+  position: relative;
+
+  // takes 24px
+  .line {
+    min-width: 20px;
+    max-width: 20px;
+    height: 16px;
+    line-height: 16px;
+    margin-right: 4px;
+    order: 1;
+  }
+
+  // takes 80px
+  .part-number {
+    min-width: 76px;
+    max-width: 76px;
+    height: 16px;
+    line-height: 16px;
+    margin-right: 4px;
+    order: 2;
+  }
+
+  // takes 40px
+  .quantity {
+    width: calc(100% - 208px);
+    height: 16px;
+    line-height: 16px;
+    margin-right: 4px;
+    order: 3;
+
+    @media screen and (min-width: 520px) {
+      min-width: 36px;
+      max-width: 36px;
+    }
+  }
+
+  // flexible
+  .title {
+    max-height: 32px;
+    line-height: 16px;
+    order: 5;
+    width: calc(100% - 28px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 24px;
+    margin-right: 4px;
+
+    @media screen and (min-width: 520px) {
+      width: calc(100% - 248px);
+      margin-left: 0px;
+      margin-right: 4px;
+    }
+  }
+
+  // takes 80px
+  .order-number {
+    min-width: 96px;
+    max-width: 96px;
+    height: 16px;
+    line-height: 16px;
+    margin-right: 4px;
+    order: 4;
+    text-align: end;
+
+    @media screen and (min-width: 520px) {
+      margin-right: 4px;
+      order: 5;
+      text-align: end;
+    }
+
+    &.isPO {
+      font-weight: 500;
+      color: #0069c0;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  // flexible
+  .comments {
+    // width: 100%;
+    line-height: 16px;
+    margin-left: 24px;
+    margin-right: 4px;
+    order: 7;
+    color: rgba(0, 0, 0, 0.54);
+
+    @media screen and (min-width: 520px) {
+      // width: calc(100% - 128px);
+      order: 6;
+      flex: 1;
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // takes 100px
+  .order-status {
+    width: calc(100% - 28px);
+    height: 16px;
+    line-height: 16px;
+    margin-left: 24px;
+    margin-right: 4px;
+    order: 6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media screen and (min-width: 520px) {
+      margin-left: 0px;
+      width: auto;
+      // max-width: 96px;
+      position: absolute;
+      text-align: end;
+      top: 20px;
+      right: 4px;
+    }
+  }
+
+  &.order-placed {
+    background: #fff;
+    // border: 1px solid #ccc;
+  }
+
+  &.pending-approval,
+  &.waiting-gl {
+    background: #ffc107;
+  }
+
+  &.fmt-confirmed,
+  &.po-created,
+  &.gl-released,
+  &.customs-clearance {
+    background: #ffee58;
+  }
+
+  &.received {
+    background: #a5d6a7;
+  }
+
+  &.cancelled {
+    background: #ffcdd2;
+  }
+}

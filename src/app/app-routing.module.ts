@@ -16,6 +16,11 @@ export const appRoutes: Routes = [
     loadChildren: './apps/people/people.module#PeopleModule'
   },
   {
+    path: 'orders',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/orders/orders.module#OrdersModule'
+  },
+  {
     path: 'jobs',
     canActivate: [AuthGuard],
     loadChildren: './apps/jobs/jobs.module#JobsModule'

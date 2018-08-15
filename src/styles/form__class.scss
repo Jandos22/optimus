@@ -193,6 +193,15 @@
   }
 }
 
+.location-in-form {
+  min-width: 80px;
+  max-width: 80px;
+
+  @media screen and (min-width: 570px) {
+    padding-right: 16px;
+  }
+}
+
 .common-form-user-item {
   height: 40px;
   padding-bottom: 4px;

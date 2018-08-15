@@ -1,0 +1,24 @@
+.order-last-updated {
+  width: 100%;
+  padding: 0 8px 4px 8px;
+  height: 20px;
+  line-height: 16px;
+  font-size: 12px;
+
+  &.recent {
+    color: green;
+  }
+
+  &.old {
+    color: red;
+  }
+
+  .icon,
+  .text {
+    line-height: 16px;
+    max-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

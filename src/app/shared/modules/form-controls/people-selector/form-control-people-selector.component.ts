@@ -109,19 +109,30 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
 })
 export class FormControlPeopleSelectorComponent
   implements OnInit, OnDestroy, OnChanges {
-  @Input() placeholder: string;
-  @Input() fieldName: string; // form control name
-  @Input() displayName: string; // label name
-  @Input() fg_fields: FormGroup;
-  @Input() selfUser?: PeopleItem; // used to add self in selected by default
-  @Input() allowNumberOfUsers: number;
-  @Input() mode: FormMode;
-  @Input() singleLocation: boolean; // Location or Locations
-  @Input() includeOnly: number[]; // array with People Positions, like ['FE','GFE']
+  @Input()
+  placeholder: string;
+  @Input()
+  fieldName: string; // form control name
+  @Input()
+  displayName: string; // label name
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  selfUser?: PeopleItem; // used to add self in selected by default
+  @Input()
+  allowNumberOfUsers: number;
+  @Input()
+  mode: FormMode;
+  @Input()
+  singleLocation: boolean; // Location or Locations
+  @Input()
+  includeOnly: number[]; // array with People Positions, like ['FE','GFE']
 
   // used in apps filters only
-  @Input() forFilters: boolean; // Location or Locations
-  @Input() doReset: boolean;
+  @Input()
+  forFilters: boolean; // Location or Locations
+  @Input()
+  doReset: boolean;
   selfSelected: boolean;
   tooltipSelectMe = 'Select Me';
 
@@ -130,11 +141,13 @@ export class FormControlPeopleSelectorComponent
   // multiple has results property, then array of values
   // @Input() isSingleLookup: boolean;
 
-  @Output() onSelectUser = new EventEmitter<number[]>();
+  @Output()
+  onSelectUser = new EventEmitter<number[]>();
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
-  @ViewChild('formField') el_FormField: ElementRef;
+  @ViewChild('formField')
+  el_FormField: ElementRef;
 
   // form group for autocomplete input
   fg_users: FormGroup;

@@ -1,0 +1,64 @@
+@import '../../../../../colors';
+
+.order-inner-container {
+  border-radius: 8px;
+  min-height: 54px;
+  padding-bottom: 4px;
+  background: $my-grey-50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.order-header {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  min-height: 32px;
+
+  &:hover {
+    cursor: pointer;
+    background: #eee;
+  }
+
+  .details {
+    flex: 1;
+    // takes 90px
+    .date {
+      min-width: 82px;
+      max-width: 82px;
+      margin-right: 8px;
+      height: 16px;
+      font-size: 12px;
+      line-height: 20px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.625);
+    }
+
+    .name {
+      width: calc(100%);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 16px;
+      max-height: 48px;
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  // takes 52px
+  .requestor {
+    margin-right: 8px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.line-item-container {
+  width: 100%;
+  padding: 4px 8px;
+}

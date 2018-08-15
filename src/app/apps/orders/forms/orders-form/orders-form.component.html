@@ -1,0 +1,49 @@
+<div class="form-title-container" fxLayout="row nowrap" fxLayoutAlign="start start">
+    <div fxFlex class="form-title">Order</div>
+    <app-form-control-location class="location-in-form" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
+        [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+    </app-form-control-location>
+</div>
+
+<mat-dialog-content class="common-mat-dialog-content">
+
+    <div class="my-form-container">
+        <div class="con4">
+            <app-orders-form-order-name class="cmn-form-component t2w2-t1w3-t2w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode"></app-orders-form-order-name>
+            <app-orders-form-order-date class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row nowrap" [fg_fields]="fg_fields" [mode]="data.mode"></app-orders-form-order-date>
+
+            <app-fc-people-selector-single class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row nowrap" fxLayoutAlign="space-between start"
+                [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'RequestorId'" [displayName]="'Requestor'" [selfUser]="selfUser$ | async">
+            </app-fc-people-selector-single>
+        </div>
+
+        <!-- SECTION -->
+        <div class="orders-line-items-header" fxLayout="row nowrap">
+            <div class="title">Line Items [{{ activeLineItems.length }}]</div>
+            <app-orders-form-last-updated-flag class="flag" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'LastUpdatedFlag'">
+            </app-orders-form-last-updated-flag>
+        </div>
+
+        <div class="con4">
+            <app-orders-form-line-item *ngFor="let lineItem of activeLineItems" class="cmn-form-component t2w2-t3w3-t4w4" fxLayout="row nowrap"
+                [lineItem]="lineItem" [fg_fields]="fg_fields" [mode]="data.mode" [orderStatuses]="orderStatuses$ | async" (onRemoveLineItem)="onRemoveLineItem($event)">
+            </app-orders-form-line-item>
+
+            <app-orders-form-add-line-item *ngIf="data.mode !== 'view'" fxFlex="100%" fxLayout="row nowrap" fxLayoutAlign="center start"
+                [fg_fields]="fg_fields" [mode]="data.mode">
+            </app-orders-form-add-line-item>
+
+            <!-- logic component, view hidden -->
+            <app-orders-form-remove-line-item *ngIf="data.mode !== 'view'" [fg_fields]="fg_fields" [mode]="data.mode" [removeLineItem]="removeLineItem">
+            </app-orders-form-remove-line-item>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+    <app-orders-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" [selfUser]="selfUser$ | async"
+        (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    </app-orders-form-actions>
+</mat-dialog-actions>
