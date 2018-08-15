@@ -129,6 +129,10 @@ export interface OrdersSearchParams {
   top?: number;
   afterDate?: Date;
   beforeDate?: Date;
+  orderName?: string;
+  orderStatus?: number;
+  lastUpdate?: number; // zero = old, one = recent
+  partNumber?: string;
   requestors?: number[];
 }
 

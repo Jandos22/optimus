@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 
 // interfaces
 import { PeopleItem } from '../../../../people/models/people-item.model';
+import { OrderStatus } from '../../../../../shared/interface/orders.model';
 
 @Component({
   selector: 'app-orders-filters-content',
@@ -24,8 +25,16 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
             (updateLocationsofinterest)="updateLocationsofinterest.emit($event)">
         </app-filters-locations>
 
-        <app-orders-filters-order-name [fg_filters]="fg_filters">
-        </app-orders-filters-order-name>
+        <app-orders-filters-last-update [fg_filters]="fg_filters" fxLayout="row nowrap">
+        </app-orders-filters-last-update>
+
+        <app-orders-filters-part-number [fg_filters]="fg_filters" fxLayout="row nowrap">
+        </app-orders-filters-part-number>
+
+        <app-orders-filters-order-status
+            fxLayout="row nowrap"
+            [fg_filters]="fg_filters" [orderStatuses]="orderStatuses">
+        </app-orders-filters-order-status>
 
         <app-form-control-people-selector class="cmn-form-component people-filter"
             fxLayout="row wrap" [fg_fields]="fg_filters" [mode]="'new'"
@@ -38,13 +47,26 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
     `
 })
 export class OrdersFiltersContentComponent {
-  @Input() fg_filters: FormGroup;
-  @Input() locofinterest: number[];
-  @Input() selfUser: PeopleItem;
-  @Input() doReset: boolean;
+  @Input()
+  fg_filters: FormGroup;
 
-  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
-  @Output() onSelectRequestors = new EventEmitter<number[]>();
+  @Input()
+  locofinterest: number[];
+
+  @Input()
+  selfUser: PeopleItem;
+
+  @Input()
+  doReset: boolean;
+
+  @Input()
+  orderStatuses: OrderStatus[];
+
+  @Output()
+  updateLocationsofinterest = new EventEmitter<number[]>();
+
+  @Output()
+  onSelectRequestors = new EventEmitter<number[]>();
 
   constructor() {}
 }

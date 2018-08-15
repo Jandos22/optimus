@@ -45,6 +45,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     <app-orders-list
       fxFlex class="common-content"
       [orders]="data" [orderStatuses]="orderStatuses$ | async"
+      [location]="(user$ | async).LocationAssignedId"
       (openForm)="openForm('view', $event)">
     </app-orders-list>
 
@@ -56,6 +57,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     <app-orders-filters class="common-filters-container"
       [style.display]="(showFilters ? 'flex' : 'none')"
       fxLayout="column" fxLayoutAlign="start start"
+      [orderStatuses]="orderStatuses$ | async"
       (toggleFilters)="toggleFilters()">
     </app-orders-filters>
   `,
@@ -101,7 +103,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
       select(fromOrders.selectAllOrderStatuses)
     );
 
-    this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
+    this.user$ = this.store_root.pipe(
+      select(fromRoot.getUserOptimus),
+      tap(u => console.log(u))
+    );
 
     // main data = array of orders
     this.$data = this.store_orders

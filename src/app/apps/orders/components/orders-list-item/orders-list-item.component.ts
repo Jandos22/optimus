@@ -11,10 +11,6 @@ import {
 
 import * as _ from 'lodash';
 
-import * as differenceInDays from 'date-fns/difference_in_days';
-import * as startOfToday from 'date-fns/start_of_today';
-import * as distanceInWords from 'date-fns/distance_in_words';
-
 // constants
 import { SlbSpPath } from '../../../../shared/constants';
 
@@ -40,7 +36,7 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
 
         <app-orders-requestor
           class="requestor"
-          [requestor]="order.Requestor">
+          [requestorId]="order.RequestorId">
         </app-orders-requestor>
 
         <div class="details" fxLayout="row wrap">
@@ -50,24 +46,12 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
 
       </div>
 
-      <!-- Last Updated Information -->
-      <div class="order-last-updated" fxLayout="row nowrap"
+      <app-orders-last-updated style="width: 100%;"
         *ngIf="order.LastUpdatedFlag"
-        [ngClass]="{ 'recent': isRecent, 'old': !isRecent }">
-
-        <div fxFlex="16px" class="icon">
-
-          <fa-icon *ngIf="!isRecent" [icon]="['fas', 'exclamation-circle']">
-          </fa-icon>
-
-          <fa-icon *ngIf="isRecent" [icon]="['fas', 'check-circle']">
-          </fa-icon>
-
-        </div>
-
-        <div fxFlex class="text">{{ lastUpdated }}</div>
-
-      </div>
+        [lastUpdatedById]="order.LastUpdatedById"
+        [lastUpdatedDate]="order.LastUpdated"
+        [lastUpdatedFlag]="order.LastUpdatedFlag">
+      </app-orders-last-updated>
 
       <app-orders-line-item class="line-item-container"
         *ngFor="let lineItem of lineItems" [lineItem]="lineItem">
@@ -134,33 +118,5 @@ export class OrdersListItemComponent implements OnChanges {
     return _.find(this.orderStatuses, (item: OrderStatus) => {
       return item.Id === id;
     });
-  }
-
-  requestorPhoto(user: PeopleItem) {
-    if (user.Attachments) {
-      if (user.AttachmentFiles.results) {
-        return SlbSpPath + user.AttachmentFiles.results[0].ServerRelativeUrl;
-      } else {
-        return 'assets/no_user.png';
-      }
-    } else {
-      return 'assets/no_user.png';
-    }
-  }
-
-  requestorTooltip(user: PeopleItem) {
-    return user.Fullname;
-  }
-
-  get isRecent() {
-    const daysAgo = differenceInDays(startOfToday(), this.order.LastUpdated);
-    return daysAgo < 14 ? true : false;
-  }
-
-  get lastUpdated() {
-    const daysAgo = differenceInDays(startOfToday(), this.order.LastUpdated);
-    const distance = distanceInWords(Date.now(), this.order.LastUpdated);
-    const who = this.order.LastUpdatedBy.Fullname;
-    return 'updated ' + distance + ' ago by ' + who;
   }
 }

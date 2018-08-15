@@ -29,6 +29,7 @@ import { PeopleItem } from './../../../../../shared/interface/people.model';
         *ngIf="mode === 'edit'"
         [fg_fields]="fg_fields"
         [initialFields]="initialFields"
+        [selfUser]="selfUser"
         (switchFormMode)="switchFormMode.emit($event)"
         (updateDataItem)="updateDataItem.emit($event)">
     </app-orders-form-actions-edit>

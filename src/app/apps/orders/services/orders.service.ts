@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import * as subDays from 'date-fns/sub_days';
+
 // rxjs
 import { Observable, of, from } from 'rxjs';
 import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
@@ -46,6 +48,19 @@ export class OrdersService {
 
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
+
+    const orderName = params.orderName
+      ? params.orderName.replace('#', '%23')
+      : null;
+
+    const lastUpdate = params.lastUpdate ? params.lastUpdate : null;
+
+    const orderStatus = params.orderStatus ? params.orderStatus : null;
+
+    const partNumber = params.partNumber
+      ? params.partNumber.replace('#', '%23')
+      : null;
+
     // people arrays must be ids array
     const requestors = params.requestors ? params.requestors : [];
 
@@ -68,8 +83,8 @@ export class OrdersService {
     }
 
     // $select & $expand
-    url += `$select=${this.getSelectFields().toString()}`;
-    url += `&$expand=${this.getExpandFields().toString()}`;
+    // url += `$select=${this.getSelectFields().toString()}`;
+    // url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is not empty/null
     if (
@@ -79,62 +94,12 @@ export class OrdersService {
       afterDate ||
       requestors.length
     ) {
-      url += `&$filter=`;
+      url += `$filter=`;
     }
 
     if (text) {
       countFilters++;
-      url += `(`;
       url += `(substringof('${text}',OrderName))`;
-      url += `or(substringof('${text}',Ln01))`;
-      url += `or(substringof('${text}',Ln01_PN))`;
-      url += `or(substringof('${text}',Ln01_OrderNumber))`;
-      url += `or(substringof('${text}',Ln01_Comments))`;
-      url += `or(substringof('${text}',Ln02))`;
-      url += `or(substringof('${text}',Ln02_PN))`;
-      url += `or(substringof('${text}',Ln02_OrderNumber))`;
-      url += `or(substringof('${text}',Ln02_Comments))`;
-      url += `or(substringof('${text}',Ln03))`;
-      url += `or(substringof('${text}',Ln03_PN))`;
-      url += `or(substringof('${text}',Ln03_OrderNumber))`;
-      url += `or(substringof('${text}',Ln03_Comments))`;
-      url += `or(substringof('${text}',Ln04))`;
-      url += `or(substringof('${text}',Ln04_PN))`;
-      url += `or(substringof('${text}',Ln04_OrderNumber))`;
-      url += `or(substringof('${text}',Ln04_Comments))`;
-      url += `or(substringof('${text}',Ln05))`;
-      url += `or(substringof('${text}',Ln05_PN))`;
-      url += `or(substringof('${text}',Ln05_OrderNumber))`;
-      url += `or(substringof('${text}',Ln05_Comments))`;
-      url += `or(substringof('${text}',Ln06))`;
-      url += `or(substringof('${text}',Ln06_PN))`;
-      url += `or(substringof('${text}',Ln06_OrderNumber))`;
-      url += `or(substringof('${text}',Ln06_Comments))`;
-      url += `or(substringof('${text}',Ln07))`;
-      url += `or(substringof('${text}',Ln07_PN))`;
-      url += `or(substringof('${text}',Ln07_OrderNumber))`;
-      url += `or(substringof('${text}',Ln07_Comments))`;
-      url += `or(substringof('${text}',Ln08))`;
-      url += `or(substringof('${text}',Ln08_PN))`;
-      url += `or(substringof('${text}',Ln08_OrderNumber))`;
-      url += `or(substringof('${text}',Ln08_Comments))`;
-      url += `or(substringof('${text}',Ln09))`;
-      url += `or(substringof('${text}',Ln09_PN))`;
-      url += `or(substringof('${text}',Ln09_OrderNumber))`;
-      url += `or(substringof('${text}',Ln09_Comments))`;
-      url += `or(substringof('${text}',Ln10))`;
-      url += `or(substringof('${text}',Ln10_PN))`;
-      url += `or(substringof('${text}',Ln10_OrderNumber))`;
-      url += `or(substringof('${text}',Ln10_Comments))`;
-      url += `or(substringof('${text}',Ln11))`;
-      url += `or(substringof('${text}',Ln11_PN))`;
-      url += `or(substringof('${text}',Ln11_OrderNumber))`;
-      url += `or(substringof('${text}',Ln11_Comments))`;
-      url += `or(substringof('${text}',Ln12))`;
-      url += `or(substringof('${text}',Ln12_PN))`;
-      url += `or(substringof('${text}',Ln12_OrderNumber))`;
-      url += `or(substringof('${text}',Ln12_Comments))`;
-      url += `)`;
     }
 
     // locations filter configuration
@@ -168,6 +133,46 @@ export class OrdersService {
       url += `(OrderDate gt datetime'${afterDate}')`;
     }
 
+    // ORDER NAME filter
+    if (orderName) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `(substringof('${orderName}',OrderName))`;
+    }
+
+    // LAST UPDATE filter
+    if (lastUpdate) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterLastUpdate(lastUpdate)}`;
+    }
+
+    // ORDER STATUS filter
+    if (orderStatus) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterOrderStatus(orderStatus)}`;
+    }
+
+    // PART NUMBER filter
+    if (partNumber) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterPartNumber(partNumber)}`;
+    }
+
     if (requestors.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
@@ -190,123 +195,6 @@ export class OrdersService {
 
     // return combiner url string
     return url;
-  }
-
-  getSelectFields() {
-    const $select = [
-      'Id',
-      'ID',
-      'OrderName',
-      'OrderDate',
-      'Location',
-      'LocationId',
-      'Location/Id',
-      'Location/Title',
-      'Requestor',
-      'RequestorId',
-      'Requestor/Id',
-      'Requestor/Shortname',
-      'Requestor/Fullname',
-      'ActiveLineItems',
-      // #1
-      'Ln01_Title',
-      'Ln01_Qty',
-      'Ln01_PN',
-      'Ln01_OrderNumber',
-      'Ln01_OrderStatusId',
-      'Ln01_Comments',
-      // #2
-      'Ln02_Title',
-      'Ln02_Qty',
-      'Ln02_PN',
-      'Ln02_OrderNumber',
-      'Ln02_OrderStatusId',
-      'Ln02_Comments',
-      // #3
-      'Ln03_Title',
-      'Ln03_Qty',
-      'Ln03_PN',
-      'Ln03_OrderNumber',
-      'Ln03_OrderStatusId',
-      'Ln03_Comments',
-      // #4
-      'Ln04_Title',
-      'Ln04_Qty',
-      'Ln04_PN',
-      'Ln04_OrderNumber',
-      'Ln04_OrderStatusId',
-      'Ln04_Comments',
-      // #5
-      'Ln05_Title',
-      'Ln05_Qty',
-      'Ln05_PN',
-      'Ln05_OrderNumber',
-      'Ln05_OrderStatusId',
-      'Ln05_Comments',
-      // #6
-      'Ln06_Title',
-      'Ln06_Qty',
-      'Ln06_PN',
-      'Ln06_OrderNumber',
-      'Ln06_OrderStatusId',
-      'Ln06_Comments',
-      // #7
-      'Ln07_Title',
-      'Ln07_Qty',
-      'Ln07_PN',
-      'Ln07_OrderNumber',
-      'Ln07_OrderStatusId',
-      'Ln07_Comments',
-      // #8
-      'Ln08_Title',
-      'Ln08_Qty',
-      'Ln08_PN',
-      'Ln08_OrderNumber',
-      'Ln08_OrderStatusId',
-      'Ln08_Comments',
-      // #9
-      'Ln09_Title',
-      'Ln09_Qty',
-      'Ln09_PN',
-      'Ln09_OrderNumber',
-      'Ln09_OrderStatusId',
-      'Ln09_Comments',
-      // #10
-      'Ln10_Title',
-      'Ln10_Qty',
-      'Ln10_PN',
-      'Ln10_OrderNumber',
-      'Ln10_OrderStatusId',
-      'Ln10_Comments',
-      // #11
-      'Ln11_Title',
-      'Ln11_Qty',
-      'Ln11_PN',
-      'Ln11_OrderNumber',
-      'Ln11_OrderStatusId',
-      'Ln11_Comments',
-      // #12
-      'Ln12_Title',
-      'Ln12_Qty',
-      'Ln12_PN',
-      'Ln12_OrderNumber',
-      'Ln12_OrderStatusId',
-      'Ln12_Comments',
-      // update history
-      'LastUpdated',
-      'LastUpdatedBy',
-      'LastUpdatedById',
-      'LastUpdatedBy/Id',
-      'LastUpdatedBy/Fullname',
-      'LastUpdatedBy/Shortname',
-      'LastUpdatedFlag'
-    ];
-    return $select.toString();
-  }
-
-  getExpandFields() {
-    const $expand = ['Requestor', 'Location', 'LastUpdatedBy'];
-    return $expand.toString();
   }
 
   getFilterLocations(locations: number[]) {
@@ -347,6 +235,80 @@ export class OrdersService {
   //     return '';
   //   }
   // }
+
+  getFilterLastUpdate(n: number) {
+    // 1 for old
+    // 2 for recent
+    // 3 for orders without LastUpdateFlag
+
+    let filter = '';
+
+    // subtract 14 days from now
+    const oldDate = subDays(Date.now(), 14).toISOString();
+
+    if (n && n === 1) {
+      filter += `(`;
+      filter += `(LastUpdatedFlag eq 1)`;
+      filter += `and(LastUpdated lt datetime'${oldDate}')`;
+      filter += `)`;
+    } else if (n && n === 2) {
+      filter += `(`;
+      filter += `(LastUpdatedFlag eq 1)`;
+      filter += `and(LastUpdated gt datetime'${oldDate}')`;
+      filter += `)`;
+    } else if (n && n === 3) {
+      filter += `(LastUpdatedFlag eq 0)`;
+    } else {
+      return '';
+    }
+    return filter;
+  }
+
+  getFilterPartNumber(partNumber: string) {
+    let filter = '';
+    if (partNumber) {
+      filter += `(`;
+      filter += `(substringof('${partNumber}',Ln01_PN))`;
+      filter += `or(substringof('${partNumber}',Ln02_PN))`;
+      filter += `or(substringof('${partNumber}',Ln03_PN))`;
+      filter += `or(substringof('${partNumber}',Ln04_PN))`;
+      filter += `or(substringof('${partNumber}',Ln05_PN))`;
+      filter += `or(substringof('${partNumber}',Ln06_PN))`;
+      filter += `or(substringof('${partNumber}',Ln07_PN))`;
+      filter += `or(substringof('${partNumber}',Ln08_PN))`;
+      filter += `or(substringof('${partNumber}',Ln09_PN))`;
+      filter += `or(substringof('${partNumber}',Ln10_PN))`;
+      filter += `or(substringof('${partNumber}',Ln11_PN))`;
+      filter += `or(substringof('${partNumber}',Ln12_PN))`;
+      filter += `)`;
+    } else {
+      return '';
+    }
+    return filter;
+  }
+
+  getFilterOrderStatus(orderStatusId: number) {
+    let filter = '';
+    if (orderStatusId) {
+      filter += `(`;
+      filter += `(Ln01_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln02_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln03_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln04_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln05_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln06_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln07_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln08_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln09_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln10_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln11_OrderStatusId eq ${orderStatusId})`;
+      filter += `or(Ln12_OrderStatusId eq ${orderStatusId})`;
+      filter += `)`;
+    } else {
+      return '';
+    }
+    return filter;
+  }
 
   getFilterRequestors(requestors: number[]) {
     if (requestors.length) {

@@ -18,6 +18,7 @@ import { map, scan } from 'rxjs/operators';
 
 // interfaces
 import { OrderItem } from '../../../../../../shared/interface/orders.model';
+import { PeopleItem } from '../../../../../people/models/people-item.model';
 
 @Component({
   selector: 'app-orders-form-actions-edit-fields',

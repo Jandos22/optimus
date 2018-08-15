@@ -29,6 +29,7 @@ import { OrderItem } from '../../../../../../shared/interface/orders.model';
 // services
 import { OrdersFormHttpService } from '../../form-services/orders-form-http.service';
 import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-list-item.model';
+import { PeopleItem } from '../../../../../../shared/interface/people.model';
 
 @Component({
   selector: 'app-orders-form-actions-edit',
@@ -56,13 +57,20 @@ import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-
     `
 })
 export class OrdersFormActionsEditComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: OrderItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: OrderItem;
+  @Input()
+  selfUser?: PeopleItem;
 
-  @Output() closeForm = new EventEmitter<any>();
-  @Output() switchFormMode = new EventEmitter<any>();
+  @Output()
+  closeForm = new EventEmitter<any>();
+  @Output()
+  switchFormMode = new EventEmitter<any>();
 
-  @Output() updateDataItem = new EventEmitter<OrderItem>();
+  @Output()
+  updateDataItem = new EventEmitter<OrderItem>();
 
   // activates spinner
   savingChanges = false;
@@ -116,6 +124,13 @@ export class OrdersFormActionsEditComponent implements OnInit, OnDestroy {
   saveFields(newFields: OrderItem) {
     console.log('starting to save fields:');
     console.log(newFields);
+
+    // add last updated info
+    newFields = {
+      ...newFields,
+      LastUpdatedById: this.selfUser.Id,
+      LastUpdated: new Date(Date.now())
+    };
 
     this.spHttp
       .updateItem(newFields)

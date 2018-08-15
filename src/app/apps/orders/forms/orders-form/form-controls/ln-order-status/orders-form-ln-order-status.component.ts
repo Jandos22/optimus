@@ -20,35 +20,31 @@ import { FormMode } from './../../../../../../shared/interface/form.model';
 
         <mat-select
           [placeholder]="'Order Status'"
-          [formControlName]="fieldName">
+          [formControlName]="fieldName"
+          [disabled]="isDisabled">
           <mat-option *ngFor="let orderStatus of orderStatuses" [value]="orderStatus.Id">
             {{ orderStatus.Title }}
           </mat-option>
         </mat-select>
 
-        <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
-
     </mat-form-field>
   `
 })
 export class OrdersFormLnOrderStatusComponent {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
-  @Input() orderStatuses: OrderStatus[];
-  @Input() fieldName: string;
-  @Input() displayName: string;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
+  @Input()
+  orderStatuses: OrderStatus[];
+  @Input()
+  fieldName: string;
+  @Input()
+  displayName: string;
 
   constructor() {}
 
-  get hasError() {
-    return this.fg_fields.get(this.fieldName).invalid;
-  }
-
-  get errorMessage() {
-    const control = this.fg_fields.get(this.fieldName);
-
-    const required = control.hasError('required');
-
-    return control.touched ? (required ? '... is required' : '') : '';
+  get isDisabled() {
+    return this.mode === 'view' ? true : false;
   }
 }

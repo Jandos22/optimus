@@ -48,10 +48,10 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 })
 export class OrdersRequestorComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  requestor: PeopleItem;
+  requestorId: number;
 
   // list item with full list of properties
-  $requestor: Subscription;
+  $requestorId: Subscription;
   requestorAll: PeopleItem;
 
   constructor(
@@ -62,16 +62,17 @@ export class OrdersRequestorComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.requestor && changes.requestor.currentValue) {
-      this.handleInput(changes.requestor.currentValue);
+    if (changes.requestorId && changes.requestorId.currentValue) {
+      this.handleInput(changes.requestorId.currentValue);
     }
   }
 
-  handleInput(requestor: PeopleItem) {
-    this.$requestor = this.srv
-      .getUserById(requestor.Id)
+  handleInput(requestorId: number) {
+    this.$requestorId = this.srv
+      .getUserById(requestorId)
       .pipe(take(1))
       .subscribe((requestorAll: PeopleItem[]) => {
+        console.log(requestorAll);
         this.requestorAll = { ...requestorAll[0] };
         this.cd.detectChanges();
       });
@@ -86,6 +87,6 @@ export class OrdersRequestorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.$requestor.unsubscribe();
+    this.$requestorId.unsubscribe();
   }
 }

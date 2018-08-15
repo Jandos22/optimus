@@ -55,9 +55,9 @@ export class OrdersFormHttpService {
   }
 
   getItemById(ID: number) {
-    let url = `${ApiPath}/web/lists/getbytitle('NgOrders')/items(${ID})?`;
-    url += `$select=${this.srv.getSelectFields()}`;
-    url += `&$expand=${this.srv.getExpandFields()}`;
+    const url = `${ApiPath}/web/lists/getbytitle('NgOrders')/items(${ID})?`;
+    // url += `$select=${this.srv.getSelectFields()}`;
+    // url += `&$expand=${this.srv.getExpandFields()}`;
     return from(sprLib.rest({ url: url }));
   }
 }

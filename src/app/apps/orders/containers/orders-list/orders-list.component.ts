@@ -20,6 +20,9 @@ import {
     <div class="orders-list-container" fxFlex
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
+      <app-orders-links fxLayout="row nowrap" [location]="location">
+      </app-orders-links>
+
       <app-orders-list-item
         fxLayout="row nowrap"
         *ngFor="let order of orders; last as last"
@@ -38,6 +41,9 @@ export class OrdersListComponent {
 
   @Input()
   orderStatuses: OrderStatus[];
+
+  @Input()
+  location: number;
 
   @Output()
   openForm = new EventEmitter<OrderItem>();

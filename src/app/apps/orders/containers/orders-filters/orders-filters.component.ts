@@ -1,6 +1,7 @@
 // core
 import {
   Component,
+  Input,
   OnInit,
   ViewEncapsulation,
   Output,
@@ -22,7 +23,10 @@ import * as fromOrders from '../../store';
 
 // interface
 import { LocationEnt } from '../../../../shared/interface/locations.model';
-import { OrdersSearchParams } from '../../../../shared/interface/orders.model';
+import {
+  OrdersSearchParams,
+  OrderStatus
+} from '../../../../shared/interface/orders.model';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
@@ -38,6 +42,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     <app-orders-filters-content fxFlex class="common-filters-content"
         [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
         [selfUser]="selfUser$ | async" [doReset]="doReset"
+        [orderStatuses]="orderStatuses"
         (updateLocationsofinterest)="updateLocationsofinterest($event)"
         (onSelectRequestors)="onSelectRequestors($event)">
     </app-orders-filters-content>
@@ -48,7 +53,11 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     `
 })
 export class OrdersFiltersComponent implements OnInit {
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Input()
+  orderStatuses: OrderStatus[];
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_filters: FormGroup;
   $fg_filters: Subscription;
@@ -106,7 +115,9 @@ export class OrdersFiltersComponent implements OnInit {
     this.fg_filters = this.fb.group({
       locations: [{ value: [] }],
       top: 100,
-      orderName: '',
+      lastUpdate: '',
+      partNumber: '',
+      orderStatus: '',
       requestors: ''
     });
   }
@@ -127,7 +138,9 @@ export class OrdersFiltersComponent implements OnInit {
 
   onResetFilters(event) {
     this.doReset = this.doReset ? false : true;
-    this.fg_filters.controls['orderName'].patchValue('');
+    this.fg_filters.controls['lastUpdate'].reset();
+    this.fg_filters.controls['partNumber'].reset();
+    this.fg_filters.controls['orderStatus'].reset();
     this.fg_filters.controls['requestors'].patchValue([]);
   }
 }

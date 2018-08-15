@@ -53,7 +53,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
         {{ lineItem.orderNumber }}
       </div>
 
-      <div class="comments">{{ lineItem.comments }}</div>
+      <div class="comments" [matTooltip]="lineItem.comments">{{ lineItem.comments }}</div>
 
       <div class="order-status" [matTooltip]="lineItem.orderStatus?.Title">
         {{ lineItem.orderStatus?.Title }}
@@ -90,7 +90,7 @@ export class OrdersLineItemComponent {
   }
 
   openTMO(orderNumber: string) {
-    if (orderNumber) {
+    if (orderNumber && this.isPurchaseOrder) {
       window.open(
         `https://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
         '_blank'
