@@ -18,7 +18,11 @@
         </div>
 
         <!-- SECTION -->
-        <div class="form-group-title">Line Items [{{ activeLineItems.length }}]</div>
+        <div class="orders-line-items-header" fxLayout="row nowrap">
+            <div class="title">Line Items [{{ activeLineItems.length }}]</div>
+            <app-orders-form-last-updated-flag class="flag" [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'LastUpdatedFlag'">
+            </app-orders-form-last-updated-flag>
+        </div>
 
         <div class="con4">
             <app-orders-form-line-item *ngFor="let lineItem of activeLineItems" class="cmn-form-component t2w2-t3w3-t4w4" fxLayout="row nowrap"

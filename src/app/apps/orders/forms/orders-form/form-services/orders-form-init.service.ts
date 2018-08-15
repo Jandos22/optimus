@@ -40,7 +40,8 @@ export class OrdersFormInitService {
       ActiveLineItems: [this.getLineItemsCount(mo, it), [val_req]],
       ...this.getLineItems(mo, it, 12),
       LastUpdated: [this.getValue(mo, it, 'LastUpdated')],
-      LastUpdatedById: [this.getValue(mo, it, 'LastUpdatedById')]
+      LastUpdatedById: [this.getValue(mo, it, 'LastUpdatedById')],
+      LastUpdatedFlag: [this.getValue(mo, it, 'LastUpdatedFlag')]
     });
   }
 

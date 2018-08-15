@@ -48,7 +48,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       <div class="title">{{ lineItem.title }}</div>
 
       <div class="order-number" [matTooltip]="'Order Number'"
-        [ngClass]="{ 'isPO': isPurchaseOrder }">
+        [ngClass]="{ 'isPO': isPurchaseOrder }"
+        (click)="openTMO(this.lineItem.orderNumber)">
         {{ lineItem.orderNumber }}
       </div>
 

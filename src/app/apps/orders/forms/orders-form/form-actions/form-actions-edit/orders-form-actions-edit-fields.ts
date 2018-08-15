@@ -24,10 +24,13 @@ import { OrderItem } from '../../../../../../shared/interface/orders.model';
   template: ``
 })
 export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: OrderItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: OrderItem;
 
-  @Output() whenUnsavedFieldsChange = new EventEmitter<Object>();
+  @Output()
+  whenUnsavedFieldsChange = new EventEmitter<Object>();
 
   // combination of individual form control changes
   fc_changes$: Observable<Object>;
@@ -67,7 +70,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(ActiveLineItems => ({ ActiveLineItems }))),
 
       // Ln01
-      this.fg_fields.get('Ln01').valueChanges.pipe(map(Ln01 => ({ Ln01 }))),
+      this.fg_fields
+        .get('Ln01_Title')
+        .valueChanges.pipe(map(Ln01_Title => ({ Ln01_Title }))),
       this.fg_fields
         .get('Ln01_Qty')
         .valueChanges.pipe(map(Ln01_Qty => ({ Ln01_Qty }))),
@@ -85,7 +90,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln01_Comments => ({ Ln01_Comments }))),
 
       // Ln02
-      this.fg_fields.get('Ln02').valueChanges.pipe(map(Ln02 => ({ Ln02 }))),
+      this.fg_fields
+        .get('Ln02_Title')
+        .valueChanges.pipe(map(Ln02_Title => ({ Ln02_Title }))),
       this.fg_fields
         .get('Ln02_Qty')
         .valueChanges.pipe(map(Ln02_Qty => ({ Ln02_Qty }))),
@@ -103,7 +110,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln02_Comments => ({ Ln02_Comments }))),
 
       // Ln03
-      this.fg_fields.get('Ln03').valueChanges.pipe(map(Ln03 => ({ Ln03 }))),
+      this.fg_fields
+        .get('Ln03_Title')
+        .valueChanges.pipe(map(Ln03_Title => ({ Ln03_Title }))),
       this.fg_fields
         .get('Ln03_Qty')
         .valueChanges.pipe(map(Ln03_Qty => ({ Ln03_Qty }))),
@@ -121,7 +130,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln03_Comments => ({ Ln03_Comments }))),
 
       // Ln04
-      this.fg_fields.get('Ln04').valueChanges.pipe(map(Ln04 => ({ Ln04 }))),
+      this.fg_fields
+        .get('Ln04_Title')
+        .valueChanges.pipe(map(Ln04_Title => ({ Ln04_Title }))),
       this.fg_fields
         .get('Ln04_Qty')
         .valueChanges.pipe(map(Ln04_Qty => ({ Ln04_Qty }))),
@@ -139,7 +150,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln04_Comments => ({ Ln04_Comments }))),
 
       // Ln05
-      this.fg_fields.get('Ln05').valueChanges.pipe(map(Ln05 => ({ Ln05 }))),
+      this.fg_fields
+        .get('Ln05_Title')
+        .valueChanges.pipe(map(Ln05_Title => ({ Ln05_Title }))),
       this.fg_fields
         .get('Ln05_Qty')
         .valueChanges.pipe(map(Ln05_Qty => ({ Ln05_Qty }))),
@@ -157,7 +170,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln05_Comments => ({ Ln05_Comments }))),
 
       // Ln06
-      this.fg_fields.get('Ln06').valueChanges.pipe(map(Ln06 => ({ Ln06 }))),
+      this.fg_fields
+        .get('Ln06_Title')
+        .valueChanges.pipe(map(Ln06_Title => ({ Ln06_Title }))),
       this.fg_fields
         .get('Ln06_Qty')
         .valueChanges.pipe(map(Ln06_Qty => ({ Ln06_Qty }))),
@@ -175,7 +190,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln06_Comments => ({ Ln06_Comments }))),
 
       // Ln07
-      this.fg_fields.get('Ln07').valueChanges.pipe(map(Ln07 => ({ Ln07 }))),
+      this.fg_fields
+        .get('Ln07_Title')
+        .valueChanges.pipe(map(Ln07_Title => ({ Ln07_Title }))),
       this.fg_fields
         .get('Ln07_Qty')
         .valueChanges.pipe(map(Ln07_Qty => ({ Ln07_Qty }))),
@@ -193,7 +210,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln07_Comments => ({ Ln07_Comments }))),
 
       // Ln08
-      this.fg_fields.get('Ln08').valueChanges.pipe(map(Ln08 => ({ Ln08 }))),
+      this.fg_fields
+        .get('Ln08_Title')
+        .valueChanges.pipe(map(Ln08_Title => ({ Ln08_Title }))),
       this.fg_fields
         .get('Ln08_Qty')
         .valueChanges.pipe(map(Ln08_Qty => ({ Ln08_Qty }))),
@@ -211,7 +230,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln08_Comments => ({ Ln08_Comments }))),
 
       // Ln09
-      this.fg_fields.get('Ln09').valueChanges.pipe(map(Ln09 => ({ Ln09 }))),
+      this.fg_fields
+        .get('Ln09_Title')
+        .valueChanges.pipe(map(Ln09_Title => ({ Ln09_Title }))),
       this.fg_fields
         .get('Ln09_Qty')
         .valueChanges.pipe(map(Ln09_Qty => ({ Ln09_Qty }))),
@@ -229,7 +250,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln09_Comments => ({ Ln09_Comments }))),
 
       // Ln10
-      this.fg_fields.get('Ln10').valueChanges.pipe(map(Ln10 => ({ Ln10 }))),
+      this.fg_fields
+        .get('Ln10_Title')
+        .valueChanges.pipe(map(Ln10_Title => ({ Ln10_Title }))),
       this.fg_fields
         .get('Ln10_Qty')
         .valueChanges.pipe(map(Ln10_Qty => ({ Ln10_Qty }))),
@@ -247,7 +270,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln10_Comments => ({ Ln10_Comments }))),
 
       // Ln11
-      this.fg_fields.get('Ln11').valueChanges.pipe(map(Ln11 => ({ Ln11 }))),
+      this.fg_fields
+        .get('Ln11_Title')
+        .valueChanges.pipe(map(Ln11_Title => ({ Ln11_Title }))),
       this.fg_fields
         .get('Ln11_Qty')
         .valueChanges.pipe(map(Ln11_Qty => ({ Ln11_Qty }))),
@@ -265,7 +290,9 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         .valueChanges.pipe(map(Ln11_Comments => ({ Ln11_Comments }))),
 
       // Ln12
-      this.fg_fields.get('Ln12').valueChanges.pipe(map(Ln12 => ({ Ln12 }))),
+      this.fg_fields
+        .get('Ln12_Title')
+        .valueChanges.pipe(map(Ln12_Title => ({ Ln12_Title }))),
       this.fg_fields
         .get('Ln12_Qty')
         .valueChanges.pipe(map(Ln12_Qty => ({ Ln12_Qty }))),
@@ -290,7 +317,12 @@ export class OrdersFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       // LastUpdatedById
       this.fg_fields
         .get('LastUpdatedById')
-        .valueChanges.pipe(map(LastUpdatedById => ({ LastUpdatedById })))
+        .valueChanges.pipe(map(LastUpdatedById => ({ LastUpdatedById }))),
+
+      // LastUpdatedFlag
+      this.fg_fields
+        .get('LastUpdatedFlag')
+        .valueChanges.pipe(map(LastUpdatedFlag => ({ LastUpdatedFlag })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$

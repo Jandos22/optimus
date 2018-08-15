@@ -298,7 +298,8 @@ export class OrdersService {
       'LastUpdatedById',
       'LastUpdatedBy/Id',
       'LastUpdatedBy/Fullname',
-      'LastUpdatedBy/Shortname'
+      'LastUpdatedBy/Shortname',
+      'LastUpdatedFlag'
     ];
     return $select.toString();
   }

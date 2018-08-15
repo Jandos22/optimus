@@ -120,6 +120,7 @@ export interface OrderItem extends SpListItem {
   LastUpdated?: Date;
   LastUpdatedBy?: PeopleItem;
   LastUpdatedById?: number;
+  LastUpdatedFlag?: boolean;
 }
 
 export interface OrdersSearchParams {

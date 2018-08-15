@@ -52,6 +52,7 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
 
       <!-- Last Updated Information -->
       <div class="order-last-updated" fxLayout="row nowrap"
+        *ngIf="order.LastUpdatedFlag"
         [ngClass]="{ 'recent': isRecent, 'old': !isRecent }">
 
         <div fxFlex="16px" class="icon">

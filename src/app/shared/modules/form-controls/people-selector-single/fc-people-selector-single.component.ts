@@ -4,7 +4,8 @@ import {
   OnChanges,
   SimpleChanges,
   ViewEncapsulation,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -15,7 +16,8 @@ import {
   map,
   debounceTime,
   distinctUntilChanged,
-  filter
+  filter,
+  take
 } from 'rxjs/operators';
 
 // interfaces
@@ -30,6 +32,9 @@ import {
   MatAutocomplete
 } from '@angular/material';
 import { SlbSpPath } from '../../../constants';
+
+// services
+import { PeopleLookupService } from '../../../services';
 
 @Component({
   selector: 'app-fc-people-selector-single',
@@ -93,7 +98,11 @@ export class FcPeopleSelectorSingleComponent implements OnChanges {
   // fetch users object
   fetch: SearchParamsUser;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private srv: PeopleLookupService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // watch mode changes
@@ -111,12 +120,21 @@ export class FcPeopleSelectorSingleComponent implements OnChanges {
       if (mode === 'new' && this.selfUser) {
         this.applySelection(this.selfUser);
       }
+    } else if (mode === 'view') {
+      this.activateViewMode();
     }
   }
 
   activateEditingMode() {
+    this.stopReactions();
     this.createForm();
     this.startReactions();
+  }
+
+  activateViewMode() {
+    this.createForm();
+    this.fetchRequestor(this.fg_fields.controls[this.fieldName].value);
+    this.fg.controls['text'].disable();
   }
 
   createForm() {
@@ -161,12 +179,23 @@ export class FcPeopleSelectorSingleComponent implements OnChanges {
       });
   }
 
+  stopReactions() {
+    if (this.$query) {
+      this.$query.unsubscribe();
+    }
+  }
+
   displayFn(user?: PeopleItem): string | undefined {
     console.log(user);
     console.log(this.selected);
+    console.log(this.mode);
     if (this.mode !== 'view' && !user && this.selected) {
       return this.selected.Shortname;
+    } else if (this.mode === 'view' && this.selected) {
+      console.log('why not????');
+      return this.selected.Shortname;
     } else {
+      console.log('why????');
       return user ? user.Shortname : undefined;
     }
   }
@@ -191,5 +220,25 @@ export class FcPeopleSelectorSingleComponent implements OnChanges {
     if (selected.Attachments) {
       return SlbSpPath + selected.AttachmentFiles.results[0].ServerRelativeUrl;
     }
+  }
+
+  fetchRequestor(id: number) {
+    this.srv
+      .getUserById(id)
+      .subscribe(
+        success => this.fetchRequestorSuccess(success[0]),
+        error => this.fetchRequestorError(error),
+        () => console.log('completed fetching requestor')
+      );
+  }
+
+  fetchRequestorSuccess(requestor: PeopleItem) {
+    this.selected = requestor;
+    this.users = [requestor];
+    this.fg.controls['text'].patchValue(requestor.Shortname);
+  }
+
+  fetchRequestorError(error: any) {
+    console.log(error);
   }
 }
