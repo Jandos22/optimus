@@ -39,7 +39,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
       <div class="line">{{ lineItem.line }}</div>
 
-      <div class="part-number" matTooltip="Part Number">
+      <div class="part-number">
         {{ lineItem.pn }}
       </div>
 
@@ -47,7 +47,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
       <div class="title">{{ lineItem.title }}</div>
 
-      <div class="order-number" [matTooltip]="'Order Number'"
+      <div class="order-number"
         [ngClass]="{ 'isPO': isPurchaseOrder }"
         (click)="openTMO(this.lineItem.orderNumber)">
         {{ lineItem.orderNumber }}
@@ -92,7 +92,7 @@ export class OrdersLineItemComponent {
   openTMO(orderNumber: string) {
     if (orderNumber && this.isPurchaseOrder) {
       window.open(
-        `https://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
+        `http://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
         '_blank'
       );
     }

@@ -31,8 +31,10 @@ import { FormMode } from './../../../../../../shared/interface/form.model';
 export class OrdersFormLastUpdatedFlagComponent {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   mode: FormMode;
+
   @Input()
   fieldName: string;
 

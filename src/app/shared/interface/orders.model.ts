@@ -147,7 +147,7 @@ export interface OrderLineItem {
   qty?: number;
   pn?: string;
   orderNumber?: string;
-  orderStatusId?: string;
+  orderStatusId?: number;
   orderStatus?: OrderStatus;
   comments?: string;
 }

@@ -41,7 +41,7 @@ export class OrdersFormInitService {
       ...this.getLineItems(mo, it, 12),
       LastUpdated: [this.getValue(mo, it, 'LastUpdated')],
       LastUpdatedById: [this.getValue(mo, it, 'LastUpdatedById')],
-      LastUpdatedFlag: [this.getValue(mo, it, 'LastUpdatedFlag')]
+      LastUpdatedFlag: [this.getLastUpdatedFlag(mo, it)]
     });
   }
 
@@ -53,6 +53,17 @@ export class OrdersFormInitService {
         return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled: false };
+    }
+  }
+
+  getLastUpdatedFlag(mode: FormMode, item: OrderItem) {
+    switch (mode) {
+      case 'new':
+        return true;
+      case 'view':
+        return { value: item['LastUpdatedFlag'], disabled: true };
+      case 'edit':
+        return { value: item['LastUpdatedFlag'], disabled: false };
     }
   }
 

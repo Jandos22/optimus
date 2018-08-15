@@ -71,7 +71,7 @@ export class OrdersFormLnOrderNumberComponent {
   openTMO(orderNumber: string) {
     if (orderNumber) {
       window.open(
-        `https://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
+        `http://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
         '_blank'
       );
     }

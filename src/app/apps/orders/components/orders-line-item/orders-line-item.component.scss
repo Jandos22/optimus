@@ -69,11 +69,13 @@
     line-height: 16px;
     margin-right: 4px;
     order: 4;
+    text-align: right;
     text-align: end;
 
     @media screen and (min-width: 520px) {
       margin-right: 4px;
       order: 5;
+      text-align: right;
       text-align: end;
     }
 

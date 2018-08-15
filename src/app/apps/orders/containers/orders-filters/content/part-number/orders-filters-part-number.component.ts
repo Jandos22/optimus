@@ -14,7 +14,7 @@ import { FormGroup } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field fxFlex="100" [formGroup]="fg_filters">
+    <mat-form-field [formGroup]="fg_filters">
 
       <input
         matInput
