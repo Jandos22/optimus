@@ -33,7 +33,7 @@ import { UtilitiesService } from './../../../../services/utilities.service';
             <div class="shortname">{{ user.Shortname}}</div>
             <div class="second_line" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="4px">
                 <span class="text">{{ user.LocationAssigned.Title }} &middot; {{ user.Position.Title}}</span>
-                <div class="delete" *ngIf="overContainer && mode !== 'view'"
+                <div class="delete" *ngIf="mode !== 'view'"
                     matTooltip="unselect"
                     (mouseenter)="onMouseOverDelete()"
                     (mouseleave)="onMouseLeaveDelete()"
@@ -46,10 +46,13 @@ import { UtilitiesService } from './../../../../services/utilities.service';
     `
 })
 export class PeopleSelectorSelectedComponent {
-  @Input() user: PeopleItem;
-  @Input() mode: FormMode;
+  @Input()
+  user: PeopleItem;
+  @Input()
+  mode: FormMode;
 
-  @Output() removeSelectedUser = new EventEmitter<number>();
+  @Output()
+  removeSelectedUser = new EventEmitter<number>();
 
   overContainer: boolean;
   overDelete: boolean;

@@ -14,6 +14,7 @@ export interface ParamsState {
   afterDate?: Date;
   beforeDate?: Date;
   orderName?: string;
+  orderNumber?: string;
   orderStatus?: number;
   lastUpdate?: number;
   partNumber?: string;
@@ -27,6 +28,7 @@ export const initialState: ParamsState = {
   afterDate: null,
   beforeDate: null,
   orderName: null,
+  orderNumber: null,
   orderStatus: null,
   lastUpdate: null,
   partNumber: null,

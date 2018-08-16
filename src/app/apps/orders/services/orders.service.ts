@@ -57,6 +57,10 @@ export class OrdersService {
 
     const orderStatus = params.orderStatus ? params.orderStatus : null;
 
+    const orderNumber = params.orderNumber
+      ? params.orderNumber.replace('#', '%23')
+      : null;
+
     const partNumber = params.partNumber
       ? params.partNumber.replace('#', '%23')
       : null;
@@ -163,6 +167,16 @@ export class OrdersService {
       url += `${this.getFilterOrderStatus(orderStatus)}`;
     }
 
+    // ORDER NUMBER filter
+    if (orderNumber) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterOrderNumber(orderNumber)}`;
+    }
+
     // PART NUMBER filter
     if (partNumber) {
       // check if "AND" is needed
@@ -258,6 +272,29 @@ export class OrdersService {
       filter += `)`;
     } else if (n && n === 3) {
       filter += `(LastUpdatedFlag eq 0)`;
+    } else {
+      return '';
+    }
+    return filter;
+  }
+
+  getFilterOrderNumber(orderNumber: string) {
+    let filter = '';
+    if (orderNumber) {
+      filter += `(`;
+      filter += `(substringof('${orderNumber}',Ln01_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln02_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln03_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln04_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln05_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln06_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln07_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln08_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln09_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln10_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln11_OrderNumber))`;
+      filter += `or(substringof('${orderNumber}',Ln12_OrderNumber))`;
+      filter += `)`;
     } else {
       return '';
     }

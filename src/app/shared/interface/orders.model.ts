@@ -130,6 +130,7 @@ export interface OrdersSearchParams {
   afterDate?: Date;
   beforeDate?: Date;
   orderName?: string;
+  orderNumber?: string;
   orderStatus?: number;
   lastUpdate?: number; // zero = old, one = recent
   partNumber?: string;

@@ -28,13 +28,16 @@ import { OrderStatus } from '../../../../../shared/interface/orders.model';
         <app-orders-filters-last-update [fg_filters]="fg_filters" fxLayout="row nowrap">
         </app-orders-filters-last-update>
 
-        <app-orders-filters-part-number [fg_filters]="fg_filters" fxLayout="row nowrap">
-        </app-orders-filters-part-number>
-
         <app-orders-filters-order-status
             fxLayout="row nowrap"
             [fg_filters]="fg_filters" [orderStatuses]="orderStatuses">
         </app-orders-filters-order-status>
+
+        <app-orders-filters-order-number [fg_filters]="fg_filters" fxLayout="row nowrap">
+        </app-orders-filters-order-number>
+
+        <app-orders-filters-part-number [fg_filters]="fg_filters" fxLayout="row nowrap">
+        </app-orders-filters-part-number>
 
         <app-form-control-people-selector class="cmn-form-component people-filter"
             fxLayout="row wrap" [fg_fields]="fg_filters" [mode]="'new'"

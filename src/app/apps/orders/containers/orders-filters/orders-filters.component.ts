@@ -117,6 +117,7 @@ export class OrdersFiltersComponent implements OnInit {
       top: 100,
       lastUpdate: '',
       partNumber: '',
+      orderNumber: '',
       orderStatus: '',
       requestors: ''
     });
@@ -140,6 +141,7 @@ export class OrdersFiltersComponent implements OnInit {
     this.doReset = this.doReset ? false : true;
     this.fg_filters.controls['lastUpdate'].reset();
     this.fg_filters.controls['partNumber'].reset();
+    this.fg_filters.controls['orderNumber'].reset();
     this.fg_filters.controls['orderStatus'].reset();
     this.fg_filters.controls['requestors'].patchValue([]);
   }
