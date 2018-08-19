@@ -53,11 +53,15 @@ import { LocationsService } from '../../../../shared/services/locations.service'
     `
 })
 export class FiltersLocationsComponent implements OnInit {
-  @Input() fg_filters: FormGroup;
-  @Input() locofinterest: number;
-  @Input() exclude: string[];
+  @Input()
+  fg_filters: FormGroup;
+  @Input()
+  locofinterest: number;
+  @Input()
+  exclude: string[];
 
-  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
+  @Output()
+  updateLocationsofinterest = new EventEmitter<number[]>();
 
   // fc_locations = new FormControl([])
   locations: LocationEnt[] = [];
@@ -99,8 +103,8 @@ export class FiltersLocationsComponent implements OnInit {
     this.$fetch = this.srv
       .getLocations()
       .pipe(
-        take(1),
-        tap(v => console.log(v))
+        take(1)
+        // tap(v => console.log(v))
       )
       .subscribe(success => this.fetchSuccess(success as LocationEnt[]));
   }

@@ -48,6 +48,7 @@ import { UtilitiesService } from './../../../../services/utilities.service';
 export class PeopleSelectorSelectedComponent {
   @Input()
   user: PeopleItem;
+
   @Input()
   mode: FormMode;
 

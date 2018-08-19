@@ -189,7 +189,7 @@ export class HarcsService {
   }
 
   getFilterStatus(status: string[]) {
-    console.log(status);
+    // console.log(status);
     const approved = this.findApproved(status) ? true : false;
     const pending = this.findPending(status) ? true : false;
     const expired = this.findExpired(status) ? true : false;
@@ -197,10 +197,10 @@ export class HarcsService {
 
     let filters = '';
     let countFilters = 0;
-    console.log('approved: ' + approved);
-    console.log('pending: ' + pending);
-    console.log('expired: ' + expired);
-    console.log('soon expire: ' + soonExpire);
+    // console.log('approved: ' + approved);
+    // console.log('pending: ' + pending);
+    // console.log('expired: ' + expired);
+    // console.log('soon expire: ' + soonExpire);
 
     if (approved) {
       if (countFilters > 0) {

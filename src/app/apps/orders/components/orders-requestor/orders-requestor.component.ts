@@ -72,7 +72,7 @@ export class OrdersRequestorComponent implements OnInit, OnChanges, OnDestroy {
       .getUserById(requestorId)
       .pipe(take(1))
       .subscribe((requestorAll: PeopleItem[]) => {
-        console.log(requestorAll);
+        // console.log(requestorAll);
         this.requestorAll = { ...requestorAll[0] };
         this.cd.detectChanges();
       });

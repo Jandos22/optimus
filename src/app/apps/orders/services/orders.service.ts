@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import * as subDays from 'date-fns/sub_days';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { Observable, of, from } from 'rxjs';
 import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
@@ -52,7 +54,7 @@ export class OrdersService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? params.text.replace('#', '%23') : null;
+    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
 
     // locations must be ids array
     const locations = params.locations ? params.locations : [];

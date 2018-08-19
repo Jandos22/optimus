@@ -80,15 +80,15 @@ export class OrdersListItemComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // watch changes of incoming order object
     if (changes.order && changes.order.currentValue) {
-      console.log('changes detected');
-      console.log(changes.order.currentValue);
+      // console.log('changes detected');
+      // console.log(changes.order.currentValue);
       this.createLineItems(changes.order.currentValue);
     }
   }
 
   createLineItems(order: OrderItem) {
     const times = order.ActiveLineItems;
-    console.log(times);
+    // console.log(times);
 
     // create new array of active line items
     const lineItems = _.times(times, n => {

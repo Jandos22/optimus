@@ -1,11 +1,16 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
+// rxjs
 import { take } from 'rxjs/operators';
 
+// date-fns
 import * as startOfToday from 'date-fns/start_of_today';
 
+// servises
 import { OrdersService } from '../../../services';
 
+// interfaces
 import { OrdersSearchParams } from '../../../../../shared/interface/orders.model';
 import { LocationEnt } from '../../../../../shared/interface/locations.model';
 import { OrderItem } from './../../../../../shared/interface/orders.model';
@@ -17,7 +22,8 @@ import { OrderItem } from './../../../../../shared/interface/orders.model';
     <button *ngIf="!expiredError && !expiredRefreshing"
         mat-button color="accent"
         class='status-check-button accent' matTooltip='Expired Orders'
-        fxLayout="row" fxLayoutAlign="center center">
+        fxLayout="row" fxLayoutAlign="center center"
+        (click)="navigateToExpiredOrders()">
         <div class="accent">{{ expired }}</div>
     </button>
 
@@ -39,7 +45,8 @@ export class OrdersStatusCheckComponent implements OnInit {
 
   constructor(
     private spHttp: OrdersService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -51,6 +58,13 @@ export class OrdersStatusCheckComponent implements OnInit {
     this.expired = 0;
     // fetch new numbers
     this.getExpiredOrders();
+  }
+
+  navigateToExpiredOrders() {
+    this.router.navigate([
+      '/orders',
+      { lastUpdate: 1, locations: [this.myLocation.ID] }
+    ]);
   }
 
   getExpiredOrders() {
@@ -76,7 +90,7 @@ export class OrdersStatusCheckComponent implements OnInit {
   }
 
   getExpiredOrdersSuccess(orders: OrderItem[]) {
-    console.log('got expired orders: ' + orders.length);
+    // console.log('got expired orders: ' + orders.length);
 
     this.expired = orders.length;
 
