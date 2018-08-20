@@ -37,7 +37,8 @@ import { ExemptionItem } from './../../../../../shared/interface/exemptions.mode
   `
 })
 export class ExemptionsStatusCheckComponent implements OnInit {
-  @Input() myLocation: LocationEnt;
+  @Input()
+  myLocation: LocationEnt;
 
   pending: number;
   expired: number;
@@ -89,7 +90,7 @@ export class ExemptionsStatusCheckComponent implements OnInit {
   }
 
   getPendingExemptionsSuccess(exemptions: ExemptionItem[]) {
-    console.log('got pending exemptions: ' + exemptions.length);
+    // console.log('got pending exemptions: ' + exemptions.length);
 
     this.pending = exemptions.length;
 
@@ -132,7 +133,7 @@ export class ExemptionsStatusCheckComponent implements OnInit {
   }
 
   getExpiredExemptionsSuccess(exemptions: ExemptionItem[]) {
-    console.log('got expired exemptions: ' + exemptions.length);
+    // console.log('got expired exemptions: ' + exemptions.length);
 
     this.expired = exemptions.length;
 

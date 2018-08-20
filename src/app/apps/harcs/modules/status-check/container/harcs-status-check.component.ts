@@ -37,7 +37,8 @@ import { HarcItem } from './../../../../../shared/interface/harcs.model';
   `
 })
 export class HarcsStatusCheckComponent implements OnInit {
-  @Input() myLocation: LocationEnt;
+  @Input()
+  myLocation: LocationEnt;
 
   pending: number;
   expired: number;
@@ -89,7 +90,7 @@ export class HarcsStatusCheckComponent implements OnInit {
   }
 
   getPendingHarcsSuccess(harcs: HarcItem[]) {
-    console.log('got pending harcs: ' + harcs.length);
+    // console.log('got pending harcs: ' + harcs.length);
 
     this.pending = harcs.length;
 
@@ -132,7 +133,7 @@ export class HarcsStatusCheckComponent implements OnInit {
   }
 
   getExpiredHarcsSuccess(harcs: HarcItem[]) {
-    console.log('got expired harcs: ' + harcs.length);
+    // console.log('got expired harcs: ' + harcs.length);
 
     this.expired = harcs.length;
 

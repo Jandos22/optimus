@@ -11,8 +11,8 @@ import { LocationEnt } from '../interface/locations.model';
 export class LocationsFilterPipe implements PipeTransform {
   transform(locations: LocationEnt[], exclude: string[]) {
     // for debugging
-    console.log(locations);
-    console.log(exclude);
+    // console.log(locations);
+    // console.log(exclude);
 
     // filter through array and check condition to pass
     const locationsFiltered = locations.filter(location => {

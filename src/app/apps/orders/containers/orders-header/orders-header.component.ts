@@ -10,18 +10,22 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
+import * as _ from 'lodash';
+
 // ngrx
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromOrders from '../../store';
 
 // rxjs
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map
+  map,
+  switchMap,
+  startWith
 } from 'rxjs/operators';
 
 // interfaces
@@ -29,6 +33,7 @@ import { OrdersSearchParams } from '../../../../shared/interface/orders.model';
 
 // validators
 import { ValidationService } from '../../../../shared/validators/validation.service';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-orders-header',
@@ -49,41 +54,72 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
     `
 })
 export class OrdersHeaderComponent implements OnInit, OnDestroy {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() accessLevel: number;
+  @Input()
+  appName: string;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  accessLevel: number;
+
+  @Output()
+  openForm = new EventEmitter<any>();
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
+
+  $url: Subscription;
+  urlParams: any;
 
   constructor(
     private fb: FormBuilder,
     private store_orders: Store<fromOrders.OrdersState>,
-    private store_root: Store<fromRoot.RootState>
+    private store_root: Store<fromRoot.RootState>,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.initializeParamsFormGroup();
-    this.subscribeToParamsFormGroup();
-    this.resetParamsFormGroup();
+    this.$url = this.route.paramMap
+      .pipe(
+        switchMap((params: any) => {
+          return of(params.params);
+        })
+      )
+      .subscribe(params => {
+        this.urlParams = params;
+        // console.log(params);
+        if (!params.text && this.fg_params) {
+          console.log(this.fg_params.controls['text']);
+          this.fg_params.controls['text'].patchValue('');
+        } else if (params.text && this.fg_params) {
+          this.fg_params.controls['text'].patchValue(params.text);
+        }
+      });
   }
 
   initializeParamsFormGroup() {
+    console.log(this.urlParams);
     this.fg_params = this.fb.group({
-      text: ['', ValidationService.onlySearchable]
-      // locations: [''],
-      // top: []
+      text: [this.getTextFromUrl(), ValidationService.onlySearchable]
     });
+  }
+
+  getTextFromUrl() {
+    if (this.urlParams && this.urlParams.text) {
+      return this.urlParams.text;
+    } else {
+      return '';
+    }
   }
 
   resetParamsFormGroup() {
     this.fg_params.get('text').patchValue('');
-    // this.fg_params.get('top').patchValue(100);
   }
 
   subscribeToParamsFormGroup() {
@@ -97,52 +133,38 @@ export class OrdersHeaderComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
 
-    // const locations$ = this.fg_params
-    //   .get('locations')
-    //   .valueChanges.pipe(distinctUntilChanged());
-
-    // const top$ = this.fg_params
-    //   .get('top')
-    //   .valueChanges.pipe(distinctUntilChanged());
-
-    const params$ = combineLatest(
-      text$
-      // locations$,
-      // top$
-    );
-
-    this.$params = params$
+    this.$params = text$
       .pipe(
-        map(params => {
-          console.log(params);
-          return {
-            text: params[0]
-            // locations: params[1],
-            // top: params[2]
-          };
+        startWith(this.getTextFromUrl()),
+        map(text => {
+          console.log(text);
+          return { text };
         })
       )
-      .subscribe((params: OrdersSearchParams) => {
-        console.log('params updated');
-        // this action updates store > orders.params
-        // this action is intercepted in search effects
-        // search effects triggers chain of actions needed
-        // to request orders from server and load them in store
-        this.store_orders.dispatch(new fromOrders.UpdateParams(params));
+      .subscribe((q: OrdersSearchParams) => {
+        console.log('search text updated');
+        const text = encodeURI(q.text);
+        console.log(this.urlParams);
+
+        if (text) {
+          this.router.navigate(['./orders', { ...this.urlParams, text }]);
+        } else {
+          // remove text property from urlParams
+          const newUrlParams = _.reduce(
+            this.urlParams,
+            (acc, value, key) => {
+              return key !== 'text' ? { ...acc, [key]: value } : { ...acc };
+            },
+            {}
+          );
+          this.router.navigate(['./orders', newUrlParams]);
+        }
       });
   }
 
   ngOnInit() {
-    // this.subscribeToSelectedLocations();
-  }
-
-  subscribeToSelectedLocations() {
-    // subscribe to store and update selected location on change
-    // this.$selectedLocations = this.store_root
-    //   .pipe(select(fromRoot.selectSelectedId))
-    //   .subscribe(location => {
-    //     this.fg_params.get('locations').setValue(location);
-    //   });
+    this.initializeParamsFormGroup();
+    this.subscribeToParamsFormGroup();
   }
 
   onFocus() {
@@ -155,6 +177,6 @@ export class OrdersHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
-    // this.$selectedLocations.unsubscribe();
+    this.$url.unsubscribe();
   }
 }

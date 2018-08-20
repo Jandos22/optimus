@@ -103,6 +103,7 @@ import { PeopleLookupService } from './../../../services/people-lookup.service';
       *ngFor="let user of this.fg_users.get('selectedUsers').value"
       fxLayout="row nowrap" fxLayoutAlign="start center"
       class="people-selector-selected-item"
+      [ngClass]="{ 'forFilters': forFilters }"
       [user]="user" [mode]="mode"
       (removeSelectedUser)="removeSelectedUser($event)">
     </app-people-selector-selected>
@@ -182,7 +183,7 @@ export class FormControlPeopleSelectorComponent
   ngOnInit() {
     this.initFormGroup(this.mode);
 
-    console.log(this.fg_users);
+    // console.log(this.fg_users);
 
     // watch location/locations changes
     // start with inital value from fg_fields
@@ -191,20 +192,20 @@ export class FormControlPeopleSelectorComponent
       this.locations$ = this.fg_fields.controls[
         'LocationsId'
       ].valueChanges.pipe(
-        startWith(this.fg_fields.get('LocationsId').get('results').value),
-        tap(v => console.log(v))
+        startWith(this.fg_fields.get('LocationsId').get('results').value)
+        // tap(v => console.log(v))
       );
     } else if (this.singleLocation && !this.forFilters) {
       this.locations$ = this.fg_fields.controls['LocationId'].valueChanges.pipe(
         startWith(this.fg_fields.get('LocationId').value),
-        map((location: number) => [location]),
-        tap(v => console.log(v))
+        map((location: number) => [location])
+        // tap(v => console.log(v))
       );
     } else if (this.forFilters) {
       this.locations$ = this.fg_fields.controls['locations'].valueChanges.pipe(
         startWith(this.fg_fields.get('locations').value),
-        map((locations: number[]) => [...locations]),
-        tap(v => console.log(v))
+        map((locations: number[]) => [...locations])
+        // tap(v => console.log(v))
       );
     }
 
@@ -278,7 +279,7 @@ export class FormControlPeopleSelectorComponent
   }
 
   initFormGroup(mode: FormMode) {
-    console.log(mode);
+    // console.log(mode);
     // initialize form group for searching users
     this.fg_users = this.fb.group({
       text: '',
@@ -339,22 +340,22 @@ export class FormControlPeopleSelectorComponent
   }
 
   searchUsers(query: SearchParamsUser) {
-    console.log('search users started');
+    // console.log('search users started');
     // console.log(query);
     this.searching = true;
     const search$ = this.srv.searchUsers(query);
 
-    search$
-      .pipe(take(1))
-      .subscribe(
-        success => this.searchUsersSuccess(success),
-        error => this.searchUsersError(error),
-        () => console.log('search users completed')
-      );
+    search$.pipe(take(1)).subscribe(
+      success => this.searchUsersSuccess(success),
+      error => this.searchUsersError(error),
+      () => {
+        // console.log('search users completed');
+      }
+    );
   }
 
   searchUsersSuccess(success) {
-    console.log(success);
+    // console.log(success);
     this.searching = false;
     this.users = success;
 
@@ -429,7 +430,10 @@ export class FormControlPeopleSelectorComponent
   keepOpen() {
     const self = this;
     // don't reopen if user selected and limit reached
-    if (!this.limitReached) {
+
+    if (this.forFilters) {
+      // do nothing
+    } else if (!this.limitReached) {
       setTimeout(function() {
         self.autoComplete.openPanel();
       }, 100);
@@ -489,7 +493,7 @@ export class FormControlPeopleSelectorComponent
           }, [])
         )
         .subscribe(v => {
-          console.log(v);
+          // console.log(v);
           this.fg_users.controls['selectedUsers'].patchValue(v);
         });
     }
@@ -503,7 +507,7 @@ export class FormControlPeopleSelectorComponent
   ngOnChanges(changes: SimpleChanges) {
     if (changes.doReset) {
       if (changes.doReset.currentValue) {
-        console.log('reset');
+        // console.log('reset');
         if (changes.doReset.currentValue !== changes.doReset.previousValue) {
           this.fg_users.get('selectedUsers').patchValue([]);
         }

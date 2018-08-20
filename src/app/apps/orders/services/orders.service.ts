@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import * as subDays from 'date-fns/sub_days';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { Observable, of, from } from 'rxjs';
 import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
@@ -12,7 +14,10 @@ import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { OrdersSearchParams } from '../../../shared/interface/orders.model';
+import {
+  OrdersSearchParams,
+  OrderItem
+} from '../../../shared/interface/orders.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
 
 // services
@@ -38,13 +43,18 @@ export class OrdersService {
       );
   }
 
+  getData(url) {
+    const get$ = from(sprLib.rest({ url }));
+    return get$ as Observable<OrderItem[]>;
+  }
+
   buildUrl(params: OrdersSearchParams, counter?: boolean) {
     let url = `${ApiPath}/web/lists/getbytitle('NgOrders')/items?`;
 
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? params.text.replace('#', '%23') : null;
+    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
 
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
@@ -241,14 +251,6 @@ export class OrdersService {
       return filter;
     }
   }
-
-  // getFilterWell(well: string) {
-  //   if (well) {
-  //     return `(substringof('${well}',Well))`;
-  //   } else {
-  //     return '';
-  //   }
-  // }
 
   getFilterLastUpdate(n: number) {
     // 1 for old

@@ -71,6 +71,7 @@ import {
 } from '@angular/material/core';
 
 import * as fromDateFormats from './shared/date/date.formats';
+import { OrderssStatusCheckModule } from './apps/orders/modules/orders-check/orders-status-check.module';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import * as fromDateFormats from './shared/date/date.formats';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     // used in sidenav
     HarcsStatusCheckModule,
-    ExemptionsStatusCheckModule
+    ExemptionsStatusCheckModule,
+    OrderssStatusCheckModule
   ],
   providers: [
     Title,

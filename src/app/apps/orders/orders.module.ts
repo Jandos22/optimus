@@ -43,6 +43,7 @@ import { FilterControlsModule } from '../../shared/modules/filter-controls/form-
 
 // routes
 export const ordersRoutes: Routes = [
+  { path: '/:lastUpdated', component: fromContainers.OrdersComponent },
   { path: '', component: fromContainers.OrdersComponent }
 ];
 

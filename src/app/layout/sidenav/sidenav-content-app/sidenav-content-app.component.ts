@@ -25,6 +25,12 @@ import { AppItem } from '../../../shared/interface/applications.model';
       {{ app.Title }}
     </a>
 
+    <app-orders-status-check
+      class="status-check-container"
+      *ngIf="app.Title === 'Orders'"
+      [myLocation]="myLocation">
+    </app-orders-status-check>
+
     <app-harcs-status-check
       class="status-check-container"
       *ngIf="app.Title === 'HARCs'"
@@ -39,9 +45,12 @@ import { AppItem } from '../../../shared/interface/applications.model';
     `
 })
 export class SidenavContentAppComponent {
-  @Input() app: AppItem;
-  @Input() myLocation: LocationEnt;
+  @Input()
+  app: AppItem;
+  @Input()
+  myLocation: LocationEnt;
 
-  @Output() onSidenavClick = new EventEmitter<any>();
+  @Output()
+  onSidenavClick = new EventEmitter<any>();
   constructor() {}
 }

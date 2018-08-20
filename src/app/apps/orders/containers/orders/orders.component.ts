@@ -6,9 +6,11 @@ import {
   HostBinding
 } from '@angular/core';
 
+import * as _ from 'lodash';
+
 // rxjs
-import { Subscription, Observable } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { Subscription, Observable, of } from 'rxjs';
+import { take, tap, switchMap } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -29,6 +31,10 @@ import {
 } from '../../../../shared/interface/orders.model';
 import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
+// services
+import { OrdersUrlParamsService } from '../../services';
 
 @Component({
   selector: 'app-orders.common-app-v2-container',
@@ -58,6 +64,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       [style.display]="(showFilters ? 'flex' : 'none')"
       fxLayout="column" fxLayoutAlign="start start"
       [orderStatuses]="orderStatuses$ | async"
+      [filterParams]="filterParams"
+      (onFiltersUpdate)="onFiltersUpdate($event)"
       (toggleFilters)="toggleFilters()">
     </app-orders-filters>
   `,
@@ -82,6 +90,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   orderStatuses$: Observable<OrderStatus[]>;
 
+  url$: Subscription;
+  urlParams: any;
+  filterParams: OrdersSearchParams;
+
   // when showFilters toggle it toggles class in host element
   @HostBinding('class.filtersOpened')
   showFilters = false;
@@ -89,12 +101,32 @@ export class OrdersComponent implements OnInit, OnDestroy {
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_orders: Store<fromOrders.OrdersState>,
-    public form: MatDialog
+    public form: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    private urlService: OrdersUrlParamsService
   ) {}
 
   ngOnInit() {
     // update html page title and store.root.apps.name
     this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
+
+    // subscription should get url params
+    // then should compose urlParams
+    // - that will get passed to child filters component
+    // - that will be used to update store.params
+    this.url$ = this.route.paramMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          return params.keys
+            ? this.urlService.composeFilterParamsFromUrlParams(params)
+            : null;
+        })
+      )
+      .subscribe(params => {
+        console.log(params);
+        this.filterParams = { ...params };
+      });
 
     // fetch OrderStatuses list from database
     this.store_root.dispatch(new fromOrders.FetchOrderStatuses());
@@ -177,6 +209,22 @@ export class OrdersComponent implements OnInit, OnDestroy {
     } else {
       this.showFilters = true;
     }
+  }
+
+  onFiltersUpdate(params: OrdersSearchParams) {
+    console.log('ON FILTERS UPDATE');
+    console.log('old params:');
+    console.log(this.params);
+    console.log('new params:');
+    console.log(params);
+    this.updateUrl(params);
+  }
+
+  updateUrl(params: OrdersSearchParams) {
+    console.log('UPDATE URL');
+    const link = ['./orders', { ...this.urlService.removeEmptyKeys(params) }];
+    console.log(link);
+    this.router.navigate(link);
   }
 
   ngOnDestroy() {
