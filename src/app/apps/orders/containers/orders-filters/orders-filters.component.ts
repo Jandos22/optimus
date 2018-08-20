@@ -228,6 +228,10 @@ export class OrdersFiltersComponent implements OnInit, OnChanges {
       }
     });
 
+    if (_.has(params, 'text') !== true) {
+      this.fg_filters.controls['text'].reset();
+    }
+
     // if locations are not in params
     // then force update of locations filter
     if (_.has(params, 'locations') !== true) {
@@ -240,6 +244,26 @@ export class OrdersFiltersComponent implements OnInit, OnChanges {
     if (_.has(params, 'top') !== true) {
       console.log('force update top');
       this.fg_filters.controls['top'].patchValue(100);
+    }
+
+    if (_.has(params, 'orderNumber') !== true) {
+      this.fg_filters.controls['orderNumber'].reset();
+    }
+
+    if (_.has(params, 'orderStatus') !== true) {
+      this.fg_filters.controls['orderStatus'].reset();
+    }
+
+    if (_.has(params, 'lastUpdate') !== true) {
+      this.fg_filters.controls['lastUpdate'].reset();
+    }
+
+    if (_.has(params, 'partNumber') !== true) {
+      this.fg_filters.controls['partNumber'].reset();
+    }
+
+    if (_.has(params, 'requestors') !== true) {
+      this.fg_filters.controls['requestors'].patchValue([]);
     }
   }
 }

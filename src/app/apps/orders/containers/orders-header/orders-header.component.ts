@@ -56,20 +56,22 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 export class OrdersHeaderComponent implements OnInit, OnDestroy {
   @Input()
   appName: string;
+
   @Input()
   searching: boolean;
+
   @Input()
   accessLevel: number;
 
   @Output()
   openForm = new EventEmitter<any>();
+
   @Output()
   toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
   $params: Subscription; // unsubscribed in ngOnDestroy
-  $selectedLocations: Subscription; // unsubscribed in ngOnDestroy
 
   focus = false;
 
@@ -147,7 +149,15 @@ export class OrdersHeaderComponent implements OnInit, OnDestroy {
         if (text) {
           this.router.navigate(['./orders', { ...this.urlParams, text }]);
         } else {
-          this.router.navigate(['./orders', { ...this.urlParams }]);
+          // remove text property from urlParams
+          const newUrlParams = _.reduce(
+            this.urlParams,
+            (acc, value, key) => {
+              return key !== 'text' ? { ...acc, [key]: value } : { ...acc };
+            },
+            {}
+          );
+          this.router.navigate(['./orders', newUrlParams]);
         }
       });
   }
@@ -155,7 +165,6 @@ export class OrdersHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeParamsFormGroup();
     this.subscribeToParamsFormGroup();
-    // this.resetParamsFormGroup();
   }
 
   onFocus() {
@@ -168,5 +177,6 @@ export class OrdersHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
+    this.$url.unsubscribe();
   }
 }
