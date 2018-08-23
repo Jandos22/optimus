@@ -21,4 +21,4 @@ import { OrdersService } from '../../services';
   exports: [OrdersStatusCheckComponent],
   providers: [OrdersService]
 })
-export class OrderssStatusCheckModule {}
+export class OrdersStatusCheckModule {}

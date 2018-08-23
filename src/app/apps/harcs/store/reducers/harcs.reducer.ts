@@ -60,6 +60,10 @@ export function reducer(
       );
     }
 
+    case HarcsActionTypes.DELETE_ONE_HARC: {
+      return adapter.removeOne(action.id, state);
+    }
+
     default:
       return state;
   }

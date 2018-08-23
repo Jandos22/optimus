@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
 import { Observable, of, from } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
 
 // constants
 import { ApiPath, WirelinePath } from '../../../shared/constants';
@@ -286,5 +286,31 @@ export class HarcsService {
     return _.find(status, (s: string) => {
       return s === 'Soon Expire';
     });
+  }
+
+  deleteItemById(id: number) {
+    const fdv$ = this.sp.getFDV();
+
+    const url = `${ApiPath}/web/lists/getByTitle('NgHarcs')/items(${id})`;
+
+    return fdv$.pipe(
+      retry(3),
+      switchMap(fdv => {
+        console.log(fdv);
+        console.log('deleting: ' + id);
+
+        const delete$: Promise<any> = sprLib.rest({
+          url: url,
+          type: 'POST',
+          headers: {
+            Accept: 'application/json;odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*',
+            'X-RequestDigest': fdv.requestDigest
+          }
+        });
+        return from(delete$);
+      })
+    );
   }
 }

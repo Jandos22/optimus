@@ -1,0 +1,60 @@
+.weather-line {
+  // min-width: 66px;
+  max-width: 100px;
+}
+
+.weather-line-icon {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.weather-line-main {
+  height: 32px;
+  width: 34px;
+  overflow: hidden;
+  // takes 17px
+  .weather-line-temp {
+    // width: 100%;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 0, 0, 0.625);
+    text-align: center;
+  }
+
+  // takes 16px
+  .weather-line-state {
+    // width: 100%;
+    font-size: 9px;
+    line-height: 10px;
+    color: rgba(0, 0, 0, 0.625);
+    text-align: center;
+  }
+}
+
+.weather-line-wind {
+  height: 32px;
+  width: 34px;
+  overflow: hidden;
+
+  .wind-speed {
+    // width: 100%;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 0, 0, 0.625);
+    text-align: center;
+  }
+
+  .weather-line-state {
+    // width: 100%;
+    font-size: 9px;
+    line-height: 10px;
+    color: rgba(0, 0, 0, 0.625);
+    text-align: center;
+  }
+}

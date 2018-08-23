@@ -69,7 +69,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-harcs-form-actions [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
-        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    <app-harcs-form-actions class="common-form-actions-container" [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode"
+        (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
     </app-harcs-form-actions>
 </mat-dialog-actions>

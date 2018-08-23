@@ -1,0 +1,20 @@
+.file-sharing {
+  width: 100%;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 32px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.app-location-link {
+  border: 1px solid #e3f2fd;
+  border-radius: 4px;
+  width: 100%;
+
+  &:hover {
+    border: 1px solid #ddd;
+    background: #fafafa;
+    cursor: pointer;
+  }
+}

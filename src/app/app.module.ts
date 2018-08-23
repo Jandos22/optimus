@@ -11,8 +11,10 @@ library.add(fromFontAwesome.fontawesome_icons);
 // My Modules & Components
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import { OrdersStatusCheckModule } from './apps/orders/modules/orders-check/orders-status-check.module';
 import { HarcsStatusCheckModule } from './apps/harcs/modules/status-check/harcs-status-check.module';
 import { ExemptionsStatusCheckModule } from './apps/exemptions/modules/status-check/exemptions-status-check.module';
+import { LocationModule } from './apps/location/location.module';
 
 // Angular Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -71,7 +73,6 @@ import {
 } from '@angular/material/core';
 
 import * as fromDateFormats from './shared/date/date.formats';
-import { OrderssStatusCheckModule } from './apps/orders/modules/orders-check/orders-status-check.module';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,9 @@ import { OrderssStatusCheckModule } from './apps/orders/modules/orders-check/ord
     // used in sidenav
     HarcsStatusCheckModule,
     ExemptionsStatusCheckModule,
-    OrderssStatusCheckModule
+    OrdersStatusCheckModule,
+    // weather
+    LocationModule
   ],
   providers: [
     Title,

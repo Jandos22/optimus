@@ -50,14 +50,14 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com';
       // spId = 9;
-      // loginName = 'zombayev@slb.com';
-      // spId = 167;
+      loginName = 'zombayev@slb.com';
+      spId = 167;
       // loginName = 'azhussipov@slb.com';
       // spId = 6;
       // loginName = 'cmarcotte@slb.com';
       // spId = 209;
-      loginName = 'rmiller36@slb.com';
-      spId = 16;
+      // loginName = 'rmiller36@slb.com';
+      // spId = 16;
       // loginName = 'myergazin@slb.com';
       // spId = 210;
     }
