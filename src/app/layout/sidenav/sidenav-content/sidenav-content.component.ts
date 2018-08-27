@@ -27,6 +27,17 @@ import { AppItem } from '../../../shared/interface/applications.model';
         [id]="myLocation.Id">
       </app-location>
 
+      <!-- apps list version 2 -->
+      <div class="app-list-container" fxLayout="row wrap" fxLayoutAlign="start start">
+        <div class="applications">Applications</div>
+        <app-sidenav-content-app-v2 *ngFor="let app of appsMap | appsFilter: showHiddenApps"
+          class="sidenav-content-app-v2"
+          [app]="app" (onSidenavClick)="onSidenavClick.emit()"
+          fxLayout="row nowrap" fxLayoutAling="space-between center">
+        </app-sidenav-content-app-v2>
+      </div>
+
+      <!-- apps list version 1
       <mat-nav-list class="app-list-container">
         <div class="applications">Applications</div>
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
@@ -35,7 +46,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
           (onSidenavClick)="onSidenavClick.emit()"
           fxLayout="row nowrap" fxLayoutAling="space-between center">
         </app-sidenav-content-app>
-      </mat-nav-list>
+      </mat-nav-list> -->
 
       <app-location-links
         *ngIf="linksPresent"

@@ -7,6 +7,7 @@ import { SidenavHeaderNoAccountComponent } from './sidenav/sidenav-header-no-acc
 import { SidenavFooterComponent } from './sidenav/sidenav-footer/sidenav-footer.component';
 import { BootstrapUserComponent } from './bootstrap-user/bootstrap-user.component';
 import { SidenavContentAppComponent } from './sidenav/sidenav-content-app/sidenav-content-app.component';
+import { SidenavContentAppV2Component } from './sidenav/sidenav-content-app-v2/sidenav-content-app-v2.component';
 
 export const containers: any[] = [
   LayoutComponent,
@@ -16,6 +17,7 @@ export const containers: any[] = [
   SidenavHeaderNoAccountComponent,
   SidenavContentComponent,
   SidenavContentAppComponent,
+  SidenavContentAppV2Component,
   SidenavFooterComponent,
   BootstrapUserComponent
 ];
@@ -29,3 +31,4 @@ export * from './sidenav/sidenav-header-no-account/sidenav-header-no-account.com
 export * from './bootstrap-user/bootstrap-user.component';
 export * from './sidenav/sidenav-content/sidenav-content.component';
 export * from './sidenav/sidenav-content-app/sidenav-content-app.component';
+export * from './sidenav/sidenav-content-app-v2/sidenav-content-app-v2.component';
