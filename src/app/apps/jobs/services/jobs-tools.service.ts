@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { map } from 'rxjs/operators';
 
@@ -26,6 +28,9 @@ export class JobsToolsService {
       .pipe(
         map((response: { value: any[] }) => {
           return response.value as ToolItem[];
+        }),
+        map(toolNames => {
+          return _.sortBy(toolNames, (toolItem: ToolItem) => toolItem.Title);
         })
       );
   }
