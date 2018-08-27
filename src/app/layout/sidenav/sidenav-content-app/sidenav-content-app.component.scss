@@ -2,18 +2,22 @@
 
 a.sidenav__app {
   border-radius: 4px;
+  border: 1px solid #e3f2fd;
 
   &.mat-list-item {
     font-size: 14px;
-    height: 32px !important;
+    height: 34px !important;
     color: rgba(0, 0, 0, 0.75);
+    box-sizing: border-box;
 
     &.hidden {
       color: rgba(0, 0, 0, 0.5);
     }
 
     &:hover {
-      background: $my-blue-100;
+      // background: $my-blue-100;
+      background: #fafafa;
+      border: 1px solid #ddd;
       color: rgba(0, 0, 0, 0.875);
     }
   }

@@ -50,6 +50,7 @@ export class LocationsService {
     return [
       'Id',
       'Title',
+      'Name',
       'PositionInList',
       'ApplicationsInUse/ID',
       'ApplicationsInUse/Title',
@@ -58,7 +59,24 @@ export class LocationsService {
       'HasLocations',
       'HasLocationsId',
       'HasLocations/Title',
-      'HasLocations/Id'
+      'HasLocations/Id',
+      'OwmApiKey',
+      'Latitude',
+      'Longitude',
+      'ShowWeather',
+      'WeatherCurrent',
+      'WeatherCurrentTime',
+      'WeatherForecast',
+      'WeatherForecastTime',
+      'WeatherUnits',
+      'Link1',
+      'Link01',
+      'Link2',
+      'Link02',
+      'Link3',
+      'Link03',
+      'Link4',
+      'Link04'
     ].toString();
   }
 

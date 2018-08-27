@@ -1,0 +1,126 @@
+// app-location-dashboard-orders {
+//   width: 100%;
+// }
+
+.app-location-dashboard {
+  width: 224px;
+  min-height: 60px;
+  max-height: 120px;
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  padding: 4px 8px;
+  overflow-y: auto;
+  overflow: overlay;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.location-dashboard-message {
+  width: 100%;
+  margin: 0 4.66px 4px 0;
+  //   padding-right: 4px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  min-width: 64px;
+  max-width: 64px;
+  font-size: 14px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.625);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #ddd;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.pending {
+    background: #fff9c4;
+  }
+
+  &.expired {
+    background: #ffcdd2;
+    border: 1px solid #ef9a9a;
+  }
+
+  .message {
+    width: 70px;
+
+    .number {
+      margin-left: 4px;
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .text {
+      margin-left: 4px;
+      height: 24px;
+      .noun {
+        font-size: 10px;
+        line-height: 8px;
+      }
+
+      .verb {
+        font-size: 10px;
+        line-height: 8px;
+      }
+    }
+  }
+}
+
+.message-hole-box {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  // other styles
+  box-sizing: border-box;
+
+  .hole {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fafafa;
+    border: 1px solid #ddd;
+
+    &.pending {
+      border: 1px solid #ddd;
+    }
+
+    &.expired {
+      border: 1px solid #ef9a9a;
+    }
+  }
+}
+
+.dashboard-header {
+  width: 200px;
+  font-size: 10px;
+  line-height: 18px;
+  // border-bottom: 1px solid #ddd;
+  margin-bottom: 4px;
+
+  .title {
+    color: rgba(0, 0, 0, 0.625);
+  }
+
+  .refresh {
+    color: rgba(0, 0, 0, 0.625);
+
+    &:hover {
+      cursor: pointer;
+      color: #0069c0;
+    }
+  }
+}
+
+.dashboard-all-good {
+  margin: 0 4.66px 4px 0;
+  font-size: 12px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.625);
+}

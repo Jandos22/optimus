@@ -25,6 +25,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
       {{ app.Title }}
     </a>
 
+    <!--
     <app-orders-status-check
       class="status-check-container"
       *ngIf="app.Title === 'Orders'"
@@ -42,6 +43,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
       *ngIf="app.Title === 'Exemptions'"
       [myLocation]="myLocation">
     </app-exemptions-status-check>
+    -->
     `
 })
 export class SidenavContentAppComponent {

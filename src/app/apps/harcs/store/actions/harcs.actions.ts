@@ -9,7 +9,8 @@ export enum HarcsActionTypes {
   COUNT_HARCS_TOTAL = '[Harcs] Count Total (since next url is present)',
   ADD_ONE_HARC = '[Harcs] Add One Harc',
   INSERT_ONE_HARC = '[Harcs] Insert One Harc (in beginning)',
-  UPDATE_ONE_HARC = '[Harcs] Update One Harc'
+  UPDATE_ONE_HARC = '[Harcs] Update One Harc',
+  DELETE_ONE_HARC = '[Harcs] Delete One'
 }
 
 export class SearchHarcsStart implements Action {
@@ -45,6 +46,11 @@ export class UpdateOneHarc implements Action {
   constructor(public id: number, public changes: HarcItem) {}
 }
 
+export class DeleteOne implements Action {
+  readonly type = HarcsActionTypes.DELETE_ONE_HARC;
+  constructor(public id: number) {}
+}
+
 export type HarcsActionsUnion =
   | SearchHarcsStart
   | SearchHarcsSuccess
@@ -52,4 +58,5 @@ export type HarcsActionsUnion =
   | CountHarcsTotal
   | AddOneHarc
   | InsertOneHarc
-  | UpdateOneHarc;
+  | UpdateOneHarc
+  | DeleteOne;

@@ -20,24 +20,48 @@ import { AppItem } from '../../../shared/interface/applications.model';
   styleUrls: ['sidenav-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-nav-list style="margin: -8px 16px 0 16px;">
+    <div class="sidenav-inner-container" fxLayout="row wrap">
+
+      <app-location
+        class="app-location"
+        [id]="myLocation.Id">
+      </app-location>
+
+      <mat-nav-list class="app-list-container">
+        <div class="applications">Applications</div>
         <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
-            mat-list-item class="sidenav-app-component"
-            [app]="app" [myLocation]="myLocation"
-            (onSidenavClick)="onSidenavClick.emit()"
-            fxLayout="row nowrap" fxLayoutAling="space-between center">
+          mat-list-item class="sidenav-app-component"
+          [app]="app" [myLocation]="myLocation"
+          (onSidenavClick)="onSidenavClick.emit()"
+          fxLayout="row nowrap" fxLayoutAling="space-between center">
         </app-sidenav-content-app>
-    </mat-nav-list>
+      </mat-nav-list>
+
+      <app-location-links
+        *ngIf="linksPresent"
+        class="app-location-links"
+        [location]="myLocation">
+      </app-location-links>
+
+    </div>
     `
 })
 export class SidenavContentComponent implements OnChanges {
-  @Input() myLocation: LocationEnt;
-  @Input() apps: AppItem[];
-  @Input() showHiddenApps: boolean;
+  @Input()
+  myLocation: LocationEnt;
 
-  @Output() onSidenavClick = new EventEmitter<any>();
+  @Input()
+  apps: AppItem[];
+
+  @Input()
+  showHiddenApps: boolean;
+
+  @Output()
+  onSidenavClick = new EventEmitter<any>();
 
   appsMap: AppItem[];
+
+  linksPresent: boolean;
 
   constructor() {}
 
@@ -83,10 +107,27 @@ export class SidenavContentComponent implements OnChanges {
       // console.log(myLocation);
       // console.log(showHiddenApps);
       this.mapApplications(apps.currentValue, myLocation.currentValue);
+      this.checkLinksPresent(myLocation.currentValue);
     }
 
     if (showHiddenApps) {
       this.mapApplications(this.apps, this.myLocation);
+    }
+  }
+
+  checkLinksPresent(location: LocationEnt) {
+    const link1 = location.Link1 && location.Link1.length ? true : false;
+
+    const link2 = location.Link2 && location.Link2.length ? true : false;
+
+    const link3 = location.Link3 && location.Link3.length ? true : false;
+
+    const link4 = location.Link4 && location.Link4.length ? true : false;
+
+    if (link1 || link2 || link3 || link4) {
+      this.linksPresent = true;
+    } else {
+      this.linksPresent = false;
     }
   }
 }
