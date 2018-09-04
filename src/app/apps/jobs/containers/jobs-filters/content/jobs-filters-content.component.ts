@@ -28,7 +28,10 @@ import { people_op } from '../../../../../shared/constants/ids-op';
             (updateLocationsofinterest)="updateLocationsofinterest.emit($event)">
         </app-filters-locations>
 
-        <app-jobs-filters-well [fg_filters]="fg_filters">
+        <app-jobs-filters-job-type [fg_filters]="fg_filters" fxLayout="row nowrap">
+        </app-jobs-filters-job-type>
+
+        <app-jobs-filters-well [fg_filters]="fg_filters" fxLayout="row nowrap">
         </app-jobs-filters-well>
 
         <app-form-control-people-selector class="cmn-form-component people-filter"
@@ -49,14 +52,21 @@ import { people_op } from '../../../../../shared/constants/ids-op';
     `
 })
 export class JobsFiltersContentComponent {
-  @Input() fg_filters: FormGroup;
-  @Input() locofinterest: number[];
-  @Input() selfUser: PeopleItem;
-  @Input() doReset: boolean;
+  @Input()
+  fg_filters: FormGroup;
+  @Input()
+  locofinterest: number[];
+  @Input()
+  selfUser: PeopleItem;
+  @Input()
+  doReset: boolean;
 
-  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
-  @Output() onSelectEngineers = new EventEmitter<number[]>();
-  @Output() onSelectOperators = new EventEmitter<number[]>();
+  @Output()
+  updateLocationsofinterest = new EventEmitter<number[]>();
+  @Output()
+  onSelectEngineers = new EventEmitter<number[]>();
+  @Output()
+  onSelectOperators = new EventEmitter<number[]>();
 
   engineerIds = people_fefs;
   operatorsIds = people_op;

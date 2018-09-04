@@ -44,12 +44,14 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     </app-jobs-filters-content>
 
     <app-jobs-filters-footer fxFlex="49px" class="common-filters-footer"
-      (onResetFilters)="onResetFilters($event)">
+      (onResetFilters)="onResetFilters($event)"
+      (toggleFilters)="toggleFilters.emit()">
     </app-jobs-filters-footer>
     `
 })
 export class JobsFiltersComponent implements OnInit {
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_filters: FormGroup;
   $fg_filters: Subscription;
@@ -107,6 +109,7 @@ export class JobsFiltersComponent implements OnInit {
     this.fg_filters = this.fb.group({
       locations: [{ value: [] }],
       top: 100,
+      jobType: '',
       well: '',
       engineers: [{ value: [] }],
       operators: [{ value: [] }]
@@ -133,7 +136,7 @@ export class JobsFiltersComponent implements OnInit {
 
   onResetFilters(event) {
     this.doReset = this.doReset ? false : true;
-    this.fg_filters.controls['well'].patchValue('');
-    // this.fg_filters.controls['eventReporters'].patchValue([]);
+    this.fg_filters.controls['well'].reset();
+    this.fg_filters.controls['jobType'].reset();
   }
 }

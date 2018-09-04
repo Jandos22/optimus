@@ -13,6 +13,7 @@ export interface ParamsState {
   top: number;
   afterDate?: Date;
   beforeDate?: Date;
+  jobType?: string;
   well?: string;
   engineers?: number[];
   operators?: number[];
@@ -24,6 +25,7 @@ export const initialState: ParamsState = {
   top: null,
   afterDate: null,
   beforeDate: null,
+  jobType: null,
   well: null,
   engineers: null,
   operators: null

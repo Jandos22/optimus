@@ -43,6 +43,7 @@ export class JobsService {
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text ? params.text.replace('#', '%23') : null;
+    const jobType = params.jobType ? params.jobType : null;
     const well = params.well ? params.well.replace('#', '%23') : null;
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
@@ -131,6 +132,17 @@ export class JobsService {
       countFilters++;
       // find items with RigUpStart before given date
       url += `(RigUpStart lt datetime'${beforeDate}')`;
+    }
+
+    // jobType filter configuration
+    if (jobType) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      // finds items with given location
+      url += `${this.getFilterJobType(jobType)}`;
     }
 
     // well filter configuration
@@ -286,6 +298,14 @@ export class JobsService {
       }
 
       return filter;
+    }
+  }
+
+  getFilterJobType(jobType: string) {
+    if (jobType) {
+      return `(JobType eq '${jobType}')`;
+    } else {
+      return '';
     }
   }
 

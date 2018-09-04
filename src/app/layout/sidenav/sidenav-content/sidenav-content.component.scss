@@ -13,18 +13,24 @@
   }
 
   .app-list-container {
-    // background: #fafafa;
-    width: 100%;
-    // border-top: 1px solid #ccc;
-    // border-bottom: 1px solid #ccc;
+    min-width: 224px;
+    max-width: 224px;
+    overflow: hidden;
+    padding-top: 8px;
     padding-bottom: 8px;
 
     .applications {
+      width: 224px;
       padding: 0 8px;
       font-size: 14px;
       font-weight: 500;
       line-height: 32px;
       color: rgba(0, 0, 0, 0.5);
+    }
+
+    .sidenav-content-app-v2 {
+      width: 112px;
+      // margin-right: 4px;
     }
   }
 
