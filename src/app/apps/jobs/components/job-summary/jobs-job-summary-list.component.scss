@@ -1,0 +1,18 @@
+@import '../../../../../colors';
+
+.job-summary-list {
+  width: 100%;
+
+  .job-summary {
+    width: 100%;
+    padding-left: 4px;
+    color: rgba(0, 0, 0, 0.625);
+    font-size: 12px;
+    font-weight: 400px;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+}

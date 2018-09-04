@@ -77,7 +77,8 @@ export class JobsComponent implements OnInit, OnDestroy {
   pagination: PaginationState;
 
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened') showFilters = false;
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -143,16 +144,21 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   openForm(mode, item?): void {
     const data = { mode, item };
+
+    console.log('opened Jobs Form');
     console.log(data);
+
     const formRef = this.form.open(JobsFormComponent, {
       data,
       disableClose: true,
       autoFocus: false
     });
+
     formRef
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
+        console.log('closed Jobs Form');
         console.log(res);
       });
   }

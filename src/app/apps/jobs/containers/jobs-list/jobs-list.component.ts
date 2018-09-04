@@ -17,21 +17,23 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
     <div class="jobs-list-container" fxFlex
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
-      <app-jobs-list-item
+      <app-jobs-list-item-v2
         *ngFor="let job of jobs; last as last"
         [job]="job"
         [ngClass]="{'last-item': last}"
         (openForm)="openForm.emit($event)"
         fxLayout="row nowrap">
-      </app-jobs-list-item>
+      </app-jobs-list-item-v2>
 
     </div>
     `
 })
 export class JobsListComponent {
-  @Input() jobs: JobItem[];
+  @Input()
+  jobs: JobItem[];
 
-  @Output() openForm = new EventEmitter<JobItem>();
+  @Output()
+  openForm = new EventEmitter<JobItem>();
 
   constructor() {}
 }
