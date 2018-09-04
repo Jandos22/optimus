@@ -326,6 +326,10 @@ mat-progress-bar.common-searching-indicator {
   left: 0;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+
+  .mat-progress-bar-buffer {
+    background-color: #e3f2fd !important;
+  }
 }
 
 .flexContainer {

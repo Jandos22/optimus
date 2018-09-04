@@ -55,7 +55,8 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
         </div>
 
         <!-- Job Summary List -->
-        <div class="job-row-3" fxLayout="row nowrap" fxLayoutAlign="start start">
+        <div class="job-row-3" *ngIf="job.JSStitle1"
+          fxLayout="row nowrap" fxLayoutAlign="start start">
 
           <app-jobs-job-summary-list
             fxFlex

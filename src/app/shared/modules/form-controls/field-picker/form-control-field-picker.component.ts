@@ -5,31 +5,37 @@ import {
   OnDestroy,
   ViewChild,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 // rxjs
 import { Subscription } from 'rxjs';
-import { take, switchMap, startWith, debounceTime } from 'rxjs/operators';
+import { take, switchMap, startWith, debounceTime, tap } from 'rxjs/operators';
 
 import * as _ from 'lodash';
 
 // services
 import { FieldsLookupService } from '../../../services';
+
+// material
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
-  MatAutocomplete
+  MatAutocomplete,
+  MatDialog
 } from '@angular/material';
 
 // interfaces
 import { FormMode } from './../../../interface/form.model';
 import { FieldItem } from '../../../interface/fields.model';
+import { FieldsCreateNewFieldComponent } from '../../../../apps-secondary/fields/create-new-field/fields-create-new-field.component';
 
 @Component({
   selector: 'app-form-control-field-picker',
   styleUrls: ['form-control-field-picker.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg">
 
@@ -37,7 +43,8 @@ import { FieldItem } from '../../../interface/fields.model';
         #autoCompleteInput
         [placeholder]="'Field'"
         [matAutocomplete]="auto"
-        formControlName="text">
+        formControlName="text"
+        spellcheck="false">
 
       <mat-autocomplete #auto="matAutocomplete"
         [displayWith]="displayFn.bind(this)"
@@ -45,6 +52,13 @@ import { FieldItem } from '../../../interface/fields.model';
 
         <mat-option *ngFor="let field of fields" [value]="field">
           {{ field.Title }}
+        </mat-option>
+
+        <mat-option *ngIf="(mode === 'new' || mode === 'edit')"
+          [disabled]="!fg.controls['text'].value || alreadyExists">
+          <div class="fields-create-new-option"
+            [ngClass]="{ disabled: (!fg.controls['text'].value || alreadyExists) }"
+            (click)="openDialog(this.fg.controls['text'].value)">+ create new field</div>
         </mat-option>
 
       </mat-autocomplete>
@@ -55,14 +69,20 @@ import { FieldItem } from '../../../interface/fields.model';
 })
 export class FormControlFieldPickerComponent
   implements OnInit, OnDestroy, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() initial: FieldItem;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  initial: FieldItem;
+
+  @Input()
+  mode: FormMode;
 
   fg: FormGroup;
   fields: FieldItem[];
 
-  @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
+  @ViewChild(MatAutocomplete)
+  matAutocomplete: MatAutocomplete;
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
@@ -70,7 +90,11 @@ export class FormControlFieldPickerComponent
   $search: Subscription;
   searching: boolean;
 
-  constructor(private srv: FieldsLookupService, private fb: FormBuilder) {}
+  constructor(
+    private srv: FieldsLookupService,
+    private fb: FormBuilder,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     console.log('ngOnInit: FormControlFieldPickerComponent');
@@ -129,9 +153,21 @@ export class FormControlFieldPickerComponent
       .pipe(
         startWith(''),
         debounceTime(600),
-        switchMap((text: string) => {
-          console.log(text);
-          return this.srv.getFields(text);
+        // tap((text: string | FieldItem) => {
+        //   // if text is empty then unselect field in fg_fields
+        //   if (typeof text === 'string' && text === '') {
+        //     this.unselectFieldsId();
+        //   }
+        // }),
+        switchMap((text: string | FieldItem) => {
+          // console.log(text);
+          if (typeof text === 'string') {
+            return this.srv.getFields(text);
+          } else if (typeof text === 'object') {
+            return this.srv.getFields(text.Title);
+          } else if (typeof text === 'undefined') {
+            return this.srv.getFields('');
+          }
         })
       )
       .subscribe(
@@ -154,19 +190,33 @@ export class FormControlFieldPickerComponent
 
   onFieldSelect(event: MatAutocompleteSelectedEvent) {
     const field: FieldItem = event.option.value;
-    this.fg_fields.controls['FieldId'].patchValue(field.Id);
+
+    // user selected field from list
+    if (field) {
+      // update parent fg_fields
+      this.fg_fields.controls['FieldId'].patchValue(field.Id);
+      // this.fg.controls['text'].patchValue(field.Title);
+    }
+  }
+
+  unselectFieldsId() {
+    if (!this.initial) {
+      this.fg_fields.controls['FieldId'].patchValue('');
+    } else if (this.initial) {
+      this.fg_fields.controls['FieldId'].patchValue(this.initial.Id);
+    }
   }
 
   displayFn(field?: FieldItem) {
     // when mode is view then show field name
     if (this.mode === 'view' || (this.mode === 'edit' && !field)) {
-      console.log('mode is view or edit');
+      // console.log('mode is view or edit');
 
       if (_.has(this.initial, 'Title')) {
-        console.log('field has Title property:' + this.initial.Title);
+        // console.log('field has Title property:' + this.initial.Title);
         return this.initial.Title;
       } else {
-        console.log('else');
+        // console.log('else');
         return '';
       }
     } else if (field) {
@@ -177,16 +227,68 @@ export class FormControlFieldPickerComponent
   }
 
   get hasError() {
-    return this.fg_fields.get('FieldId').invalid;
+    const invalid = this.fg_fields.get('FieldId').invalid;
+    return invalid;
   }
 
   get errorMessage() {
     const required = this.fg_fields.controls['FieldId'].hasError('required');
 
-    return this.fg_fields.controls['FieldId'].touched
-      ? required
-        ? '... is required'
-        : ''
-      : '';
+    if (required) {
+      this.fg.controls['text'].setErrors({ required: true });
+    } else {
+      this.fg.controls['text'].setErrors({});
+    }
+
+    return required ? 'field must be selected' : '';
+  }
+
+  openDialog(field: string) {
+    // console.log(field);
+
+    // check if field string is not empty
+    if (typeof field === 'string' && field.length && !this.alreadyExists) {
+      const dialogRef = this.dialog.open(FieldsCreateNewFieldComponent, {
+        data: {
+          field: field
+        }
+      });
+
+      dialogRef
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((newField: FieldItem | undefined) => {
+          // console.log(newField);
+          if (newField) {
+            this.fg.controls['text'].patchValue(newField.Title);
+          }
+        });
+    }
+  }
+
+  get alreadyExists() {
+    const text: string | FieldItem = this.fg.controls['text'].value;
+    // if text is empty then just return false
+    if (!text) {
+      return false;
+
+      // if fields array and text are not empty
+      // then run comparison functions
+    } else if (this.fields.length > 0 && text) {
+      // if text is string
+      if (typeof text === 'string') {
+        const found = _.find(
+          this.fields,
+          (field: FieldItem) => field.Title === text
+        );
+        return !found ? false : true;
+      } else if (typeof text === 'object') {
+        const found = _.find(
+          this.fields,
+          (field: FieldItem) => field.Title === text.Title
+        );
+        return !found ? false : true;
+      }
+    }
   }
 }
