@@ -39,11 +39,11 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
       <div class="line">{{ lineItem.line }}</div>
 
-      <div class="part-number">
+      <div class="part-number" title="Part Number">
         {{ lineItem.pn }}
       </div>
 
-      <div class="quantity">{{ lineItem.qty }} ea</div>
+      <div class="quantity" title="Quantity">{{ lineItem.qty }}</div>
 
       <div class="title" [title]="lineItem.title">{{ lineItem.title }}</div>
 

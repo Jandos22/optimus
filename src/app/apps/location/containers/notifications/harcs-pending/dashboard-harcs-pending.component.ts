@@ -2,7 +2,10 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewEncapsulation
@@ -27,6 +30,7 @@ import { HarcItem } from './../../../../../shared/interface/harcs.model';
   selector: 'app-dashboard-harcs-pending',
   styleUrls: ['dashboard-harcs-pending.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [HarcsService],
   template: `
     <div class="location-dashboard-message pending"
@@ -51,6 +55,9 @@ export class DashboardHarcsPendingComponent implements OnInit, OnChanges {
 
   @Input()
   doRefresh: boolean;
+
+  @Output()
+  onHaveNotifications = new EventEmitter<any>();
 
   pending: number;
   pendingError: boolean;
@@ -77,6 +84,7 @@ export class DashboardHarcsPendingComponent implements OnInit, OnChanges {
   refresh() {
     // clear numbers
     this.pending = 0;
+    this.onHaveChange(false);
     // fetch new numbers
     this.getPendingHarcs();
   }
@@ -106,6 +114,10 @@ export class DashboardHarcsPendingComponent implements OnInit, OnChanges {
   getPendingHarcsSuccess(harcs: HarcItem[]) {
     this.pending = harcs.length;
 
+    if (this.pending > 0) {
+      this.onHaveChange(true);
+    }
+
     this.pendingRefreshing = false;
     this.pendingError = false;
 
@@ -119,5 +131,13 @@ export class DashboardHarcsPendingComponent implements OnInit, OnChanges {
 
     // trigger change detection manually to update view
     this.changeDetectorRef.detectChanges();
+  }
+
+  onHaveChange(value: boolean) {
+    this.onHaveNotifications.emit({
+      app: 'harcs',
+      what: 'Expired',
+      value: value
+    });
   }
 }

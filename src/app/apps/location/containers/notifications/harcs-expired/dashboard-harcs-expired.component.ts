@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewEncapsulation
@@ -29,6 +30,7 @@ import { HarcItem } from './../../../../../shared/interface/harcs.model';
   selector: 'app-dashboard-harcs-expired',
   styleUrls: ['dashboard-harcs-expired.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [HarcsService],
   template: `
     <div class="location-dashboard-message expired"
@@ -97,7 +99,6 @@ export class DashboardHarcsExpiredComponent implements OnInit, OnChanges {
       locations: [this.myLocation.ID],
       top: 500,
       status: ['Expired', 'Soon Expire']
-      // beforeDate: startOfToday()
     };
 
     // build url with given params
