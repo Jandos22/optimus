@@ -27,7 +27,7 @@ export class TimelineFormInitService {
         this.getSimpleFormValue(mo, it, 'Title'),
         [
           Validators.required,
-          Validators.minLength(30),
+          Validators.minLength(10),
           Validators.maxLength(70)
         ]
       ],

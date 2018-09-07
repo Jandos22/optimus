@@ -35,19 +35,18 @@ import {
   tap
 } from 'rxjs/operators';
 
+import * as _ from 'lodash';
+
+// services
+import { SearchUsersService, UtilitiesService } from '../../../../services';
+import { PeopleLookupService } from './../../../../services/people-lookup.service';
+
 // interfaces
 import { LocationEnt } from '../../../../interface/locations.model';
 import {
   PeopleItem,
   SearchParamsUser
 } from '../../../../interface/people.model';
-
-// services
-import { SearchUsersService, UtilitiesService } from '../../../../services';
-import { PeopleLookupService } from './../../../../services/people-lookup.service';
-
-import * as _ from 'lodash';
-import { element } from '../../../../../../../node_modules/protractor';
 import { FormMode } from '../../../../interface/form.model';
 import { TimelineEventReporters } from '../../../../interface/timeline.model';
 
@@ -102,21 +101,31 @@ import { TimelineEventReporters } from '../../../../interface/timeline.model';
     `
 })
 export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
-  @Input() placeholder: string;
-  @Input() fieldName: string;
-  @Input() displayName: string;
-  @Input() fg_fields: FormGroup;
-  @Input() selfUser?: PeopleItem; // used to add self in selected by default
-  @Input() allowNumberOfUsers: number;
+  @Input()
+  placeholder: string;
+  @Input()
+  fieldName: string;
+  @Input()
+  displayName: string;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  selfUser?: PeopleItem; // used to add self in selected by default
+  @Input()
+  allowNumberOfUsers: number;
   // @Input() accessLevel: number;
-  @Input() mode: FormMode;
-  @Input() id: number; // used to assign to reference id
+  @Input()
+  mode: FormMode;
+  @Input()
+  id: number; // used to assign to reference id
 
-  @Output() onSelectUser = new EventEmitter<number[]>();
+  @Output()
+  onSelectUser = new EventEmitter<number[]>();
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
-  @ViewChild('formField') el_FormField: ElementRef;
+  @ViewChild('formField')
+  el_FormField: ElementRef;
 
   // notifies subscribers each time screen size change
   // used to dynamically set maxWidth of fullname of selected users
@@ -184,7 +193,7 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
     this.$query = combineLatest(this.text$, this.locations$)
       .pipe(
         map(q => {
-          return { text: q[0], locations: q[1] };
+          return { text: q[0], locations: q[1], top: 500 };
         })
       )
       .subscribe((query: SearchParamsUser) => {
@@ -291,8 +300,8 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   }
 
   searchUsers(query: SearchParamsUser) {
-    console.log('search users started');
-    console.log(query);
+    // console.log('search users started');
+    // console.log(query);
     this.searching = true;
     const search$ = this.srv.searchUsers(query);
 
@@ -306,9 +315,9 @@ export class FormControlUserSelectionComponent implements OnInit, OnDestroy {
   }
 
   searchUsersSuccess(success) {
-    console.log(success);
+    // console.log(success);
     this.searching = false;
-    this.users = success;
+    this.users = _.sortBy(success, (user: PeopleItem) => user.Name);
 
     if (this.allowNumberOfUsers === 1) {
       this.disableSelected(this.fg_fields.get(this.fieldName).value);

@@ -19,21 +19,24 @@
 
         <!-- Pending Actions / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap" *ngIf="fg_fields.controls['Status'].value === 'Pending'">
-            <app-harcs-form-pending class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-harcs-form-pending class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode">
             </app-harcs-form-pending>
         </div>
 
         <!-- Title / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
 
-            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode" [min]="10" [max]="70">
             </app-form-control-title>
 
         </div>
 
         <!-- Hash Tags / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('HashTags').value || data.mode !== 'view')">
-            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode">
             </app-form-control-hash-tags>
         </div>
 
@@ -48,8 +51,9 @@
 
         <!-- Location / 1 column -->
         <div class="group-of-2" fxLayout="row wrap">
-            <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
-                [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields"
+                [mode]="data.mode" [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId"
+                [locations]="locations$ | async">
             </app-form-control-location>
         </div>
 
@@ -58,9 +62,9 @@
             <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                 PIC
             </span>
-            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
-                [fieldName]="'PICId'" [displayName]="'Person In Charge'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="1"
-                (onSelectUser)="onSelectUser($event)">
+            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields"
+                [mode]="data.mode" [fieldName]="'PICId'" [displayName]="'Person In Charge'" [selfUser]="selfUser$ | async"
+                [allowNumberOfUsers]="1" (onSelectUser)="onSelectUser($event)">
             </app-form-control-user-selection>
         </div>
 
@@ -69,7 +73,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-harcs-form-actions class="common-form-actions-container" [fg_fields]="fg_fields" [initialFields]="data.item" [mode]="data.mode"
-        (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
+    <app-harcs-form-actions class="common-form-actions-container" [fg_fields]="fg_fields" [initialFields]="data.item"
+        [mode]="data.mode" (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)">
     </app-harcs-form-actions>
 </mat-dialog-actions>
