@@ -45,7 +45,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
       <div class="quantity">{{ lineItem.qty }} ea</div>
 
-      <div class="title">{{ lineItem.title }}</div>
+      <div class="title" [title]="lineItem.title">{{ lineItem.title }}</div>
 
       <div class="order-number"
         [ngClass]="{ 'isPO': isPurchaseOrder }"
