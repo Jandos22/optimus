@@ -53,7 +53,8 @@ import { AppraisalsService } from '../../../services';
         [initialFields]="initialFields"
         (switchFormMode)="switchFormMode.emit($event)"
         (updateDataItem)="updateDataItem.emit($event)"
-        class="form-actions-edit">
+        class="form-actions-edit"
+        fxLayout="row nowrap" fxLayoutAlign="end center">
     </app-appraisals-form-actions-edit>
     `
 })
