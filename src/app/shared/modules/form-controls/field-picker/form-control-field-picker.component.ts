@@ -30,6 +30,8 @@ import {
 // interfaces
 import { FormMode } from './../../../interface/form.model';
 import { FieldItem } from '../../../interface/fields.model';
+
+// components
 import { FieldsCreateNewFieldComponent } from '../../../../apps-secondary/fields/create-new-field/fields-create-new-field.component';
 
 @Component({
@@ -56,7 +58,7 @@ import { FieldsCreateNewFieldComponent } from '../../../../apps-secondary/fields
 
         <mat-option *ngIf="(mode === 'new' || mode === 'edit')"
           [disabled]="!fg.controls['text'].value || alreadyExists">
-          <div class="fields-create-new-option"
+          <div class="create-new-option"
             [ngClass]="{ disabled: (!fg.controls['text'].value || alreadyExists) }"
             (click)="openDialog(this.fg.controls['text'].value)">+ create new field</div>
         </mat-option>
@@ -153,12 +155,6 @@ export class FormControlFieldPickerComponent
       .pipe(
         startWith(''),
         debounceTime(600),
-        // tap((text: string | FieldItem) => {
-        //   // if text is empty then unselect field in fg_fields
-        //   if (typeof text === 'string' && text === '') {
-        //     this.unselectFieldsId();
-        //   }
-        // }),
         switchMap((text: string | FieldItem) => {
           // console.log(text);
           if (typeof text === 'string') {
@@ -195,7 +191,6 @@ export class FormControlFieldPickerComponent
     if (field) {
       // update parent fg_fields
       this.fg_fields.controls['FieldId'].patchValue(field.Id);
-      // this.fg.controls['text'].patchValue(field.Title);
     }
   }
 

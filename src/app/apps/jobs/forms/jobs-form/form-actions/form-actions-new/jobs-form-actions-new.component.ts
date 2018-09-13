@@ -31,7 +31,7 @@ import { JobsFormHttpService } from '../../form-services/jobs-form-http.service'
   selector: 'app-jobs-form-actions-new',
   styleUrls: ['jobs-form-actions-new.component.scss'],
   template: `
-    <button mat-button color="primary" (click)="log()">LOG</button>
+    <!-- <button mat-button color="primary" (click)="log()">LOG</button> -->
 
     <button mat-button color="primary"
       [disabled]="!fg_fields.valid || savingChanges"
@@ -48,9 +48,11 @@ import { JobsFormHttpService } from '../../form-services/jobs-form-http.service'
     `
 })
 export class JobsFormActionsNewComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
+  @Input()
+  fg_fields: FormGroup;
 
-  @Output() closeForm = new EventEmitter<any>();
+  @Output()
+  closeForm = new EventEmitter<any>();
 
   // activates spinner
   savingChanges = false;

@@ -41,6 +41,8 @@ import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolb
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
 import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
 import { FieldsModule } from '../../apps-secondary/fields/fields.module';
+import { ClientsModule } from '../../apps-secondary/clients/clients.module';
+import { RigsModule } from '../../apps-secondary/rigs/rigs.module';
 
 // routes
 export const jobsRoutes: Routes = [
@@ -62,7 +64,9 @@ export const jobsRoutes: Routes = [
     // toolbar modules
     ToolbarButtonsModule,
     FilterControlsModule,
-    FieldsModule
+    FieldsModule,
+    ClientsModule,
+    RigsModule
   ],
   providers: [...fromServices.services],
   declarations: [
