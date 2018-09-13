@@ -15,7 +15,7 @@ import { FieldItem } from '../interface/fields.model';
 export class FieldsLookupService {
   constructor() {}
 
-  getFields(text: string) {
+  getFields(text: string | FieldItem) {
     // building url for http call
     let url = `${ApiPath}/web/lists/getByTitle('NgFields')/items`;
     url += `?$select=${this.getSelectFields()}`;

@@ -12,7 +12,8 @@
             </app-timeline-form-event-date>
 
             <!-- Event Type / 1 column -->
-            <app-timeline-form-event-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [eventTypes]="eventTypes$ | async">
+            <app-timeline-form-event-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode"
+                [eventTypes]="eventTypes$ | async">
             </app-timeline-form-event-type>
 
         </div>
@@ -20,20 +21,23 @@
         <!-- Title / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
 
-            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode" [min]="10" [max]="70">
             </app-form-control-title>
 
         </div>
 
         <!-- Summary / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
-            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode">
             </app-form-control-summary>
         </div>
 
         <!-- Hash Tags / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('HashTags').value || data.mode === 'new' || data.mode === 'edit')">
-            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-hash-tags class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode">
             </app-form-control-hash-tags>
         </div>
 
@@ -44,8 +48,8 @@
                 <i>(optional)</i>
             </span>
 
-            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [fg_image]="fg_image"
-                [mode]="data.mode" (imageChanged)="imageChanged($event)">
+            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields"
+                [fg_image]="fg_image" [mode]="data.mode" (imageChanged)="imageChanged($event)">
             </app-form-control-image-picker>
 
             <div fxFlex="19.5px"></div>
@@ -66,8 +70,9 @@
 
         <!-- Locations / 1 column -->
         <div class="group-of-2" fxLayout="row wrap">
-            <app-form-control-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
-                [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            <app-form-control-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields"
+                [mode]="data.mode" [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId"
+                [locations]="locations$ | async">
             </app-form-control-locations>
         </div>
 
@@ -87,7 +92,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-timeline-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
-        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)" (updateDataItemImage)="updateDataItemImage($event)">
+    <app-timeline-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [initialFields]="data.item" [mode]="data.mode"
+        (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)"
+        (updateDataItemImage)="updateDataItemImage($event)">
     </app-timeline-form-actions>
 </mat-dialog-actions>

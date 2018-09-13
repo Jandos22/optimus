@@ -56,6 +56,7 @@
 
     @media screen and (min-width: 520px) {
       width: calc(100% - 248px);
+      max-width: 296px;
       margin-left: 0px;
       margin-right: 4px;
     }
@@ -92,6 +93,7 @@
   // flexible
   .comments {
     // width: 100%;
+    width: calc(100% - 28px);
     line-height: 16px;
     margin-left: 24px;
     margin-right: 4px;

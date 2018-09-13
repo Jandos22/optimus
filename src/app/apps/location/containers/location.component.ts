@@ -30,7 +30,7 @@ import { Subject } from 'rxjs';
   selector: 'app-location',
   styleUrls: ['location.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="location-inner-container" fxLayout="row wrap">
 
@@ -98,8 +98,8 @@ export class LocationComponent implements OnInit, OnChanges {
   }
 
   getCurrentLocationSuccess(location: LocationEnt[]) {
-    console.log('getCurrentLocationSuccess');
-    console.log(location[0]);
+    // console.log('getCurrentLocationSuccess');
+    // console.log(location[0]);
 
     // check if location wants to show weather
     this.$showWeather.next(location[0].ShowWeather);
@@ -118,12 +118,12 @@ export class LocationComponent implements OnInit, OnChanges {
     const now = Date.now();
     const prev = location.WeatherCurrentTime;
     const howOld = differenceInHours(now, prev);
-    console.log(howOld);
+    // console.log(howOld);
 
     // if difference is less 1 hour
     // then use weather from location item
     if (howOld <= 1) {
-      console.log('less than 1 hour');
+      // console.log('less than 1 hour');
       const weather = JSON.parse(location.WeatherCurrent);
       this.passNewWeather(weather);
     } else if (howOld >= 1) {
@@ -147,8 +147,8 @@ export class LocationComponent implements OnInit, OnChanges {
   }
 
   fetchCurrentWeatherSuccess(weather: WeatherItem) {
-    console.log('successfully got new weather data via API');
-    console.log(weather);
+    // console.log('successfully got new weather data via API');
+    // console.log(weather);
 
     this.passNewWeather(weather);
     this.updateCurrentWeather(weather);
@@ -175,7 +175,7 @@ export class LocationComponent implements OnInit, OnChanges {
   }
 
   passNewWeather(weather: WeatherItem) {
-    console.log(weather);
+    // console.log(weather);
     const isNight = this.isNight(
       weather.dt,
       weather.sys.sunrise,

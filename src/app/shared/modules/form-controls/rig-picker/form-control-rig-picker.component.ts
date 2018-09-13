@@ -5,7 +5,8 @@ import {
   OnDestroy,
   ViewChild,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -16,21 +17,27 @@ import { take, switchMap, startWith, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 // services
-import { RigsLookupService } from './../../../services/rigs-lookup.service';
+import { RigsService } from '../../../../apps-secondary/rigs/services/rigs.service';
 
+// material
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
-  MatAutocomplete
+  MatAutocomplete,
+  MatDialog
 } from '@angular/material';
 
 // interfaces
 import { FormMode } from './../../../interface/form.model';
 import { RigItem } from '../../../interface/rigs.model';
 
+// components
+import { RigsCreateNewRigComponent } from '../../../../apps-secondary/rigs/create-new-rig/rigs-create-new-rig.component';
+
 @Component({
   selector: 'app-form-control-rig-picker',
   styleUrls: ['form-control-rig-picker.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg">
 
@@ -38,14 +45,22 @@ import { RigItem } from '../../../interface/rigs.model';
         #autoCompleteInput
         [placeholder]="'Rig'"
         [matAutocomplete]="auto"
-        formControlName="text">
+        formControlName="text"
+        spellcheck="false">
 
       <mat-autocomplete #auto="matAutocomplete"
         [displayWith]="displayFn.bind(this)"
         (optionSelected)="onRigSelect($event)">
-
+        
         <mat-option *ngFor="let rig of rigs" [value]="rig">
           {{ rig.Title }}
+        </mat-option>
+
+        <mat-option *ngIf="(mode === 'new' || mode === 'edit')"
+          [disabled]="!fg.controls['text'].value || alreadyExists">
+          <div class="create-new-option"
+            [ngClass]="{ disabled: (!fg.controls['text'].value || alreadyExists) }"
+            (click)="openDialog(this.fg.controls['text'].value)">+ create new rig</div>
         </mat-option>
 
       </mat-autocomplete>
@@ -56,14 +71,20 @@ import { RigItem } from '../../../interface/rigs.model';
 })
 export class FormControlRigPickerComponent
   implements OnInit, OnDestroy, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() initial: RigItem;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  initial: RigItem;
+
+  @Input()
+  mode: FormMode;
 
   fg: FormGroup;
   rigs: RigItem[];
 
-  @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
+  @ViewChild(MatAutocomplete)
+  matAutocomplete: MatAutocomplete;
 
   @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
@@ -71,7 +92,11 @@ export class FormControlRigPickerComponent
   $search: Subscription;
   searching: boolean;
 
-  constructor(private srv: RigsLookupService, private fb: FormBuilder) {}
+  constructor(
+    private srv: RigsService,
+    private fb: FormBuilder,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     console.log('ngOnInit: FormControlRigPickerComponent');
@@ -130,9 +155,15 @@ export class FormControlRigPickerComponent
       .pipe(
         startWith(''),
         debounceTime(600),
-        switchMap((text: string) => {
+        switchMap((text: string | RigItem) => {
           console.log(text);
-          return this.srv.getRigs(text);
+          if (typeof text === 'string') {
+            return this.srv.getRigs(text);
+          } else if (typeof text === 'object') {
+            return this.srv.getRigs(text.Title);
+          } else if (typeof text === 'undefined') {
+            return this.srv.getRigs('');
+          }
         })
       )
       .subscribe(
@@ -155,7 +186,20 @@ export class FormControlRigPickerComponent
 
   onRigSelect(event: MatAutocompleteSelectedEvent) {
     const rig: RigItem = event.option.value;
-    this.fg_fields.controls['RigId'].patchValue(rig.Id);
+
+    // user selected rig from list
+    if (rig) {
+      // update parent fg_fields
+      this.fg_fields.controls['RigId'].patchValue(rig.Id);
+    }
+  }
+
+  unselectRigsId() {
+    if (!this.initial) {
+      this.fg_fields.controls['RigId'].patchValue('');
+    } else if (this.initial) {
+      this.fg_fields.controls['RigId'].patchValue(this.initial.Id);
+    }
   }
 
   displayFn(rig?: RigItem) {
@@ -184,10 +228,58 @@ export class FormControlRigPickerComponent
   get errorMessage() {
     const required = this.fg_fields.controls['RigId'].hasError('required');
 
-    return this.fg_fields.controls['RigId'].touched
-      ? required
-        ? '... is required'
-        : ''
-      : '';
+    if (required) {
+      this.fg.controls['text'].setErrors({ required: true });
+    } else {
+      this.fg.controls['text'].setErrors({});
+    }
+
+    return required ? 'field must be selected' : '';
+  }
+
+  openDialog(rig: string) {
+    // console.log(rig);
+
+    // check if rig string is not empty
+    if (typeof rig === 'string' && rig.length && !this.alreadyExists) {
+      const dialogRef = this.dialog.open(RigsCreateNewRigComponent, {
+        data: {
+          rig: rig
+        }
+      });
+
+      dialogRef
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((newRig: RigItem | undefined) => {
+          // console.log(newRig);
+          if (newRig) {
+            this.fg.controls['text'].patchValue(newRig.Title);
+          }
+        });
+    }
+  }
+
+  get alreadyExists() {
+    const text: string | RigItem = this.fg.controls['text'].value;
+    // if text is empty then just return false
+    if (!text) {
+      return false;
+
+      // if rigs array and text are not empty
+      // then run comparison functions
+    } else if (this.rigs.length > 0 && text) {
+      // if text is string
+      if (typeof text === 'string') {
+        const found = _.find(this.rigs, (rig: RigItem) => rig.Title === text);
+        return !found ? false : true;
+      } else if (typeof text === 'object') {
+        const found = _.find(
+          this.rigs,
+          (rig: RigItem) => rig.Title === text.Title
+        );
+        return !found ? false : true;
+      }
+    }
   }
 }

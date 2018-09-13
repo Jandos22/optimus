@@ -155,7 +155,23 @@ app-layout {
   color: rgba(0, 0, 0, 0.75);
   font-size: 1rem;
   overflow: hidden;
-  // height: 49px;
+
+  .common-footer-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+
+    &:hover {
+      color: rgba(0, 0, 0, 0.875);
+      background: $my-blue-100;
+    }
+
+    &.warn {
+      color: $my-warn;
+    }
+  }
 
   .common-footer-container {
     width: 100%;
@@ -208,12 +224,6 @@ app-layout {
   &.warn {
     color: $my-warn;
   }
-
-  // &.my-footer {
-  //   &:hover {
-  //     // background: $my-blue-100;
-  //   }
-  // }
 }
 
 .common-toolbar-input-container {
@@ -326,6 +336,10 @@ mat-progress-bar.common-searching-indicator {
   left: 0;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+
+  .mat-progress-bar-buffer {
+    background-color: #e3f2fd !important;
+  }
 }
 
 .flexContainer {

@@ -2,7 +2,10 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewEncapsulation
@@ -27,6 +30,7 @@ import { OrderItem } from './../../../../../shared/interface/orders.model';
   selector: 'app-dashboard-orders-expired',
   styleUrls: ['dashboard-orders-expired.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [OrdersService],
   template: `
     <div class="location-dashboard-message expired"
@@ -51,6 +55,9 @@ export class DashboardOrdersExpiredComponent implements OnInit, OnChanges {
 
   @Input()
   doRefresh: boolean;
+
+  @Output()
+  onHaveNotifications = new EventEmitter<any>();
 
   expired: number;
   expiredError: boolean;
@@ -77,6 +84,7 @@ export class DashboardOrdersExpiredComponent implements OnInit, OnChanges {
   refresh() {
     // clear numbers
     this.expired = 0;
+    this.onHaveChange(false);
     // fetch new numbers
     this.getExpiredOrders();
   }
@@ -113,6 +121,10 @@ export class DashboardOrdersExpiredComponent implements OnInit, OnChanges {
   getExpiredOrdersSuccess(orders: OrderItem[]) {
     this.expired = orders.length;
 
+    if (this.expired > 0) {
+      this.onHaveChange(true);
+    }
+
     this.expiredRefreshing = false;
     this.expiredError = false;
 
@@ -126,5 +138,13 @@ export class DashboardOrdersExpiredComponent implements OnInit, OnChanges {
 
     // trigger change detection manually to update view
     this.changeDetectorRef.detectChanges();
+  }
+
+  onHaveChange(value: boolean) {
+    this.onHaveNotifications.emit({
+      app: 'exemptions',
+      what: 'Expired',
+      value: value
+    });
   }
 }

@@ -21,14 +21,17 @@ import { FormMode } from './../../../../../../shared/interface/form.model';
         [matDatepicker]="picker"
         formControlName="ProjectDate">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi #picker [disabled]="mode === 'view'"></mat-datepicker>
+      <mat-datepicker #picker [disabled]="mode === 'view'"></mat-datepicker>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class KaizenFormProjectDateComponent {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  mode: FormMode;
 
   constructor() {}
 

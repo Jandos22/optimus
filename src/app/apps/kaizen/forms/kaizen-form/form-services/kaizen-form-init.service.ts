@@ -33,7 +33,7 @@ export class KaizenFormInitService {
         this.getSimpleFormValue(mo, it, 'Title'),
         [
           Validators.required,
-          Validators.minLength(30),
+          Validators.minLength(10),
           Validators.maxLength(70)
         ]
       ],
@@ -140,7 +140,7 @@ export class KaizenFormInitService {
   getProjectDate(mode: FormMode, item: KaizenProjectItem) {
     switch (mode) {
       case 'new':
-        return { value: new Date(), disabled: true };
+        return { value: new Date(), disabled: false };
       case 'view':
         return { value: new Date(item.ProjectDate), disabled: true };
       case 'edit':

@@ -2,7 +2,10 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewEncapsulation
@@ -27,6 +30,7 @@ import { ExemptionItem } from './../../../../../shared/interface/exemptions.mode
 @Component({
   selector: 'app-dashboard-exemptions-pending',
   styleUrls: ['dashboard-exemptions-pending.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="location-dashboard-message pending"
       *ngIf="pending > 0"
@@ -50,6 +54,9 @@ export class DashboardExemptionsPendingComponent implements OnInit, OnChanges {
 
   @Input()
   doRefresh: boolean;
+
+  @Output()
+  onHaveNotifications = new EventEmitter<any>();
 
   pending: number;
   pendingError: boolean;
@@ -76,6 +83,7 @@ export class DashboardExemptionsPendingComponent implements OnInit, OnChanges {
   refresh() {
     // clear numbers
     this.pending = 0;
+    this.onHaveChange(false);
     // fetch new numbers
     this.getPendingExemptions();
   }
@@ -104,6 +112,11 @@ export class DashboardExemptionsPendingComponent implements OnInit, OnChanges {
 
   getPendingExemptionsSuccess(exemptions: ExemptionItem[]) {
     this.pending = exemptions.length;
+
+    if (this.pending > 0) {
+      this.onHaveChange(true);
+    }
+
     this.pendingRefreshing = false;
     this.pendingError = false;
 
@@ -117,5 +130,13 @@ export class DashboardExemptionsPendingComponent implements OnInit, OnChanges {
 
     // trigger change detection manually to update view
     this.changeDetectorRef.detectChanges();
+  }
+
+  onHaveChange(value: boolean) {
+    this.onHaveNotifications.emit({
+      app: 'exemptions',
+      what: 'Expired',
+      value: value
+    });
   }
 }

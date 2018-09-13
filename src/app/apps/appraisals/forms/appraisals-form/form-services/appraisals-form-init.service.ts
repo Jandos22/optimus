@@ -58,7 +58,7 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'SafetyDetails', false),
         [
           Validators.required,
-          Validators.minLength(22),
+          // Validators.minLength(22),
           Validators.maxLength(255)
         ]
       ],
@@ -70,7 +70,7 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'ProactivityDetails', true),
         [
           Validators.required,
-          Validators.minLength(22),
+          // Validators.minLength(22),
           Validators.maxLength(255)
         ]
       ],
@@ -79,7 +79,7 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'QualityDetails'),
         [
           Validators.required,
-          Validators.minLength(22),
+          // Validators.minLength(22),
           Validators.maxLength(255)
         ]
       ],
@@ -89,7 +89,7 @@ export class AppraisalsFormInitService {
       ],
       WinchDrivingDetails: [
         this.getSimpleValue(mo, it, 'WinchDrivingDetails'),
-        Validators.maxLength(255)
+        [Validators.required, Validators.maxLength(255)]
       ],
       DidRopeSocket: this.getSimpleBooleen(mo, it, 'DidRopeSocket'),
       DidRopeSocketH2S: this.getSimpleBooleen(mo, it, 'DidRopeSocketH2S'),

@@ -22,14 +22,20 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
         cdkAutosizeMaxRows="1"
         cdkAutosizeMaxRows="2">
       </textarea>
-      <mat-hint align="end" *ngIf="mode !== 'view'">{{fg_fields.get('Title').value.length}} / 70</mat-hint>
+      <mat-hint align="end" *ngIf="mode !== 'view'">{{fg_fields.get('Title').value.length}} / {{ max }}</mat-hint>
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class FormControlTitleComponent {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
+  @Input()
+  min: number;
+  @Input()
+  max: number;
 
   constructor() {}
 
@@ -48,9 +54,9 @@ export class FormControlTitleComponent {
       ? required
         ? '... is required'
         : min
-          ? 'minimum 30 characters required'
+          ? `minimum ${this.min} characters required`
           : max
-            ? 'maximum 70 characters allowed'
+            ? `maximum ${this.max} characters allowed`
             : ''
       : '';
   }

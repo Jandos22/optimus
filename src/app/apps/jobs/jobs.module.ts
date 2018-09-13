@@ -40,6 +40,9 @@ import * as fromPipes from '../../shared/pipes';
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
 import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
+import { FieldsModule } from '../../apps-secondary/fields/fields.module';
+import { ClientsModule } from '../../apps-secondary/clients/clients.module';
+import { RigsModule } from '../../apps-secondary/rigs/rigs.module';
 
 // routes
 export const jobsRoutes: Routes = [
@@ -60,7 +63,10 @@ export const jobsRoutes: Routes = [
     FormControlsModule,
     // toolbar modules
     ToolbarButtonsModule,
-    FilterControlsModule
+    FilterControlsModule,
+    FieldsModule,
+    ClientsModule,
+    RigsModule
   ],
   providers: [...fromServices.services],
   declarations: [

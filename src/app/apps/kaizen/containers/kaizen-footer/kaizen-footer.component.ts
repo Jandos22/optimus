@@ -22,7 +22,7 @@ import { PaginationState } from '../../store/reducers/pagination.reducer';
     <div class="common-footer-container"
         fxLayout="row" fxLayoutAlign="space-between center">
 
-        <div class='common-button'>
+        <div class='common-footer-button'>
             <button mat-icon-button matTooltip='Previous Page'
                 *ngIf="pagination.links[pagination.currentIndex - 1]"
                 (click)="this.onBack.emit()">
@@ -34,7 +34,7 @@ import { PaginationState } from '../../store/reducers/pagination.reducer';
             <span *ngIf="!searching">{{ renderedFromTo }}{{ renderedTotal }}</span>
         </div>
 
-        <div class='common-button'>
+        <div class='common-footer-button'>
             <button mat-icon-button matTooltip='Next Page'
                 *ngIf="pagination.links[pagination.currentIndex + 1]"
                 (click)="this.onNext.emit()">
@@ -50,12 +50,17 @@ export class KaizenFooterComponent implements OnChanges {
   back = false;
   next = false;
 
-  @Input() pagination: PaginationState;
-  @Input() top: number;
-  @Input() searching: boolean;
+  @Input()
+  pagination: PaginationState;
+  @Input()
+  top: number;
+  @Input()
+  searching: boolean;
 
-  @Output() onNext = new EventEmitter<any>();
-  @Output() onBack = new EventEmitter<any>();
+  @Output()
+  onNext = new EventEmitter<any>();
+  @Output()
+  onBack = new EventEmitter<any>();
 
   renderedFromTo = '';
   renderedTotal = '';

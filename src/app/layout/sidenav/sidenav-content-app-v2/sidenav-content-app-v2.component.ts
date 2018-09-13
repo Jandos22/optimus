@@ -20,6 +20,7 @@ import { LocationEnt } from './../../../shared/interface/locations.model';
     <a fxFlex
       class="sidenav-app-link"
       [routerLink]="app.RouterLink"
+      routerLinkActive="active"
       [ngClass]="{ 'hidden': !app.Visible }"
       (click)="onSidenavClick.emit()">
       {{ app.Title }}

@@ -34,8 +34,20 @@ export interface JobItem extends SpListItem {
   SummarySections?: number;
   JSStitle1?: string;
   JSStitle2?: string;
+  JSStitle3?: string;
+  JSStitle4?: string;
+  JSStitle5?: string;
+  JSStitle6?: string;
+  JSStitle7?: string;
+  JSStitle8?: string;
   JSSbody1?: string;
   JSSbody2?: string;
+  JSSbody3?: string;
+  JSSbody4?: string;
+  JSSbody5?: string;
+  JSSbody6?: string;
+  JSSbody7?: string;
+  JSSbody8?: string;
   Location?: LocationEnt; // lookup single
   LocationId?: number; // lookup single
   EngineersId?: {

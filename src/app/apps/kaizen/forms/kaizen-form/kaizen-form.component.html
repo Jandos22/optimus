@@ -12,7 +12,8 @@
             </app-kaizen-form-project-date>
 
             <!-- Project Type / 1 column -->
-            <app-kaizen-form-project-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [projectTypes]="projectTypes$ | async">
+            <app-kaizen-form-project-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode"
+                [projectTypes]="projectTypes$ | async">
             </app-kaizen-form-project-type>
 
         </div>
@@ -20,7 +21,8 @@
         <div class="group-of-2" fxLayout="row wrap">
 
             <!-- Impact Type / 1 column -->
-            <app-kaizen-form-impact-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode" [impactTypes]="impactTypes$ | async">
+            <app-kaizen-form-impact-type class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode"
+                [impactTypes]="impactTypes$ | async">
             </app-kaizen-form-impact-type>
 
             <!-- Value Creation / 1 column-->
@@ -32,14 +34,16 @@
         <!-- Title / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
 
-            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-title class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode" [min]="10" [max]="70">
             </app-form-control-title>
 
         </div>
 
         <!-- Summary / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
-            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
+            <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
+                [mode]="data.mode">
             </app-form-control-summary>
         </div>
 
@@ -50,8 +54,8 @@
                 <i>(optional)</i>
             </span>
 
-            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [fg_image]="fg_image"
-                [mode]="data.mode" (imageChanged)="imageChanged($event)">
+            <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields"
+                [fg_image]="fg_image" [mode]="data.mode" (imageChanged)="imageChanged($event)">
             </app-form-control-image-picker>
 
             <div fxFlex="19.5px"></div>
@@ -80,8 +84,9 @@
 
         <!-- Locations / 1 column -->
         <div class="group-of-2" fxLayout="row wrap">
-            <app-form-control-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
-                [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+            <app-form-control-locations class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields"
+                [mode]="data.mode" [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId"
+                [locations]="locations$ | async">
             </app-form-control-locations>
         </div>
 
@@ -90,8 +95,9 @@
             <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                 Done By
             </span>
-            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields" [mode]="data.mode"
-                [fieldName]="'DoneById'" [displayName]="'Done By'" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="4" (onSelectUser)="onSelectUser($event)">
+            <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields"
+                [mode]="data.mode" [fieldName]="'DoneById'" [displayName]="'Done By'" [selfUser]="selfUser$ | async"
+                [allowNumberOfUsers]="4" (onSelectUser)="onSelectUser($event)">
             </app-form-control-user-selection>
         </div>
 
@@ -100,7 +106,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-kaizen-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)"
-        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)" (updateDataItemImage)="updateDataItemImage($event)">
+    <app-kaizen-form-actions [fg_fields]="fg_fields" [fg_image]="fg_image" [initialFields]="data.item" [mode]="data.mode"
+        (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)"
+        (updateDataItemImage)="updateDataItemImage($event)">
     </app-kaizen-form-actions>
 </mat-dialog-actions>

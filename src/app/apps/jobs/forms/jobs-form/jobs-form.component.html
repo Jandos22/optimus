@@ -1,7 +1,7 @@
 <div class="form-title-container" fxLayout="row nowrap" fxLayoutAlign="start start">
     <div fxFlex class="form-title">Jobs</div>
-    <app-form-control-location class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields" [mode]="data.mode"
-        [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
+    <app-form-control-location fxFlex="88px" class="cmn-form-component" fxLayout="row" [formGroup]="fg_fields" [fg_fields]="fg_fields"
+        [mode]="data.mode" [accessLevel]="accessLevel$ | async" [locationAssignedId]="locationAssignedId" [locations]="locations$ | async">
     </app-form-control-location>
 </div>
 

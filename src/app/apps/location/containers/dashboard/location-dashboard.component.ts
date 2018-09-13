@@ -3,6 +3,7 @@ import {
   Input,
   OnInit,
   ViewEncapsulation,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewChild
@@ -18,6 +19,7 @@ import { DashboardOrdersExpiredComponent } from '..';
   selector: 'app-location-dashboard',
   styleUrls: ['location-dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="dashboard-header" fxLayout="row nowrap" fxLayoutAlign="space-between start">
         <div class="title">notifications</div>
@@ -25,7 +27,7 @@ import { DashboardOrdersExpiredComponent } from '..';
     </div>
 
     <div class="dashboard-all-good"
-        *ngIf="!ordersHaveExpired && !harcsHaveExpired && !harcsHavePending && !exemptionsHaveExpired && !exemptionsHavePending"
+        *ngIf="AllGood"
         fxLayout="row nowrap">
 
         <div fxFlex="16px" class="icon">
@@ -121,5 +123,15 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
 
   onHaveNotifications(event: { app: string; what: string; value: boolean }) {
     this[`${event.app}Have${event.what}`] = event.value;
+  }
+
+  get AllGood() {
+    return !this.ordersHaveExpired &&
+      !this.harcsHaveExpired &&
+      !this.harcsHavePending &&
+      !this.exemptionsHaveExpired &&
+      !this.exemptionsHavePending
+      ? true
+      : false;
   }
 }

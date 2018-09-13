@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   OnChanges,
   SimpleChanges,
   ViewEncapsulation
@@ -29,6 +30,7 @@ import { ExemptionItem } from './../../../../../shared/interface/exemptions.mode
 @Component({
   selector: 'app-dashboard-exemptions-expired',
   styleUrls: ['dashboard-exemptions-expired.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="location-dashboard-message expired"
       *ngIf="expired > 0"

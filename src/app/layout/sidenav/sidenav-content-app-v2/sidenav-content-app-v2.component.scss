@@ -21,4 +21,9 @@ a.sidenav-app-link {
     border: 1px solid #ddd;
     color: rgba(0, 0, 0, 0.875);
   }
+
+  &.active {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.875);
+  }
 }
