@@ -39,7 +39,7 @@ export class ExemptionsFormInitService {
         [
           Validators.required,
           Validators.minLength(60),
-          Validators.maxLength(140)
+          Validators.maxLength(255)
         ]
       ],
       HashTags: [

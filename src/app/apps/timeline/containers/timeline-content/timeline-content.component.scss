@@ -1,0 +1,42 @@
+.list {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding-left: 16px;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  @media screen and (min-width: 600px) {
+    min-width: 600px;
+    max-width: 600px;
+  }
+
+  .item {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+// // version 1
+// app-timeline-event {
+//   width: 100%;
+
+//   @media screen and (min-width: 600px) {
+//     width: auto;
+//   }
+
+//   &.event-last {
+//     margin-right: 16px;
+//   }
+// }
+
+// div.timeline__events__list--container {
+//   margin: 0 auto;
+//   padding-left: 16px;
+//   -ms-overflow-style: -ms-autohiding-scrollbar;
+//   @media screen and (min-width: 600px) {
+//     min-width: 600px;
+//     max-width: 600px;
+//   }
+// }

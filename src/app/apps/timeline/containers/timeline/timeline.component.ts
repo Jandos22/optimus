@@ -43,10 +43,10 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       (toggleFilters)="toggleFilters()">
     </app-timeline-header>
 
-    <app-timeline-events-list
+    <app-timeline-content
       fxFlex class="common-content"
       [events]="data" (openForm)="openForm('view', $event)">
-    </app-timeline-events-list>
+    </app-timeline-content>
 
     <app-timeline-footer fxFlex="49px" class="common-footer"
       [pagination]="pagination" [top]="params.top" [searching]="searching"
@@ -80,7 +80,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   pagination: PaginationState;
 
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened') showFilters = false;
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,

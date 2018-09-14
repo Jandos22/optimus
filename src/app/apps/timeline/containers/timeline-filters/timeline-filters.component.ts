@@ -48,7 +48,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     `
 })
 export class TimelineFiltersComponent implements OnInit {
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_filters: FormGroup;
   $fg_filters: Subscription;
@@ -106,7 +107,8 @@ export class TimelineFiltersComponent implements OnInit {
     this.fg_filters = this.fb.group({
       locations: '',
       top: 100,
-      eventTypes: '',
+      // eventTypes: '',
+      eventType: '',
       eventReporters: ''
     });
   }
@@ -127,7 +129,8 @@ export class TimelineFiltersComponent implements OnInit {
 
   onResetFilters(event) {
     this.doReset = this.doReset ? false : true;
-    this.fg_filters.controls['eventTypes'].patchValue([]);
+    // this.fg_filters.controls['eventTypes'].patchValue([]);
+    this.fg_filters.controls['eventType'].patchValue('');
     this.fg_filters.controls['eventReporters'].patchValue([]);
   }
 }

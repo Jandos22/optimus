@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { Observable, of, from } from 'rxjs';
 import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
@@ -41,26 +43,50 @@ export class TimelineService {
     let url = `${ApiPath}/web/lists/getbytitle('NgTimeline')/items?`;
 
     // parameters
-    const text = params.text ? params.text.replace('#', '%23') : null;
+
+    // # needs to be replaced, otherwise http request to sharepoint will through error
+    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
+
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
+
     // eventTypes must be ids array
-    const eventTypes = params.eventTypes ? params.eventTypes : [];
+    // const eventTypes = params.eventTypes ? params.eventTypes : [];
+
+    // eventType is single string
+    const eventType = params.eventType ? params.eventType : null;
+
     // eventReporters must be ids array
     const eventReporters = params.eventReporters ? params.eventReporters : [];
+
     // if top is missing then default is 100
     let top = params.top ? params.top : 100;
+
+    // count filters
+    let countFilters = 0;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter is added if one of these is true
-    if (text || locations.length) {
+    if (
+      text ||
+      locations.length ||
+      // eventTypes.length ||
+      eventType ||
+      eventReporters.length
+    ) {
       url += `&$filter=`;
     }
 
+    // -- 1 --
+    // Text filter comes from input in header
+    // must come first in url
+    // don't put any filters before Text filter
     if (text) {
+      countFilters++;
+
       url += `(`;
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',Summary))`;
@@ -68,22 +94,48 @@ export class TimelineService {
       url += `)`;
     }
 
+    // -- 2 --
+    // Locations filter
     if (locations.length) {
-      if (text) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
+
+      countFilters++;
+      // find items with given locations
       url += `${this.getFilterLocations(locations)}`;
     }
 
-    if (eventTypes.length) {
-      if (text || locations.length) {
+    // -- 3a --
+    // EventTypes filter
+    // if (eventTypes.length) {
+    //   // check if "AND" is needed
+    //   if (countFilters > 0) {
+    //     url += 'and';
+    //   }
+
+    //   countFilters++;
+    //   url += `${this.getFilterEventTypes(eventTypes)}`;
+    // }
+
+    // -- 3b --
+    // EventTypes filter
+    if (eventType) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
-      url += `${this.getFilterEventTypes(eventTypes)}`;
+
+      countFilters++;
+      url += `(EventType2 eq '${eventType}')`;
     }
 
+    // -- 4 --
+    // EventReporters filter
     if (eventReporters.length) {
-      if (text || locations.length || eventTypes.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
       url += `${this.getFilterEventReporters(eventReporters)}`;
@@ -111,9 +163,9 @@ export class TimelineService {
       'EventDate',
       'Title',
       'Summary',
-      'EventTypeId',
-      'EventType/Id',
-      'EventType/Title',
+      'EventType2',
+      // 'EventType/Id',
+      // 'EventType/Title',
       'EventReportersId',
       'EventReporters/ID',
       'EventReporters/Alias',
@@ -133,7 +185,7 @@ export class TimelineService {
   getExpandFields() {
     const $expand = [
       'AttachmentFiles',
-      'EventType',
+      // 'EventType',
       'EventReporters',
       'Locations'
     ];
@@ -231,5 +283,31 @@ export class TimelineService {
 
       return filter;
     }
+  }
+
+  deleteItemById(id: number) {
+    const fdv$ = this.sp.getFDV();
+
+    const url = `${ApiPath}/web/lists/getByTitle('NgTimeline')/items(${id})`;
+
+    return fdv$.pipe(
+      retry(3),
+      switchMap(fdv => {
+        console.log(fdv);
+        console.log('deleting: ' + id);
+
+        const delete$: Promise<any> = sprLib.rest({
+          url: url,
+          type: 'POST',
+          headers: {
+            Accept: 'application/json;odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*',
+            'X-RequestDigest': fdv.requestDigest
+          }
+        });
+        return from(delete$);
+      })
+    );
   }
 }

@@ -9,7 +9,8 @@ export enum EventsActionTypes {
   COUNT_EVENTS_TOTAL = '[Timeline Events] Count Total (since next url is present)',
   ADD_ONE_EVENT = '[Timeline Events] Add One Event',
   INSERT_ONE_EVENT = '[Timeline Events] Insert One Event (in beginning)',
-  UPDATE_ONE_EVENT = '[Timeline Events] Update One Event'
+  UPDATE_ONE_EVENT = '[Timeline Events] Update One Event',
+  DELETE_ONE_EVENT = '[Timeline Events] Delete One'
 }
 
 export class SearchEventsStart implements Action {
@@ -45,6 +46,11 @@ export class UpdateOneEvent implements Action {
   constructor(public id: number, public changes: TimelineEventItem) {}
 }
 
+export class DeleteOne implements Action {
+  readonly type = EventsActionTypes.DELETE_ONE_EVENT;
+  constructor(public id: number) {}
+}
+
 export type EventsActionsUnion =
   | SearchEventsStart
   | SearchEventsSuccess
@@ -52,4 +58,5 @@ export type EventsActionsUnion =
   | CountEventsTotal
   | AddOneEvent
   | InsertOneEvent
-  | UpdateOneEvent;
+  | UpdateOneEvent
+  | DeleteOne;

@@ -25,8 +25,10 @@ import { FormMode } from './../../../../../../shared/interface/form.model';
 export class HarcsFormActionsViewComponent {
   @Output()
   switchFormMode = new EventEmitter<FormMode>();
+
   @Output()
   closeForm = new EventEmitter<any>();
+
   @Output()
   deleteItem = new EventEmitter<any>();
 

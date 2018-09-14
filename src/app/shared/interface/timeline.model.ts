@@ -6,27 +6,43 @@ import { PeopleItem } from './people.model';
 export interface TimelineEventItem extends SpListItem {
   id?: number;
   EventDate?: Date;
+  EventType2?: string;
   Title?: string;
   Summary?: string;
   RichText?: any;
+  // lookup multiple
+  EventReportersId?: {
+    results?: number[];
+  };
   EventReporters?: TimelineEventReporters;
-  EventReportersId?: TimelineEventReportersId;
+  // lookup single
   EventType?: TimelineEventType;
   EventTypeId?: number[];
   Locations?: {
     results?: LocationEnt[];
   };
-  LocationsId?: TimelineLocationsId;
-  HashTags?: string;
+  LocationsId?: {
+    results?: number[];
+  };
+  // HashTags?: string;
   // pseudo field
   New?: boolean;
+  // v2 new properties
+  IssueStatus?: string; // 'open' or 'closed'
+  FollowUp?: string;
+  FollowUpBy?: {
+    results: number[];
+  };
+  QuestNumber?: string;
+  QuestQPID?: string;
 }
 
 export interface TimelineSearchParams {
   text: string;
   locations: number[];
   top: number;
-  eventTypes?: number[];
+  // eventTypes?: number[];
+  eventType?: string;
   eventReporters?: number[];
 }
 

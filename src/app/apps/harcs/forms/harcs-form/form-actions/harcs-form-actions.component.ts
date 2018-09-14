@@ -20,6 +20,8 @@ import { FormMode } from '../../../../../shared/interface/form.model';
 // interfaces
 import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
 import { HarcItem } from '../../../../../shared/interface/harcs.model';
+
+// entry components
 import {
   DeleteListItemComponent,
   DeleteListItemRetryComponent
@@ -32,7 +34,8 @@ import {
     <app-harcs-form-actions-view
       *ngIf="mode === 'view'"
       class="form-actions-view"
-      fxLayout="row nowrap" fxLayoutAlign="end center"
+      fxLayout="row nowrap"
+      fxLayoutAlign="end center"
       (closeForm)="closeForm.emit()"
       (deleteItem)="onDelete()"
       (switchFormMode)="switchFormMode.emit($event)">
@@ -56,13 +59,16 @@ import {
 export class HarcsFormActionsComponent {
   @Input()
   mode: FormMode;
+
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   initialFields: HarcItem;
 
   @Output()
   switchFormMode = new EventEmitter<any>();
+
   @Output()
   closeForm = new EventEmitter<any>();
 

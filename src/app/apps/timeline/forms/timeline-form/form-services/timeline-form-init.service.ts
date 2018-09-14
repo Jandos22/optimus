@@ -36,16 +36,17 @@ export class TimelineFormInitService {
         [
           Validators.required,
           Validators.minLength(60),
-          Validators.maxLength(140)
+          Validators.maxLength(255)
         ]
       ],
-      HashTags: [
-        this.getSimpleFormValue(mo, it, 'HashTags'),
-        [Validators.maxLength(140)]
-      ],
+      // HashTags: [
+      //   this.getSimpleFormValue(mo, it, 'HashTags'),
+      //   [Validators.maxLength(140)]
+      // ],
       RichText: [this.getRichText(mo, it)],
-      EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
+      // EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
       EventDate: [this.getEventDate(mo, it), Validators.required],
+      EventType2: [this.getEventType(mo, it), Validators.required],
       LocationsId: this.fb.group({
         results: [this.getLocationsId(mo, it, lo), Validators.required]
       }),
@@ -106,6 +107,17 @@ export class TimelineFormInitService {
         return item.EventTypeId;
       case 'edit':
         return item.EventTypeId;
+    }
+  }
+
+  getEventType(mode: FormMode, item: TimelineEventItem) {
+    switch (mode) {
+      case 'new':
+        return 'Note'; // Default Event Type
+      case 'view':
+        return item.EventType2;
+      case 'edit':
+        return item.EventType2;
     }
   }
 

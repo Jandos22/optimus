@@ -60,14 +60,24 @@ import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-
     `
 })
 export class TimelineFormActionsEditComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() fg_image: FormGroup;
-  @Input() initialFields: TimelineEventItem;
+  @Input()
+  fg_fields: FormGroup;
 
-  @Output() closeForm = new EventEmitter<any>();
-  @Output() switchFormMode = new EventEmitter<any>();
+  @Input()
+  fg_image: FormGroup;
 
-  @Output() updateDataItem = new EventEmitter<TimelineEventItem>();
+  @Input()
+  initialFields: TimelineEventItem;
+
+  @Output()
+  closeForm = new EventEmitter<any>();
+
+  @Output()
+  switchFormMode = new EventEmitter<any>();
+
+  @Output()
+  updateDataItem = new EventEmitter<TimelineEventItem>();
+
   @Output()
   updateDataItemImage = new EventEmitter<SpListItemAttachmentFile[]>();
 

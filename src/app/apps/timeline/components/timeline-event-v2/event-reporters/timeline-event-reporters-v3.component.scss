@@ -1,0 +1,31 @@
+.wrapper {
+  width: 36px;
+  min-height: 36px;
+  margin: 8px 8px 0 0;
+  position: relative;
+
+  .reporter {
+    // position: absolute;
+    height: 36px;
+    width: 36px;
+    margin-bottom: 4px;
+    // left: 0;
+
+    &:hover {
+      z-index: 10 !important;
+    }
+  }
+
+  .dummy {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ccc;
+  }
+
+  .photo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+}

@@ -24,9 +24,10 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
             (updateLocationsofinterest)="updateLocationsofinterest.emit($event)">
         </app-filters-locations>
 
-        <app-timeline-filters-event-types
+        <app-timeline-filters-event-types-v2
+            fxLayout="row nowrap"
             [fg_filters]="fg_filters">
-        </app-timeline-filters-event-types>
+        </app-timeline-filters-event-types-v2>
 
         <app-form-control-people-selector class="cmn-form-component people-filter"
             fxLayout="row wrap" [fg_fields]="fg_filters" [mode]="'new'"
@@ -38,13 +39,23 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
     `
 })
 export class TimelineFiltersContentComponent {
-  @Input() fg_filters: FormGroup;
-  @Input() locofinterest: number[];
-  @Input() selfUser: PeopleItem;
-  @Input() doReset: boolean;
+  @Input()
+  fg_filters: FormGroup;
 
-  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
-  @Output() onSelectEventReporters = new EventEmitter<number[]>();
+  @Input()
+  locofinterest: number[];
+
+  @Input()
+  selfUser: PeopleItem;
+
+  @Input()
+  doReset: boolean;
+
+  @Output()
+  updateLocationsofinterest = new EventEmitter<number[]>();
+
+  @Output()
+  onSelectEventReporters = new EventEmitter<number[]>();
 
   constructor() {}
 }

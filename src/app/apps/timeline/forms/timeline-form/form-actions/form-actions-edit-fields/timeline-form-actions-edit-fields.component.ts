@@ -25,10 +25,13 @@ import { TimelineEventItem } from '../../../../../../shared/interface/timeline.m
 })
 export class TimelineFormActionsEditFieldsComponent
   implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: TimelineEventItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: TimelineEventItem;
 
-  @Output() whenUnsavedFieldsChange = new EventEmitter<Object>();
+  @Output()
+  whenUnsavedFieldsChange = new EventEmitter<Object>();
 
   // combination of individual form control changes
   fc_changes$: Observable<Object>;
@@ -44,15 +47,18 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('Summary')
         .valueChanges.pipe(map(Summary => ({ Summary }))),
-      this.fg_fields
-        .get('HashTags')
-        .valueChanges.pipe(map(HashTags => ({ HashTags }))),
+      // this.fg_fields
+      // .get('HashTags')
+      // .valueChanges.pipe(map(HashTags => ({ HashTags }))),
       this.fg_fields
         .get('RichText')
         .valueChanges.pipe(map(RichText => ({ RichText }))),
+      // this.fg_fields
+      //   .get('EventTypeId')
+      //   .valueChanges.pipe(map(EventTypeId => ({ EventTypeId }))),
       this.fg_fields
-        .get('EventTypeId')
-        .valueChanges.pipe(map(EventTypeId => ({ EventTypeId }))),
+        .get('EventType2')
+        .valueChanges.pipe(map(EventType2 => ({ EventType2 }))),
       this.fg_fields
         .get('EventDate')
         .valueChanges.pipe(map(EventDate => ({ EventDate }))),

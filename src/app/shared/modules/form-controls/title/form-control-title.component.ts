@@ -30,10 +30,13 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 export class FormControlTitleComponent {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   mode: FormMode;
+
   @Input()
   min: number;
+
   @Input()
   max: number;
 
