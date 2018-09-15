@@ -1,20 +1,43 @@
 .list {
+  display: block !important;
   box-sizing: border-box;
   margin: 0 auto;
-  padding-left: 16px;
   -ms-overflow-style: -ms-autohiding-scrollbar;
+  padding: 0 16px;
 
   @media screen and (min-width: 600px) {
     min-width: 600px;
     max-width: 600px;
   }
+}
 
-  .item {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
+.timeline-list-container {
+  margin: 0 auto;
+  padding-left: 16px;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  overflow: overlay;
+
+  @media screen and (min-width: 600px) {
+    // padding-left: 24px;
+    min-width: 600px;
+    max-width: 600px;
+  }
+}
+
+.item {
+  display: block;
+  box-sizing: border-box;
+  // width: 100%;
+  width: calc(100% - 16px);
+  // margin-right: 16px;
+  margin-bottom: 16px;
+
+  &.last-item {
     margin-right: 16px;
-    margin-bottom: 16px;
+  }
+
+  @media screen and (min-width: 600px) {
+    // margin-right: 0px;
   }
 }
 

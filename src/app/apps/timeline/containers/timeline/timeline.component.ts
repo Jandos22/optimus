@@ -80,8 +80,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   pagination: PaginationState;
 
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened')
-  showFilters = false;
+  @HostBinding('class.filtersOpened') showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,

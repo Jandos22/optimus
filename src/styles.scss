@@ -148,6 +148,12 @@ app-layout {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+.common-content-v2 {
+  display: block !important;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
 .common-footer {
   background: $my-blue-100;
   border-top: 1px solid $my-blue-100;
