@@ -39,6 +39,10 @@ export class TimelineFormInitService {
           Validators.maxLength(255)
         ]
       ],
+      FollowUp: [
+        this.getSimpleFormValue(mo, it, 'FollowUp'),
+        [Validators.maxLength(255)]
+      ],
       // HashTags: [
       //   this.getSimpleFormValue(mo, it, 'HashTags'),
       //   [Validators.maxLength(140)]
@@ -47,6 +51,7 @@ export class TimelineFormInitService {
       // EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
       EventDate: [this.getEventDate(mo, it), Validators.required],
       EventType2: [this.getEventType(mo, it), Validators.required],
+      IssueState: [this.getIssueState(mo, it)],
       LocationsId: this.fb.group({
         results: [this.getLocationsId(mo, it, lo), Validators.required]
       }),
@@ -118,6 +123,17 @@ export class TimelineFormInitService {
         return item.EventType2;
       case 'edit':
         return item.EventType2;
+    }
+  }
+
+  getIssueState(mode: FormMode, item: TimelineEventItem) {
+    switch (mode) {
+      case 'new':
+        return 'Open'; // Default Event Type
+      case 'view':
+        return item.IssueState;
+      case 'edit':
+        return item.IssueState;
     }
   }
 

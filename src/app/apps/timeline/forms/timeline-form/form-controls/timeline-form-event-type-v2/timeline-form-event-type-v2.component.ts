@@ -13,10 +13,11 @@ import { TimelineEventType } from '../../../../../../shared/interface/timeline.m
 @Component({
   selector: 'app-timeline-form-event-type-v2',
   styleUrls: ['timeline-form-event-type-v2.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field fxFlex="100" [formGroup]="fg_fields">
+    <!-- EventType -->
+    <mat-form-field [formGroup]="fg_fields" class="left" [ngClass]="{ 'type-issue': issue}">
 
       <mat-select placeholder="Event Type" formControlName="EventType2"
         [disabled]="mode === 'view'">
@@ -28,6 +29,22 @@ import { TimelineEventType } from '../../../../../../shared/interface/timeline.m
       </mat-select>
 
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
+
+    </mat-form-field>
+
+    <!-- IssueState -->
+    <mat-form-field [formGroup]="fg_fields" class="right" *ngIf="issue" [ngClass]="{ 'state-issue': issue}">
+
+      <mat-select placeholder="Issue State" formControlName="IssueState"
+        [disabled]="mode === 'view'">
+
+        <mat-option *ngFor="let item of issueState" [value]="item">
+            {{ item }}
+        </mat-option>
+
+      </mat-select>
+
+      <mat-error *ngIf="hasError2">{{ errorMessage2 }}</mat-error>
 
     </mat-form-field>
   `
@@ -50,7 +67,13 @@ export class TimelineFormEventTypeV2Component {
     'Equipment Out'
   ];
 
+  issueState = ['Open', 'Closed'];
+
   constructor() {}
+
+  get issue() {
+    return this.fg_fields.get('EventType2').value === 'Issue' ? true : false;
+  }
 
   get hasError() {
     return this.fg_fields.get('EventType2').invalid;
@@ -60,6 +83,20 @@ export class TimelineFormEventTypeV2Component {
     const required = this.fg_fields.get('EventType2').hasError('required');
 
     return this.fg_fields.get('EventType2').touched
+      ? required
+        ? 'Event Type is required'
+        : ''
+      : '';
+  }
+
+  get hasError2() {
+    return this.fg_fields.get('IssueState').invalid;
+  }
+
+  get errorMessage2() {
+    const required = this.fg_fields.get('IssueState').hasError('required');
+
+    return this.fg_fields.get('IssueState').touched
       ? required
         ? 'Event Type is required'
         : ''

@@ -379,4 +379,30 @@ export class OrdersService {
       return filter;
     }
   }
+
+  deleteItemById(id: number) {
+    const fdv$ = this.sp.getFDV();
+
+    const url = `${ApiPath}/web/lists/getByTitle('NgOrders')/items(${id})`;
+
+    return fdv$.pipe(
+      retry(3),
+      switchMap(fdv => {
+        console.log(fdv);
+        console.log('deleting: ' + id);
+
+        const delete$: Promise<any> = sprLib.rest({
+          url: url,
+          type: 'POST',
+          headers: {
+            Accept: 'application/json;odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*',
+            'X-RequestDigest': fdv.requestDigest
+          }
+        });
+        return from(delete$);
+      })
+    );
+  }
 }

@@ -9,7 +9,8 @@ export enum OrdersActionTypes {
   COUNT_TOTAL = '[Orders] Count Total (since next url is present)',
   ADD_ONE = '[Orders] Add One Order',
   INSERT_ONE = '[Orders] Insert One Order (in beginning)',
-  UPDATE_ONE = '[Orders] Update One Order'
+  UPDATE_ONE = '[Orders] Update One Order',
+  DELETE_ONE = '[Orders] Delete One'
 }
 
 export class SearchOrdersStart implements Action {
@@ -45,6 +46,11 @@ export class UpdateOneOrder implements Action {
   constructor(public id: number, public changes: OrderItem) {}
 }
 
+export class DeleteOne implements Action {
+  readonly type = OrdersActionTypes.DELETE_ONE;
+  constructor(public id: number) {}
+}
+
 export type OrdersActionsUnion =
   | SearchOrdersStart
   | SearchOrdersSuccess
@@ -52,4 +58,5 @@ export type OrdersActionsUnion =
   | CountOrdersTotal
   | AddOneOrder
   | InsertOneOrder
-  | UpdateOneOrder;
+  | UpdateOneOrder
+  | DeleteOne;

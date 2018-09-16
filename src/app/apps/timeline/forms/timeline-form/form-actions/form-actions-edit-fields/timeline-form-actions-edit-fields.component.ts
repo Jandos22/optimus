@@ -47,6 +47,9 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('Summary')
         .valueChanges.pipe(map(Summary => ({ Summary }))),
+      this.fg_fields
+        .get('FollowUp')
+        .valueChanges.pipe(map(FollowUp => ({ FollowUp }))),
       // this.fg_fields
       // .get('HashTags')
       // .valueChanges.pipe(map(HashTags => ({ HashTags }))),
@@ -59,6 +62,9 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('EventType2')
         .valueChanges.pipe(map(EventType2 => ({ EventType2 }))),
+      this.fg_fields
+        .get('IssueState')
+        .valueChanges.pipe(map(IssueState => ({ IssueState }))),
       this.fg_fields
         .get('EventDate')
         .valueChanges.pipe(map(EventDate => ({ EventDate }))),

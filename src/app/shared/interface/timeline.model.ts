@@ -7,8 +7,10 @@ export interface TimelineEventItem extends SpListItem {
   id?: number;
   EventDate?: Date;
   EventType2?: string;
+  IssueState?: string;
   Title?: string;
   Summary?: string;
+  FollowUp?: string;
   RichText?: any;
   // lookup multiple
   EventReportersId?: {
@@ -27,12 +29,10 @@ export interface TimelineEventItem extends SpListItem {
   // HashTags?: string;
   // pseudo field
   New?: boolean;
-  // v2 new properties
-  IssueStatus?: string; // 'open' or 'closed'
-  FollowUp?: string;
-  FollowUpBy?: {
-    results: number[];
-  };
+
+  // FollowUpBy?: {
+  // results: number[];
+  // };
   QuestNumber?: string;
   QuestQPID?: string;
 }

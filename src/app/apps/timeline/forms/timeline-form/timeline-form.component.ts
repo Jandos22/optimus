@@ -203,6 +203,10 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     this.formRef.close($event);
   }
 
+  get issue() {
+    return this.fg_fields.get('EventType2').value === 'Issue' ? true : false;
+  }
+
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
     // this.$$mode.unsubscribe();
