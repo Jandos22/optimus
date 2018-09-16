@@ -19,9 +19,12 @@ import { FormGroup } from '@angular/forms';
     <app-timeline-toolbar-button-menu class="common-toolbar-item">
     </app-timeline-toolbar-button-menu>
 
-    <app-timeline-toolbar-input-search fxFlex
-        [appName]="appName" [fg_params]="fg_params"
-        (onFocus)="onFocus.emit()" (onBlur)="onBlur.emit()">
+    <app-timeline-toolbar-input-search
+      fxFlex
+      [appName]="appName"
+      [fg_params]="fg_params"
+      (onFocus)="onFocus.emit()"
+      (onBlur)="onBlur.emit()">
     </app-timeline-toolbar-input-search>
 
     <app-timeline-toolbar-button-clear
@@ -41,15 +44,29 @@ import { FormGroup } from '@angular/forms';
     `
 })
 export class TimelineToolbarComponent {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() fg_params: FormGroup;
-  @Input() accessLevel: number;
+  @Input()
+  appName: string;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() toggleFilters = new EventEmitter<any>();
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  fg_params: FormGroup;
+
+  @Input()
+  accessLevel: number;
+
+  @Output()
+  openForm = new EventEmitter<any>();
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
+
+  @Output()
+  onFocus = new EventEmitter<any>();
+
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 

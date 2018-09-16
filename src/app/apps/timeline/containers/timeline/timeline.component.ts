@@ -6,9 +6,15 @@ import {
   HostBinding
 } from '@angular/core';
 
+// router
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
+// lodash
+import * as _ from 'lodash';
+
 // rxjs
 import { Subscription, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -29,6 +35,9 @@ import {
 import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
+// services
+import { TimelineUrlParamsService } from '../../services/timeline-url-params.service';
+
 @Component({
   selector: 'app-timeline.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
@@ -36,8 +45,10 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     <!-- CONTENT -->
 
     <app-timeline-header
-      fxFlex="65px" class="common-header"
-      [appName]="appName" [searching]="searching"
+      fxFlex="65px"
+      class="common-header"
+      [appName]="appName"
+      [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
       (openForm)="openForm('new', $event)"
       (toggleFilters)="toggleFilters()">
@@ -45,18 +56,25 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
     <app-timeline-content
       fxFlex class="common-content"
-      [events]="data" (openForm)="openForm('view', $event)">
+      [events]="data"
+      (openForm)="openForm('view', $event)">
     </app-timeline-content>
 
     <app-timeline-footer fxFlex="49px" class="common-footer"
-      [pagination]="pagination" [top]="params.top" [searching]="searching"
-      (onNext)="onNext()" (onBack)="onBack()">
+      [pagination]="pagination"
+      [top]="params.top"
+      [searching]="searching"
+      (onNext)="onNext()"
+      (onBack)="onBack()">
     </app-timeline-footer>
 
     <!-- FILTERS -->
     <app-timeline-filters class="common-filters-container"
       [style.display]="(showFilters ? 'flex' : 'none')"
-      fxLayout="column" fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      [filterParams]="filterParams"
+      (onFiltersUpdate)="onFiltersUpdate($event)"
       (toggleFilters)="toggleFilters()">
     </app-timeline-filters>
   `,
@@ -79,13 +97,21 @@ export class TimelineComponent implements OnInit, OnDestroy {
   $pagination: Subscription;
   pagination: PaginationState;
 
+  url$: Subscription;
+  urlParams: any;
+  filterParams: TimelineSearchParams;
+
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened') showFilters = false;
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_timeline: Store<fromTimeline.TimelineState>,
-    public form: MatDialog
+    public form: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    private urlService: TimelineUrlParamsService
   ) {}
 
   ngOnInit() {
@@ -94,6 +120,23 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     // fetch Event Types list from database
     this.store_root.dispatch(new fromTimeline.FetchEventTypesStart());
+
+    // subscription should get url params
+    // then should compose urlParams
+    // - that will get passed to child filters component
+    // - that will be used to update store.params
+    this.url$ = this.route.paramMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          return params.keys
+            ? this.urlService.composeFilterParamsFromUrlParams(params)
+            : null;
+        })
+      )
+      .subscribe(params => {
+        console.log(params);
+        this.filterParams = { ...params };
+      });
 
     this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
 
@@ -167,6 +210,22 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.showFilters = true;
     }
     console.log(this.showFilters);
+  }
+
+  onFiltersUpdate(params: TimelineSearchParams) {
+    console.log('ON FILTERS UPDATE');
+    console.log('old params:');
+    console.log(this.params);
+    console.log('new params:');
+    console.log(params);
+    this.updateUrl(params);
+  }
+
+  updateUrl(params: TimelineSearchParams) {
+    console.log('UPDATE URL');
+    const link = ['./timeline', { ...this.urlService.removeEmptyKeys(params) }];
+    console.log(link);
+    this.router.navigate(link);
   }
 
   ngOnDestroy() {

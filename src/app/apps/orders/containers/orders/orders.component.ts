@@ -6,6 +6,10 @@ import {
   HostBinding
 } from '@angular/core';
 
+// router
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
+// lodash
 import * as _ from 'lodash';
 
 // rxjs
@@ -31,7 +35,6 @@ import {
 } from '../../../../shared/interface/orders.model';
 import { PaginationState } from '../../store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 // services
 import { OrdersUrlParamsService } from '../../services';
@@ -41,8 +44,10 @@ import { OrdersUrlParamsService } from '../../services';
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-orders-header
-      fxFlex="65px" class="common-header"
-      [appName]="appName" [searching]="searching"
+      fxFlex="65px"
+      class="common-header"
+      [appName]="appName"
+      [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
       (openForm)="openForm('new', $event)"
       (toggleFilters)="toggleFilters()">
@@ -56,13 +61,17 @@ import { OrdersUrlParamsService } from '../../services';
     </app-orders-list>
 
     <app-orders-footer fxFlex="49px" class="common-footer"
-      [pagination]="pagination" [top]="params.top" [searching]="searching"
-      (onNext)="onNext()" (onBack)="onBack()">
+      [pagination]="pagination"
+      [top]="params.top"
+      [searching]="searching"
+      (onNext)="onNext()"
+      (onBack)="onBack()">
     </app-orders-footer>
 
     <app-orders-filters class="common-filters-container"
       [style.display]="(showFilters ? 'flex' : 'none')"
-      fxLayout="column" fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutAlign="start start"
       [orderStatuses]="orderStatuses$ | async"
       [filterParams]="filterParams"
       (onFiltersUpdate)="onFiltersUpdate($event)"

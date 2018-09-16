@@ -10,6 +10,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
+// router
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+
+// lodash
 import * as _ from 'lodash';
 
 // ngrx
@@ -33,7 +37,6 @@ import { OrdersSearchParams } from '../../../../shared/interface/orders.model';
 
 // validators
 import { ValidationService } from '../../../../shared/validators/validation.service';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-orders-header',
@@ -42,14 +45,22 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-orders-toolbar class="common-toolbar"
-      fxFlex fxFlex.gt-xs="568px"
-      fxLayout="row nowrap" fxLayoutAlign="start center"
-      [appName]="appName" [fg_params]="fg_params" [searching]="searching"
+      fxFlex
+      fxFlex.gt-xs="568px"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
+      [appName]="appName"
+      [fg_params]="fg_params"
+      [searching]="searching"
       [accessLevel]="accessLevel"
-      (onFocus)="onFocus()" (onBlur)="onBlur()"
-      (openForm)="openForm.emit()" (toggleFilters)="toggleFilters.emit()"
-      [ngClass]="{  focused: focus,
-                    invalid: fg_params.get('text').invalid }">
+      (onFocus)="onFocus()"
+      (onBlur)="onBlur()"
+      (openForm)="openForm.emit()"
+      (toggleFilters)="toggleFilters.emit()"
+      [ngClass]="{
+        focused: focus,
+        invalid: fg_params.get('text').invalid
+        }">
     </app-orders-toolbar>
     `
 })

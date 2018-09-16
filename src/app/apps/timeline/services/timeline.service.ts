@@ -12,7 +12,10 @@ import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { TimelineSearchParams } from '../../../shared/interface/timeline.model';
+import {
+  TimelineSearchParams,
+  TimelineEventItem
+} from '../../../shared/interface/timeline.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
 
@@ -37,6 +40,11 @@ export class TimelineService {
           }
         })
       );
+  }
+
+  getData(url) {
+    const get$ = from(sprLib.rest({ url }));
+    return get$ as Observable<TimelineEventItem[]>;
   }
 
   buildUrl(params: TimelineSearchParams, counter?: boolean) {
