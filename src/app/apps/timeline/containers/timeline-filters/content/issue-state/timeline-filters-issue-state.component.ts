@@ -22,17 +22,17 @@ import { TimelineEventItem } from '../../../../../../shared/interface/timeline.m
 import { TimelineTypeService } from '../../../../services';
 
 @Component({
-  selector: 'app-timeline-filters-event-types-v2',
-  styleUrls: ['timeline-filters-event-types-v2.component.scss'],
+  selector: 'app-timeline-filters-issue-state',
+  styleUrls: ['timeline-filters-issue-state.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field [formGroup]="fg_filters">
       <mat-select
-        placeholder="Event Type"
-        formControlName="eventType">
+        placeholder="Issue State"
+        formControlName="issueState">
         <mat-option
-          *ngFor="let item of eventTypes"
+          *ngFor="let item of issueState"
           [value]="item">
             {{ item }}
         </mat-option>
@@ -41,33 +41,24 @@ import { TimelineTypeService } from '../../../../services';
 
     <!-- RESET BUTTON -->
     <div class='quick-filter-button'
-      *ngIf="this.fg_filters.controls['eventType'].value"
+      *ngIf="this.fg_filters.controls['issueState'].value"
       fxLayout="row nowrap" fxLayoutAlign="center center"
       [matTooltip]="'Reset Filter'" (click)="reset()">
       <fa-icon [icon]="['fas', 'times']"></fa-icon>
     </div>
     `
 })
-export class TimelineFiltersEventTypesV2Component implements OnInit {
+export class TimelineFiltersIssueStateComponent implements OnInit {
   @Input()
   fg_filters: FormGroup;
 
-  eventTypes = [
-    'Note',
-    'Issue',
-    'SET Meeting',
-    'SQ Meeting',
-    'Success Story',
-    'Team Building',
-    'Equipment In',
-    'Equipment Out'
-  ];
+  issueState = ['Open', 'Closed'];
 
   constructor() {}
 
   ngOnInit() {}
 
   reset() {
-    this.fg_filters.controls['eventType'].reset();
+    this.fg_filters.controls['issueState'].reset();
   }
 }

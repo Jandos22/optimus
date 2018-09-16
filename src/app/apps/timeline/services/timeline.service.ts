@@ -56,6 +56,9 @@ export class TimelineService {
     // eventType is single string
     const eventType = params.eventType ? params.eventType : null;
 
+    // issueState is single string
+    const issueState = params.issueState ? params.issueState : null;
+
     // eventReporters must be ids array
     const eventReporters = params.eventReporters ? params.eventReporters : [];
 
@@ -94,7 +97,6 @@ export class TimelineService {
       url += `)`;
     }
 
-    // -- 2 --
     // Locations filter
     if (locations.length) {
       // check if "AND" is needed
@@ -107,19 +109,6 @@ export class TimelineService {
       url += `${this.getFilterLocations(locations)}`;
     }
 
-    // -- 3a --
-    // EventTypes filter
-    // if (eventTypes.length) {
-    //   // check if "AND" is needed
-    //   if (countFilters > 0) {
-    //     url += 'and';
-    //   }
-
-    //   countFilters++;
-    //   url += `${this.getFilterEventTypes(eventTypes)}`;
-    // }
-
-    // -- 3b --
     // EventTypes filter
     if (eventType) {
       // check if "AND" is needed
@@ -131,7 +120,17 @@ export class TimelineService {
       url += `(EventType2 eq '${eventType}')`;
     }
 
-    // -- 4 --
+    // issueState filter
+    if (issueState) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+
+      countFilters++;
+      url += `(IssueState eq '${issueState}')`;
+    }
+
     // EventReporters filter
     if (eventReporters.length) {
       // check if "AND" is needed
@@ -164,7 +163,12 @@ export class TimelineService {
       'Title',
       'Summary',
       'FollowUp',
+      'FollowUpBy',
+      'FollowUpById',
+      'FollowUpBy/Fullname',
+      'LastFollowUp',
       'EventType2',
+      'IssueState',
       'EventReportersId',
       'EventReporters/ID',
       'EventReporters/Alias',
@@ -184,7 +188,7 @@ export class TimelineService {
   getExpandFields() {
     const $expand = [
       'AttachmentFiles',
-      // 'EventType',
+      'FollowUpBy',
       'EventReporters',
       'Locations'
     ];

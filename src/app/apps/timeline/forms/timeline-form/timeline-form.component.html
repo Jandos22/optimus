@@ -9,7 +9,10 @@
 
     <div class="cmn-form-container">
 
-        <div class="con4">
+        <div class="con4" [ngClass]="{
+                't2w3': !hasPhotoAndDetailsInViewMode && data.mode === 'view',
+                't2w4': !hasPhotoAndDetailsInViewMode && data.mode === 'view'
+            }">
             <div class="con2" fxLayout="row wrap" fxLayoutAlign="start start">
 
                 <!-- Event Date -->
@@ -38,30 +41,33 @@
                 </app-timeline-form-issue-followup>
 
                 <!-- Event Reporters / 2 columns -->
-                <div class="group-of-2" fxLayout="column">
+                <div class="t2w2-t2w3-t2w4" fxLayout="column">
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
                         Event Reporter(s)
                     </span>
-                    <app-form-control-user-selection class="cmn-form-component take-2-cols" fxLayout="column"
+                    <app-form-control-user-selection class="cmn-form-component t2w2-t2w3-t2w4" fxLayout="column"
                         [placeholder]="'Event Reporter(s)'" [fieldName]="'EventReportersId'" [displayName]="'Event Reporter(s)'"
                         [fg_fields]="fg_fields" [mode]="data.mode" [selfUser]="selfUser$ | async" [allowNumberOfUsers]="3"
                         (onSelectUser)="onSelectUser($event)">
                     </app-form-control-user-selection>
                 </div>
 
+                <div style="height: 9.5px; width: 100%"></div>
+
             </div>
 
-            <div class="con2" fxLayout="row wrap" fxLayoutAlign="start start">
+            <div class="con2 t1w3" *ngIf="data.mode !== 'view' || hasPhotoAndDetailsInViewMode" fxLayout="row wrap"
+                fxLayoutAlign="start start">
 
                 <!-- Event Image -->
-                <div class="t2w2-t2w3-t2w4" fxLayout="column" *ngIf="(fg_image.get('ImageUrl').value || data.mode !== 'view')">
+                <div class="t2w2-t1w3-t2w4" fxLayout="column" *ngIf="(fg_image.get('ImageUrl').value || data.mode !== 'view')">
                     <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
                         Event Photo
                         <i>(optional)</i>
                     </span>
 
-                    <app-form-control-image-picker class="cmn-form-component take-2-cols" fxLayout="column" [fg_fields]="fg_fields"
-                        [fg_image]="fg_image" [mode]="data.mode" (imageChanged)="imageChanged($event)">
+                    <app-form-control-image-picker class="cmn-form-component t2w2-t1w3-t2w4" fxLayout="column"
+                        [fg_fields]="fg_fields" [fg_image]="fg_image" [mode]="data.mode" (imageChanged)="imageChanged($event)">
                     </app-form-control-image-picker>
 
                     <div fxFlex="19.5px"></div>
@@ -69,12 +75,12 @@
                 </div>
 
                 <!-- Rich Text Editor / 2 columns -->
-                <div class="group-of-2" fxLayout="column nowrap" fxLayoutAlign="start stretch" *ngIf="(fg_fields.get('RichText').value || data.mode !== 'view')">
+                <div class="t2w2-t1w3-t2w4" fxLayout="column nowrap" fxLayoutAlign="start stretch" *ngIf="(fg_fields.get('RichText').value || data.mode !== 'view')">
                     <span class="cmn-form-control-title" [ngClass]="{ rte_focused: rte_focused }">
                         Event Details
                         <i>(optional)</i>
                     </span>
-                    <app-rich-text-editor-light class="cmn-form-component take-2-cols" [fg_fields]="fg_fields"
+                    <app-rich-text-editor-light class="cmn-form-component t2w2-t1w3-t2w4" [fg_fields]="fg_fields"
                         (onFocus)="onRichTextFocus($event)" [mode]="data.mode">
                     </app-rich-text-editor-light>
                     <div fxFlex="19.5px"></div>
@@ -89,7 +95,7 @@
 
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
     <app-timeline-form-actions class="common-form-actions-container" [fg_fields]="fg_fields" [fg_image]="fg_image"
-        [initialFields]="data.item" [mode]="data.mode" (closeForm)="closeForm($event)" (switchFormMode)="switchFormMode($event)"
-        (updateDataItem)="updateDataItem($event)" (updateDataItemImage)="updateDataItemImage($event)">
+        [initialFields]="data.item" [mode]="data.mode" [selfUser]="selfUser$ | async" (closeForm)="closeForm($event)"
+        (switchFormMode)="switchFormMode($event)" (updateDataItem)="updateDataItem($event)" (updateDataItemImage)="updateDataItemImage($event)">
     </app-timeline-form-actions>
 </mat-dialog-actions>

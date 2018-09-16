@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 
 // rxjs
 import { Subscription } from 'rxjs';
-import { take, finalize } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -53,6 +53,7 @@ import { PeopleItem } from '../../../../../../shared/interface/people.model';
 export class OrdersFormActionsNewComponent implements OnInit, OnDestroy {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   selfUser?: PeopleItem;
 

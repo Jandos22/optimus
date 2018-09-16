@@ -11,12 +11,17 @@ export interface TimelineEventItem extends SpListItem {
   Title?: string;
   Summary?: string;
   FollowUp?: string;
+  FollowUpById?: number;
+  FollowUpBy?: PeopleItem;
+  LastFollowUp?: Date;
   RichText?: any;
   // lookup multiple
   EventReportersId?: {
     results?: number[];
   };
-  EventReporters?: TimelineEventReporters;
+  EventReporters?: {
+    results?: PeopleItem[];
+  };
   // lookup single
   EventType?: TimelineEventType;
   EventTypeId?: number[];
@@ -43,6 +48,7 @@ export interface TimelineSearchParams {
   top: number;
   // eventTypes?: number[];
   eventType?: string;
+  issueState?: string;
   eventReporters?: number[];
 }
 
@@ -53,13 +59,13 @@ export interface TimelineEventType extends SpListItem {
   ApplicableTo?: LocationEnt[];
 }
 
-export interface TimelineEventReportersId {
-  results?: number[];
-}
+// export interface TimelineEventReportersId {
+//   results?: number[];
+// }
 
-export interface TimelineEventReporters {
-  results?: PeopleItem[];
-}
+// export interface TimelineEventReporters {
+//   results?: PeopleItem[];
+// }
 
 export interface TimelineLocationsId {
   results?: number[];

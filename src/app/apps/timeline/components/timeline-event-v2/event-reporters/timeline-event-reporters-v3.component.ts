@@ -80,8 +80,9 @@ export class TimelineEventReportersV3Component
   }
 
   handleInput(reportersId: number[]) {
-    console.log('handle');
-    console.log(reportersId);
+    // console.log('handle');
+    // console.log(reportersId);
+
     // if reportersId has ids
     if (reportersId.length) {
       // create observable made from numbers (ids of reporters)
@@ -102,7 +103,7 @@ export class TimelineEventReportersV3Component
         // subscribe to end result
         // override reporters with new results
         .subscribe((result: PeopleItem[]) => {
-          console.log(result);
+          // console.log(result);
           this.reporters = result;
           // this.onQuantityChange.emit(result.length);
           this.cd.detectChanges();

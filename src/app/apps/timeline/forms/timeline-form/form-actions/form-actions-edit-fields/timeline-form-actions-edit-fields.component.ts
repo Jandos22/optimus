@@ -27,6 +27,7 @@ export class TimelineFormActionsEditFieldsComponent
   implements OnInit, OnDestroy {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   initialFields: TimelineEventItem;
 
@@ -50,15 +51,9 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('FollowUp')
         .valueChanges.pipe(map(FollowUp => ({ FollowUp }))),
-      // this.fg_fields
-      // .get('HashTags')
-      // .valueChanges.pipe(map(HashTags => ({ HashTags }))),
       this.fg_fields
         .get('RichText')
         .valueChanges.pipe(map(RichText => ({ RichText }))),
-      // this.fg_fields
-      //   .get('EventTypeId')
-      //   .valueChanges.pipe(map(EventTypeId => ({ EventTypeId }))),
       this.fg_fields
         .get('EventType2')
         .valueChanges.pipe(map(EventType2 => ({ EventType2 }))),
@@ -74,6 +69,9 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('EventReportersId')
         .valueChanges.pipe(map(EventReportersId => ({ EventReportersId })))
+      // this.fg_fields
+      //   .get('FollowUpById')
+      //   .valueChanges.pipe(map(FollowUpById => ({ FollowUpById })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$

@@ -1,3 +1,4 @@
+import { TimelineEventLocationsComponent } from './timeline-event-v2/event-locations/timeline-event-locations.component';
 import { TimelineToolbarButtonMenuComponent } from './toolbar-button-menu/timeline-toolbar-button-menu.component';
 // import { TimelineEventComponent } from './timeline-event/timeline-event.component';
 // import { TimelineEventReportersComponent } from './timeline-event-reporters/timeline-event-reporters.component';
@@ -14,6 +15,7 @@ export const components: any[] = [
   // TimelineEventComponent,
   TimelineEventV2Component,
   TimelineEventReportersV3Component,
+  TimelineEventLocationsComponent,
   // TimelineEventHasImageComponent,
   // TimelineEventNoImageComponent,
   // TimelineEventReportersComponent,
@@ -27,6 +29,7 @@ export const components: any[] = [
 // export * from './timeline-event/timeline-event.component';
 export * from './timeline-event-v2/timeline-event-v2.component';
 export * from './timeline-event-v2/event-reporters/timeline-event-reporters-v3.component';
+export * from './timeline-event-v2/event-locations/timeline-event-locations.component';
 // export * from './timeline-event-has-image/timeline-event-has-image.component';
 // export * from './timeline-event-no-image/timeline-event-no-image.component';
 // export * from './timeline-event-reporters/timeline-event-reporters.component';

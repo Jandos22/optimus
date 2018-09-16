@@ -47,7 +47,8 @@ import {
         fxLayout="row nowrap"
         fxLayoutAlign="end center"
         (closeForm)="closeForm.emit($event)"
-        [fg_fields]="fg_fields" [selfUser]="selfUser">
+        [fg_fields]="fg_fields"
+        [selfUser]="selfUser">
     </app-orders-form-actions-new>
 
     <app-orders-form-actions-edit

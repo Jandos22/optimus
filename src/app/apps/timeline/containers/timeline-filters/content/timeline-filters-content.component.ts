@@ -29,6 +29,12 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
             [fg_filters]="fg_filters">
         </app-timeline-filters-event-types-v2>
 
+        <app-timeline-filters-issue-state
+            *ngIf="fg_filters.controls['eventType'].value === 'Issue'"
+            fxLayout="row nowrap"
+            [fg_filters]="fg_filters">
+        </app-timeline-filters-issue-state>
+
         <app-form-control-people-selector class="cmn-form-component people-filter"
             fxLayout="row wrap" [fg_fields]="fg_filters" [mode]="'new'"
             [fieldName]="'eventReporters'" [displayName]="'Event Reporters'" [allowNumberOfUsers]="4"

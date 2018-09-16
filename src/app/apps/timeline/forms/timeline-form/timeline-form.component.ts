@@ -207,6 +207,20 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     return this.fg_fields.get('EventType2').value === 'Issue' ? true : false;
   }
 
+  get hasPhotoAndDetailsInViewMode() {
+    let hasPhotoAndDetails = false;
+
+    if (this.data.mode === 'view') {
+      const item = this.data.item;
+      hasPhotoAndDetails = item.Attachments || item.RichText ? true : false;
+    } else {
+      hasPhotoAndDetails = false;
+    }
+
+    // console.log(hasPhotoAndDetails);
+    return hasPhotoAndDetails;
+  }
+
   // unsubscribe from Subscription when component is destroyed
   ngOnDestroy() {
     // this.$$mode.unsubscribe();

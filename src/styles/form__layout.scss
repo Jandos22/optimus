@@ -112,6 +112,13 @@ $con4: calc(180px * 4 + 16px * 4);
     .con2 {
       min-width: $con2;
       max-width: $con2;
+
+      @media screen and (min-width: $bp3) {
+        &.t1w3 {
+          min-width: $con1;
+          max-width: $con1;
+        }
+      }
     }
     .con3 {
       min-width: $con2;
@@ -130,6 +137,11 @@ $con4: calc(180px * 4 + 16px * 4);
       min-width: $con2;
       max-width: $con2;
     }
+
+    &.t2w3 {
+      min-width: $con2;
+      max-width: $con2;
+    }
   }
   @media screen and (min-width: $bp4) {
     min-width: $con4;
@@ -142,6 +154,11 @@ $con4: calc(180px * 4 + 16px * 4);
     .con3 {
       min-width: $con3;
       max-width: $con3;
+    }
+
+    &.t2w4 {
+      min-width: $con2;
+      max-width: $con2;
     }
   }
 }

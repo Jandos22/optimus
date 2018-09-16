@@ -109,6 +109,7 @@ export class TimelineFiltersComponent implements OnInit {
       top: 100,
       // eventTypes: '',
       eventType: '',
+      issueState: '',
       eventReporters: ''
     });
   }
@@ -130,7 +131,8 @@ export class TimelineFiltersComponent implements OnInit {
   onResetFilters(event) {
     this.doReset = this.doReset ? false : true;
     // this.fg_filters.controls['eventTypes'].patchValue([]);
-    this.fg_filters.controls['eventType'].patchValue('');
+    this.fg_filters.controls['eventType'].reset();
+    this.fg_filters.controls['issueState'].reset();
     this.fg_filters.controls['eventReporters'].patchValue([]);
   }
 }

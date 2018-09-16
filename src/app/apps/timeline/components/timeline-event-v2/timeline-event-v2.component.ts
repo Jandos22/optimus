@@ -32,13 +32,21 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
       <!-- Event -->
       <div class="event"
         fxLayout="row nowrap"
-        fxLayoutAlign="start start">
+        fxLayoutAlign="start start"
+        [ngClass]="{
+          'issue-open': (event.EventType2 === 'Issue') && (event.IssueState === 'Open'),
+          'issue-closed': (event.EventType2 === 'Issue') && (event.IssueState === 'Closed')
+        }">
 
         <div class="details"
-          [ngClass]="{ 'has-photo': event.Attachments }"
           [style.zIndex]="zIndexDetails"
           fxLayout="row wrap"
-          fxLayoutAlign="start start">
+          fxLayoutAlign="start start"
+          [ngClass]="{
+            'has-photo': event.Attachments,
+            'issue-open': (event.EventType2 === 'Issue') && (event.IssueState === 'Open'),
+            'issue-closed': (event.EventType2 === 'Issue') && (event.IssueState === 'Closed')
+            }">
 
           <div class="date-n-type"
             fxLayout="row nowrap"
@@ -51,6 +59,7 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
               fxLayout="row nowrap">
               <div class="middot">&middot;</div>
               <div>{{ event.EventType2 }}</div>
+              <div *ngIf="event.EventType2 === 'Issue'">/{{ event.IssueState }}</div>
             </div>
 
           </div>
@@ -59,8 +68,14 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
             {{ event.Title }}
           </div>
 
-          <div class="summary">
+          <div class="summary" (click)="openForm.emit(event)">
             {{ event.Summary}}
+          </div>
+
+          <div class="followup"
+            *ngIf="event.EventType2 === 'Issue'">
+            {{ event.FollowUp }}
+            <span class="followupby"> - follow up by {{ event.FollowUpBy.Fullname}} on {{ event.LastFollowUp | date: 'shortDate' }}</span>
           </div>
 
         </div>
@@ -68,9 +83,18 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
         <div class="photo-container"
           *ngIf="event.Attachments"
           [style.zIndex]="zIndexPhoto"
-          (click)="togglePhoto()">
-          <img class="photo"  [src]="imageUrl">
+          (click)="togglePhoto()"
+          [ngClass]="{
+            'issue-open': (event.EventType2 === 'Issue') && (event.IssueState === 'Open'),
+            'issue-closed': (event.EventType2 === 'Issue') && (event.IssueState === 'Closed')
+            }">
+          <img class="photo" [src]="imageUrl">
         </div>
+
+        <app-timeline-event-locations
+          class="event-locations"
+          [locations]="event?.Locations?.results">
+        </app-timeline-event-locations>
 
       </div>
 

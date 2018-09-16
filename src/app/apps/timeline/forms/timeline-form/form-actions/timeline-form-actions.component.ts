@@ -17,15 +17,16 @@ import { TimelineService } from './../../../services/timeline.service';
 // types
 import { FormMode } from '../../../../../shared/interface/form.model';
 
-// interfaces
-import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
-import { TimelineEventItem } from '../../../../../shared/interface/timeline.model';
-
 // entry components
 import {
   DeleteListItemComponent,
   DeleteListItemRetryComponent
 } from '../../../../../shared/components';
+
+// interfaces
+import { SpListItemAttachmentFiles } from '../../../../../shared/interface/sp-list-item.model';
+import { TimelineEventItem } from '../../../../../shared/interface/timeline.model';
+import { PeopleItem } from '../../../../people/models/people-item.model';
 
 @Component({
   selector: 'app-timeline-form-actions',
@@ -47,7 +48,8 @@ import {
         fxLayoutAlign="end center"
         (closeForm)="closeForm.emit($event)"
         [fg_fields]="fg_fields"
-        [fg_image]="fg_image">
+        [fg_image]="fg_image"
+        [selfUser]="selfUser">
     </app-timeline-form-actions-new>
 
     <app-timeline-form-actions-edit
@@ -57,6 +59,7 @@ import {
         [fg_fields]="fg_fields"
         [fg_image]="fg_image"
         [initialFields]="initialFields"
+        [selfUser]="selfUser"
         (switchFormMode)="switchFormMode.emit($event)"
         (updateDataItem)="updateDataItem.emit($event)"
         (updateDataItemImage)="updateDataItemImage.emit($event)">
@@ -66,21 +69,29 @@ import {
 export class TimelineFormActionsComponent {
   @Input()
   mode: FormMode;
+
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   fg_image: FormGroup;
+
   @Input()
   initialFields: TimelineEventItem;
 
+  @Input()
+  selfUser?: PeopleItem;
+
   @Output()
   switchFormMode = new EventEmitter<any>();
+
   @Output()
   closeForm = new EventEmitter<any>();
 
   // triggered after saving fields and/or image
   @Output()
   updateDataItem = new EventEmitter<TimelineEventItem>();
+
   @Output()
   updateDataItemImage = new EventEmitter<SpListItemAttachmentFiles[]>();
 

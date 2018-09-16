@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import * as _ from 'lodash';
+
 // rxjs
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -21,11 +23,12 @@ import * as fromTimeline from '../../../../store';
 import * as fromErrorActions from '../../../../../../store/actions/errors.actions';
 import * as fromEventsActions from '../../../../store/actions/events.actions';
 
-// interfaces
-import { TimelineEventItem } from '../../../../../../shared/interface/timeline.model';
-
 // services
 import { TimelineFormHttpService } from '../../form-services/timeline-form-http.service';
+
+// interfaces
+import { TimelineEventItem } from '../../../../../../shared/interface/timeline.model';
+import { PeopleItem } from '../../../../../people/models/people-item.model';
 
 @Component({
   selector: 'app-timeline-form-actions-new',
@@ -49,10 +52,17 @@ import { TimelineFormHttpService } from '../../form-services/timeline-form-http.
     `
 })
 export class TimelineFormActionsNewComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() fg_image: FormGroup;
+  @Input()
+  fg_fields: FormGroup;
 
-  @Output() closeForm = new EventEmitter<any>();
+  @Input()
+  fg_image: FormGroup;
+
+  @Input()
+  selfUser?: PeopleItem;
+
+  @Output()
+  closeForm = new EventEmitter<any>();
 
   $watchArrayBuffer: Subscription; // unsubscription handled in ngOnDestroy
 
@@ -96,6 +106,28 @@ export class TimelineFormActionsNewComponent implements OnInit, OnDestroy {
   }
 
   saveFields(newFields: TimelineEventItem) {
+    console.log(newFields);
+
+    // trim out empty fields
+    newFields = _.reduce(
+      newFields,
+      function(acc, value, key) {
+        return value ? { ...acc, [key]: value } : { ...acc };
+      },
+      {}
+    );
+
+    console.log(newFields);
+
+    if (_.has(newFields, 'FollowUp') === true) {
+      // add last FollowUpBy info
+      newFields = {
+        ...newFields,
+        FollowUpById: this.selfUser.Id,
+        LastFollowUp: new Date(Date.now())
+      };
+    }
+
     this.spHttp
       .createEvent(newFields)
       .pipe(take(1))
