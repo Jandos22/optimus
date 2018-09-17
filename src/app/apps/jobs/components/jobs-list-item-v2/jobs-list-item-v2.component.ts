@@ -67,6 +67,11 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
 
         </div>
       </div>
+
+      <app-locations-card
+        class="locations-card"
+        [locations]="job?.Location">
+      </app-locations-card>
     </div>
     `
 })

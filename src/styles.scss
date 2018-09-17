@@ -694,3 +694,35 @@ button.status-check-button {
     height: 24px !important;
   }
 }
+
+// shared components classes
+
+.locations-card {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  z-index: 2;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.625);
+  border-bottom-right-radius: 8px;
+  background: #fafafa;
+  border-top-left-radius: 8px;
+  border-top: 1px solid #dedede;
+}
+
+.locations-card-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  z-index: 2;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.625);
+  border-top-right-radius: 8px;
+  background: #fafafa;
+  border-bottom-left-radius: 8px;
+  border-bottom: 1px solid #dedede;
+}

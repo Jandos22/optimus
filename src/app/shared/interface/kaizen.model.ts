@@ -23,7 +23,9 @@ export interface KaizenProjectItem extends SpListItem {
     results: PeopleItem[]; // lookup multiple
   };
   DoneById?: ArrayOfIds; // lookup multiple
-  Locations?: LocationEnt[]; // lookup multiple
+  Locations?: {
+    results: LocationEnt[];
+  }; // lookup multiple
   LocationsId?: ArrayOfIds; // lookup multiple
   // pseudo field
   New?: boolean;

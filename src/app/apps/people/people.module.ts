@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
+// my modules
+import { SharedModule } from '../../shared/shared.module';
+
 // ngrx
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -38,6 +41,7 @@ export const peopleRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
     StoreModule.forFeature('people', reducers),

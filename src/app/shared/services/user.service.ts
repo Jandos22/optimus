@@ -48,18 +48,22 @@ export class UserService {
     if (
       loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint'
     ) {
-      // loginName = 'dismagulov@slb.com';
+      // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      loginName = 'zombayev@slb.com';
-      spId = 167;
-      // loginName = 'azhussipov@slb.com';
+      // loginName = 'zombayev@slb.com'; // FE
+      // spId = 167;
+      // loginName = 'azhussipov@slb.com'; // FE
       // spId = 6;
-      // loginName = 'cmarcotte@slb.com';
+      // loginName = 'cmarcotte@slb.com'; // PSDM
       // spId = 209;
-      // loginName = 'rmiller36@slb.com';
-      // spId = 16;
-      // loginName = 'myergazin@slb.com';
+      loginName = 'rmiller36@slb.com'; // OU PSDM
+      spId = 16;
+      // loginName = 'myergazin@slb.com'; // OU PSDM
       // spId = 210;
+      // loginName = 'knigmetullin@slb.com'; // OU PSDM
+      // spId = 226;
+      // loginName = 'knigmetullin@slb.com'; // OU PSDM
+      // spId = 226;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');

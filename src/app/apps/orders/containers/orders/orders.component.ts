@@ -38,6 +38,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
 // services
 import { OrdersUrlParamsService } from '../../services';
+// import { LocationEnt } from '../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-orders.common-app-v2-container',
@@ -84,6 +85,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   appName = 'Orders';
 
   user$: Observable<PeopleItem>;
+
+  // locations$: Observable<LocationEnt[]>;
 
   $data: Subscription;
   data: OrderItem[];
@@ -148,6 +151,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
       select(fromRoot.getUserOptimus),
       tap(u => console.log(u))
     );
+
+    // this.locations$ = this.store_root.pipe(select(fromRoot.selectAllLocations));
 
     // main data = array of orders
     this.$data = this.store_orders

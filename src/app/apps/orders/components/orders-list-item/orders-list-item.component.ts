@@ -6,9 +6,19 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 
+// rxjs
+import { Observable } from 'rxjs';
+import { tap, take } from 'rxjs/operators';
+
+// ngrx
+import { Store, select } from '@ngrx/store';
+import * as fromRoot from '../../../../store';
+
+// lodash
 import * as _ from 'lodash';
 
 // constants
@@ -21,6 +31,7 @@ import {
   OrderStatus
 } from '../../../../shared/interface/orders.model';
 import { PeopleItem } from './../../../../shared/interface/people.model';
+import { LocationEnt } from './../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-orders-list-item',
@@ -57,6 +68,11 @@ import { PeopleItem } from './../../../../shared/interface/people.model';
         *ngFor="let lineItem of lineItems" [lineItem]="lineItem">
       </app-orders-line-item>
 
+      <app-locations-card
+        class="locations-card-top-right"
+        [locations]="location$ | async">
+      </app-locations-card>
+
     </div>
     `
 })
@@ -75,15 +91,30 @@ export class OrdersListItemComponent implements OnChanges {
 
   lineItems: OrderLineItem[];
 
-  constructor() {}
+  location$: Observable<LocationEnt>;
+  // locationTitle$: Observable<string>;
+
+  constructor(
+    private store_root: Store<fromRoot.RootState>,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // watch changes of incoming order object
     if (changes.order && changes.order.currentValue) {
-      // console.log('changes detected');
-      // console.log(changes.order.currentValue);
+      const currentLocation = changes.order.currentValue as OrderItem;
       this.createLineItems(changes.order.currentValue);
+      this.refreshLocationTitle(currentLocation.LocationId);
     }
+  }
+
+  refreshLocationTitle(id: number) {
+    // console.log(id);
+    this.location$ = this.store_root.pipe(
+      take(1),
+      select(fromRoot.getLocationById(id))
+      // tap(v => console.log(v))
+    );
   }
 
   createLineItems(order: OrderItem) {

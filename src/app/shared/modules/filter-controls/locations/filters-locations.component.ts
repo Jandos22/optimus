@@ -55,8 +55,10 @@ import { LocationsService } from '../../../../shared/services/locations.service'
 export class FiltersLocationsComponent implements OnInit {
   @Input()
   fg_filters: FormGroup;
+
   @Input()
   locofinterest: number;
+
   @Input()
   exclude: string[];
 
