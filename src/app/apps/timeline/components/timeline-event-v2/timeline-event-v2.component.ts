@@ -72,6 +72,16 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
             {{ event.Summary}}
           </div>
 
+          <div class="quest" *ngIf="event.QuestRIR">
+            <span>QUEST: </span>
+            <span
+              [matTooltip]="getQuestTooltip()"
+              (click)="openQuestReport()"
+              [ngClass]="{ hasQPID: checkQPID() }">
+              {{ event.QuestRIR }}
+            </span>
+          </div>
+
           <div class="followup"
             *ngIf="event.EventType2 === 'Issue'">
             {{ event.FollowUp }}
@@ -141,6 +151,42 @@ export class TimelineEventV2Component {
       this.showPhoto = false;
       this.zIndexPhoto = 1;
       this.zIndexDetails = 2;
+    }
+  }
+
+  checkQPID() {
+    return this.event.QuestQPID ? true : false;
+  }
+
+  openQuestReport() {
+    const qpid = this.event.QuestQPID;
+
+    const meeting =
+      this.event.EventType2 === 'SQ Meeting' ||
+      this.event.EventType2 === 'SET Meeting'
+        ? true
+        : false;
+
+    if (qpid && meeting) {
+      window.open(
+        `https://quest.slb.com/quest/Meeting/Meetingview.asp?QPID=${qpid}`,
+        '_blank'
+      );
+    }
+
+    if (qpid && !meeting) {
+      window.open(
+        `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
+        '_blank'
+      );
+    }
+  }
+
+  getQuestTooltip() {
+    if (this.event.QuestQPID) {
+      return 'Open QUEST Report';
+    } else {
+      return `QPID is missing, can't open QUEST Report`;
     }
   }
 }

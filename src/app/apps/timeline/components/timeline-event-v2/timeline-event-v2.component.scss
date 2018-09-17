@@ -194,3 +194,20 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
 .issue-closed {
   background: $my-issue-closed !important;
 }
+
+.quest {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+  line-height: 14px;
+  margin: 4px 0;
+
+  span.hasQPID {
+    color: $my-primary;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+}

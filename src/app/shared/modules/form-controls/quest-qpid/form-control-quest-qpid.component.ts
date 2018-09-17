@@ -29,7 +29,11 @@ import { FormGroup } from '@angular/forms';
     `
 })
 export class FormControlQuestQpidComponent {
-  @Input() fg_fields: FormGroup;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  type: string;
 
   constructor() {}
 
@@ -61,7 +65,24 @@ export class FormControlQuestQpidComponent {
 
   openQuestRIR() {
     const qpid = this.fg_fields.controls['QuestQPID'].value;
-    if (qpid) {
+    // if (qpid) {
+    //   window.open(
+    //     `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
+    //     '_blank'
+    //   );
+    // }
+
+    const meeting =
+      this.type === 'SQ Meeting' || this.type === 'SET Meeting' ? true : false;
+
+    if (qpid && meeting) {
+      window.open(
+        `https://quest.slb.com/quest/Meeting/Meetingview.asp?QPID=${qpid}`,
+        '_blank'
+      );
+    }
+
+    if (qpid && !meeting) {
       window.open(
         `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
         '_blank'

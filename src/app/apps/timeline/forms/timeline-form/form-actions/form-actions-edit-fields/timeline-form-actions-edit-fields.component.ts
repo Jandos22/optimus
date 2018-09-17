@@ -52,6 +52,12 @@ export class TimelineFormActionsEditFieldsComponent
         .get('FollowUp')
         .valueChanges.pipe(map(FollowUp => ({ FollowUp }))),
       this.fg_fields
+        .get('QuestRIR')
+        .valueChanges.pipe(map(QuestRIR => ({ QuestRIR }))),
+      this.fg_fields
+        .get('QuestQPID')
+        .valueChanges.pipe(map(QuestQPID => ({ QuestQPID }))),
+      this.fg_fields
         .get('RichText')
         .valueChanges.pipe(map(RichText => ({ RichText }))),
       this.fg_fields
@@ -69,9 +75,6 @@ export class TimelineFormActionsEditFieldsComponent
       this.fg_fields
         .get('EventReportersId')
         .valueChanges.pipe(map(EventReportersId => ({ EventReportersId })))
-      // this.fg_fields
-      //   .get('FollowUpById')
-      //   .valueChanges.pipe(map(FollowUpById => ({ FollowUpById })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$

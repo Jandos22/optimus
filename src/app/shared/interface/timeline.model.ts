@@ -38,7 +38,7 @@ export interface TimelineEventItem extends SpListItem {
   // FollowUpBy?: {
   // results: number[];
   // };
-  QuestNumber?: string;
+  QuestRIR?: string;
   QuestQPID?: string;
 }
 

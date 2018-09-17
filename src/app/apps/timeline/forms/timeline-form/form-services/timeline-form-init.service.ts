@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 // services
-// import { ValidationService } from './../../../../../shared/validators/validation.service';
+import { ValidationService } from './../../../../../shared/validators/validation.service';
 
 // interfaces
 import { FormMode } from '../../../../../shared/interface/form.model';
@@ -43,10 +43,22 @@ export class TimelineFormInitService {
         this.getSimpleFormValue(mo, it, 'FollowUp'),
         [Validators.maxLength(255)]
       ],
-      // HashTags: [
-      //   this.getSimpleFormValue(mo, it, 'HashTags'),
-      //   [Validators.maxLength(140)]
-      // ],
+      QuestRIR: [
+        this.getSimpleFormValue(mo, it, 'QuestRIR'),
+        [
+          Validators.minLength(14),
+          Validators.maxLength(14),
+          ValidationService.onlyNumbers
+        ]
+      ],
+      QuestQPID: [
+        this.getSimpleFormValue(mo, it, 'QuestQPID'),
+        [
+          Validators.minLength(6),
+          Validators.maxLength(8),
+          ValidationService.onlyNumbers
+        ]
+      ],
       RichText: [this.getRichText(mo, it)],
       // EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
       EventDate: [this.getEventDate(mo, it), Validators.required],

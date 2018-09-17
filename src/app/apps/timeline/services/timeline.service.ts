@@ -187,6 +187,8 @@ export class TimelineService {
       'Attachments',
       'AttachmentFiles',
       'RichText',
+      'QuestRIR',
+      'QuestQPID',
       'HashTags',
       'Created'
     ];
