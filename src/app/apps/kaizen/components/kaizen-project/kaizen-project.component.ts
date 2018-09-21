@@ -77,18 +77,25 @@ import { KaizenProjectItem } from '../../../../shared/interface/kaizen.model';
 
                 <app-kaizen-done-by
                   class="kaizenproject-card__reporters--container"
-                    [doneBy]="project.DoneBy.results" [projectDate]="project.ProjectDate">
+                    [doneBy]="project?.DoneBy?.results" [projectDate]="project?.ProjectDate">
                 </app-kaizen-done-by>
             </div>
 
         </div>
+
+        <app-locations-card
+          class="locations-card"
+          [locations]="project?.Locations?.results">
+        </app-locations-card>
     </mdc-card>
     `
 })
 export class KaizenProjectComponent {
-  @Input() project: KaizenProjectItem;
+  @Input()
+  project: KaizenProjectItem;
 
-  @Output() openForm = new EventEmitter<KaizenProjectItem>();
+  @Output()
+  openForm = new EventEmitter<KaizenProjectItem>();
 
   constructor() {}
 

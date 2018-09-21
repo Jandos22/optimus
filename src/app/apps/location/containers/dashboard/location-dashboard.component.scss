@@ -35,6 +35,11 @@
     cursor: pointer;
   }
 
+  &.issueOpen {
+    border: 1px solid #b39ddb;
+    background: #d1c4e9;
+  }
+
   &.pending {
     background: #fff9c4;
   }

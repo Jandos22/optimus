@@ -48,7 +48,7 @@ import {
   SearchParamsUser
 } from '../../../../interface/people.model';
 import { FormMode } from '../../../../interface/form.model';
-import { TimelineEventReporters } from '../../../../interface/timeline.model';
+// import { TimelineEventReporters } from '../../../../interface/timeline.model';
 
 @Component({
   selector: 'app-form-control-user-selection',

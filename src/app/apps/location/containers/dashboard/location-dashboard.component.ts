@@ -36,6 +36,13 @@ import { DashboardOrdersExpiredComponent } from '..';
         <div>location has no issues</div>
     </div>
 
+    <app-dashboard-issues-open
+        *ngIf="timelineUsed"
+        [myLocation]="myLocation"
+        [doRefresh]="refresh"
+        (onHaveNotifications)="onHaveNotifications($event)">
+    </app-dashboard-issues-open>
+
     <app-dashboard-orders-expired
         *ngIf="ordersUsed"
         [myLocation]="myLocation"
@@ -82,12 +89,14 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
 
   // these boolean values define
   // which cards to use for checking
+  timelineUsed: boolean; // id 1
   ordersUsed: boolean; // id 7
   harcsUsed: boolean; // id 4
   exemptionsUsed: boolean; // 3
 
   // these boolean values define
   // which application has notifications
+  timelineHaveIssuesOpen: boolean;
   ordersHaveExpired: boolean;
   harcsHaveExpired: boolean;
   harcsHavePending: boolean;
@@ -105,7 +114,7 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
   }
 
   onRefresh() {
-    console.log(this.refresh);
+    // console.log(this.refresh);
     this.refresh = this.refresh ? false : true;
     console.log(this.refresh);
   }
@@ -113,10 +122,15 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
   checkAppsInUse(location: LocationEnt) {
     const appIds = location.ApplicationsInUseId.results;
 
+    this.timelineUsed =
+      _.find(appIds, (id: number) => id === 2) > 0 ? true : false;
+
     this.ordersUsed =
       _.find(appIds, (id: number) => id === 7) > 0 ? true : false;
+
     this.harcsUsed =
       _.find(appIds, (id: number) => id === 4) > 0 ? true : false;
+
     this.exemptionsUsed =
       _.find(appIds, (id: number) => id === 3) > 0 ? true : false;
   }
@@ -126,7 +140,8 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
   }
 
   get AllGood() {
-    return !this.ordersHaveExpired &&
+    return !this.timelineHaveIssuesOpen &&
+      !this.ordersHaveExpired &&
       !this.harcsHaveExpired &&
       !this.harcsHavePending &&
       !this.exemptionsHaveExpired &&

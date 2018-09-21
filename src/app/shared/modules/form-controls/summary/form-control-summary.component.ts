@@ -19,19 +19,28 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
           formControlName="Summary"
           cdkTextareaAutosize
           #autosize="cdkTextareaAutosize"
-          cdkAutosizeMaxRows="1"
-          cdkAutosizeMaxRows="3">
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="6">
         </textarea>
         <mat-hint align="end" *ngIf="mode !== 'view'">
-          {{fg_fields.get('Summary').value?.length }} / 140
+          {{fg_fields.get('Summary').value?.length }} / {{ max }}
         </mat-hint>
         <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class FormControlSummaryComponent {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  mode: FormMode;
+
+  @Input()
+  min: number;
+
+  @Input()
+  max: number;
 
   constructor() {}
 
@@ -50,9 +59,9 @@ export class FormControlSummaryComponent {
       ? required
         ? '... is required'
         : min
-          ? 'minimum 60 characters required'
+          ? `minimum ${this.min} characters required`
           : max
-            ? 'maximum 140 characters allowed'
+            ? `maximum ${this.max} characters allowed`
             : ''
       : '';
   }

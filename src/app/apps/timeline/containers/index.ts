@@ -1,6 +1,6 @@
 import { TimelineComponent } from './timeline/timeline.component';
 import { TimelineHeaderComponent } from './timeline-header/timeline-header.component';
-import { TimelineEventsListComponent } from './timeline-events-list/timeline-events-list.component';
+import { TimelineContentComponent } from './timeline-content/timeline-content.component';
 import { TimelineFooterComponent } from './timeline-footer/timeline-footer.component';
 import { TimelineToolbarComponent } from './timeline-toolbar/timeline-toolbar.component';
 import { TimelineFiltersComponent } from './timeline-filters/timeline-filters.component';
@@ -12,7 +12,7 @@ export const containers: any[] = [
   TimelineComponent,
   TimelineHeaderComponent,
   TimelineToolbarComponent,
-  TimelineEventsListComponent,
+  TimelineContentComponent,
   TimelineFooterComponent,
   TimelineFiltersComponent,
   TimelineFiltersHeaderComponent,
@@ -23,7 +23,7 @@ export const containers: any[] = [
 export * from './timeline/timeline.component';
 export * from './timeline-header/timeline-header.component';
 export * from './timeline-toolbar/timeline-toolbar.component';
-export * from './timeline-events-list/timeline-events-list.component';
+export * from './timeline-content/timeline-content.component';
 export * from './timeline-footer/timeline-footer.component';
 export * from './timeline-filters/timeline-filters.component';
 export * from './timeline-filters/header/timeline-filters-header.component';

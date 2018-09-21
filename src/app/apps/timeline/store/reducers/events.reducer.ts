@@ -63,6 +63,10 @@ export function reducer(
       );
     }
 
+    case EventsActionTypes.DELETE_ONE_EVENT: {
+      return adapter.removeOne(action.id, state);
+    }
+
     default:
       return state;
   }

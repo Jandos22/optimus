@@ -6,6 +6,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+// lodash
+// import * as _ from 'lodash';
+
 // interfaces
 import {
   OrderItem,

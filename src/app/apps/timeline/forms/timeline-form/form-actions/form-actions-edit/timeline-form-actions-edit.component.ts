@@ -23,15 +23,16 @@ import * as fromTimeline from '../../../../store';
 import * as fromErrorActions from '../../../../../../store/actions/errors.actions';
 import * as fromEventsActions from '../../../../store/actions/events.actions';
 
+// services
+import { TimelineFormHttpService } from '../../form-services/timeline-form-http.service';
+import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-list-item.model';
+
 // interfaces
 import {
   TimelineEventItem,
   ToSaveEventImage
 } from '../../../../../../shared/interface/timeline.model';
-
-// services
-import { TimelineFormHttpService } from '../../form-services/timeline-form-http.service';
-import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-list-item.model';
+import { PeopleItem } from '../../../../../people/models/people-item.model';
 
 @Component({
   selector: 'app-timeline-form-actions-edit',
@@ -60,14 +61,27 @@ import { SpListItemAttachmentFile } from '../../../../../../shared/interface/sp-
     `
 })
 export class TimelineFormActionsEditComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() fg_image: FormGroup;
-  @Input() initialFields: TimelineEventItem;
+  @Input()
+  fg_fields: FormGroup;
 
-  @Output() closeForm = new EventEmitter<any>();
-  @Output() switchFormMode = new EventEmitter<any>();
+  @Input()
+  fg_image: FormGroup;
 
-  @Output() updateDataItem = new EventEmitter<TimelineEventItem>();
+  @Input()
+  initialFields: TimelineEventItem;
+
+  @Input()
+  selfUser?: PeopleItem;
+
+  @Output()
+  closeForm = new EventEmitter<any>();
+
+  @Output()
+  switchFormMode = new EventEmitter<any>();
+
+  @Output()
+  updateDataItem = new EventEmitter<TimelineEventItem>();
+
   @Output()
   updateDataItemImage = new EventEmitter<SpListItemAttachmentFile[]>();
 
@@ -145,6 +159,15 @@ export class TimelineFormActionsEditComponent implements OnInit, OnDestroy {
   saveFields(newFields: TimelineEventItem) {
     console.log('starting to save fields:');
     console.log(newFields);
+
+    if (_.has(newFields, 'FollowUp') === true) {
+      // add last FollowUpBy info
+      newFields = {
+        ...newFields,
+        FollowUpById: this.selfUser.Id,
+        LastFollowUp: new Date(Date.now())
+      };
+    }
 
     this.spHttp
       .updateItem(newFields)

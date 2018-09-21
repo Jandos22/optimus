@@ -59,13 +59,16 @@ import { PeopleItem } from '../../../../../../shared/interface/people.model';
 export class OrdersFormActionsEditComponent implements OnInit, OnDestroy {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   initialFields: OrderItem;
+
   @Input()
   selfUser?: PeopleItem;
 
   @Output()
   closeForm = new EventEmitter<any>();
+
   @Output()
   switchFormMode = new EventEmitter<any>();
 

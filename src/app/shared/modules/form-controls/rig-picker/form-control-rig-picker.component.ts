@@ -51,7 +51,7 @@ import { RigsCreateNewRigComponent } from '../../../../apps-secondary/rigs/creat
       <mat-autocomplete #auto="matAutocomplete"
         [displayWith]="displayFn.bind(this)"
         (optionSelected)="onRigSelect($event)">
-        
+
         <mat-option *ngFor="let rig of rigs" [value]="rig">
           {{ rig.Title }}
         </mat-option>

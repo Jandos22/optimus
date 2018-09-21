@@ -11,7 +11,8 @@ export interface ParamsState {
   text: string;
   locations: number[];
   top: number;
-  eventTypes: number[];
+  eventType: string;
+  issueState: string;
   eventReporters: number[];
 }
 
@@ -19,7 +20,8 @@ export const initialState: ParamsState = {
   text: null,
   locations: null,
   top: null,
-  eventTypes: null,
+  eventType: null,
+  issueState: null,
   eventReporters: null
 };
 

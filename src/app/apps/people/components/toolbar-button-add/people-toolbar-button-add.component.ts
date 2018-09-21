@@ -5,7 +5,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['people-toolbar-button-add.component.scss'],
   template: `
     <div class="common-button">
-        <button mat-icon-button matTooltip="Post new event"
+        <button mat-icon-button matTooltip="add new user account"
             (click)="openUserForm.emit()">
             <span class="fa_regular"><fa-icon [icon]="['fas', 'plus']"></fa-icon></span>
         </button>
@@ -13,6 +13,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
     `
 })
 export class PeopleToolbarButtonAddComponent {
-  @Output() openUserForm = new EventEmitter<any>();
+  @Output()
+  openUserForm = new EventEmitter<any>();
   constructor() {}
 }

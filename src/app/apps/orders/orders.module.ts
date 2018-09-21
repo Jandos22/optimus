@@ -1,5 +1,6 @@
 // my shared modules
 import { SharedModule } from '../../shared/shared.module';
+import { SharedViewComponentsModule } from '../../shared/modules/view-components/shared-view-components.module';
 
 // angular
 import { NgModule } from '@angular/core';
@@ -51,6 +52,7 @@ export const ordersRoutes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
+    SharedViewComponentsModule,
     ReactiveFormsModule,
     RouterModule.forChild(ordersRoutes),
     StoreModule.forFeature('orders', reducers),

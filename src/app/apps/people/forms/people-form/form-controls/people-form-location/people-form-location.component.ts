@@ -20,7 +20,7 @@ import { FormMode } from '../../../../../../shared/interface/form.model';
         <mat-form-field fxFlexFill>
           <mat-select placeholder="Location Assigned" formControlName="LocationAssignedId"
             [disabled]="mode === 'view' || ual < 3">
-            <mat-option *ngFor="let item of locations" [value]="item.id">
+            <mat-option *ngFor="let item of locations | filterLocations" [value]="item.id">
                 {{ item.Title }}
             </mat-option>
           </mat-select>
@@ -30,11 +30,17 @@ import { FormMode } from '../../../../../../shared/interface/form.model';
     `
 })
 export class PeopleFormLocationComponent {
-  @Input() fg_fields: FormGroup;
-  @Input() locations: LocationEnt[];
-  @Input() mode: FormMode;
-  @Input() ual: number; // user access level
-  // @Input() disabled: boolean;
+  @Input()
+  fg_fields: FormGroup;
+
+  @Input()
+  locations: LocationEnt[];
+
+  @Input()
+  mode: FormMode;
+
+  @Input()
+  ual: number; // user access level
 
   constructor() {}
 

@@ -6,27 +6,49 @@ import { PeopleItem } from './people.model';
 export interface TimelineEventItem extends SpListItem {
   id?: number;
   EventDate?: Date;
+  EventType2?: string;
+  IssueState?: string;
   Title?: string;
   Summary?: string;
+  FollowUp?: string;
+  FollowUpById?: number;
+  FollowUpBy?: PeopleItem;
+  LastFollowUp?: Date;
   RichText?: any;
-  EventReporters?: TimelineEventReporters;
-  EventReportersId?: TimelineEventReportersId;
+  // lookup multiple
+  EventReportersId?: {
+    results?: number[];
+  };
+  EventReporters?: {
+    results?: PeopleItem[];
+  };
+  // lookup single
   EventType?: TimelineEventType;
   EventTypeId?: number[];
   Locations?: {
     results?: LocationEnt[];
   };
-  LocationsId?: TimelineLocationsId;
-  HashTags?: string;
+  LocationsId?: {
+    results?: number[];
+  };
+  // HashTags?: string;
   // pseudo field
   New?: boolean;
+
+  // FollowUpBy?: {
+  // results: number[];
+  // };
+  QuestRIR?: string;
+  QuestQPID?: string;
 }
 
 export interface TimelineSearchParams {
-  text: string;
-  locations: number[];
-  top: number;
-  eventTypes?: number[];
+  text?: string;
+  locations?: number[];
+  top?: number;
+  // eventTypes?: number[];
+  eventType?: string;
+  issueState?: string;
   eventReporters?: number[];
 }
 
@@ -37,13 +59,13 @@ export interface TimelineEventType extends SpListItem {
   ApplicableTo?: LocationEnt[];
 }
 
-export interface TimelineEventReportersId {
-  results?: number[];
-}
+// export interface TimelineEventReportersId {
+//   results?: number[];
+// }
 
-export interface TimelineEventReporters {
-  results?: PeopleItem[];
-}
+// export interface TimelineEventReporters {
+//   results?: PeopleItem[];
+// }
 
 export interface TimelineLocationsId {
   results?: number[];

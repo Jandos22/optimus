@@ -30,9 +30,12 @@ export const selectLocationsTotal = createSelector(
 
 export const getLocationById = (id: number) =>
   createSelector(selectLocationsEntities, entities => {
-    // console.log(entities);
-    // console.log(id);
     return entities[id];
+  });
+
+export const getLocationTitleById = (id: number) =>
+  createSelector(selectLocationsEntities, entities => {
+    return entities[id].Title;
   });
 
 export const selectSelectedId = createSelector(

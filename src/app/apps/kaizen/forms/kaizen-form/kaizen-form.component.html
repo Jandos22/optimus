@@ -43,7 +43,7 @@
         <!-- Summary / 2 columns -->
         <div class="group-of-2" fxLayout="row wrap">
             <app-form-control-summary class="cmn-form-component take-2-cols" fxLayout="row" [fg_fields]="fg_fields"
-                [mode]="data.mode">
+                [mode]="data.mode" [min]="60" [max]="140">
             </app-form-control-summary>
         </div>
 
@@ -74,6 +74,7 @@
             <div fxFlex="19.5px"></div>
         </div>
 
+        <!-- QUEST -->
         <div class="group-of-2" fxLayout="row wrap" *ngIf="(fg_fields.get('QuestRIR').value || data.mode !== 'view')">
             <app-form-control-quest-rir class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields">
             </app-form-control-quest-rir>

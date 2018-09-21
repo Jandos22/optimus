@@ -43,8 +43,11 @@ export class JobsService {
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text ? params.text.replace('#', '%23') : null;
+
     const jobType = params.jobType ? params.jobType : null;
+
     const well = params.well ? params.well.replace('#', '%23') : null;
+
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
     // people arrays must be ids array

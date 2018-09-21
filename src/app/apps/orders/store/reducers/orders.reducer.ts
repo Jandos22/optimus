@@ -63,6 +63,10 @@ export function reducer(
       );
     }
 
+    case OrdersActionTypes.DELETE_ONE: {
+      return adapter.removeOne(action.id, state);
+    }
+
     default:
       return state;
   }

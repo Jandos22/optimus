@@ -14,6 +14,9 @@ import {
   tap
 } from 'rxjs/operators';
 
+// lodash
+import * as _ from 'lodash';
+
 // constants
 import { ApiPath } from '../../../shared/constants';
 
@@ -54,6 +57,7 @@ export class RigsService {
     url += `?$select=${this.getSelect()}`;
 
     if (text) {
+      text = _.replace(text, /#/g, '%23');
       url += `&$filter=substringof('${text}',Title)`;
     }
 

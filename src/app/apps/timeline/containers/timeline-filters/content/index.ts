@@ -1,10 +1,13 @@
 import { TimelineFiltersEventTypesComponent } from './event-types/timeline-filters-event-types.component';
-// import { TimelineFiltersLocationsComponent } from './locations/timeline-filters-locations.component';
+import { TimelineFiltersEventTypesV2Component } from './event-types-v2/timeline-filters-event-types-v2.component';
+import { TimelineFiltersIssueStateComponent } from './issue-state/timeline-filters-issue-state.component';
 
 export const filters: any[] = [
-  //   TimelineFiltersLocationsComponent,
-  TimelineFiltersEventTypesComponent
+  TimelineFiltersEventTypesComponent,
+  TimelineFiltersEventTypesV2Component,
+  TimelineFiltersIssueStateComponent
 ];
 
-// export * from './locations/timeline-filters-locations.component';
 export * from './event-types/timeline-filters-event-types.component';
+export * from './event-types-v2/timeline-filters-event-types-v2.component';
+export * from './issue-state/timeline-filters-issue-state.component';

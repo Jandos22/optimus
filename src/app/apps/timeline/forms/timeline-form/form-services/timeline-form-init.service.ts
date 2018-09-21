@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 // services
-// import { ValidationService } from './../../../../../shared/validators/validation.service';
+import { ValidationService } from './../../../../../shared/validators/validation.service';
 
 // interfaces
 import { FormMode } from '../../../../../shared/interface/form.model';
@@ -36,16 +36,34 @@ export class TimelineFormInitService {
         [
           Validators.required,
           Validators.minLength(60),
-          Validators.maxLength(140)
+          Validators.maxLength(255)
         ]
       ],
-      HashTags: [
-        this.getSimpleFormValue(mo, it, 'HashTags'),
-        [Validators.maxLength(140)]
+      FollowUp: [
+        this.getSimpleFormValue(mo, it, 'FollowUp'),
+        [Validators.maxLength(255)]
+      ],
+      QuestRIR: [
+        this.getSimpleFormValue(mo, it, 'QuestRIR'),
+        [
+          Validators.minLength(14),
+          Validators.maxLength(14),
+          ValidationService.onlyNumbers
+        ]
+      ],
+      QuestQPID: [
+        this.getSimpleFormValue(mo, it, 'QuestQPID'),
+        [
+          Validators.minLength(6),
+          Validators.maxLength(8),
+          ValidationService.onlyNumbers
+        ]
       ],
       RichText: [this.getRichText(mo, it)],
-      EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
+      // EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
       EventDate: [this.getEventDate(mo, it), Validators.required],
+      EventType2: [this.getEventType(mo, it), Validators.required],
+      IssueState: [this.getIssueState(mo, it)],
       LocationsId: this.fb.group({
         results: [this.getLocationsId(mo, it, lo), Validators.required]
       }),
@@ -106,6 +124,28 @@ export class TimelineFormInitService {
         return item.EventTypeId;
       case 'edit':
         return item.EventTypeId;
+    }
+  }
+
+  getEventType(mode: FormMode, item: TimelineEventItem) {
+    switch (mode) {
+      case 'new':
+        return 'Note'; // Default Event Type
+      case 'view':
+        return item.EventType2;
+      case 'edit':
+        return item.EventType2;
+    }
+  }
+
+  getIssueState(mode: FormMode, item: TimelineEventItem) {
+    switch (mode) {
+      case 'new':
+        return 'Open'; // Default Event Type
+      case 'view':
+        return item.IssueState;
+      case 'edit':
+        return item.IssueState;
     }
   }
 

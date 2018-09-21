@@ -11,6 +11,10 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 
+// router
+import { Router } from '@angular/router';
+
+// lodash
 import * as _ from 'lodash';
 
 // forms
@@ -32,7 +36,6 @@ import {
   OrderStatus
 } from '../../../../shared/interface/orders.model';
 import { PeopleItem } from '../../../../shared/interface/people.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders-filters',
@@ -45,8 +48,10 @@ import { Router } from '@angular/router';
     </app-orders-filters-header>
 
     <app-orders-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async" [doReset]="doReset"
+        [fg_filters]="fg_filters"
+        [locofinterest]="locofinterest$ | async"
+        [selfUser]="selfUser$ | async"
+        [doReset]="doReset"
         [orderStatuses]="orderStatuses"
         (updateLocationsofinterest)="updateLocationsofinterest($event)"
         (onSelectRequestors)="onSelectRequestors($event)">
@@ -83,6 +88,7 @@ export class OrdersFiltersComponent implements OnInit, OnChanges {
   // from store.root.locations.selected
   $locofinterest: Subscription;
   locofinterest$: Observable<number[]>;
+
   locations: number[];
 
   doReset = false;
@@ -157,8 +163,11 @@ export class OrdersFiltersComponent implements OnInit, OnChanges {
       .subscribe((params: OrdersSearchParams) => {
         console.log('FG_FILTERS changed');
         console.log(params);
+
         // modify URL with new params
         this.onFiltersUpdate.emit(params);
+
+        // update params in store
         this.store_orders.dispatch(new fromOrders.UpdateParams(params));
       });
 
@@ -194,7 +203,7 @@ export class OrdersFiltersComponent implements OnInit, OnChanges {
   }
 
   updateLocationsofinterest(locations: number[]) {
-    // refactor to don't update if already equal
+    // later refactor to don't update if already equal
     console.log(locations);
     this.store_root.dispatch(new fromRoot.UpdateSelected(locations));
   }

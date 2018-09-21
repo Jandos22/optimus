@@ -106,6 +106,7 @@ export class KaizenService {
       'DoneBy/Fullname',
       'LocationsId',
       'Locations/Id',
+      'Locations/Title',
       'Attachments',
       'AttachmentFiles',
       'RichText',
