@@ -50,14 +50,14 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      // loginName = 'zombayev@slb.com'; // FE
-      // spId = 167;
+      loginName = 'zombayev@slb.com'; // FE
+      spId = 167;
       // loginName = 'azhussipov@slb.com'; // FE
       // spId = 6;
       // loginName = 'cmarcotte@slb.com'; // PSDM
       // spId = 209;
-      loginName = 'rmiller36@slb.com'; // OU PSDM
-      spId = 16;
+      // loginName = 'rmiller36@slb.com'; // OU PSDM
+      // spId = 16;
       // loginName = 'myergazin@slb.com'; // OU PSDM
       // spId = 210;
       // loginName = 'knigmetullin@slb.com'; // OU PSDM

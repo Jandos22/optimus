@@ -77,9 +77,8 @@ app-layout {
   width: 100%;
   min-width: 100%;
   overflow: hidden;
-  background: #e3f2fd;
-  // position
-  // position: relative;
+  // background: #e3f2fd;
+  background: #fafafa;
 }
 
 // v2 for filters right menu
@@ -98,8 +97,8 @@ app-layout {
   width: 100%;
   min-width: 100%;
   overflow: hidden;
-  background: #e3f2fd;
-  // position
+  // background: #e3f2fd;
+  background: #fafafa;
 
   &.filtersOpened {
     @media screen and (min-width: 856px) {
@@ -110,27 +109,17 @@ app-layout {
   }
 }
 
-.common-body-container {
-  // properties as flex container
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
-  // other styles
-  box-sizing: border-box;
-  margin: 0;
-  height: 100%;
-  min-height: 100%;
-  width: 100%;
-  min-width: 100%;
-  overflow: hidden;
-  background: #e3f2fd;
-}
-
 .common-header {
   background: $my-blue-100;
   border-bottom: 1px solid $my-blue-100;
+  padding: 0 16px;
+  // height: 65px;
+  position: relative;
+}
+
+.common-header2 {
+  background: #fafafa;
+  border-bottom: 1px solid #fafafa;
   padding: 0 16px;
   // height: 65px;
   position: relative;
@@ -725,4 +714,10 @@ button.status-check-button {
   background: #fafafa;
   border-bottom-left-radius: 8px;
   border-bottom: 1px solid #dedede;
+}
+
+// custom tooltip classes
+
+.tooltip-job-summary {
+  font-size: 16px !important;
 }

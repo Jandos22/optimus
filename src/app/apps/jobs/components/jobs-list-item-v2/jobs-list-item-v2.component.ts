@@ -45,7 +45,7 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
 
         <div class="job-row-2" fxLayout="row nowrap" fxLayoutAlign="start start" fxLayoutGap="12px">
 
-          <div class="well" (click)="openForm.emit(job)" [matTooltip]="job.Well + ', '">
+          <div class="well" (click)="openForm.emit(job)" [matTooltip]="job.Well + ', ' + job.Rig.Title">
             {{ job.Well }}
           </div>
           <div class="title" (click)="openForm.emit(job)">

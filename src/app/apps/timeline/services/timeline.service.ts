@@ -174,6 +174,7 @@ export class TimelineService {
       'FollowUpBy',
       'FollowUpById',
       'FollowUpBy/Fullname',
+      'FollowUpBy/Alias',
       'LastFollowUp',
       'EventType2',
       'IssueState',

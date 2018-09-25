@@ -21,7 +21,7 @@ import { PeopleItem } from '../../shared/interface/people.model';
   <div fxFlexFill fxLayout="column" class="sidenav__container">
 
     <!-- User Information Section -->
-    <app-sidenav-header *ngIf="userSharepoint$ | async"
+    <app-sidenav-header *ngIf="(userSharepoint$ | async) && userOptimus"
       fxFlex="65px"  fxLayout="row" fxLayoutAlign="start center"
       class="common-header"
       [userSharepoint]="userSharepoint$ | async"

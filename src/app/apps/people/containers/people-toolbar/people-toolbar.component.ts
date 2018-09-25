@@ -29,8 +29,10 @@ import { FormGroup } from '@angular/forms';
         [fg_params]="fg_params">
     </app-people-toolbar-button-clear>
 
+    <!--
     <app-people-toolbar-button-filters>
     </app-people-toolbar-button-filters>
+    -->
 
     <app-people-toolbar-button-add
       (openUserForm)="openUserForm.emit()">
@@ -38,13 +40,23 @@ import { FormGroup } from '@angular/forms';
     `
 })
 export class PeopleToolbarComponent {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() fg_params: FormGroup;
+  @Input()
+  appName: string;
 
-  @Output() openUserForm = new EventEmitter<any>();
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  fg_params: FormGroup;
+
+  @Output()
+  openUserForm = new EventEmitter<any>();
+
+  @Output()
+  onFocus = new EventEmitter<any>();
+
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 

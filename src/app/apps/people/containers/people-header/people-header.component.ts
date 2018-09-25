@@ -47,10 +47,13 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
       `
 })
 export class PeopleHeaderComponent implements OnInit, OnDestroy {
-  @Input() appName: string;
-  @Input() searching: boolean;
+  @Input()
+  appName: string;
+  @Input()
+  searching: boolean;
 
-  @Output() openUserForm = new EventEmitter<any>();
+  @Output()
+  openUserForm = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
@@ -79,7 +82,7 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
 
   resetParamsFormGroup() {
     this.fg_params.get('query').patchValue('');
-    this.fg_params.get('top').patchValue(10);
+    this.fg_params.get('top').patchValue(25);
   }
 
   subscribeToParamsFormGroup() {

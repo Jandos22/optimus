@@ -28,7 +28,7 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   styleUrls: ['people-content-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="common-list-item"
+    <div class="people-list-item"
         [@itemState]="itemState"
         (@itemState.start)="animationStarted($event)"
         (@itemState.done)="animationDone($event)"
@@ -44,7 +44,9 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
             </button>
         </div>
         <div fxFlex class="people-user-info" fxLayout="column" fxLayoutAlign="center start">
-            <div *ngIf="item.Fullname" class="fullname">
+            <div class="fullname"
+              *ngIf="item.Fullname"
+              (click)="openUserForm.emit(item)">
                 {{ item.Fullname}}
             </div>
             <div *ngIf="!item.Fullname" class="fullname">
@@ -61,11 +63,13 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
                 <span class='fa_regular'><fa-icon [icon]="['fas', 'user-graduate']"></fa-icon></span>
             </button>
         </div>
+        <!-- removed for now as functionality is not yet ready
         <div fxFlex="40px" class='common-button'>
             <button mat-icon-button>
                 <span class='fa_regular'><fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon></span>
             </button>
         </div>
+        -->
         <div fxFlex="4px"></div>
     </div>
     `,
@@ -89,8 +93,10 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   ]
 })
 export class PeopleContentListItemComponent implements OnChanges {
-  @Input() item: PeopleItem;
-  @Input() last: boolean;
+  @Input()
+  item: PeopleItem;
+  @Input()
+  last: boolean;
 
   // all items are initially "Existed"
   // check ngOnChanges
@@ -101,7 +107,8 @@ export class PeopleContentListItemComponent implements OnChanges {
   // when new item arrive, then green/light-grey will blink 4 times
   counter = 5; // needs to be odd to end in Existed state
 
-  @Output() openUserForm = new EventEmitter<PeopleItem>();
+  @Output()
+  openUserForm = new EventEmitter<PeopleItem>();
 
   constructor(private utils: UtilitiesService) {}
 

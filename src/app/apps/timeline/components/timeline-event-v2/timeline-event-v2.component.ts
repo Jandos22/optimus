@@ -84,8 +84,9 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
           <div class="followup"
             *ngIf="event.EventType2 === 'Issue'">
+            <!-- <span class="followupby-alias">@{{ event.FollowUpBy.Alias }}</span> -->
             {{ event.FollowUp }}
-            <span class="followupby"> - follow up by {{ event.FollowUpBy.Fullname}} on {{ event.LastFollowUp | date: 'shortDate' }}</span>
+            <span class="followupby"> - follow up by {{event.FollowUpBy.Fullname}} on {{ event.LastFollowUp | date: 'shortDate' }}</span>
           </div>
 
         </div>

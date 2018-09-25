@@ -128,7 +128,7 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   width: 100%;
   font-size: 16px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.875);
+  color: rgba(0, 0, 0, 1);
   margin-bottom: 4px;
 
   &:hover {
@@ -145,7 +145,8 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   font-size: 12px;
   line-height: 14px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.625);
+  // color: rgba(0, 0, 0, 0.625);
+  color: rgba(0, 0, 0, 0.87);
   margin-bottom: 4px;
 
   &:hover {
@@ -158,18 +159,27 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   font-size: 12px;
   line-height: 14px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.625);
+  // color: rgba(0, 0, 0, 0.625);
+  color: rgba(0, 0, 0, 0.87);
+  margin-top: 4px;
   margin-bottom: 4px;
   margin-left: 4px;
   padding-left: 8px;
   border-left: 2px solid #cccccc;
 }
 
+.followupby-alias {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.63);
+}
+
 .followupby {
   font-size: 10px;
   line-height: 14px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.63);
 }
 
 .event-locations {
