@@ -53,7 +53,8 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
     </app-timeline-filters-content>
 
     <app-timeline-filters-footer fxFlex="49px" class="common-filters-footer"
-      (onResetFilters)="resetFgFilters()">
+      (onResetFilters)="resetFgFilters()"
+      (toggleFilters)="toggleFilters.emit()">
     </app-timeline-filters-footer>
     `
 })
