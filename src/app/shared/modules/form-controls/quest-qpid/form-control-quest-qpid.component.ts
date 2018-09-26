@@ -78,7 +78,7 @@ export class FormControlQuestQpidComponent {
 
     if (qpid && !meeting) {
       window.open(
-        `https://quest.slb.com/quest/RIR/RIRdsp.asp?QPID=${qpid}`,
+        `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
         '_blank'
       );
     }
