@@ -1,4 +1,5 @@
 import {
+  faAddressCard,
   faAngleDown,
   faBars,
   faBell,
@@ -45,6 +46,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 export const fontawesome_icons = {
+  faAddressCard,
   faAngleDown,
   faBars,
   faBell,

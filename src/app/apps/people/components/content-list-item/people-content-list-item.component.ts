@@ -63,6 +63,11 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
                 <span class='fa_regular'><fa-icon [icon]="['fas', 'user-graduate']"></fa-icon></span>
             </button>
         </div>
+        <div fxFlex="40px" class='common-button'>
+            <button mat-icon-button matTooltip='Open LDAP record' (click)="openLDAP(item.Alias)">
+                <span class='fa_regular'><fa-icon [icon]="['fas', 'address-card']"></fa-icon></span>
+            </button>
+        </div>
         <!-- removed for now as functionality is not yet ready
         <div fxFlex="40px" class='common-button'>
             <button mat-icon-button>
@@ -127,6 +132,12 @@ export class PeopleContentListItemComponent implements OnChanges {
         `https://quest.slb.com/quest/Certifications/Rpts/MyTrainingRpt.asp?EmpNo=${Gin}`,
         '_blank'
       );
+    }
+  }
+
+  openLDAP(Alias: string) {
+    if (Alias) {
+      window.open(`http://ldap.slb.com/query.cgi?alias=${Alias}`, '_blank');
     }
   }
 

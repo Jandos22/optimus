@@ -24,10 +24,13 @@ import { PeopleItem } from '../../../../../../shared/interface/people.model';
   template: ``
 })
 export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: PeopleItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: PeopleItem;
 
-  @Output() whenUnsavedFieldsChange = new EventEmitter<Object>();
+  @Output()
+  whenUnsavedFieldsChange = new EventEmitter<Object>();
 
   // combination of individual form control changes
   fc_changes$: Observable<Object>;
@@ -67,6 +70,13 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       this.fg_fields
         .get('LocationAssignedId')
         .valueChanges.pipe(map(id => ({ LocationAssignedId: id }))),
+
+      // LocationsOfInterest observable
+      this.fg_fields
+        .get('LocationsOfInterestId')
+        .valueChanges.pipe(
+          map(LocationsOfInterestId => ({ LocationsOfInterestId }))
+        ),
 
       // PositionId observable
       this.fg_fields

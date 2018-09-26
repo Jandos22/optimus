@@ -6,7 +6,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
   template: `
     <div class="common-button">
         <button mat-icon-button matTooltip="add new user account"
-            (click)="openUserForm.emit()">
+            (click)="openForm.emit()">
             <span class="fa_regular"><fa-icon [icon]="['fas', 'plus']"></fa-icon></span>
         </button>
     </div>
@@ -14,6 +14,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class PeopleToolbarButtonAddComponent {
   @Output()
-  openUserForm = new EventEmitter<any>();
+  openForm = new EventEmitter<any>();
   constructor() {}
 }

@@ -21,7 +21,7 @@ export class PeopleLookupService {
     // building url for http call
     let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${ID})`;
     url += `?$select=${this.peopleService.getSelectFields()}`;
-    url += `&$expand=${this.peopleService.getExpandsFields()}`;
+    url += `&$expand=${this.peopleService.getExpandFields()}`;
 
     // Observable created from Promise
     const getUserById$ = from(sprLib.rest({ url, type: 'GET' }));

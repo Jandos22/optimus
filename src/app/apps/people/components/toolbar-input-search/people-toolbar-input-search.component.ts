@@ -9,27 +9,33 @@ import { FormGroup } from '@angular/forms';
         <input class="common-toolbar-input-search"
             type="text"
             [placeholder]="appName"
-            formControlName="query"
+            formControlName="text"
             autocomplete="off"
             (focus)="onFocus.emit()" (blur)="onBlur.emit()">
     </div>
     `
 })
 export class PeopleToolbarInputSearchComponent {
-  @Input() appName: string;
-  @Input() fg_params: FormGroup;
+  @Input()
+  appName: string;
 
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Input()
+  fg_params: FormGroup;
+
+  @Output()
+  onFocus = new EventEmitter<any>();
+
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 
   clearQuery() {
-    this.fg_params.get('query').patchValue('');
+    this.fg_params.get('text').patchValue('');
   }
 
   errorMessage() {
-    const control = this.fg_params.controls['query'];
+    const control = this.fg_params.controls['text'];
 
     const onlySearchable = control.hasError('onlySearchable');
 

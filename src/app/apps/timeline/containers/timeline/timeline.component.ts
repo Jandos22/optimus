@@ -189,11 +189,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   openForm(mode, item?): void {
     const data = { mode, item };
+
     const formRef = this.form.open(TimelineFormComponent, {
       data,
       disableClose: true,
       autoFocus: false
     });
+
     formRef
       .afterClosed()
       .pipe(take(1))
@@ -233,5 +235,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.$data.unsubscribe();
     this.$params.unsubscribe();
     this.$searching.unsubscribe();
+    this.url$.unsubscribe();
   }
 }

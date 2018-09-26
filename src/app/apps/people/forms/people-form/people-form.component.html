@@ -6,7 +6,8 @@
         <div class="group-of-4" fxLayout="row wrap" fxLayoutAlign="start start">
 
             <div class="group-of-1 take-2-when-2" fxLayout="row wrap" fxLayoutAlign="center start">
-                <app-people-form-photo class="cmn-form-component" *ngIf="fg_photo" [fg_photo]="fg_photo" [mode]="data.mode" (photoChanged)="photoChanged($event)">
+                <app-people-form-photo class="cmn-form-component" *ngIf="fg_photo" [fg_photo]="fg_photo" [mode]="data.mode"
+                    (photoChanged)="photoChanged($event)">
                 </app-people-form-photo>
             </div>
 
@@ -34,19 +35,23 @@
 
                     <div class="form-group-title">Job Duties</div>
 
-                    <app-people-form-position class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [ual]="ual$ | async" [mode]="data.mode"
-                        [positions]="peoplePositions$ | async">
+                    <app-people-form-position class="cmn-form-component" fxLayout="row" [fg_fields]="fg_fields" [ual]="ual$ | async"
+                        [mode]="data.mode" [positions]="peoplePositions$ | async">
                     </app-people-form-position>
 
                 </div>
 
-                <div class="group-of-3">
+                <div class="group-of-3" fxLayout="row wrap" fxLayoutAlign="start start">
 
                     <div class="form-group-title">Locations</div>
 
-                    <app-people-form-location class="cmn-form-component" [fg_fields]="fg_fields" [mode]="data.mode" [locations]="$locations | async"
-                        [ual]="ual$ | async">
+                    <app-people-form-location class="cmn-form-component" [fg_fields]="fg_fields" [mode]="data.mode"
+                        [locations]="$locations | async" [ual]="ual$ | async">
                     </app-people-form-location>
+
+                    <app-people-form-locations class="cmn-form-component" [fg_fields]="fg_fields" [mode]="data.mode"
+                        [locations]="$locations | async">
+                    </app-people-form-locations>
 
                 </div>
             </div>
@@ -59,7 +64,8 @@
 
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
-    <app-people-form-actions [fg_fields]="fg_fields" [fg_photo]="fg_photo" [initialFields]="data.item" [mode]="data.mode" (updateDataItem)="updateFormGroupFields($event)"
-        (updateFormGroupPhoto)="updateFormGroupPhoto($event)" (switchFormMode)="switchFormMode($event)" (closeUserForm)="closeUserForm($event)">
+    <app-people-form-actions [fg_fields]="fg_fields" [fg_photo]="fg_photo" [initialFields]="data.item" [mode]="data.mode"
+        (updateDataItem)="updateFormGroupFields($event)" (updateFormGroupPhoto)="updateFormGroupPhoto($event)"
+        (switchFormMode)="switchFormMode($event)" (closeUserForm)="closeUserForm($event)">
     </app-people-form-actions>
 </mat-dialog-actions>

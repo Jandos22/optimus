@@ -1,18 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import * as _ from 'lodash';
+
 // rxjs
-import { throwError, of, from } from 'rxjs';
-import { map, mergeMap, catchError, switchMap, take } from 'rxjs/operators';
+import { Observable, throwError, of, from } from 'rxjs';
+import {
+  map,
+  mergeMap,
+  catchError,
+  switchMap,
+  take,
+  retry
+} from 'rxjs/operators';
 
 // constants
-import { ApiPath } from '../../../shared/constants';
+import { ApiPath, WirelinePath } from '../../../shared/constants';
 import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
 import {
   PeopleUpdatedPhoto,
-  UserSearchParams
+  UserSearchParams,
+  PeopleItem
 } from '../../../shared/interface/people.model';
 import { SpResponse } from '../../../shared/interface/sp-response.model';
 import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
@@ -32,6 +42,7 @@ export class PeopleService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
+        retry(3),
         switchMap((response: SpResponse) => {
           // console.log(response.d.results);
           if (response.d.results) {
@@ -40,6 +51,11 @@ export class PeopleService {
         })
         // errors (if any) are caught in search effects
       );
+  }
+
+  getData(url) {
+    const get$ = from(sprLib.rest({ url }));
+    return get$ as Observable<PeopleItem[]>;
   }
 
   updatePeopleItem(updatedFields) {
@@ -192,25 +208,38 @@ export class PeopleService {
   buildUrl(params: UserSearchParams, counter?: boolean) {
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
-    // filters
-    const text = params.query.replace('#', '%23'); // otherwise http request will throw error
-    const locations = params.locations; // locations must be ids array
+    // parameters
+
+    // # needs to be replaced, otherwise http request to sharepoint will through error
+    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
+
+    // locations must be ids array
+    const locations = params.locations ? params.locations : [];
+
     const positions = params.positions ? params.positions : []; // locations must be ids array
 
-    let top = params.top;
+    // if top is missing then default is 25
+    let top = params.top ? params.top : 25;
+
+    // count filters
+    let countFilters = 0;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
-    url += `&$expand=${this.getExpandsFields().toString()}`;
+    url += `&$expand=${this.getExpandFields().toString()}`;
 
     // $filter add when any of these filter options present
     if (text || locations.length || positions) {
       url += `&$filter=`;
     }
 
+    // Text filter comes from input in header
+    // must come first in url
+    // don't put any filters before Text filter
     // text will search only in these fields
     // too many fields to search may slow down response time
     if (text) {
+      countFilters++;
       url += `((substringof('${text}',Name))`;
       url += `or(substringof('${text}',Surname))`;
       url += `or(substringof('${text}',Alias))`;
@@ -218,23 +247,31 @@ export class PeopleService {
       url += `or(substringof('${text}',Gin)))`;
     }
 
-    // locations filter configuration
+    // locations
     // check if "AND" is needed
     // finds items with given location
     if (locations.length) {
-      if (text) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
+
+      countFilters++;
+
+      // find items with given locations
       url += `${this.getFilterLocationAssigned(locations)}`;
     }
 
-    // positions filter configuration
-    // check if "AND" is needed
+    // positions
     // finds items with given positions
     if (positions.length) {
-      if (text || positions.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
         url += 'and';
       }
+
+      countFilters++;
+
       url += `${this.getFilterPositions(positions)}`;
     }
 
@@ -267,6 +304,8 @@ export class PeopleService {
       'LocationAssigned/Id',
       'LocationAssigned/Title',
       'LocationAssignedId',
+      // 'LocationsOfInterest',
+      'LocationsOfInterestId',
       'PositionId',
       'Position/Id',
       'Position/Title',
@@ -279,7 +318,7 @@ export class PeopleService {
     return $select.toString();
   }
 
-  getExpandsFields() {
+  getExpandFields() {
     const $expand = [
       'AttachmentFiles',
       'LocationAssigned',
