@@ -65,12 +65,6 @@ export class FormControlQuestQpidComponent {
 
   openQuestRIR() {
     const qpid = this.fg_fields.controls['QuestQPID'].value;
-    // if (qpid) {
-    //   window.open(
-    //     `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
-    //     '_blank'
-    //   );
-    // }
 
     const meeting =
       this.type === 'SQ Meeting' || this.type === 'SET Meeting' ? true : false;
@@ -84,7 +78,7 @@ export class FormControlQuestQpidComponent {
 
     if (qpid && !meeting) {
       window.open(
-        `https://quest.slb.com/quest/RIR/RIRview.asp?QPID=${qpid}`,
+        `https://quest.slb.com/quest/RIR/RIRdsp.asp?QPID=${qpid}`,
         '_blank'
       );
     }
