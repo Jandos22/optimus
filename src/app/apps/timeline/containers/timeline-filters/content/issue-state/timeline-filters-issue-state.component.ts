@@ -29,7 +29,7 @@ import { TimelineTypeService } from '../../../../services';
   template: `
     <mat-form-field [formGroup]="fg_filters">
       <mat-select
-        placeholder="Issue State"
+        placeholder="Issue/Failure State"
         formControlName="issueState">
         <mat-option
           *ngFor="let item of issueState"

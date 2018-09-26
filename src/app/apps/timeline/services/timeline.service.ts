@@ -190,6 +190,7 @@ export class TimelineService {
       'RichText',
       'QuestRIR',
       'QuestQPID',
+      'InTouch',
       'HashTags',
       'Created'
     ];

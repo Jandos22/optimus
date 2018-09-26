@@ -30,7 +30,7 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
         </app-timeline-filters-event-types-v2>
 
         <app-timeline-filters-issue-state
-            *ngIf="fg_filters.controls['eventType'].value === 'Issue'"
+            *ngIf="fg_filters.controls['eventType'].value === 'Issue' || fg_filters.controls['eventType'].value === 'Failure'"
             fxLayout="row nowrap"
             [fg_filters]="fg_filters">
         </app-timeline-filters-issue-state>

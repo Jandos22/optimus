@@ -34,8 +34,8 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
         fxLayout="row nowrap"
         fxLayoutAlign="start start"
         [ngClass]="{
-          'issue-open': (event.EventType2 === 'Issue') && (event.IssueState === 'Open'),
-          'issue-closed': (event.EventType2 === 'Issue') && (event.IssueState === 'Closed')
+          'issue-open': (issue || failure) && (event.IssueState === 'Open'),
+          'issue-closed': (issue || failure) && (event.IssueState === 'Closed')
         }">
 
         <div class="details"
@@ -44,8 +44,8 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
           fxLayoutAlign="start start"
           [ngClass]="{
             'has-photo': event.Attachments,
-            'issue-open': (event.EventType2 === 'Issue') && (event.IssueState === 'Open'),
-            'issue-closed': (event.EventType2 === 'Issue') && (event.IssueState === 'Closed')
+            'issue-open': (issue || failure) && (event.IssueState === 'Open'),
+            'issue-closed': (issue || failure) && (event.IssueState === 'Closed')
             }">
 
           <div class="date-n-type"
@@ -56,10 +56,14 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
 
             <div class="type"
               *ngIf="event.EventType2"
+              [ngClass]="{
+                'issue-open': (issue || failure) && (event.IssueState === 'Open'),
+                'issue-closed': (issue || failure) && (event.IssueState === 'Closed')
+              }"
               fxLayout="row nowrap">
               <div class="middot">&middot;</div>
               <div>{{ event.EventType2 }}</div>
-              <div *ngIf="event.EventType2 === 'Issue'">/{{ event.IssueState }}</div>
+              <div *ngIf="(issue || failure)">/{{ event.IssueState }}</div>
             </div>
 
           </div>
@@ -73,20 +77,37 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
           </div>
 
           <div class="quest" *ngIf="event.QuestRIR">
-            <span>QUEST: </span>
+            <span>Quest: </span>
             <span
               [matTooltip]="getQuestTooltip()"
+              matTooltipClass="mytooltip large-text"
               (click)="openQuestReport()"
               [ngClass]="{ hasQPID: checkQPID() }">
               {{ event.QuestRIR }}
             </span>
           </div>
 
+          <div class="intouch" *ngIf="event.InTouch">
+            <span>InTouch: </span>
+            <span
+              [matTooltip]="'Open InTouch page'"
+              matTooltipClass="mytooltip large-text"
+              (click)="openInTouch()"
+              class="link">
+              {{ event.InTouch }}
+            </span>
+          </div>
+
           <div class="followup"
-            *ngIf="event.EventType2 === 'Issue'">
-            <!-- <span class="followupby-alias">@{{ event.FollowUpBy.Alias }}</span> -->
+            *ngIf="(issue || failure)"
+            [ngClass]="{
+              'issue-open': (issue || failure) && (event.IssueState === 'Open'),
+              'issue-closed': (issue || failure) && (event.IssueState === 'Closed')
+              }">
+
+            <div class="followupby">{{ event.LastFollowUp | date: 'shortDate' }} &middot; {{event.FollowUpBy.Fullname}}</div>
             {{ event.FollowUp }}
-            <span class="followupby"> - follow up by {{event.FollowUpBy.Fullname}} on {{ event.LastFollowUp | date: 'shortDate' }}</span>
+
           </div>
 
         </div>
@@ -143,6 +164,14 @@ export class TimelineEventV2Component {
     }
   }
 
+  get issue() {
+    return this.event.EventType2 === 'Issue' ? true : false;
+  }
+
+  get failure() {
+    return this.event.EventType2 === 'Failure' ? true : false;
+  }
+
   togglePhoto() {
     if (!this.showPhoto) {
       this.showPhoto = true;
@@ -188,6 +217,17 @@ export class TimelineEventV2Component {
       return 'Open QUEST Report';
     } else {
       return `QPID is missing, can't open QUEST Report`;
+    }
+  }
+
+  openInTouch() {
+    const number = this.event.InTouch;
+
+    if (number) {
+      window.open(
+        `https://intouchsupport.com/index.cfm?event=content.preview&contentid=${number}`,
+        '_blank'
+      );
     }
   }
 }

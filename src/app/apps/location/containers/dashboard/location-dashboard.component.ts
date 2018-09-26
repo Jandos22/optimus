@@ -43,6 +43,13 @@ import { DashboardOrdersExpiredComponent } from '..';
         (onHaveNotifications)="onHaveNotifications($event)">
     </app-dashboard-issues-open>
 
+    <app-dashboard-failures-open
+        *ngIf="timelineUsed"
+        [myLocation]="myLocation"
+        [doRefresh]="refresh"
+        (onHaveNotifications)="onHaveNotifications($event)">
+    </app-dashboard-failures-open>
+
     <app-dashboard-orders-expired
         *ngIf="ordersUsed"
         [myLocation]="myLocation"
@@ -97,6 +104,7 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
   // these boolean values define
   // which application has notifications
   timelineHaveIssuesOpen: boolean;
+  timelineHaveFailuresOpen: boolean;
   ordersHaveExpired: boolean;
   harcsHaveExpired: boolean;
   harcsHavePending: boolean;
@@ -141,6 +149,7 @@ export class LocationDashboardComponent implements OnInit, OnChanges {
 
   get AllGood() {
     return !this.timelineHaveIssuesOpen &&
+      !this.timelineHaveFailuresOpen &&
       !this.ordersHaveExpired &&
       !this.harcsHaveExpired &&
       !this.harcsHavePending &&

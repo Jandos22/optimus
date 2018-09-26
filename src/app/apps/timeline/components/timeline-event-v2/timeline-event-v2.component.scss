@@ -1,7 +1,7 @@
 @import '../../../../../colors';
 
-$my-issue-open: #ffebee; // ffebee (50) ffcdd2 (100)
-$my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
+$my-issue-open: #fff; // ffebee (50) ffcdd2 (100)
+$my-issue-closed: #fff; // e8f5e9 (50) c8e6c9 (100)
 
 .wrapper {
   width: 100%;
@@ -21,7 +21,7 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
     min-height: 36px;
     padding: 8px;
     border-radius: 8px;
-    background: #fafafa;
+    background: #fff;
     position: relative;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -48,7 +48,7 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   // width: 100%;
   min-height: 36px;
   position: relative;
-  background: #fafafa;
+  background: #fff;
   z-index: 2;
   padding: 0 4px;
 
@@ -74,7 +74,7 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   top: 8px;
   right: 8px;
   z-index: 1;
-  background: #fafafa;
+  background: #fff;
 
   &:hover {
     cursor: pointer;
@@ -121,6 +121,14 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
     line-height: 20px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.625);
+
+    &.issue-open {
+      color: $my-warn;
+    }
+
+    &.issue-closed {
+      color: #2e7d32;
+    }
   }
 }
 
@@ -163,22 +171,29 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   color: rgba(0, 0, 0, 0.87);
   margin-top: 4px;
   margin-bottom: 4px;
-  margin-left: 4px;
-  padding-left: 8px;
+  // margin-left: 4px;
+  // padding-left: 8px;
+  padding: 4px 8px;
   border-left: 2px solid #cccccc;
-}
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 
-.followupby-alias {
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.63);
+  &.issue-open {
+    border-left: 2px solid #cccccc !important;
+    background: #fafafa !important;
+  }
+
+  &.issue-closed {
+    border-left: 2px solid #81c784;
+    background: #c8e6c9 !important;
+  }
 }
 
 .followupby {
   font-size: 10px;
   line-height: 14px;
   font-weight: 400;
+  margin-bottom: 2px;
   color: rgba(0, 0, 0, 0.63);
 }
 
@@ -199,10 +214,12 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
 
 .issue-open {
   background: $my-issue-open !important;
+  // background: white;
 }
 
 .issue-closed {
   background: $my-issue-closed !important;
+  // background: white;
 }
 
 .quest {
@@ -210,9 +227,26 @@ $my-issue-closed: #e8f5e9; // e8f5e9 (50) c8e6c9 (100)
   font-weight: 400;
   color: rgba(0, 0, 0, 0.54);
   line-height: 14px;
-  margin: 4px 0;
+  margin: 4px 8px 4px 0;
 
   span.hasQPID {
+    color: $my-primary;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+}
+
+.intouch {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+  line-height: 14px;
+  margin: 4px 8px 4px 0;
+
+  span.link {
     color: $my-primary;
 
     &:hover {

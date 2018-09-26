@@ -41,6 +41,11 @@
     background: #d1c4e9;
   }
 
+  &.failuresOpen {
+    border: 1px solid #ef9a9a;
+    background: #ffcdd2;
+  }
+
   &.pending {
     background: #fff9c4;
   }
@@ -62,6 +67,7 @@
     .text {
       margin-left: 4px;
       height: 24px;
+
       .noun {
         font-size: 10px;
         line-height: 8px;

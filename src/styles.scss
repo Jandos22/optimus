@@ -721,3 +721,9 @@ button.status-check-button {
 .tooltip-job-summary {
   font-size: 16px !important;
 }
+
+.mytooltip {
+  &.large-text {
+    font-size: 16px;
+  }
+}

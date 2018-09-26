@@ -20,6 +20,7 @@ import { FormControlTitleComponent } from './title/form-control-title.component'
 import { FormControlSummaryComponent } from './summary/form-control-summary.component';
 import { FormControlQuestRirComponent } from './quest-rir/form-control-quest-rir.component';
 import { FormControlQuestQpidComponent } from './quest-qpid/form-control-quest-qpid.component';
+import { FormControlInTouchComponent } from './intouch/form-control-intouch.component';
 import { FormControlDateTimeComponent } from './date-time-picker/form-control-date-time.component';
 
 import { FormControlFieldPickerComponent } from './field-picker/form-control-field-picker.component';
@@ -51,6 +52,7 @@ import { FcPeopleSelectorSingleFetchComponent } from './people-selector-single/f
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
     FormControlQuestQpidComponent,
+    FormControlInTouchComponent,
     FormControlDateTimeComponent,
     FormControlFieldPickerComponent,
     FormControlClientPickerComponent,
@@ -74,6 +76,7 @@ import { FcPeopleSelectorSingleFetchComponent } from './people-selector-single/f
     UserSelectionUserSelectedComponent,
     FormControlQuestRirComponent,
     FormControlQuestQpidComponent,
+    FormControlInTouchComponent,
     FormControlDateTimeComponent,
     FormControlFieldPickerComponent,
     FormControlClientPickerComponent,

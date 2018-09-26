@@ -40,6 +40,7 @@ export interface TimelineEventItem extends SpListItem {
   // };
   QuestRIR?: string;
   QuestQPID?: string;
+  InTouch?: string;
 }
 
 export interface TimelineSearchParams {
