@@ -39,7 +39,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { PeopleUrlParamsService } from '../../services/people-url-params.service';
 
 @Component({
-  selector: 'app-people.common-app-container',
+  selector: 'app-people.common-app-v2-container',
   styleUrls: ['./people.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
