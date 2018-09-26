@@ -25,10 +25,13 @@ import { AppraisalItem } from '../../../../../../shared/interface/appraisals.mod
 })
 export class AppraisalsFormActionsEditFieldsComponent
   implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: AppraisalItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: AppraisalItem;
 
-  @Output() whenUnsavedFieldsChange = new EventEmitter<Object>();
+  @Output()
+  whenUnsavedFieldsChange = new EventEmitter<Object>();
 
   // combination of individual form control changes
   fc_changes$: Observable<Object>;
@@ -68,7 +71,7 @@ export class AppraisalsFormActionsEditFieldsComponent
 
       // OperatorComments observable
       this.fg_fields
-        .get('FurtherDevelopment')
+        .get('OperatorComments')
         .valueChanges.pipe(map(OperatorComments => ({ OperatorComments }))),
 
       // Safety observable
@@ -95,6 +98,11 @@ export class AppraisalsFormActionsEditFieldsComponent
       this.fg_fields
         .get('Quality')
         .valueChanges.pipe(map(Quality => ({ Quality }))),
+
+      // QualityDetails observable
+      this.fg_fields
+        .get('QualityDetails')
+        .valueChanges.pipe(map(QualityDetails => ({ QualityDetails }))),
 
       // WinchDriving observable
       this.fg_fields
