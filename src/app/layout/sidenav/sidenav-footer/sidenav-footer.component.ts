@@ -13,19 +13,28 @@ import { WirelinePath } from '../../../shared/constants';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class='common-button my-footer'>
-      <button mat-icon-button [matTooltip]="'Logout from Optimus & SharePoint'"
+      <button
+        mat-icon-button
+        [matTooltip]="'Logout from Optimus & SharePoint'"
+        matTooltipClass="mytooltip large-text"
         (click)="logout()">
         <span class='fa_regular'><fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon></span>
       </button>
     </div>
     <div class='common-button my-footer'>
-      <button mat-icon-button [matTooltip]="'Request new feature or improvement'"
+      <button
+        mat-icon-button
+        [matTooltip]="'Request new feature or improvement'"
+        matTooltipClass="mytooltip large-text"
         (click)="onFeatureRequest()">
         <span class='fa_regular'><fa-icon [icon]="['fas', 'registered']"></fa-icon></span>
       </button>
     </div>
     <div class='common-button my-footer'>
-      <button mat-icon-button [matTooltip]="'Report a bug'"
+      <button
+        mat-icon-button
+        [matTooltip]="'Report a bug'"
+        matTooltipClass="mytooltip large-text"
         (click)="onBugReport()">
         <span class='fa_regular'><fa-icon [icon]="['fas', 'bug']"></fa-icon></span>
       </button>

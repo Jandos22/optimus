@@ -43,21 +43,27 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-orders-filters-header fxFlex="65px" class="common-filters-header"
-        (toggleFilters)="toggleFilters.emit()">
+    <app-orders-filters-header
+      fxFlex="65px"
+      class="common-filters-header"
+      (toggleFilters)="toggleFilters.emit()">
     </app-orders-filters-header>
 
-    <app-orders-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters"
-        [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async"
-        [doReset]="doReset"
-        [orderStatuses]="orderStatuses"
-        (updateLocationsofinterest)="updateLocationsofinterest($event)"
-        (onSelectRequestors)="onSelectRequestors($event)">
+    <app-orders-filters-content
+      fxFlex
+      class="common-filters-content"
+      [fg_filters]="fg_filters"
+      [locofinterest]="locofinterest$ | async"
+      [selfUser]="selfUser$ | async"
+      [doReset]="doReset"
+      [orderStatuses]="orderStatuses"
+      (updateLocationsofinterest)="updateLocationsofinterest($event)"
+      (onSelectRequestors)="onSelectRequestors($event)">
     </app-orders-filters-content>
 
-    <app-orders-filters-footer fxFlex="49px" class="common-filters-footer"
+    <app-orders-filters-footer
+      fxFlex="49px"
+      class="common-filters-footer"
       (onResetFilters)="resetFgFilters()"
       (toggleFilters)="toggleFilters.emit()">
     </app-orders-filters-footer>

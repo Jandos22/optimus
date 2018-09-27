@@ -89,6 +89,16 @@ export class DashboardHarcsPendingComponent implements OnInit, OnChanges {
     this.getPendingHarcs();
   }
 
+  navigateToPendingHarcs() {
+    this.router.navigate([
+      '/harcs',
+      {
+        status: ['Pending'],
+        locations: [this.myLocation.ID]
+      }
+    ]);
+  }
+
   getPendingHarcs() {
     this.pendingRefreshing = true;
     this.pendingError = false;

@@ -56,13 +56,17 @@ export class HarcsService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? params.text.replace('#', '%23') : null;
+    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
+
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
+
     const pic = params.pic ? params.pic : [];
+
     const status = params.status ? params.status : [];
 
-    let top = params.top;
+    // if top is missing then default is 100
+    let top = params.top ? params.top : 100;
 
     // count filters
     let countFilters = 0;

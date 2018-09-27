@@ -6,9 +6,15 @@ import {
   HostBinding
 } from '@angular/core';
 
+// router
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
+// lodash
+import * as _ from 'lodash';
+
 // rxjs
 import { Subscription, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -29,32 +35,48 @@ import {
 import { PaginationState } from '../../../people/store/reducers/pagination.reducer';
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
+// services
+import { HarcsUrlParamsService } from '../../services/harcs-url-params.service';
+
 @Component({
   selector: 'app-harcs.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-harcs-header
-      fxFlex="65px" class="common-header"
-      [appName]="appName" [searching]="searching"
+      fxFlex="65px"
+      class="common-header"
+      [appName]="appName"
+      [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
       (openForm)="openForm('new', $event)"
       (toggleFilters)="toggleFilters()">
     </app-harcs-header>
 
     <app-harcs-list
-      fxFlex class="common-content"
-      [harcs]="data" (openForm)="openForm('view', $event)">
+      fxFlex
+      class="common-content"
+      [harcs]="data"
+      (openForm)="openForm('view', $event)">
     </app-harcs-list>
 
-    <app-harcs-footer fxFlex="49px" class="common-footer"
-      [pagination]="pagination" [top]="params.top" [searching]="searching"
-      (onNext)="onNext()" (onBack)="onBack()">
+    <app-harcs-footer
+      fxFlex="49px"
+      class="common-footer"
+      [pagination]="pagination"
+      [top]="params.top"
+      [searching]="searching"
+      (onNext)="onNext()"
+      (onBack)="onBack()">
     </app-harcs-footer>
 
     <!-- FILTERS -->
-    <app-harcs-filters class="common-filters-container"
+    <app-harcs-filters
+      class="common-filters-container"
       [style.display]="(showFilters ? 'flex' : 'none')"
-      fxLayout="column" fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      [filterParams]="filterParams"
+      (onFiltersUpdate)="onFiltersUpdate($event)"
       (toggleFilters)="toggleFilters()">
     </app-harcs-filters>
   `,
@@ -77,13 +99,21 @@ export class HarcsComponent implements OnInit, OnDestroy {
   $pagination: Subscription;
   pagination: PaginationState;
 
+  url$: Subscription;
+  urlParams: any;
+  filterParams: HarcsSearchParams;
+
   // when showFilters toggle it toggles class in host element
-  @HostBinding('class.filtersOpened') showFilters = false;
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_harcs: Store<fromHarcs.HarcsState>,
-    public form: MatDialog
+    public form: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    private urlService: HarcsUrlParamsService
   ) {}
 
   ngOnInit() {
@@ -91,6 +121,23 @@ export class HarcsComponent implements OnInit, OnDestroy {
     this.store_root.dispatch(new fromRoot.SetAppName(this.appName));
 
     this.user$ = this.store_root.pipe(select(fromRoot.getUserOptimus));
+
+    // subscription should get url params
+    // then should compose urlParams
+    // - that will get passed to child filters component
+    // - that will be used to update store.params
+    this.url$ = this.route.paramMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          return params.keys
+            ? this.urlService.composeFilterParamsFromUrlParams(params)
+            : null;
+        })
+      )
+      .subscribe(params => {
+        console.log(params);
+        this.filterParams = { ...params };
+      });
 
     // main data = array of harcs
     this.$data = this.store_harcs
@@ -162,10 +209,27 @@ export class HarcsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onFiltersUpdate(params: HarcsSearchParams) {
+    console.log('ON FILTERS UPDATE');
+    console.log('old params:');
+    console.log(this.params);
+    console.log('new params:');
+    console.log(params);
+    this.updateUrl(params);
+  }
+
+  updateUrl(params: HarcsSearchParams) {
+    console.log('UPDATE URL');
+    const link = ['./harcs', { ...this.urlService.removeEmptyKeys(params) }];
+    console.log(link);
+    this.router.navigate(link);
+  }
+
   ngOnDestroy() {
     this.$pagination.unsubscribe();
     this.$data.unsubscribe();
     this.$params.unsubscribe();
     this.$searching.unsubscribe();
+    this.url$.unsubscribe();
   }
 }

@@ -32,13 +32,27 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   template: `
     <div class="pic-inner-container"
       fxLayout="row wrap" fxLayoutAlign="start start">
-      <img *ngIf="picFull?.Attachments" [src]="getPhotoUrl(picFull)" class="pic-photo" [matTooltip]="picFull?.Fullname">
-      <img *ngIf="!picFull?.Attachments" [src]="getMockPhotoUrl()" class="pic-photo" [matTooltip]="picFull?.Fullname">
+
+      <img
+        *ngIf="picFull?.Attachments"
+        [src]="getPhotoUrl(picFull)"
+        class="pic-photo"
+        [matTooltip]="'followed up by ' + picFull?.Fullname"
+        matTooltipClass="mytooltip medium-text">
+
+      <img
+        *ngIf="!picFull?.Attachments"
+        [src]="getMockPhotoUrl()"
+        class="pic-photo"
+        [matTooltip]="'followed up by ' + picFull?.Fullname"
+        matTooltipClass="mytooltip medium-text">
+
     </div>
     `
 })
 export class HarcsPicComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() pic: PeopleItem;
+  @Input()
+  pic: PeopleItem;
 
   // list item with full list of properties
   $pic: Subscription;

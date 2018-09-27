@@ -38,7 +38,6 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
 
 // services
 import { OrdersUrlParamsService } from '../../services';
-// import { LocationEnt } from '../../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-orders.common-app-v2-container',
@@ -55,13 +54,17 @@ import { OrdersUrlParamsService } from '../../services';
     </app-orders-header>
 
     <app-orders-list
-      fxFlex class="common-content"
-      [orders]="data" [orderStatuses]="orderStatuses$ | async"
+      fxFlex
+      class="common-content"
+      [orders]="data"
+      [orderStatuses]="orderStatuses$ | async"
       [location]="(user$ | async).LocationAssignedId"
       (openForm)="openForm('view', $event)">
     </app-orders-list>
 
-    <app-orders-footer fxFlex="49px" class="common-footer"
+    <app-orders-footer
+      fxFlex="49px"
+      class="common-footer"
       [pagination]="pagination"
       [top]="params.top"
       [searching]="searching"
@@ -69,7 +72,8 @@ import { OrdersUrlParamsService } from '../../services';
       (onBack)="onBack()">
     </app-orders-footer>
 
-    <app-orders-filters class="common-filters-container"
+    <app-orders-filters
+      class="common-filters-container"
       [style.display]="(showFilters ? 'flex' : 'none')"
       fxLayout="column"
       fxLayoutAlign="start start"
@@ -85,8 +89,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   appName = 'Orders';
 
   user$: Observable<PeopleItem>;
-
-  // locations$: Observable<LocationEnt[]>;
 
   $data: Subscription;
   data: OrderItem[];
@@ -148,8 +150,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     );
 
     this.user$ = this.store_root.pipe(
-      select(fromRoot.getUserOptimus),
-      tap(u => console.log(u))
+      select(fromRoot.getUserOptimus)
+      // tap(u => console.log(u))
     );
 
     // this.locations$ = this.store_root.pipe(select(fromRoot.selectAllLocations));
@@ -246,5 +248,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.$data.unsubscribe();
     this.$params.unsubscribe();
     this.$searching.unsubscribe();
+    this.url$.unsubscribe();
   }
 }
