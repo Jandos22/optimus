@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { map, switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  mergeMap,
+  withLatestFrom,
+  take,
+  reduce,
+  catchError
+} from 'rxjs/operators';
 
 // lodash
 import * as _ from 'lodash';
-// import { reduce } from 'lodash';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -14,6 +21,7 @@ import * as fromPeople from '..';
 import * as fromParamsActions from '../actions/params.action';
 import * as fromPaginationActions from '../actions/pagination.actions';
 import * as fromUsersActions from '../actions/users.action';
+import * as fromErrorActions from '../../../../store/actions/errors.actions';
 
 // services
 import { PeopleService } from '../../services/people.service';
@@ -26,7 +34,7 @@ import {
 import { SpResponse } from './../../../../shared/interface/sp-response.model';
 
 @Injectable()
-export class UsersSearchEffects {
+export class SearchEffects {
   // when params change, then hold local copy
   // for use in count total (need refactor to use withLatestFrom)
   params: UserSearchParams;
@@ -45,6 +53,13 @@ export class UsersSearchEffects {
     map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
+    withLatestFrom(this.store$.pipe(select(fromPeople.getParams))),
+    map((merged: any[]) => {
+      const prevParams = merged[0];
+      const currParams = merged[1];
+      const newParams = { ...prevParams, ...currParams };
+      return newParams;
+    }),
     map((params: UserSearchParams) => {
       this.params = params;
       return this.srv.buildUrl(params);
@@ -59,7 +74,7 @@ export class UsersSearchEffects {
   );
 
   @Effect()
-  searchUsersStart$ = this.actions$.pipe(
+  searchStart$ = this.actions$.pipe(
     ofType(fromUsersActions.UsersActionTypes.SEARCH_USERS_START),
     withLatestFrom(this.store$.pipe(select(fromPeople.getCurrentIndex))),
     map((merged: any[]) => {
@@ -120,7 +135,7 @@ export class UsersSearchEffects {
   );
 
   @Effect()
-  countUsersTotal$ = this.actions$.pipe(
+  countTotal$ = this.actions$.pipe(
     ofType(fromUsersActions.UsersActionTypes.COUNT_USERS_TOTAL),
     map(x => {
       return this.srv.buildUrl(this.params, true);

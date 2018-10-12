@@ -74,7 +74,7 @@ export class SearchEffects {
   );
 
   @Effect() // BEGIN SEARCH
-  searchUsersStart$ = this.actions$.pipe(
+  searchStart$ = this.actions$.pipe(
     ofType(fromEventsActions.EventsActionTypes.SEARCH_EVENTS_START),
     withLatestFrom(this.store$.pipe(select(fromTimeline.getCurrentIndex))),
     map((merged: any[]) => {
@@ -135,7 +135,7 @@ export class SearchEffects {
   );
 
   @Effect()
-  countUsersTotal$ = this.actions$.pipe(
+  countTotal$ = this.actions$.pipe(
     ofType(fromEventsActions.EventsActionTypes.COUNT_EVENTS_TOTAL),
     map(x => {
       return this.srv.buildUrl(this.params, true);

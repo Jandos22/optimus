@@ -26,10 +26,14 @@ import {
 
 // services
 import { SharepointService } from '../../../../../shared/services/sharepoint.service';
+import { PeopleService } from '../../../services';
 
 @Injectable()
 export class PeopleFormHttpService {
-  constructor(private http: HttpClient, private sp: SharepointService) {}
+  constructor(
+    private http: HttpClient,
+    private sp: SharepointService // private srv: PeopleService
+  ) {}
 
   // returns newly create PeopleItem object
   addUser(newFields: PeopleItem) {
@@ -173,6 +177,7 @@ export class PeopleFormHttpService {
       'LocationAssigned/Id',
       'LocationAssigned/Title',
       'LocationAssignedId',
+      'LocationsOfInterestId',
       'PositionId',
       'Position/Id',
       'Position/Title',

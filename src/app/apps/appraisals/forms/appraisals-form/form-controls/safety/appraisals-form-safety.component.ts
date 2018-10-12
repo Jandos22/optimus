@@ -75,8 +75,10 @@ import { startWith } from 'rxjs/operators';
   `
 })
 export class AppraisalsFormSafetyComponent implements OnInit, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
 
   skill = 'Safety';
   skillDetails = 'SafetyDetails';
@@ -133,8 +135,10 @@ export class AppraisalsFormSafetyComponent implements OnInit, OnChanges {
       this.fg_fields.controls[this.skillDetails].patchValue(
         this.options[2].description
       );
+    }
 
-      // enable subscriptions
+    // enable subscriptions for new and edit modes
+    if (mode === 'new' || mode === 'edit') {
       this.startSubscriptions();
     }
   }

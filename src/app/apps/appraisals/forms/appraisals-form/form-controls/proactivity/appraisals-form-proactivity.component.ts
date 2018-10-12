@@ -68,18 +68,20 @@ import { startWith } from 'rxjs/operators';
           cdkAutosizeMaxRows="4">
         </textarea>
         <mat-hint align="end" *ngIf="mode !== 'view' && !isEmpty && !isDisabled">
-          {{ fg_fields.controls[skillDescription].value?.length }} / 255
+          {{ fg_fields.controls[skillDetails].value?.length }} / 255
         </mat-hint>
         <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
 export class AppraisalsFormProactivityComponent implements OnInit, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
 
   skill = 'Proactivity';
-  skillDescription = 'ProactivityDetails';
+  skillDetails = 'ProactivityDetails';
 
   // this is a default validator for details field
   detailsValidators = [Validators.required, Validators.maxLength(255)];
@@ -130,30 +132,32 @@ export class AppraisalsFormProactivityComponent implements OnInit, OnChanges {
     if (mode === 'new') {
       // set default values for Skill Value and Description
       this.fg_fields.controls[this.skill].patchValue(this.options[2].value);
-      this.fg_fields.controls[this.skillDescription].patchValue(
+      this.fg_fields.controls[this.skillDetails].patchValue(
         this.options[2].description
       );
+    }
 
-      // enable subscriptions
+    // enable subscriptions for new and edit modes
+    if (mode === 'new' || mode === 'edit') {
       this.startSubscriptions();
     }
   }
 
   get isEmpty() {
-    const value = this.fg_fields.controls[this.skillDescription].value;
+    const value = this.fg_fields.controls[this.skillDetails].value;
     return value ? false : true;
   }
 
   get isDisabled() {
-    return this.fg_fields.controls[this.skillDescription].disabled;
+    return this.fg_fields.controls[this.skillDetails].disabled;
   }
 
   get hasError() {
-    return this.fg_fields.controls[this.skillDescription].invalid;
+    return this.fg_fields.controls[this.skillDetails].invalid;
   }
 
   get errorMessage() {
-    const control = this.fg_fields.controls[this.skillDescription];
+    const control = this.fg_fields.controls[this.skillDetails];
 
     const required = control.hasError('required');
     const min = control.hasError('minlength');
@@ -191,15 +195,15 @@ export class AppraisalsFormProactivityComponent implements OnInit, OnChanges {
 
         if (this.mode === 'view') {
           // disable form control as it already have description
-          this.fg_fields.controls[this.skillDescription].disable();
+          this.fg_fields.controls[this.skillDetails].disable();
         } else if (value === 'A' || value === 'D') {
           console.log('A or D');
           // disable form control as it already have description
-          this.fg_fields.controls[this.skillDescription].enable();
+          this.fg_fields.controls[this.skillDetails].enable();
         } else if (value === 'B' || value === 'C') {
           console.log('B or C');
           // disable form control as it already have description
-          this.fg_fields.controls[this.skillDescription].disable();
+          this.fg_fields.controls[this.skillDetails].disable();
         }
       });
   }
@@ -211,46 +215,42 @@ export class AppraisalsFormProactivityComponent implements OnInit, OnChanges {
 
     if (option.value === 'C' || option.value === 'B') {
       // B and C have details, so simply write them up
-      this.fg_fields.controls[this.skillDescription].patchValue(
-        option.description
-      );
+      this.fg_fields.controls[this.skillDetails].patchValue(option.description);
       // reset default validators
-      this.fg_fields.controls[this.skillDescription].setValidators(
+      this.fg_fields.controls[this.skillDetails].setValidators(
         this.detailsValidators
       );
     } else if (option.value === 'A' || option.value === 'D') {
       // clear any content from skill details
-      this.fg_fields.controls[this.skillDescription].patchValue('');
+      this.fg_fields.controls[this.skillDetails].patchValue('');
 
       // add additional validator for min length if A or D is selected
-      this.fg_fields.controls[this.skillDescription].setValidators(
+      this.fg_fields.controls[this.skillDetails].setValidators(
         this.detailsMinMaxOnly
       );
 
       if (option.value === 'A') {
         // set error that A need details
-        this.fg_fields.controls[this.skillDescription].setErrors({
+        this.fg_fields.controls[this.skillDetails].setErrors({
           need4a: true
         });
         // also mark as touched, so that error message appear instantly
-        this.fg_fields.controls[this.skillDescription].markAsTouched();
+        this.fg_fields.controls[this.skillDetails].markAsTouched();
       }
 
       if (option.value === 'D') {
         // set error that D need details
-        this.fg_fields.controls[this.skillDescription].setErrors({
+        this.fg_fields.controls[this.skillDetails].setErrors({
           need4d: true
         });
         // also mark as touched, so that error message appear instantly
-        this.fg_fields.controls[this.skillDescription].markAsTouched();
+        this.fg_fields.controls[this.skillDetails].markAsTouched();
       }
     }
   }
 
   onAorDselect(option: AppraisalSkillItem) {
     this.fg_fields.controls[this.skill].patchValue(option.value);
-    this.fg_fields.controls[this.skillDescription].patchValue(
-      option.description
-    );
+    this.fg_fields.controls[this.skillDetails].patchValue(option.description);
   }
 }

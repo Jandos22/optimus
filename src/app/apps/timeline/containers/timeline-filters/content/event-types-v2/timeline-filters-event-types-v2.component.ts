@@ -55,6 +55,7 @@ export class TimelineFiltersEventTypesV2Component implements OnInit {
   eventTypes = [
     'Note',
     'Issue',
+    'Failure',
     'SET Meeting',
     'SQ Meeting',
     'Success Story',

@@ -71,6 +71,12 @@ export class PeopleFormInitService {
         this.getSimpleFormValue(mode, item, 'LocationAssignedId'),
         Validators.required
       ],
+      LocationsOfInterestId: this.fb.group({
+        results: [
+          this.getMultiSelectId(mode, item, 'LocationsOfInterestId'),
+          Validators.required
+        ]
+      }),
       PositionId: [
         this.getSimpleFormValue(mode, item, 'PositionId'),
         Validators.required
@@ -106,6 +112,17 @@ export class PeopleFormInitService {
         return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled: false };
+    }
+  }
+
+  getMultiSelectId(mode: FormMode, item: PeopleItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return [];
+      case 'view':
+        return item[field].results;
+      case 'edit':
+        return item[field].results;
     }
   }
 

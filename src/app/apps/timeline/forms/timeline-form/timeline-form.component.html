@@ -36,8 +36,8 @@
                 </app-form-control-summary>
 
                 <!-- FollowUp -->
-                <app-timeline-form-issue-followup *ngIf="issue" class="cmn-form-component t2w2-t2w3-t2w4" fxLayout="row"
-                    [fg_fields]="fg_fields" [mode]="data.mode">
+                <app-timeline-form-issue-followup *ngIf="issue || failure" class="cmn-form-component t2w2-t2w3-t2w4"
+                    fxLayout="row" [fg_fields]="fg_fields" [mode]="data.mode">
                 </app-timeline-form-issue-followup>
 
                 <!-- QUEST -->
@@ -48,6 +48,11 @@
                 <app-form-control-quest-qpid class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row" *ngIf="(fg_fields.get('QuestQPID').value || data.mode !== 'view')"
                     [fg_fields]="fg_fields" [type]="fg_fields.controls['EventType2'].value">
                 </app-form-control-quest-qpid>
+
+                <!-- InTouch -->
+                <app-form-control-intouch class="cmn-form-component t1w2-t1w3-t1w4" fxLayout="row" *ngIf="(fg_fields.get('InTouch').value || data.mode !== 'view')"
+                    [fg_fields]="fg_fields" [type]="fg_fields.controls['EventType2'].value">
+                </app-form-control-intouch>
 
                 <!-- Event Reporters / 2 columns -->
                 <div class="t2w2-t2w3-t2w4" fxLayout="column">

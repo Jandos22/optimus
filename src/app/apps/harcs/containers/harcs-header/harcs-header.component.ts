@@ -10,18 +10,26 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
+// router
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+
+// lodash
+import * as _ from 'lodash';
+
 // ngrx
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../../../../store';
 import * as fromHarcs from '../../store';
 
 // rxjs
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map
+  map,
+  switchMap,
+  startWith
 } from 'rxjs/operators';
 
 // interfaces
@@ -37,24 +45,40 @@ import { ValidationService } from '../../../../shared/validators/validation.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-harcs-toolbar class="common-toolbar"
-      fxFlex fxFlex.gt-xs="568px"
-      fxLayout="row nowrap" fxLayoutAlign="start center"
-      [appName]="appName" [fg_params]="fg_params" [searching]="searching"
+      fxFlex
+      fxFlex.gt-xs="568px"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
+      [appName]="appName"
+      [fg_params]="fg_params"
+      [searching]="searching"
       [accessLevel]="accessLevel"
-      (onFocus)="onFocus()" (onBlur)="onBlur()"
-      (openForm)="openForm.emit()" (toggleFilters)="toggleFilters.emit()"
-      [ngClass]="{  focused: focus,
-                    invalid: fg_params.get('text').invalid }">
+      (onFocus)="onFocus()"
+      (onBlur)="onBlur()"
+      (openForm)="openForm.emit()"
+      (toggleFilters)="toggleFilters.emit()"
+      [ngClass]="{
+        focused: focus,
+        invalid: fg_params.get('text').invalid
+        }">
     </app-harcs-toolbar>
     `
 })
 export class HarcsHeaderComponent implements OnInit, OnDestroy {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() accessLevel: number;
+  @Input()
+  appName: string;
 
-  @Output() openForm = new EventEmitter<any>();
-  @Output() toggleFilters = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  accessLevel: number;
+
+  @Output()
+  openForm = new EventEmitter<any>();
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
 
   fg_params: FormGroup;
 
@@ -62,27 +86,54 @@ export class HarcsHeaderComponent implements OnInit, OnDestroy {
 
   focus = false;
 
+  $url: Subscription;
+  urlParams: any;
+
   constructor(
     private fb: FormBuilder,
     private store_harcs: Store<fromHarcs.HarcsState>,
-    private store_root: Store<fromRoot.RootState>
+    private store_root: Store<fromRoot.RootState>,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.initializeParamsFormGroup();
-    this.subscribeToParamsFormGroup();
-    this.resetParamsFormGroup();
+    // this.initializeParamsFormGroup();
+    // this.subscribeToParamsFormGroup();
+    // this.resetParamsFormGroup();
+
+    this.$url = this.route.paramMap
+      .pipe(
+        switchMap((params: any) => {
+          return of(params.params);
+        })
+      )
+      .subscribe(params => {
+        this.urlParams = params;
+        // console.log(params);
+        if (!params.text && this.fg_params) {
+          console.log(this.fg_params.controls['text']);
+          this.fg_params.controls['text'].patchValue('');
+        } else if (params.text && this.fg_params) {
+          this.fg_params.controls['text'].patchValue(params.text);
+        }
+      });
   }
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
       text: ['', ValidationService.onlySearchable]
-      // locations: [''],
-      // top: []
     });
+  }
+
+  getTextFromUrl() {
+    if (this.urlParams && this.urlParams.text) {
+      return this.urlParams.text;
+    } else {
+      return '';
+    }
   }
 
   resetParamsFormGroup() {
     this.fg_params.get('text').patchValue('');
-    // this.fg_params.get('top').patchValue(100);
   }
 
   subscribeToParamsFormGroup() {
@@ -96,42 +147,45 @@ export class HarcsHeaderComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
 
-    // const locations$ = this.fg_params
-    //   .get('locations')
-    //   .valueChanges.pipe(distinctUntilChanged());
-
-    // const top$ = this.fg_params
-    //   .get('top')
-    //   .valueChanges.pipe(distinctUntilChanged());
-
-    const params$ = combineLatest(
-      text$
-      // locations$,
-      // top$
-    );
-
-    this.$params = params$
+    this.$params = text$
       .pipe(
-        map(params => {
-          console.log(params);
-          return {
-            text: params[0]
-            // locations: params[1],
-            // top: params[2]
-          };
+        startWith(this.getTextFromUrl()),
+        map(text => {
+          console.log(text);
+          return { text };
         })
       )
-      .subscribe((params: HarcsSearchParams) => {
-        console.log('params updated');
+      .subscribe((q: HarcsSearchParams) => {
+        console.log('search text updated');
+        const text = encodeURI(q.text);
+        console.log(this.urlParams);
+
         // this action updates store > harcs.params
         // this action is intercepted in search effects
         // search effects triggers chain of actions needed
         // to request harcs from server and load them in store
-        this.store_harcs.dispatch(new fromHarcs.UpdateParams(params));
+        // this.store_harcs.dispatch(new fromHarcs.UpdateParams(params));
+
+        if (text) {
+          this.router.navigate(['./harcs', { ...this.urlParams, text }]);
+        } else {
+          // remove text property from urlParams
+          const newUrlParams = _.reduce(
+            this.urlParams,
+            (acc, value, key) => {
+              return key !== 'text' ? { ...acc, [key]: value } : { ...acc };
+            },
+            {}
+          );
+          this.router.navigate(['./harcs', newUrlParams]);
+        }
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initializeParamsFormGroup();
+    this.subscribeToParamsFormGroup();
+  }
 
   onFocus() {
     this.focus = true;
@@ -143,5 +197,6 @@ export class HarcsHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$params.unsubscribe();
+    this.$url.unsubscribe();
   }
 }

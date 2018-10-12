@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // my modules
 import { SharedModule } from '../../shared/shared.module';
+import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';
@@ -24,6 +26,9 @@ import * as fromContainers from './containers';
 
 // components
 import * as fromComponents from './components';
+
+// filters
+import * as fromFilters from './containers/people-filters/content';
 
 // forms
 import * as fromForms from './forms';
@@ -50,12 +55,15 @@ export const peopleRoutes: Routes = [
     MaterialModule,
     MaterialDesignComponentsModule,
     FontAwesomeModule,
-    SimpleNotificationsModule
+    SimpleNotificationsModule,
+    FilterControlsModule,
+    ToolbarButtonsModule
   ],
   providers: [...fromServices.services],
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
+    ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromFormControls.forms_controls,
     ...fromFormActions.form_actions

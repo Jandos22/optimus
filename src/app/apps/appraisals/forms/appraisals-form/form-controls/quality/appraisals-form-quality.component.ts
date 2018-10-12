@@ -75,8 +75,10 @@ import { startWith } from 'rxjs/operators';
   `
 })
 export class AppraisalsFormQualityComponent implements OnInit, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
 
   skill = 'Quality';
   skillDetails = 'QualityDetails';
@@ -132,8 +134,10 @@ export class AppraisalsFormQualityComponent implements OnInit, OnChanges {
       this.fg_fields.controls[this.skillDetails].patchValue(
         this.options[2].description
       );
+    }
 
-      // enable subscriptions
+    // enable subscriptions for new and edit modes
+    if (mode === 'new' || mode === 'edit') {
       this.startSubscriptions();
     }
   }
@@ -207,6 +211,8 @@ export class AppraisalsFormQualityComponent implements OnInit, OnChanges {
   onSelectValue(option: AppraisalSkillItem) {
     // when value selected then anyway update skill
     this.fg_fields.controls[this.skill].patchValue(option.value);
+
+    console.log(option);
 
     if (option.value === 'C' || option.value === 'B') {
       // B and C have details, so simply write them up

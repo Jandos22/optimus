@@ -58,9 +58,6 @@ export class TimelineService {
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
 
-    // eventTypes must be ids array
-    // const eventTypes = params.eventTypes ? params.eventTypes : [];
-
     // eventType is single string
     const eventType = params.eventType ? params.eventType : null;
 
@@ -91,7 +88,6 @@ export class TimelineService {
       url += `&$filter=`;
     }
 
-    // -- 1 --
     // Text filter comes from input in header
     // must come first in url
     // don't put any filters before Text filter
@@ -174,6 +170,7 @@ export class TimelineService {
       'FollowUpBy',
       'FollowUpById',
       'FollowUpBy/Fullname',
+      'FollowUpBy/Alias',
       'LastFollowUp',
       'EventType2',
       'IssueState',
@@ -189,6 +186,7 @@ export class TimelineService {
       'RichText',
       'QuestRIR',
       'QuestQPID',
+      'InTouch',
       'HashTags',
       'Created'
     ];

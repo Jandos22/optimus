@@ -39,7 +39,10 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
 
             <div class="section-title">Key Factors</div>
 
-            <div [ngClass]="['key-factor', appraisal.Safety]" [matTooltip]="appraisal.SafetyDetails">
+            <div
+              [ngClass]="['key-factor', appraisal.Safety]"
+              [matTooltip]="appraisal.SafetyDetails"
+              matTooltipClass="mytooltip large-text">
               <div class="score" *ngIf="appraisal.Safety !== 'A'">{{ appraisal.Safety }}</div>
               <div class="score" *ngIf="appraisal.Safety === 'A'" [ngClass]="{'A': (appraisal.Safety === 'A')}">
                 <fa-icon [icon]="['fas', 'star']"></fa-icon>
@@ -47,7 +50,10 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
               <div class="factor" [ngClass]="{'A': (appraisal.Safety === 'A')}">safety</div>
             </div>
 
-            <div [ngClass]="['key-factor', appraisal.Proactivity]" [matTooltip]="appraisal.ProactivityDetails">
+            <div
+              [ngClass]="['key-factor', appraisal.Proactivity]"
+              [matTooltip]="appraisal.ProactivityDetails"
+              matTooltipClass="mytooltip large-text">
               <div class="score" *ngIf="appraisal.Proactivity !== 'A'">{{ appraisal.Proactivity }}</div>
               <div class="score" *ngIf="appraisal.Proactivity === 'A'" [ngClass]="{'A': (appraisal.Proactivity === 'A')}">
                 <fa-icon [icon]="['fas', 'star']"></fa-icon>
@@ -55,7 +61,10 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
               <div class="factor" [ngClass]="{'A': (appraisal.Proactivity === 'A')}">proact.</div>
             </div>
 
-            <div [ngClass]="['key-factor', appraisal.Quality]" [matTooltip]="appraisal.QualityDetails">
+            <div
+              [ngClass]="['key-factor', appraisal.Quality]"
+              [matTooltip]="appraisal.QualityDetails"
+              matTooltipClass="mytooltip large-text">
               <div class="score" *ngIf="appraisal.Quality !== 'A'">{{ appraisal.Quality }}</div>
               <div class="score" *ngIf="appraisal.Quality === 'A'" [ngClass]="{'A': (appraisal.Quality === 'A')}">
                 <fa-icon [icon]="['fas', 'star']"></fa-icon>
@@ -78,25 +87,33 @@ import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
 
             <div class="section-title">Key Skills</div>
 
-            <div class="key-skill" [ngClass]="{'did': appraisal.DidRopeSocket}" [matTooltip]="'Prepared RopeSocket (Standard)'"
+            <div class="key-skill" [ngClass]="{'did': appraisal.DidRopeSocket}"
+              [matTooltip]="'Prepared RopeSocket (Standard)'"
+              matTooltipClass="mytooltip large-text"
               *ngIf="appraisal.DidRopeSocket">
               <div class="top">did</div>
               <div class="skill">RS</div>
             </div>
 
-            <div class="key-skill" [ngClass]="{'did': appraisal.DidRopeSocketH2S}" [matTooltip]="'Prepared RopeSocket (H2S)'"
+            <div class="key-skill" [ngClass]="{'did': appraisal.DidRopeSocketH2S}"
+              [matTooltip]="'Prepared RopeSocket (H2S)'"
+              matTooltipClass="mytooltip large-text"
               *ngIf="appraisal.DidRopeSocketH2S">
               <div class="top">did</div>
               <div class="skill">RS</div>
             </div>
 
-            <div class="key-skill" [ngClass]="{'did': appraisal.DidHead}" [matTooltip]="'Prepared Logging Head'"
+            <div class="key-skill" [ngClass]="{'did': appraisal.DidHead}"
+              [matTooltip]="'Prepared Logging Head'"
+              matTooltipClass="mytooltip large-text"
               *ngIf="appraisal.DidHead">
               <div class="top">did</div>
               <div class="skill">HD</div>
             </div>
 
-            <div class="key-skill" [ngClass]="{'did': appraisal.DidCollector}" [matTooltip]="'Prepared Collector'"
+            <div class="key-skill" [ngClass]="{'did': appraisal.DidCollector}"
+              [matTooltip]="'Prepared Collector'"
+              matTooltipClass="mytooltip large-text"
               *ngIf="appraisal.DidCollector">
               <div class="top">did</div>
               <div class="skill">COL</div>

@@ -58,6 +58,9 @@ export class TimelineFormActionsEditFieldsComponent
         .get('QuestQPID')
         .valueChanges.pipe(map(QuestQPID => ({ QuestQPID }))),
       this.fg_fields
+        .get('InTouch')
+        .valueChanges.pipe(map(InTouch => ({ InTouch }))),
+      this.fg_fields
         .get('RichText')
         .valueChanges.pipe(map(RichText => ({ RichText }))),
       this.fg_fields

@@ -13,11 +13,18 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
 @Component({
   selector: 'app-harcs-list',
   styleUrls: ['harcs-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="harcs-list-container" fxFlex
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
+
+      <!--
+      <div *ngIf="harcs.length"
+        class="harcs-followup-by">
+        follow up by
+      </div>
+      -->
 
       <app-harcs-list-item
         *ngFor="let harc of harcs; last as last"
@@ -33,9 +40,11 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
     `
 })
 export class HarcsListComponent {
-  @Input() harcs: HarcItem[];
+  @Input()
+  harcs: HarcItem[];
 
-  @Output() openForm = new EventEmitter<HarcItem>();
+  @Output()
+  openForm = new EventEmitter<HarcItem>();
 
   constructor() {}
 }

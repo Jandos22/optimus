@@ -28,8 +28,8 @@ import { FormGroup } from '@angular/forms';
     </app-toolbar-input-search>
 
     <app-toolbar-button-clear
-        *ngIf="fg_params.get('text').value"
-        [fg_params]="fg_params">
+      *ngIf="fg_params.get('text').value"
+      [fg_params]="fg_params">
     </app-toolbar-button-clear>
 
     <app-toolbar-button-add

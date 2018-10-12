@@ -30,6 +30,9 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
       </div>
 
       <div class="harc-inner-container" fxLayout="row wrap" fxLayoutAlign="start start">
+
+        <app-harcs-pic class="harc-pic" [pic]="harc.PIC"></app-harcs-pic>
+
         <div class="harc-body">
           <div class="harc-row-1">
             <div class="title" (click)="openForm.emit(harc)">{{harc.Title}}</div>
@@ -49,9 +52,9 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
               {{harc.ExpiryDate | date: 'mediumDate'}}
             </div>
 
-            <!-- <div>&middot;</div> -->
             <div class="quest"
               [matTooltip]="getQuestTooltip()"
+              matTooltipClass="mytooltip large-text"
               [ngClass]="{ link: hasQuestQPID() }"
               (click)="openQuest()">
               {{harc.QuestNumber}}
@@ -63,16 +66,17 @@ import { HarcItem } from '../../../../shared/interface/harcs.model';
           </div>
         </div>
 
-        <app-harcs-pic class="harc-pic" [pic]="harc.PIC"></app-harcs-pic>
-
       </div>
     `
 })
 export class HarcsListItemComponent {
-  @Input() harc: HarcItem;
-  @Input() last: boolean;
+  @Input()
+  harc: HarcItem;
+  @Input()
+  last: boolean;
 
-  @Output() openForm = new EventEmitter<HarcItem>();
+  @Output()
+  openForm = new EventEmitter<HarcItem>();
 
   daysLeftText: string;
 

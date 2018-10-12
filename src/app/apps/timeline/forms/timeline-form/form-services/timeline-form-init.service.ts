@@ -59,8 +59,15 @@ export class TimelineFormInitService {
           ValidationService.onlyNumbers
         ]
       ],
+      InTouch: [
+        this.getSimpleFormValue(mo, it, 'InTouch'),
+        [
+          Validators.minLength(6),
+          Validators.maxLength(8),
+          ValidationService.onlyNumbers
+        ]
+      ],
       RichText: [this.getRichText(mo, it)],
-      // EventTypeId: [this.getEventTypeId(mo, it), Validators.required],
       EventDate: [this.getEventDate(mo, it), Validators.required],
       EventType2: [this.getEventType(mo, it), Validators.required],
       IssueState: [this.getIssueState(mo, it)],

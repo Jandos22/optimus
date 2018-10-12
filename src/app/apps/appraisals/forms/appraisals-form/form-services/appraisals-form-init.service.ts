@@ -50,12 +50,9 @@ export class AppraisalsFormInitService {
         this.getSimpleValue(mo, it, 'OperatorComments', false),
         Validators.maxLength(255)
       ],
-      Safety: [
-        this.getSimpleValue(mo, it, 'Safety', false),
-        Validators.required
-      ],
+      Safety: [this.getSimpleValue(mo, it, 'Safety'), Validators.required],
       SafetyDetails: [
-        this.getSimpleValue(mo, it, 'SafetyDetails', false),
+        this.getSimpleValue(mo, it, 'SafetyDetails', true),
         [
           Validators.required,
           // Validators.minLength(22),
@@ -63,7 +60,7 @@ export class AppraisalsFormInitService {
         ]
       ],
       Proactivity: [
-        this.getSimpleValue(mo, it, 'Proactivity', true),
+        this.getSimpleValue(mo, it, 'Proactivity'),
         Validators.required
       ],
       ProactivityDetails: [
@@ -76,7 +73,7 @@ export class AppraisalsFormInitService {
       ],
       Quality: [this.getSimpleValue(mo, it, 'Quality'), Validators.required],
       QualityDetails: [
-        this.getSimpleValue(mo, it, 'QualityDetails'),
+        this.getSimpleValue(mo, it, 'QualityDetails', true),
         [
           Validators.required,
           // Validators.minLength(22),
@@ -88,7 +85,7 @@ export class AppraisalsFormInitService {
         Validators.required
       ],
       WinchDrivingDetails: [
-        this.getSimpleValue(mo, it, 'WinchDrivingDetails'),
+        this.getSimpleValue(mo, it, 'WinchDrivingDetails', true),
         [Validators.required, Validators.maxLength(255)]
       ],
       DidRopeSocket: this.getSimpleBooleen(mo, it, 'DidRopeSocket'),
@@ -112,7 +109,7 @@ export class AppraisalsFormInitService {
       case 'view':
         return { value: item[field], disabled: true };
       case 'edit':
-        return { value: item[field], disabled };
+        return { value: item[field], disabled: disabled };
     }
   }
 

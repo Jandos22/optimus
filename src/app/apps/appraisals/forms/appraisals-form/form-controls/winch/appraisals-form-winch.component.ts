@@ -76,8 +76,10 @@ import { startWith } from 'rxjs/operators';
   `
 })
 export class AppraisalsFormWinchComponent implements OnInit, OnChanges {
-  @Input() fg_fields: FormGroup;
-  @Input() mode: FormMode;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  mode: FormMode;
 
   skill = 'WinchDriving';
   skillDetails = 'WinchDrivingDetails';
@@ -139,8 +141,10 @@ export class AppraisalsFormWinchComponent implements OnInit, OnChanges {
       this.fg_fields.controls[this.skillDetails].patchValue(
         this.options[0].description
       );
+    }
 
-      // enable subscriptions
+    // enable subscriptions for new and edit modes
+    if (mode === 'new' || mode === 'edit') {
       this.startSubscriptions();
     }
   }

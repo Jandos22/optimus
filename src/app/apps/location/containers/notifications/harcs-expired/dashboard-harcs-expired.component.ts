@@ -89,6 +89,16 @@ export class DashboardHarcsExpiredComponent implements OnInit, OnChanges {
     this.getExpiredHarcs();
   }
 
+  navigateToExpiredHarcs() {
+    this.router.navigate([
+      '/harcs',
+      {
+        status: ['Expired'],
+        locations: [this.myLocation.ID]
+      }
+    ]);
+  }
+
   getExpiredHarcs() {
     this.expiredRefreshing = true;
     this.expiredError = false;

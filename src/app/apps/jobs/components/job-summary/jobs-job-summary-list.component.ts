@@ -22,48 +22,56 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
             <div class="job-summary"
                 *ngIf="job.JSStitle1"
                 [matTooltip]="job.JSSbody1"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle1 }}</div>
 
             <!-- Job Summary 2 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle2"
                 [matTooltip]="job.JSSbody2"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle2 }}</div>
 
             <!-- Job Summary 3 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle3"
                 [matTooltip]="job.JSSbody3"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle3 }}</div>
 
             <!-- Job Summary 4 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle4"
                 [matTooltip]="job.JSSbody4"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle4 }}</div>
 
             <!-- Job Summary 5 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle5"
                 [matTooltip]="job.JSSbody5"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle5 }}</div>
 
             <!-- Job Summary 6 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle6"
                 [matTooltip]="job.JSSbody6"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle6 }}</div>
 
             <!-- Job Summary 7 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle7"
                 [matTooltip]="job.JSSbody7"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle7 }}</div>
 
             <!-- Job Summary 8 -->
             <div class="job-summary"
                 *ngIf="job.JSStitle8"
                 [matTooltip]="job.JSSbody8"
+                matTooltipClass="tooltip-job-summary"
                 >- {{ job.JSStitle8 }}</div>
         </div>
     `

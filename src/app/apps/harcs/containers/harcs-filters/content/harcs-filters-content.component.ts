@@ -26,7 +26,8 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
 
         <app-harcs-filters-status class="cmn-form-component people-filter"
             fxLayout="row wrap"
-            [fg_filters]="fg_filters" [doReset]="doReset">
+            [fg_filters]="fg_filters"
+            [doReset]="doReset">
         </app-harcs-filters-status>
 
         <app-form-control-people-selector class="cmn-form-component people-filter"
@@ -39,13 +40,23 @@ import { PeopleItem } from '../../../../people/models/people-item.model';
     `
 })
 export class HarcsFiltersContentComponent {
-  @Input() fg_filters: FormGroup;
-  @Input() locofinterest: number[];
-  @Input() selfUser: PeopleItem;
-  @Input() doReset: boolean;
+  @Input()
+  fg_filters: FormGroup;
 
-  @Output() updateLocationsofinterest = new EventEmitter<number[]>();
-  @Output() onSelectPic = new EventEmitter<number[]>();
+  @Input()
+  locofinterest: number[];
+
+  @Input()
+  selfUser: PeopleItem;
+
+  @Input()
+  doReset: boolean;
+
+  @Output()
+  updateLocationsofinterest = new EventEmitter<number[]>();
+
+  @Output()
+  onSelectPic = new EventEmitter<number[]>();
 
   constructor() {}
 }

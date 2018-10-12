@@ -17,7 +17,7 @@ import { TimelineEventType } from '../../../../../../shared/interface/timeline.m
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- EventType -->
-    <mat-form-field [formGroup]="fg_fields" class="left" [ngClass]="{ 'type-issue': issue}">
+    <mat-form-field [formGroup]="fg_fields" class="left" [ngClass]="{ 'type-issue': issue || failure}">
 
       <mat-select placeholder="Event Type" formControlName="EventType2"
         [disabled]="mode === 'view'">
@@ -33,9 +33,9 @@ import { TimelineEventType } from '../../../../../../shared/interface/timeline.m
     </mat-form-field>
 
     <!-- IssueState -->
-    <mat-form-field [formGroup]="fg_fields" class="right" *ngIf="issue" [ngClass]="{ 'state-issue': issue}">
+    <mat-form-field [formGroup]="fg_fields" class="right" *ngIf="issue || failure" [ngClass]="{ 'state-issue': issue || failure}">
 
-      <mat-select placeholder="Issue State" formControlName="IssueState"
+      <mat-select placeholder="Issue/Failure State" formControlName="IssueState"
         [disabled]="mode === 'view'">
 
         <mat-option *ngFor="let item of issueState" [value]="item">
@@ -59,6 +59,7 @@ export class TimelineFormEventTypeV2Component {
   eventTypes = [
     'Note',
     'Issue',
+    'Failure',
     'SET Meeting',
     'SQ Meeting',
     'Success Story',
@@ -73,6 +74,10 @@ export class TimelineFormEventTypeV2Component {
 
   get issue() {
     return this.fg_fields.get('EventType2').value === 'Issue' ? true : false;
+  }
+
+  get failure() {
+    return this.fg_fields.get('EventType2').value === 'Failure' ? true : false;
   }
 
   get hasError() {

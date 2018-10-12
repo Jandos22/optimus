@@ -1,14 +1,14 @@
 import * as fromParams from '../actions/params.action';
 
 export interface ParamsState {
-  query: string;
+  text: string;
   locations: number[];
   top: number;
   positions: number[];
 }
 
 export const initialState: ParamsState = {
-  query: null,
+  text: null,
   locations: null,
   top: null,
   positions: null

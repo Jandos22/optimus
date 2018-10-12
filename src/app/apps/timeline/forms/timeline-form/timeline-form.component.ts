@@ -207,6 +207,10 @@ export class TimelineFormComponent implements OnInit, OnDestroy {
     return this.fg_fields.get('EventType2').value === 'Issue' ? true : false;
   }
 
+  get failure() {
+    return this.fg_fields.get('EventType2').value === 'Failure' ? true : false;
+  }
+
   get hasPhotoAndDetailsInViewMode() {
     let hasPhotoAndDetails = false;
 

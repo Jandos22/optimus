@@ -44,7 +44,11 @@ import { PeopleItem } from '../../../../../shared/interface/people.model';
       <div
         *ngFor="let reporter of reporters; let i = index"
         class="reporter">
-        <img *ngIf="reporter.Attachments" [src]="getPhotoUrl(reporter)" class="photo" [matTooltip]="reporter.Fullname">
+        <img *ngIf="reporter.Attachments"
+          [src]="getPhotoUrl(reporter)"
+          class="photo"
+          [matTooltip]="reporter.Fullname"
+          matTooltipClass="mytooltip large-text">
       </div>
 
       <div *ngIf="!reporters" class="dummy"></div>

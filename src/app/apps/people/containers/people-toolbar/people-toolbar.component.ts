@@ -19,36 +19,66 @@ import { FormGroup } from '@angular/forms';
     <app-people-toolbar-button-menu class="common-toolbar-item">
     </app-people-toolbar-button-menu>
 
-    <app-people-toolbar-input-search fxFlex
-        [appName]="appName" [fg_params]="fg_params"
-        (onFocus)="onFocus.emit()" (onBlur)="onBlur.emit()">
+    <app-people-toolbar-input-search
+      fxFlex
+      [appName]="appName"
+      [fg_params]="fg_params"
+      (onFocus)="onFocus.emit()"
+      (onBlur)="onBlur.emit()">
     </app-people-toolbar-input-search>
 
     <app-people-toolbar-button-clear
-        *ngIf="fg_params.get('query').value"
-        [fg_params]="fg_params">
+      *ngIf="fg_params.get('text').value"
+      [fg_params]="fg_params">
     </app-people-toolbar-button-clear>
 
-    <app-people-toolbar-button-filters>
-    </app-people-toolbar-button-filters>
-
     <app-people-toolbar-button-add
-      (openUserForm)="openUserForm.emit()">
+      *ngIf="canCreate()"
+      matTooltip="Add new User/Employee"
+      (openForm)="openForm.emit()">
     </app-people-toolbar-button-add>
+
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
+    </app-toolbar-button-filters>
     `
 })
 export class PeopleToolbarComponent {
-  @Input() appName: string;
-  @Input() searching: boolean;
-  @Input() fg_params: FormGroup;
+  @Input()
+  appName: string;
 
-  @Output() openUserForm = new EventEmitter<any>();
-  @Output() onFocus = new EventEmitter<any>();
-  @Output() onBlur = new EventEmitter<any>();
+  @Input()
+  searching: boolean;
+
+  @Input()
+  fg_params: FormGroup;
+
+  @Input()
+  accessLevel: number;
+
+  @Output()
+  openForm = new EventEmitter<any>();
+
+  @Output()
+  toggleFilters = new EventEmitter<any>();
+
+  @Output()
+  onFocus = new EventEmitter<any>();
+
+  @Output()
+  onBlur = new EventEmitter<any>();
 
   constructor() {}
 
   onClear() {
     this.fg_params.reset();
+  }
+
+  canCreate() {
+    if (this.accessLevel) {
+      return this.accessLevel >= 3 ? true : false;
+    } else {
+      return false;
+    }
   }
 }
