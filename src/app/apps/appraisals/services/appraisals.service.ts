@@ -40,6 +40,7 @@ export class AppraisalsService {
     let url = `${ApiPath}/web/lists/getbytitle('NgAppraisals')/items?`;
 
     // parameters
+    console.log(params);
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text ? params.text.replace('#', '%23') : null;
@@ -48,8 +49,8 @@ export class AppraisalsService {
     // people must be just id number or null
     const givenby = params.givenby ? params.givenby : null;
     const givenfor = params.givenfor ? params.givenfor : null;
-    // if top is missing then default is 100
-    let top = params.top ? params.top : 100;
+    // if top is missing then default is 25
+    let top = params.top ? params.top : 25;
 
     // count filters
     let countFilters = 0;

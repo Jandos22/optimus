@@ -47,7 +47,8 @@ import { AppraisalRights } from '../../store';
 
     <app-appraisals-list
       fxFlex class="common-content"
-      [appraisalGroups]="(appraisalGroups$ | async)" (openForm)="openForm('view', $event)">
+      [appraisalGroups]="(appraisalGroups$ | async)" (openForm)="openForm('view', $event)"
+      [position]="position$ | async">
     </app-appraisals-list>
 
     <app-appraisals-footer fxFlex="49px" class="common-footer"

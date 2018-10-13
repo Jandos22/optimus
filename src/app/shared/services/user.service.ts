@@ -50,8 +50,8 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      loginName = 'zombayev@slb.com'; // FE
-      spId = 167;
+      // loginName = 'zombayev@slb.com'; // FE
+      // spId = 167;
       // loginName = 'azhussipov@slb.com'; // FE
       // spId = 6;
       // loginName = 'cmarcotte@slb.com'; // PSDM
@@ -60,10 +60,10 @@ export class UserService {
       // spId = 16;
       // loginName = 'myergazin@slb.com'; // OU PSDM
       // spId = 210;
-      // loginName = 'knigmetullin@slb.com'; // OU PSDM
-      // spId = 226;
-      // loginName = 'knigmetullin@slb.com'; // OU PSDM
-      // spId = 226;
+      loginName = 'knigmetullin@slb.com'; // OU PSDM
+      spId = 226;
+      // loginName = 'kbatyrkhanov@slb.com'; // Sales Engineer
+      // spId = 261;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');

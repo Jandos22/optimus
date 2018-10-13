@@ -102,8 +102,11 @@ export class AppraisalsFiltersComponent implements OnInit {
     this.fg_filters.valueChanges
       .pipe(debounceTime(300))
       .subscribe((params: AppraisalsSearchParams) => {
+        console.log(params);
         this.store_jobs.dispatch(new fromAppraisals.UpdateParams(params));
       });
+
+    this.modifyGivenForGivenBy();
 
     // subscribe to change of Locations.selected
     this.$locofinterest = this.locofinterest$.subscribe();
@@ -116,12 +119,14 @@ export class AppraisalsFiltersComponent implements OnInit {
 
   createFormGroup() {
     this.fg_filters = this.fb.group({
-      locations: [{ value: [] }],
-      top: 100,
+      locations: '',
+      top: 25,
       afterDate: '',
       beforeDate: '',
-      ...this.getGivenForByParams()
+      givenby: 0,
+      givenfor: ''
     });
+    console.log(this.fg_filters.value);
   }
 
   updateFgFiltersLocations(locations: number[]) {
@@ -135,11 +140,15 @@ export class AppraisalsFiltersComponent implements OnInit {
   }
 
   onSelectGivenBy(givenby: number) {
-    this.fg_filters.controls['givenby'].patchValue(givenby);
+    if (givenby) {
+      this.fg_filters.controls['givenby'].patchValue(givenby);
+    }
   }
 
   onSelectGivenFor(givenfor: number) {
-    this.fg_filters.controls['givenfor'].patchValue(givenfor);
+    if (givenfor) {
+      this.fg_filters.controls['givenfor'].patchValue(givenfor);
+    }
   }
 
   onResetFilters(event) {
@@ -166,14 +175,43 @@ export class AppraisalsFiltersComponent implements OnInit {
 
     // if current user don't fall in any category
     // then let him/her find self old appraisals
-    if (
-      !this.position.isFEFS &&
-      !this.position.isOP &&
-      !this.position.isReviewer
-    ) {
+    console.log(this.position);
+    console.log(this.currentUser);
+    if (this.position.isOther) {
+      console.log('running');
       givenby = this.currentUser.Id;
     }
 
+    console.log({ givenfor: givenfor, givenby: givenby });
+
     return { givenfor: givenfor, givenby: givenby };
+  }
+
+  // not pure function
+  modifyGivenForGivenBy() {
+    const id = this.currentUser.Id;
+
+    // field engineers and specialist
+    // can find only self created appraisals
+    if (this.position.isFEFS) {
+      this.fg_filters.controls['givenby'].patchValue(id);
+      this.fg_filters.controls['givenfor'].patchValue('');
+    }
+
+    // operators
+    // can find only appraisals created for them
+    if (this.position.isOP) {
+      this.fg_filters.controls['givenby'].patchValue('');
+      this.fg_filters.controls['givenfor'].patchValue(id);
+    }
+
+    // if current user don't fall in any category
+    // then let him/her find self old appraisals
+    if (this.position.isOther) {
+      this.fg_filters.controls['givenby'].patchValue(id);
+      this.fg_filters.controls['givenfor'].patchValue('');
+    }
+
+    console.log(this.fg_filters.value);
   }
 }

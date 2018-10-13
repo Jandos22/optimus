@@ -85,7 +85,7 @@ export class AppraisalsFiltersContentComponent {
 
   get defaultGivenBy() {
     // default user for GivenBy depends on user's position
-    console.log('default given by');
+    // console.log('default given by');
 
     // if user belongs to FEFS team
     // then default GivenBy should be him/her
@@ -110,7 +110,7 @@ export class AppraisalsFiltersContentComponent {
 
   get defaultGivenFor() {
     // default user for GivenFor depends on user's position
-    console.log('default GivenFor');
+    // console.log('default GivenFor');
 
     // if user belongs to OP team
     // then default GivenFor should be him/her
