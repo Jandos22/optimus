@@ -9,7 +9,6 @@ import {
 
 // interface
 import { AppItem } from '../../../shared/interface/applications.model';
-import { LocationEnt } from './../../../shared/interface/locations.model';
 
 @Component({
   selector: 'app-sidenav-content-app-v2',

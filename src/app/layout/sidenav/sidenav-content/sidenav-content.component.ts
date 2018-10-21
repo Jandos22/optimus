@@ -35,6 +35,20 @@ import { AppItem } from '../../../shared/interface/applications.model';
           [app]="app" (onSidenavClick)="onSidenavClick.emit()"
           fxLayout="row nowrap" fxLayoutAling="space-between center">
         </app-sidenav-content-app-v2>
+
+        <!-- coming soon -->
+        <app-sidenav-content-app-v2
+          matTooltip="coming soon"
+          matTooltipClass="mytooltip large-text"
+          class="sidenav-content-app-v2 coming-soon"
+            [app]="{
+              Title: 'SET 2019',
+              RouterLink: 'set2019',
+              AppPositionNumber: '99',
+              Visible: true
+            }">
+        </app-sidenav-content-app-v2>
+
       </div>
 
       <!-- apps list version 1
