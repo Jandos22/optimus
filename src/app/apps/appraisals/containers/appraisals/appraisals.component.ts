@@ -68,7 +68,7 @@ import { AppraisalRights } from '../../store';
   styleUrls: ['./appraisals.component.scss']
 })
 export class AppraisalsComponent implements OnInit, OnDestroy {
-  appName = 'Appraisals';
+  appName = 'WPR';
 
   user$: Observable<PeopleItem>;
 

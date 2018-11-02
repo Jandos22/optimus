@@ -60,8 +60,10 @@ export class UserService {
       // spId = 16;
       // loginName = 'myergazin@slb.com'; // OU PSDM
       // spId = 210;
-      loginName = 'knigmetullin@slb.com'; // OU PSDM
-      spId = 226;
+      // loginName = 'knigmetullin@slb.com'; // OU PSDM
+      // spId = 226;
+      loginName = 'rayat@slb.com'; // FDE Manager
+      spId = 250;
       // loginName = 'kbatyrkhanov@slb.com'; // Sales Engineer
       // spId = 261;
     }
