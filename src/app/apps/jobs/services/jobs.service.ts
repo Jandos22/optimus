@@ -198,6 +198,8 @@ export class JobsService {
       'ID',
       'Title',
       'iDistrict',
+      'JobFolder',
+      'JobArchive',
       'JobType',
       'Well',
       'Field',

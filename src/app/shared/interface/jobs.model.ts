@@ -4,11 +4,14 @@ import { LocationEnt } from './locations.model';
 import { PeopleItem } from './people.model';
 import { FieldItem } from './fields.model';
 import { ToolItem } from './tools.model';
+import { SpHyperlink } from './sp-hyperlink.model';
 
 export interface JobItem extends SpListItem {
   id?: number;
   Title?: string;
   iDistrict?: string;
+  JobFolder?: SpHyperlink;
+  JobArchive?: SpHyperlink;
   JobType?: string;
   Well?: string;
   Field?: FieldItem;
