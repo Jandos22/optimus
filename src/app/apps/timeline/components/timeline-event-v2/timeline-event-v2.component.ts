@@ -99,7 +99,7 @@ import { TimelineEventItem } from '../../../../shared/interface/timeline.model';
           </div>
 
           <div class="followup"
-            *ngIf="(issue || failure)"
+            *ngIf="(issue || failure) && event.FollowUp"
             [ngClass]="{
               'issue-open': (issue || failure) && (event.IssueState === 'Open'),
               'issue-closed': (issue || failure) && (event.IssueState === 'Closed')

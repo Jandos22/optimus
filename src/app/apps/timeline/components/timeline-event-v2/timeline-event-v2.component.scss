@@ -29,7 +29,14 @@ $my-issue-closed: #fff; // e8f5e9 (50) c8e6c9 (100)
     .reporters {
       width: 36px;
       margin-right: 8px;
-      // background: #ccc;
+    }
+
+    &.issue-open {
+      border-left: 8px solid #ef9a9a;
+    }
+
+    &.issue-closed {
+      border-left: 8px solid #81c784;
     }
   }
 
