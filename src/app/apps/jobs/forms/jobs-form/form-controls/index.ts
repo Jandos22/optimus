@@ -12,6 +12,8 @@ import { JobsFormMaxDevComponent } from './jobs-form-max-dev/jobs-form-max-dev.c
 import { JobsFormFtlComponent } from './jobs-form-ftl/jobs-form-ftl.component';
 import { JobsFormHoleSizeComponent } from './jobs-form-hole-size/jobs-form-hole-size.component';
 import { JobsFormMudWeightComponent } from './jobs-form-mud-weight/jobs-form-mud-weight.component';
+import { JobsFormJobFolderComponent } from './jobs-form-jobfolder/jobs-form-jobfolder.component';
+import { JobsFormJobArchiveComponent } from './jobs-form-jobarchive/jobs-form-jobarchive.component';
 
 export const forms_controls: any[] = [
   JobsFormTitleComponent,
@@ -22,6 +24,8 @@ export const forms_controls: any[] = [
   AddJobsFormSummarySectionComponent,
   JobsFormDurationComponent,
   JobsFormJobTypeComponent,
+  JobsFormJobFolderComponent,
+  JobsFormJobArchiveComponent,
   JobsFormTotalDepthComponent,
   JobsFormMaxDevComponent,
   JobsFormToolsUsedComponent,
@@ -38,6 +42,8 @@ export * from './dynamic-validation/jobs-form-summary-section-dynvalid.component
 export * from './buttons/add-jobs-form-summary-section.component';
 export * from './jobs-form-duration/jobs-form-duration.component';
 export * from './jobs-form-job-type/jobs-form-job-type.component';
+export * from './jobs-form-jobfolder/jobs-form-jobfolder.component';
+export * from './jobs-form-jobarchive/jobs-form-jobarchive.component';
 export * from './jobs-form-total-depth/jobs-form-total-depth.component';
 export * from './jobs-form-max-dev/jobs-form-max-dev.component';
 export * from './jobs-form-tools-used/jobs-form-tools-used.component';

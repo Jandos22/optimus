@@ -19,11 +19,10 @@ import { AppraisalRights } from '../../store';
     <div class="appraisals-list-container" fxFlex id="PrintAppraisals"
       fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
 
-      <div class="is-private">Appraisals are CONFIDENTIAL</div>
+      <div class="is-private">Wellsite Performance Reviews are PRIVATE</div>
 
       <div *ngIf="position.isOther" class="is-other">
-        <p>Only PSDM, FEFS, OP, FDE and WFC have access to appraisals.</p>
-        <p>But, you will see appraisals that were submitted by you in the past.</p>
+        <p>Only PSDM, FEFS, OP, FDE and WFC have access to WPRs. You can see WPRs that were submitted by you in the past.</p>
       </div>
 
       <app-appraisal-group

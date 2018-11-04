@@ -23,7 +23,6 @@ export class AppsService {
     return this.http
       .get(url, {
         params: new HttpParams().set('$select', this.selectFields())
-        //   .append('$expand', this.expandFields())
       })
       .pipe(
         map((response: { value: AppItem[] }) => {
@@ -33,7 +32,13 @@ export class AppsService {
   }
 
   selectFields() {
-    return ['Id', 'Title', 'RouterLink', 'AppPositionNumber'].toString();
+    return [
+      'Id',
+      'Title',
+      'RouterLink',
+      'AppPositionNumber',
+      'Tooltip'
+    ].toString();
   }
 
   expandFields() {

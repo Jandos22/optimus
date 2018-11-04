@@ -32,13 +32,33 @@ import { JobItem } from '../../../../shared/interface/jobs.model';
         <div class="job-row-1" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="12px">
 
           <div class="date"
-            matTooltip="Job Date">
+            matTooltip="Job Date" matTooltipClass="mytooltip large-text">
             {{ job.RigUpStart | date: 'mediumDate' }}
           </div>
 
           <div class="iDistrict" (click)="openJRI(job.iDistrict)"
-            matTooltip="open JRI">
+            matTooltip="open JRI" matTooltipClass="mytooltip large-text">
             iD: {{ job.iDistrict }}
+          </div>
+
+          <div fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="2px">
+
+            <div class="JobFolder" (click)="openJobFolder(job.JobFolder)" *ngIf="job.JobFolder?.Url"
+              matTooltip="open Job Folder (via IE 11 only)"
+              matTooltipClass="mytooltip large-text">
+              JF
+            </div>
+
+            <div *ngIf="job.JobFolder?.Url && job.JobArchive?.Url">
+              /
+            </div>
+
+            <div class="JobArchive" (click)="openJobArchive(job.JobArchive)" *ngIf="job.JobArchive?.Url"
+              matTooltip="open Job Archive (via IE 11 only)"
+              matTooltipClass="mytooltip large-text">
+              JA
+            </div>
+
           </div>
 
         </div>
@@ -93,6 +113,18 @@ export class JobsListItemV2Component {
         `https://operationsportal.slb.com/fsmhome/pages/JRIQuestions.aspx?jobid=${iDistrict}&category=0`,
         '_blank'
       );
+    }
+  }
+
+  openJobFolder(link) {
+    if (link) {
+      window.open(`${link.Url}`, '_blank');
+    }
+  }
+
+  openJobArchive(link) {
+    if (link) {
+      window.open(`${link.Url}`, '_blank');
     }
   }
 }

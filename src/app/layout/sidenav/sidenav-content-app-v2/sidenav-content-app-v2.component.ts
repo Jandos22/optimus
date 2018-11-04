@@ -21,6 +21,8 @@ import { AppItem } from '../../../shared/interface/applications.model';
       [routerLink]="app.RouterLink"
       routerLinkActive="active"
       [ngClass]="{ 'hidden': !app.Visible }"
+      [matTooltip]="app?.Tooltip"
+      matTooltipClass="mytooltip large-text"
       (click)="onSidenavClick.emit()">
       {{ app.Title }}
     </a>

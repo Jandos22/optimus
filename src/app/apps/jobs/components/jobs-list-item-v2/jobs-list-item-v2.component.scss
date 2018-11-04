@@ -62,6 +62,20 @@
     }
   }
 
+  .JobFolder {
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+
+  .JobArchive {
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+
   .rig {
     // min-width: 72px;
     max-width: 84px;

@@ -24,10 +24,13 @@ import { JobItem } from '../../../../../../shared/interface/jobs.model';
   template: ``
 })
 export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
-  @Input() fg_fields: FormGroup;
-  @Input() initialFields: JobItem;
+  @Input()
+  fg_fields: FormGroup;
+  @Input()
+  initialFields: JobItem;
 
-  @Output() whenUnsavedFieldsChange = new EventEmitter<Object>();
+  @Output()
+  whenUnsavedFieldsChange = new EventEmitter<Object>();
 
   // combination of individual form control changes
   fc_changes$: Observable<Object>;
@@ -51,6 +54,22 @@ export class JobsFormActionsEditFieldsComponent implements OnInit, OnDestroy {
       this.fg_fields
         .get('JobType')
         .valueChanges.pipe(map(JobType => ({ JobType }))),
+
+      // JobFolder observable
+      this.fg_fields
+        .get('JobFolder')
+        .get('Url')
+        .valueChanges.pipe(
+          map(Url => ({ JobFolder: { Description: '', Url } }))
+        ),
+
+      // JobArchive observable
+      this.fg_fields
+        .get('JobArchive')
+        .get('Url')
+        .valueChanges.pipe(
+          map(Url => ({ JobArchive: { Description: '', Url } }))
+        ),
 
       // TotalDepth observable
       this.fg_fields

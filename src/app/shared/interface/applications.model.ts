@@ -5,4 +5,5 @@ export interface AppItem extends SpListItem {
   RouterLink: string;
   AppPositionNumber: number;
   Visible?: boolean;
+  Tooltip?: string;
 }

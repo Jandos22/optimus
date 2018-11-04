@@ -40,6 +40,14 @@ export class JobsFormInitService {
         this.getSimpleFormValue(mo, it, 'iDistrict'),
         Validators.required
       ],
+      JobFolder: this.fb.group({
+        Description: '',
+        Url: this.getJobFolder(mo, it)
+      }),
+      JobArchive: this.fb.group({
+        Description: '',
+        Url: this.getJobArchive(mo, it)
+      }),
       JobType: [
         this.getSimpleFormValue(mo, it, 'JobType'),
         Validators.required
@@ -111,6 +119,44 @@ export class JobsFormInitService {
         return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled: false };
+    }
+  }
+
+  getJobFolder(mode: FormMode, item: JobItem) {
+    let url;
+
+    if (item && item.JobFolder) {
+      url = item.JobFolder.Url;
+    } else {
+      url = '';
+    }
+
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: url, disabled: true };
+      case 'edit':
+        return { value: url, disabled: false };
+    }
+  }
+
+  getJobArchive(mode: FormMode, item: JobItem) {
+    let url;
+
+    if (item && item.JobArchive) {
+      url = item.JobArchive.Url;
+    } else {
+      url = '';
+    }
+
+    switch (mode) {
+      case 'new':
+        return '';
+      case 'view':
+        return { value: url, disabled: true };
+      case 'edit':
+        return { value: url, disabled: false };
     }
   }
 

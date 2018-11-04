@@ -51,17 +51,6 @@ import { AppItem } from '../../../shared/interface/applications.model';
 
       </div>
 
-      <!-- apps list version 1
-      <mat-nav-list class="app-list-container">
-        <div class="applications">Applications</div>
-        <app-sidenav-content-app *ngFor="let app of appsMap | appsFilter: showHiddenApps"
-          mat-list-item class="sidenav-app-component"
-          [app]="app" [myLocation]="myLocation"
-          (onSidenavClick)="onSidenavClick.emit()"
-          fxLayout="row nowrap" fxLayoutAling="space-between center">
-        </app-sidenav-content-app>
-      </mat-nav-list> -->
-
       <app-location-links
         *ngIf="linksPresent"
         class="app-location-links"
