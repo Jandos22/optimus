@@ -93,7 +93,7 @@ export class DashboardHarcsExpiredComponent implements OnInit, OnChanges {
     this.router.navigate([
       '/harcs',
       {
-        status: ['Expired'],
+        status: ['Expired', 'Soon Expire'],
         locations: [this.myLocation.ID]
       }
     ]);
