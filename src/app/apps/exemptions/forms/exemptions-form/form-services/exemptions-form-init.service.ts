@@ -58,7 +58,7 @@ export class ExemptionsFormInitService {
         this.getSimpleFormValue(mo, it, 'QuestQPID'),
         [
           Validators.minLength(6),
-          Validators.maxLength(6),
+          Validators.maxLength(8),
           ValidationService.onlyNumbers
         ]
       ],

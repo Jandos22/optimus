@@ -13,20 +13,31 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_fields">
-      <input matInput placeholder="QUEST QPID" formControlName="QuestQPID" autocomplete="off">
+      <input
+        matInput
+        placeholder="QUEST QPID"
+        formControlName="QuestQPID"
+        autocomplete="off"
+      />
 
       <button
         mat-icon-button
-        matTooltip='Open QUEST Exemption'
+        matTooltip="Open QUEST Exemption"
         matSuffix
-        *ngIf="this.fg_fields.controls['QuestQPID'].value && !this.fg_fields.controls['QuestQPID'].errors"
-        (click)="openQuest()">
-        <span class='fa_regular'><fa-icon [icon]="['fas', 'link']"></fa-icon></span>
+        *ngIf="
+          this.fg_fields.controls['QuestQPID'].value &&
+          !this.fg_fields.controls['QuestQPID'].errors
+        "
+        (click)="openQuest()"
+      >
+        <span class="fa_regular"
+          ><fa-icon [icon]="['fas', 'link']"></fa-icon
+        ></span>
       </button>
 
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
-    `
+  `
 })
 export class ExemptionsFormQuestQpidComponent {
   @Input() fg_fields: FormGroup;
@@ -48,10 +59,10 @@ export class ExemptionsFormQuestQpidComponent {
       ? onlyNumbers
         ? 'Only numbers allowed'
         : min
-          ? '6 digits minimum'
-          : max
-            ? '6 digits maximum'
-            : ''
+        ? '6 digits minimum'
+        : max
+        ? '8 digits maximum'
+        : ''
       : '';
   }
 
