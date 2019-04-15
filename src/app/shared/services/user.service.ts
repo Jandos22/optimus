@@ -41,6 +41,9 @@ export class UserService {
   }
 
   prepCurrentUserObject(user: CurrentUser) {
+    console.log('prepCurrentUserObject(user)');
+    console.log(user);
+
     let loginName = user.LoginName;
     let spId = user.Id;
 
@@ -50,8 +53,8 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      // loginName = 'zombayev@slb.com'; // FE
-      // spId = 167;
+      loginName = 'zombayev@slb.com'; // FE
+      spId = 167;
       // loginName = 'azhussipov@slb.com'; // FE
       // spId = 6;
       // loginName = 'cmarcotte@slb.com'; // PSDM
@@ -62,8 +65,8 @@ export class UserService {
       // spId = 210;
       // loginName = 'knigmetullin@slb.com'; // OU PSDM
       // spId = 226;
-      loginName = 'rayat@slb.com'; // FDE Manager
-      spId = 250;
+      // loginName = 'rayat@slb.com'; // FDE Manager
+      // spId = 250;
       // loginName = 'kbatyrkhanov@slb.com'; // Sales Engineer
       // spId = 261;
     }

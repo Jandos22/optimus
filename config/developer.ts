@@ -6,8 +6,8 @@
 // not localhost to overcome CORS authorization issues
 
 const OptimusCredentials = {
-  clientId: '597a1503-397d-437d-b4ba-fe9066a4ecb5',
-  clientSecret: 'xKTS6lWItXq9SXo1Ur1CvkH/4Rca7qjhvbhiTnpKEIE='
+  clientId: '4670930a-87ea-48f5-a507-4f1e3a29d054',
+  clientSecret: 'G7XOJ+5cucfFnSQ3n6OfMp68U+vbNuYQYir4vKyix8I='
 };
 
 // you need 2 command terminals
