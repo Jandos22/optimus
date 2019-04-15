@@ -5,9 +5,9 @@
 // this is needed to simulate that REST requests are started from SharePoint site
 // not localhost to overcome CORS authorization issues
 
-const OptimusCredentials = {
-  clientId: '4670930a-87ea-48f5-a507-4f1e3a29d054',
-  clientSecret: 'G7XOJ+5cucfFnSQ3n6OfMp68U+vbNuYQYir4vKyix8I='
+const Optimus2 = {
+  clientId: '24519c7f-6ca2-4791-ac37-2095348c06c4',
+  clientSecret: '8bIo+oyQwtvGE54JjFw901lvR6ZOAfAgJ9YG6ELdupc='
 };
 
 // you need 2 command terminals
