@@ -49,6 +49,11 @@ export const appRoutes: Routes = [
     path: 'harcs',
     canActivate: [AuthGuard],
     loadChildren: './apps/harcs/harcs.module#HarcsModule'
+  },  
+  {
+    path: 'batteries',
+    canActivate: [AuthGuard],
+    loadChildren: './apps/batteries/batteries.module#BatteriesModule'
   },
   {
     path: 'registration',

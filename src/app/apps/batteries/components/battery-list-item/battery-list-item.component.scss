@@ -1,0 +1,32 @@
+.battery-container {
+  border-radius: 8px;
+
+  &:hover {
+    background-color: #ffb74d;
+  }
+}
+
+.battery-icon {
+  margin: 8px;
+}
+
+// .body {
+//   padding: 4px 0;
+// }
+
+.serial {
+  //   margin: 8px 0 2px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.87);
+  height: 20px;
+}
+
+.hours {
+  //   margin: 2px 0 8px 0;
+  padding: 0 8px;
+  height: 20px;
+  font-size: 0.87rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.75);
+}
