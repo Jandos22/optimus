@@ -1,10 +1,14 @@
-<div class="battery-container" fxFlex="100" fxLayout="row nowrap">
+<div
+  fxFlex="100"
+  fxLayout="row nowrap"
+  (click)="openForm.emit(battery)"
+  [ngClass]="['battery-container', getBatteryLevel(battery.Hours)]"
+>
   <div class="common-button battery-icon" fxFlex="40px">
     <button
       mat-icon-button
       [matTooltip]="getHoursLeft(battery.Hours)"
       matTooltipClass="mytooltip large-text"
-      (click)="openForm.emit(battery)"
     >
       <!-- depending on Hours, show different battery icons -->
       <span class="fa_regular">
@@ -12,8 +16,18 @@
       </span>
     </button>
   </div>
-  <div fxFlex fxLayout="row" fxLayoutAlign="start center">
-    <div class="serial" fxFlex>{{ battery.Serial }}</div>
-    <div class="hours" fxFlex="130px">{{ battery.Hours }} hours used</div>
+  <div fxFlex fxLayout="row nowrap" fxLayoutAlign="start center">
+    <div class="serial">
+      {{ battery.Serial }}
+    </div>
+    <div fxFlex></div>
+    <div class="hours">{{ battery.Hours }} hours used</div>
+    <mat-chip-list *ngIf="battery.Status" style="padding-right: 8px;">
+      <mat-chip
+        color="{{ getChipColor(battery.Status) }}"
+        selected="{{ battery.Status !== 'New' }}"
+        >{{ battery.Status }}</mat-chip
+      >
+    </mat-chip-list>
   </div>
 </div>

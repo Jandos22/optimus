@@ -40,11 +40,17 @@ import * as fromServices from "./services";
 // form modules
 import { ToolbarButtonsModule } from "../../shared/modules/toolbar-buttons/toolbar-buttons.module";
 import { FormControlsModule } from "../../shared/modules/form-controls/form-controls.module";
-// import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
+import { FilterControlsModule } from "../../shared/modules/filter-controls/form-controls.module";
+
+import { RichTextEditorLightModule } from "../../shared/modules/rich-text-editor-light/rich-text-editor-light.module";
+import { BatteriesFiltersComponent } from "./containers/batteries-filters/batteries-filters.component";
+import { BatteryLastUpdatedComponent } from './components/battery-last-updated/battery-last-updated.component';
 
 // routes
 export const batteriesRoutes: Routes = [
-  { path: "", component: fromContainers.BatteriesComponent }
+  { path: ":status", component: fromContainers.BatteriesComponent },
+  { path: "", redirectTo: "All", pathMatch: "full" },
+  { path: "**", redirectTo: "All" }
 ];
 
 @NgModule({
@@ -61,8 +67,9 @@ export const batteriesRoutes: Routes = [
     // form control modules
     FormControlsModule,
     // toolbar modules
-    ToolbarButtonsModule
-    // FilterControlsModule,
+    ToolbarButtonsModule,
+    FilterControlsModule,
+    RichTextEditorLightModule
   ],
   providers: [...fromServices.services],
   declarations: [
@@ -71,7 +78,9 @@ export const batteriesRoutes: Routes = [
     // ...fromFilters.filters,
     ...fromForms.form_dialogs,
     ...fromBatteriesFormControls.forms_controls,
-    ...fromBatteriesFormActions.form_actions
+    ...fromBatteriesFormActions.form_actions,
+    BatteriesFiltersComponent,
+    BatteryLastUpdatedComponent
   ],
   entryComponents: [...fromForms.form_dialogs]
 })

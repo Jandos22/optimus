@@ -2,13 +2,14 @@
 import {
   ParamsActionTypes,
   ParamsActionsUnion
-} from '../actions/params.actions';
+} from "../actions/params.actions";
 
 // constants
 // import { WirelinePath, ApiPath } from '../../../../shared/constants';
 
 export interface ParamsState {
   text: string;
+  status: string;
   locations: number[];
   top: number;
   // afterDate?: Date;
@@ -21,8 +22,9 @@ export interface ParamsState {
 
 export const initialState: ParamsState = {
   text: null,
+  status: null,
   locations: null,
-  top: null,
+  top: null
   // afterDate: null,
   // beforeDate: null,
   // jobType: null,

@@ -44,18 +44,19 @@ export class BatteriesService {
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text ? params.text.replace("#", "%23") : null;
 
-    // const jobType = params.jobType ? params.jobType : null;
+    // # status is a string
+    const status = params.status ? params.status : "All";
 
     // const well = params.well ? params.well.replace('#', '%23') : null;
 
-    // locations must be ids array
+    // # locations must be ids array
     const locations = params.locations ? params.locations : [];
 
     // people arrays must be ids array
     // const engineers = params.engineers ? params.engineers : [];
     // const operators = params.operators ? params.operators : [];
 
-    // if top is missing then default is 100
+    // # if top is missing then default is 100
     let top = params.top ? params.top : 100;
 
     // count filters
@@ -80,8 +81,8 @@ export class BatteriesService {
     // $filter is added if one of these is not empty/null
     if (
       text ||
-      locations.length
-      // beforeDate ||
+      locations.length ||
+      status
       // afterDate ||
       // well ||
       // engineers.length
@@ -97,6 +98,19 @@ export class BatteriesService {
       url += `)`;
     }
 
+    // status filter configuration
+    if (status) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += "and";
+      }
+
+      if (status !== "All") {
+        countFilters++;
+        url += `(Status eq '${status}')`;
+      }
+    }
+
     // locations filter configuration
     if (locations.length) {
       // check if "AND" is needed
@@ -109,7 +123,7 @@ export class BatteriesService {
     }
 
     // $orderby
-    url += `&$orderby=Modified asc`;
+    url += `&$orderby=Hours asc`;
 
     // $top
     if (top) {
@@ -130,25 +144,26 @@ export class BatteriesService {
       "Title",
       "Serial",
       "PN",
-      "ManufDate",
-      "Jobs",
       "Hours",
-      "PercentUsed",
-      "DepassDate",
       "Status",
-      "Details",
+      "RichText",
       "Location",
       "LocationId",
       "Location/Id",
-      "Location/Title"
+      "Location/Title",
+      "LastUpdated",
+      "LastUpdatedBy",
+      "LastUpdatedById",
+      "LastUpdatedBy/Id",
+      "LastUpdatedBy/Alias"
     ];
     return $select.toString();
   }
 
   getExpandFields() {
     const $expand = [
-      "Location"
-      // 'Field',
+      "Location",
+      "LastUpdatedBy"
       // 'Client',
       // 'Rig',
       // 'ToolsUsed',

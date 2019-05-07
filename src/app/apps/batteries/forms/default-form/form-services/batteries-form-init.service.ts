@@ -23,12 +23,17 @@ export class BatteriesFormInitService {
 
   create_FormGroup_Fields(mo: FormMode, it: BatteryItem, lo: number) {
     return this.fb.group({
-      Serial: [this.getSimpleFormValue(mo, it, "Serial")],
-      PN: [this.getSimpleFormValue(mo, it, "PN")],
-      ManufDate: [this.getDateValue(mo, it, "ManufDate")],
-      Junked: [this.getSimpleFormValue(mo, it, "Junked")],
-      Hours: [this.getSimpleFormValue(mo, it, "Hours")],
-      Details: [this.getSimpleFormValue(mo, it, "Details")],
+      Serial: [
+        this.getSimpleFormValue(mo, it, "Serial"),
+        [Validators.required]
+      ],
+      PN: [this.getSimpleFormValue(mo, it, "PN"), [Validators.required]],
+      Status: [
+        this.getSimpleFormValue(mo, it, "Status"),
+        [Validators.required]
+      ],
+      Hours: [this.getSimpleFormValue(mo, it, "Hours"), [Validators.required]],
+      RichText: [this.getSimpleFormValue(mo, it, "RichText")],
       LocationId: [this.getLocation(mo, it, lo), [Validators.required]]
     });
   }
@@ -37,7 +42,12 @@ export class BatteriesFormInitService {
   getSimpleFormValue(mode: FormMode, item: BatteryItem, field: string) {
     switch (mode) {
       case "new":
-        return "";
+        if (field === "Hours") {
+          return 0;
+        } else {
+          return "";
+        }
+
       case "view":
         return { value: item[field], disabled: true };
       case "edit":

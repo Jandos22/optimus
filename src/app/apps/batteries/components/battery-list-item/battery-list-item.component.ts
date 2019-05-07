@@ -58,4 +58,26 @@ export class BatteryListItemComponent {
       return "battery-empty";
     }
   }
+
+  getBatteryLevel(hours: number) {
+    // recieve hours used and depending on that,
+    // return a class name that would then used to specify background color
+    return hours === 0
+      ? "battery-new"
+      : hours > 0 && hours < 70
+      ? "battery-has-charge"
+      : (hours => 70)
+      ? "battery-no-charge"
+      : "not a valid number";
+  }
+
+  getChipColor(status: string) {
+    return status === "New"
+      ? ""
+      : status === "InUse"
+      ? "primary"
+      : status === "FmtOut" || status === "Disposed"
+      ? "accent"
+      : "";
+  }
 }

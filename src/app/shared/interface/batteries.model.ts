@@ -15,16 +15,18 @@ export interface BatteryItem extends SpListItem {
   DepassDate?: Date;
   Status?: string;
   Details?: string;
-  FollowUpById?: number;
-  FollowUpBy?: PeopleItem;
-  LastFollowUp?: Date;
   Location?: LocationEnt;
   LocationId?: number;
   New?: boolean;
+  LastUpdated?: Date;
+  LastUpdatedBy?: PeopleItem;
+  LastUpdatedById?: number;
+  LastUpdatedFlag?: boolean;
 }
 
 export interface BatteriesSearchParams {
   text?: string;
+  status?: string;
   locations?: number[];
   top?: number;
 }

@@ -63,8 +63,8 @@ export class BatteriesHeaderComponent implements OnInit, OnDestroy {
   @Input()
   accessLevel: number;
 
-  // @Output()
-  // openForm = new EventEmitter<any>();
+  @Output()
+  openForm = new EventEmitter<any>();
   // @Output()
   // toggleFilters = new EventEmitter<any>();
 

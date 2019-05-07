@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import {
   MatSelectModule,
   MatToolbarModule,
@@ -19,18 +19,20 @@ import {
   MatTabsModule,
   MatExpansionModule,
   MatTooltipModule
-} from '@angular/material';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+} from "@angular/material";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDatepickerModule, MatNativeDateModule } from "@angular/material";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
-import { LayoutModule } from '@angular/cdk/layout';
+import { LayoutModule } from "@angular/cdk/layout";
 
 const matModules: any[] = [
   MatSelectModule,
   MatToolbarModule,
   MatButtonModule,
+  MatButtonToggleModule,
   MatIconModule,
   MatMenuModule,
   MatFormFieldModule,

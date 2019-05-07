@@ -47,6 +47,14 @@ export class BatteriesFormActionsEditFieldsComponent
       this.fg_fields
         .get("Serial")
         .valueChanges.pipe(map(Serial => ({ Serial }))),
+      this.fg_fields.get("Hours").valueChanges.pipe(map(Hours => ({ Hours }))),
+      this.fg_fields.get("PN").valueChanges.pipe(map(PN => ({ PN }))),
+      this.fg_fields
+        .get("Status")
+        .valueChanges.pipe(map(Status => ({ Status }))),
+      this.fg_fields
+        .get("RichText")
+        .valueChanges.pipe(map(RichText => ({ RichText }))),
       this.fg_fields
         .get("LocationId")
         .valueChanges.pipe(map(LocationId => ({ LocationId })))

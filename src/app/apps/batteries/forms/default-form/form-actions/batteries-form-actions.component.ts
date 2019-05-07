@@ -36,7 +36,7 @@ import { PeopleItem } from "../../../../people/models/people-item.model";
       *ngIf="mode === 'view'"
       class="form-actions-view"
       fxLayout="row nowrap"
-      fxLayoutAlign="end center"
+      fxLayoutAlign="start center"
       (closeForm)="closeForm.emit()"
       (switchFormMode)="switchFormMode.emit($event)"
       (deleteItem)="onDelete()"

@@ -20,7 +20,6 @@ import { BatteriesFormHttpService } from "./form-services/batteries-form-http.se
 // interfaces
 import { BatteryItem } from "../../../../shared/interface/batteries.model";
 import { FormMode } from "../../../../shared/interface/form.model";
-import { SpListItemAttachmentFiles } from "../../../../shared/interface/sp-list-item.model";
 import { LocationEnt } from "../../../../shared/interface/locations.model";
 import { PeopleItem } from "../../../../shared/interface/people.model";
 
@@ -50,6 +49,9 @@ export class BatteriesFormComponent implements OnInit, OnDestroy {
   // Form Mode is Subject
   $mode: Subject<FormMode>;
 
+  // focuses
+  rte_focused = false;
+
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_batteries: Store<fromBatteries.BatteriesState>,
@@ -76,7 +78,7 @@ export class BatteriesFormComponent implements OnInit, OnDestroy {
     this.$mode.subscribe(mode => {
       console.log("mode changed to: " + mode);
       this.data.mode = mode;
-      console.log(this.data.item);
+      console.log("data item: " + this.data.item);
 
       this.createFormGroups(mode, this.data.item, this.locationAssignedId);
     });
@@ -124,6 +126,10 @@ export class BatteriesFormComponent implements OnInit, OnDestroy {
 
   closeForm($event: any) {
     this.formRef.close($event);
+  }
+
+  onRichTextFocus(event) {
+    this.rte_focused = event;
   }
 
   // unsubscribe from Subscription when component is destroyed

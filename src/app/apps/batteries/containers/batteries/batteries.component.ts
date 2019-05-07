@@ -6,9 +6,12 @@ import {
   HostBinding
 } from "@angular/core";
 
+// router
+import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+
 // rxjs
 import { Subscription, Observable } from "rxjs";
-import { take } from "rxjs/operators";
+import { take, switchMap, map } from "rxjs/operators";
 
 // ngrx
 import { Store, select } from "@ngrx/store";
@@ -44,6 +47,12 @@ import { PeopleItem } from "../../../../shared/interface/people.model";
       (toggleFilters)="toggleFilters()"
     >
     </app-batteries-header>
+
+    <app-batteries-filters
+      fxFlex="65.5px"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start start"
+    ></app-batteries-filters>
 
     <app-batteries-list
       fxFlex
@@ -82,6 +91,8 @@ export class BatteriesComponent implements OnInit, OnDestroy {
   $pagination: Subscription;
   pagination: PaginationState;
 
+  $status: Subscription;
+
   // when showFilters toggle it toggles class in host element
   @HostBinding("class.filtersOpened")
   showFilters = false;
@@ -89,7 +100,9 @@ export class BatteriesComponent implements OnInit, OnDestroy {
   constructor(
     private store_root: Store<fromRoot.RootState>,
     private store_batteries: Store<fromBatteries.BatteriesState>,
-    public form: MatDialog
+    public form: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -120,6 +133,15 @@ export class BatteriesComponent implements OnInit, OnDestroy {
       .select(fromBatteries.getParams)
       .subscribe(params => {
         this.params = params;
+      });
+
+    // monitor URL change and get Battery Status
+    this.$status = this.route.paramMap
+      .pipe(map((params: ParamMap) => params.get("status")))
+      .subscribe((status: string) => {
+        this.store_batteries.dispatch(
+          new fromBatteries.UpdateParams({ status })
+        );
       });
   }
 
@@ -166,5 +188,6 @@ export class BatteriesComponent implements OnInit, OnDestroy {
     this.$data.unsubscribe();
     this.$params.unsubscribe();
     this.$searching.unsubscribe();
+    this.$status.unsubscribe();
   }
 }

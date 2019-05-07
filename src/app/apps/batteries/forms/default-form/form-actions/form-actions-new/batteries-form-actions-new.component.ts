@@ -100,14 +100,12 @@ export class BatteriesFormActionsNewComponent implements OnInit, OnDestroy {
 
     console.log(newFields);
 
-    if (_.has(newFields, "FollowUp") === true) {
-      // add last FollowUpBy info
-      newFields = {
-        ...newFields,
-        FollowUpById: this.selfUser.Id,
-        LastFollowUp: new Date(Date.now())
-      };
-    }
+    // add last updated info
+    newFields = {
+      ...newFields,
+      LastUpdatedById: this.selfUser.Id,
+      LastUpdated: new Date(Date.now())
+    };
 
     this.spHttp
       .createItem(newFields)
