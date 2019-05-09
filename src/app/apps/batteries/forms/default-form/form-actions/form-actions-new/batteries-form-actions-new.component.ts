@@ -140,8 +140,8 @@ export class BatteriesFormActionsNewComponent implements OnInit, OnDestroy {
     this.store_batteries.dispatch(
       new fromBatteriesActions.InsertOneBattery({
         ...newItemExpanded[0],
-        id: newItemExpanded[0].ID,
-        New: true
+        id: newItemExpanded[0].ID
+        // New: true
       })
     );
     this.closeFormOrUploadPhoto();

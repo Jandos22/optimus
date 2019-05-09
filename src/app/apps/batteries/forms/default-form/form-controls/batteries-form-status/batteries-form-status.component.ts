@@ -39,7 +39,7 @@ export class BatteriesFormStatusComponent {
   // it is first element in array,
   // it is not needed to be selectable in Battery Form,
   // but only needed in Battery Filters
-  private statuses: string[] = _.drop(batteryStatuses, 1);
+  statuses: string[] = _.drop(batteryStatuses, 1);
 
   constructor() {}
 

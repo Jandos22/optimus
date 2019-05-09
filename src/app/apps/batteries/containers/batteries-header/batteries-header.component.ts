@@ -49,7 +49,6 @@ import { ValidationService } from "../../../../shared/validators/validation.serv
       (onFocus)="onFocus()"
       (onBlur)="onBlur()"
       (openForm)="openForm.emit()"
-      (toggleFilters)="toggleFilters.emit()"
       [ngClass]="{ focused: focus, invalid: fg_params.get('text').invalid }"
     >
     </app-batteries-toolbar>

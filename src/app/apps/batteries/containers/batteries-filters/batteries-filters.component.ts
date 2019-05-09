@@ -26,7 +26,7 @@ import { batteryStatuses } from "../../constants/battery-statuses.constants";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BatteriesFiltersComponent implements OnInit, OnDestroy {
-  private statuses: string[] = batteryStatuses;
+  statuses: string[] = batteryStatuses;
 
   fg_filters: FormGroup;
 

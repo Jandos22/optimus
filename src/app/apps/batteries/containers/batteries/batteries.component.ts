@@ -44,7 +44,6 @@ import { PeopleItem } from "../../../../shared/interface/people.model";
       [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
       (openForm)="openForm('new', $event)"
-      (toggleFilters)="toggleFilters()"
     >
     </app-batteries-header>
 
