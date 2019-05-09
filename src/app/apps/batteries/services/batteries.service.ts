@@ -99,7 +99,7 @@ export class BatteriesService {
     }
 
     // status filter configuration
-    if (status) {
+    if (status && status !== "All") {
       // check if "AND" is needed
       if (countFilters > 0) {
         url += "and";
@@ -135,6 +135,14 @@ export class BatteriesService {
 
     // return combiner url string
     return url;
+  }
+
+  addAndOrNot(counter) {
+    if (counter > 0) {
+      return "and";
+    } else {
+      return "";
+    }
   }
 
   getSelectFields() {

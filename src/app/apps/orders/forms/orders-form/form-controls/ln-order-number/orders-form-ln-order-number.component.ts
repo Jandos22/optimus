@@ -2,50 +2,76 @@ import {
   Component,
   Input,
   ViewEncapsulation,
-  ChangeDetectionStrategy
-} from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+  ChangeDetectionStrategy,
+  OnInit
+} from "@angular/core";
+import { FormGroup, FormControl, AbstractControl } from "@angular/forms";
 
 // interfaces
-import { FormMode } from './../../../../../../shared/interface/form.model';
+import { FormMode } from "./../../../../../../shared/interface/form.model";
+import { Subscription } from "rxjs";
+import * as _ from "lodash";
+import { distinctUntilChanged } from "rxjs/operators";
 
 @Component({
-  selector: 'app-orders-form-ln-order-number',
-  styleUrls: ['orders-form-ln-order-number.component.scss'],
+  selector: "app-orders-form-ln-order-number",
+  styleUrls: ["orders-form-ln-order-number.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field fxFlex="100" [formGroup]="fg_fields"
-      class="minus13" floatLabel="never">
+    <mat-form-field
+      fxFlex="100"
+      [formGroup]="fg_fields"
+      class="minus13"
+      floatLabel="never"
+    >
+      <input
+        matInput
+        [placeholder]="'SC/PO/FMT'"
+        [formControlName]="fieldName"
+        autocomplete="off"
+      />
 
-        <input
-          matInput
-          [placeholder]="'SC/PO/FMT'"
-          [formControlName]="fieldName"
-          autocomplete="off">
-
-        <button
-          mat-icon-button
-          matTooltip='check status via Track My Order'
-          matSuffix
-          *ngIf="isPurchaseOrder"
-          (click)="openTMO(fg_fields.controls[this.fieldName].value)">
-          <span class='fa_regular'><fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon></span>
-        </button>
-
+      <button
+        mat-icon-button
+        matTooltip="check status via Track My Order"
+        matSuffix
+        *ngIf="isPurchaseOrder"
+        (click)="openTMO(fg_fields.controls[this.fieldName].value)"
+      >
+        <span class="fa_regular"
+          ><fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon
+        ></span>
+      </button>
     </mat-form-field>
   `
 })
-export class OrdersFormLnOrderNumberComponent {
+export class OrdersFormLnOrderNumberComponent implements OnInit {
   @Input()
   fg_fields: FormGroup;
+
   @Input()
   mode: FormMode;
+
   @Input()
   fieldName: string;
+
   @Input()
   displayName: string;
 
+  $react2orderNumber: Subscription;
+
   constructor() {}
+
+  ngOnInit() {
+    this.$react2orderNumber = this.fg_fields.controls[
+      this.fieldName
+    ].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(value => {
+        const newValue = _.trim(value);
+        this.fg_fields.controls[this.fieldName].setValue(newValue);
+      });
+  }
 
   get isPurchaseOrder() {
     const value: string = this.fg_fields.controls[this.fieldName].value;
@@ -72,7 +98,7 @@ export class OrdersFormLnOrderNumberComponent {
     if (orderNumber) {
       window.open(
         `http://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
-        '_blank'
+        "_blank"
       );
     }
   }
