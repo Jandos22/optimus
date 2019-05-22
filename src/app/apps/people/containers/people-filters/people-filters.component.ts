@@ -8,54 +8,63 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy
-} from '@angular/core';
+} from "@angular/core";
 
 // router
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 
 // lodash
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // forms
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 // rxjs
-import { Subscription, Observable } from 'rxjs';
-import { take, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
+import { Subscription, Observable } from "rxjs";
+import { take, tap, withLatestFrom, debounceTime } from "rxjs/operators";
 
 // ngrx
-import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../../store';
-import * as fromPeople from '../../store';
+import { Store, select } from "@ngrx/store";
+import * as fromRoot from "../../../../store";
+import * as fromPeople from "../../store";
 
 // interface
-import { LocationEnt } from '../../../../shared/interface/locations.model';
-import { SearchParamsUser } from '../../../../shared/interface/people.model';
-import { PeopleItem } from '../../../../shared/interface/people.model';
+import { LocationEnt } from "../../../../shared/interface/locations.model";
+import { SearchParamsUser } from "../../../../shared/interface/people.model";
+import { PeopleItem } from "../../../../shared/interface/people.model";
 
 @Component({
-  selector: 'app-people-filters',
-  styleUrls: ['people-filters.component.scss'],
+  selector: "app-people-filters",
+  styleUrls: ["people-filters.component.scss"],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-people-filters-header fxFlex="65px" class="common-filters-header"
-        (toggleFilters)="toggleFilters.emit()">
+    <app-people-filters-header
+      fxFlex="65px"
+      class="common-filters-header"
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-people-filters-header>
 
-    <app-people-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters"
-        [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async"
-        [doReset]="doReset"
-        (updateLocationsofinterest)="updateLocationsofinterest($event)">
+    <app-people-filters-content
+      fxFlex
+      class="common-filters-content"
+      [fg_filters]="fg_filters"
+      [locofinterest]="locofinterest$ | async"
+      [selfUser]="selfUser$ | async"
+      [doReset]="doReset"
+      (updateLocationsofinterest)="updateLocationsofinterest($event)"
+    >
     </app-people-filters-content>
 
-    <app-people-filters-footer fxFlex="49px" class="common-filters-footer"
+    <app-people-filters-footer
+      fxFlex="49px"
+      class="common-filters-footer"
       (onResetFilters)="resetFgFilters()"
-      (toggleFilters)="toggleFilters.emit()">
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-people-filters-footer>
-    `
+  `
 })
 export class PeopleFiltersComponent implements OnInit, OnChanges {
   @Input()
@@ -88,7 +97,7 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    console.log('people filters initialization');
+    console.log("people filters initialization");
 
     this.startObservables();
     this.startSubscriptions();
@@ -96,7 +105,7 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.filterParams) {
-      console.log('FILTERS PARAMS CHANGED');
+      console.log("FILTERS PARAMS CHANGED");
       console.log(changes.filterParams.previousValue);
       console.log(changes.filterParams.currentValue);
 
@@ -105,16 +114,16 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
   }
 
   onUrlParamsChange(params: SearchParamsUser) {
-    console.log('ON URL PARAMS CHANGE');
+    console.log("ON URL PARAMS CHANGE");
     // params can be {} or e.g. { locations: [2,4], ...other }
 
     // check if params is empty
     const isEmpty = _.isEmpty(params);
-    console.log('IS EMPTY? ' + isEmpty);
+    console.log("IS EMPTY? " + isEmpty);
 
     // if fg_filters not created yet
     // then we should create fg_filters with default params
-    console.log('IS FG_FILTERS not present? ' + !this.fg_filters);
+    console.log("IS FG_FILTERS not present? " + !this.fg_filters);
     if (!this.fg_filters) {
       this.createFormGroup();
     }
@@ -151,7 +160,7 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
     this.fg_filters.valueChanges
       .pipe(debounceTime(300))
       .subscribe((params: SearchParamsUser) => {
-        console.log('FG_FILTERS changed');
+        console.log("FG_FILTERS changed");
         console.log(params);
 
         // modify URL with new params
@@ -171,11 +180,11 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
   }
 
   createFormGroup() {
-    console.log('CREATING FG_FILTERS');
+    console.log("CREATING FG_FILTERS");
 
     this.fg_filters = this.fb.group({
-      text: '',
-      locations: '',
+      text: "",
+      locations: "",
       top: 25
     });
 
@@ -184,7 +193,7 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
 
   updateFgFiltersLocations(locations: number[]) {
     console.log(locations);
-    this.fg_filters.controls['locations'].patchValue(locations);
+    this.fg_filters.controls["locations"].patchValue(locations);
   }
 
   updateLocationsofinterest(locations: number[]) {
@@ -193,16 +202,8 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
     this.store_root.dispatch(new fromRoot.UpdateSelected(locations));
   }
 
-  // onSelectEventReporters(eventReporters: number[]) {
-  //   this.fg_filters.controls['eventReporters'].patchValue(eventReporters);
-  // }
-
   resetFgFilters() {
     this.doReset = this.doReset ? false : true;
-
-    // this.fg_filters.controls['eventType'].reset();
-    // this.fg_filters.controls['issueState'].reset();
-    // this.fg_filters.controls['eventReporters'].patchValue([]);
   }
 
   updateFgFilters(params: SearchParamsUser) {
@@ -218,26 +219,22 @@ export class PeopleFiltersComponent implements OnInit, OnChanges {
       }
     });
 
-    if (_.has(params, 'text') !== true) {
-      this.fg_filters.controls['text'].reset();
+    if (_.has(params, "text") !== true) {
+      this.fg_filters.controls["text"].reset();
     }
 
     // if locations are not in params
     // then force update of locations filter
-    if (_.has(params, 'locations') !== true) {
-      console.log('forced update locations');
-      this.fg_filters.controls['locations'].patchValue(this.locations);
+    if (_.has(params, "locations") !== true) {
+      console.log("forced update locations");
+      this.fg_filters.controls["locations"].patchValue(this.locations);
     }
 
     // if top is not in params
     // then force update of top filter
-    if (_.has(params, 'top') !== true) {
-      console.log('force update top');
-      this.fg_filters.controls['top'].patchValue(25);
+    if (_.has(params, "top") !== true) {
+      console.log("force update top");
+      this.fg_filters.controls["top"].patchValue(25);
     }
-
-    // if (_.has(params, 'eventType') !== true) {
-    //   this.fg_filters.controls['eventType'].reset();
-    // }
   }
 }

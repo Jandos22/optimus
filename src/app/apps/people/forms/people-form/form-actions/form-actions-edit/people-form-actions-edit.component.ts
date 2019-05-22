@@ -1,4 +1,4 @@
-import { SpListItemAttachmentFiles } from '../../../../../../shared/interface/sp-list-item.model';
+import { SpListItemAttachmentFiles } from "../../../../../../shared/interface/sp-list-item.model";
 import {
   Component,
   Input,
@@ -6,59 +6,79 @@ import {
   OnInit,
   OnDestroy,
   EventEmitter
-} from '@angular/core';
-import { FormGroup } from '@angular/forms';
+} from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 // rxjs
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 
 // ngrx
-import { Store } from '@ngrx/store';
+import { Store } from "@ngrx/store";
 
-import * as fromRoot from '../../../../../../store';
-import * as fromErrorActions from '../../../../../../store/actions/errors.actions';
+import * as _ from "lodash";
 
-import * as fromPeople from '../../../../store';
-import * as fromUsersActions from '../../../../store/actions/users.action';
+import * as fromRoot from "../../../../../../store";
+import * as fromErrorActions from "../../../../../../store/actions/errors.actions";
+
+import * as fromPeople from "../../../../store";
+import * as fromUsersActions from "../../../../store/actions/users.action";
 
 // interfaces
 import {
   PeopleItem,
   ToSaveUserPhoto
-} from '../../../../../../shared/interface/people.model';
+} from "../../../../../../shared/interface/people.model";
 
 // services
-import { PeopleFormHttpService } from '../../form-services/people-form-http.service';
+import { PeopleFormHttpService } from "../../form-services/people-form-http.service";
 
 @Component({
-  selector: 'app-people-form-actions-edit',
-  styleUrls: ['people-form-actions-edit.component.scss'],
+  selector: "app-people-form-actions-edit",
+  styleUrls: ["people-form-actions-edit.component.scss"],
   template: `
     <!-- btn for saving changes in edit mode -->
-    <button mat-button tabindex="-1" color="primary" class="mat-button__fa-icon"
-        [disabled]="!fg_fields.valid || (!hasUnsavedFields && !hasUnsavedPhoto) || savingChanges"
-        (click)="onSaveChanges()">
-        <!-- two span els needed to have right vertical alignment -->
-        <span *ngIf="savingChanges" class="cta__fa-icon" matTooltip="Saving changes">
-          <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
-        </span>
-        <!-- <span class="g_form-button__text">SAVE</span> -->
-        <span *ngIf="!savingChanges" class="cta__fa-icon" matTooltip="Save changes">
-          <fa-icon [icon]="['far', 'save']"></fa-icon>
-        </span>
+    <button
+      mat-button
+      tabindex="-1"
+      color="primary"
+      class="mat-button__fa-icon"
+      [disabled]="
+        !fg_fields.valid ||
+        (!hasUnsavedFields && !hasUnsavedPhoto) ||
+        savingChanges
+      "
+      (click)="onSaveChanges()"
+    >
+      <!-- two span els needed to have right vertical alignment -->
+      <span
+        *ngIf="savingChanges"
+        class="cta__fa-icon"
+        matTooltip="Saving changes"
+      >
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+      </span>
+      <!-- <span class="g_form-button__text">SAVE</span> -->
+      <span
+        *ngIf="!savingChanges"
+        class="cta__fa-icon"
+        matTooltip="Save changes"
+      >
+        <fa-icon [icon]="['far', 'save']"></fa-icon>
+      </span>
     </button>
 
-    <button mat-button tabindex="-1"
-      (click)="switchFormMode.emit('view')">
+    <button mat-button tabindex="-1" (click)="switchFormMode.emit('view')">
       CANCEL
     </button>
 
     <app-people-form-actions-edit-fields
-      [fg_fields]="fg_fields" [initialFields]="initialFields"
-      (whenUnsavedFieldsChange)="unsavedFieldsChange($event)">
+      [fg_fields]="fg_fields"
+      [initialFields]="initialFields"
+      (whenUnsavedFieldsChange)="unsavedFieldsChange($event)"
+    >
     </app-people-form-actions-edit-fields>
-    `
+  `
 })
 export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   @Input() fg_fields: FormGroup;
@@ -71,7 +91,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   @Output()
   updateFormGroupPhoto = new EventEmitter<SpListItemAttachmentFiles[]>();
 
-  unsavedFields = {};
+  unsavedFields: PeopleItem = {};
 
   // activates spinner
   savingChanges = false;
@@ -89,12 +109,12 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
     private store_people: Store<fromPeople.PeopleState>,
     private spHttp: PeopleFormHttpService
   ) {
-    console.log('people-form-actions-edit: initialized');
+    console.log("people-form-actions-edit: initialized");
   }
 
   ngOnInit() {
     this.$watchArrayBuffer = this.fg_photo
-      .get('ArrayBuffer')
+      .get("ArrayBuffer")
       .valueChanges.subscribe(arrayBuffer =>
         this.onArrayBufferChange(arrayBuffer)
       );
@@ -142,20 +162,66 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   saveChangesFields() {
     console.log(this.unsavedFields);
 
+    let fields = this.unsavedFields;
+
+    // *** fix on 21-May-2019 by Zhandos Ombayev
+    // *** because cannot use filters in SP calculated fields
+    // combine 'Name' and 'Surname'
+    // assign combined text to field 'Fullname2'
+    // this way users may type name and surname and precisely find necessary user
+
+    // check if Name and Surname both changed
+    // if so, then modify Fullname2 accordingly
+
+    if (_.has(fields, "Name") === true && _.has(fields, "Surname") === true) {
+      fields = {
+        ...fields,
+        Fullname2: `${fields.Surname} ${fields.Name} ${fields.Name} ${
+          fields.Surname
+        }`
+      };
+    }
+
+    // check if only Name changed
+    // if so, then modify Fullname2 accordingly
+    // Surname will come from initialFields
+
+    if (_.has(fields, "Name") === true && _.has(fields, "Surname") === false) {
+      fields = {
+        ...fields,
+        Fullname2: `${this.initialFields.Surname} ${fields.Name} ${
+          fields.Name
+        } ${this.initialFields.Surname}`
+      };
+    }
+
+    // check if only Surname changed
+    // if so, then modify Fullname2 accordingly
+    // Name will come from initialFields
+
+    if (_.has(fields, "Name") === false && _.has(fields, "Surname") === true) {
+      fields = {
+        ...fields,
+        Fullname2: `${fields.Surname} ${this.initialFields.Name} ${
+          this.initialFields.Name
+        } ${fields.Surname}`
+      };
+    }
+
     this.$saveChangesFields = this.spHttp
-      .updatePeopleItem(this.unsavedFields)
+      .updatePeopleItem(fields)
       .pipe(take(1))
       .subscribe(
         success => this.saveChangesFieldsSuccess(success),
         error => this.saveChangesFieldsError(error),
-        () => console.log('$saveChangesFields completed')
+        () => console.log("$saveChangesFields completed")
       )
-      .add(() => console.log('unsubscribed'));
+      .add(() => console.log("unsubscribed"));
   }
 
   // * success saving updated fields
   saveChangesFieldsSuccess(success: PeopleItem) {
-    console.log('successfully saved fields:');
+    console.log("successfully saved fields:");
     console.log(success);
 
     this.$saveChangesFields.unsubscribe();
@@ -166,7 +232,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
   }
 
   getAllFieldsOfUpdatedItem(updatedItem: PeopleItem) {
-    console.log('getting all fields of updated item:');
+    console.log("getting all fields of updated item:");
 
     this.spHttp
       .getUserById(updatedItem.ID)
@@ -175,12 +241,12 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
         success =>
           this.getAllFieldsOfUpdatedItemSuccees(success[0] as PeopleItem),
         error => this.getAllFieldsOfUpdatedItemError(error),
-        () => console.log('completed getting all fields of updated item')
+        () => console.log("completed getting all fields of updated item")
       );
   }
 
   getAllFieldsOfUpdatedItemSuccees(fullItem: PeopleItem) {
-    console.log('successfully got all fields of updated item:');
+    console.log("successfully got all fields of updated item:");
     console.log(fullItem);
 
     // now you want to update data.item
@@ -206,7 +272,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
 
   // * error when saving updated fields
   saveChangesFieldsError(error) {
-    console.log('error when updating people item');
+    console.log("error when updating people item");
     this.savingChanges = false;
     // this.$onSaveChanges.unsubscribe();
     this.store_root.dispatch(new fromErrorActions.DisplayError(error));
@@ -219,7 +285,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
       .subscribe(
         success => this.saveNewPhotoSuccess(success),
         error => console.log(error),
-        () => console.log('completed')
+        () => console.log("completed")
       );
   }
 
@@ -242,7 +308,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
 
   modifyNewPhotoObject(newPhoto: SpListItemAttachmentFiles[]) {
     // time is added to url to push browser to show updated photo
-    const url = newPhoto[0].ServerRelativeUrl + '?time=' + Date.now();
+    const url = newPhoto[0].ServerRelativeUrl + "?time=" + Date.now();
     return [
       { ...newPhoto[0], ServerRelativeUrl: url }
     ] as SpListItemAttachmentFiles[];
@@ -254,7 +320,7 @@ export class PeopleFormActionsEditComponent implements OnInit, OnDestroy {
       this.saveNewPhoto(this.fg_photo.value);
     } else {
       this.savingChanges = false;
-      this.switchFormMode.emit('view');
+      this.switchFormMode.emit("view");
     }
   }
 

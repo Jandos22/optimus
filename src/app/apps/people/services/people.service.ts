@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // rxjs
-import { Observable, throwError, of, from } from 'rxjs';
+import { Observable, throwError, of, from } from "rxjs";
 import {
   map,
   mergeMap,
@@ -12,26 +12,26 @@ import {
   switchMap,
   take,
   retry
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
 // constants
-import { ApiPath, WirelinePath } from '../../../shared/constants';
-import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
+import { ApiPath, WirelinePath } from "../../../shared/constants";
+import { hk_accept, hv_appjson } from "../../../shared/constants/headers";
 
 // interfaces
 import {
   PeopleUpdatedPhoto,
   UserSearchParams,
   PeopleItem
-} from '../../../shared/interface/people.model';
-import { SpResponse } from '../../../shared/interface/sp-response.model';
-import { SpGetListItemResult } from '../../../shared/interface/sp-list-item.model';
+} from "../../../shared/interface/people.model";
+import { SpResponse } from "../../../shared/interface/sp-response.model";
+import { SpGetListItemResult } from "../../../shared/interface/sp-list-item.model";
 
 // services
-import { SharepointService } from '../../../shared/services/sharepoint.service';
+import { SharepointService } from "../../../shared/services/sharepoint.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class PeopleService {
   constructor(private http: HttpClient, private sp: SharepointService) {}
@@ -65,7 +65,7 @@ export class PeopleService {
       take(1),
       switchMap(fdv => {
         const update$ = new sprLib.list({
-          name: 'NgPeople',
+          name: "NgPeople",
           ...fdv
         }).update(updatedFields);
 
@@ -87,14 +87,14 @@ export class PeopleService {
     // - after deletion of file, upload new file
     return checkByFilename$.pipe(
       mergeMap(hasPhoto => {
-        console.log('has photo: ' + hasPhoto);
+        console.log("has photo: " + hasPhoto);
         if (hasPhoto) {
           // observable that
           // - true if photo successfully been deleted
           // - false if photo deletion thrown error
           return delete$.pipe(
             map(deleted => {
-              console.log('deleted: ' + deleted);
+              console.log("deleted: " + deleted);
               return upload$;
             })
             // last work here
@@ -107,7 +107,7 @@ export class PeopleService {
   }
 
   checkIfPhotoExists(updatedPhoto: PeopleUpdatedPhoto) {
-    console.log('check if photo exists');
+    console.log("check if photo exists");
     // url constructed to
     // - get user with Attachments and AttachmentsList
     let url = `${ApiPath}/web/lists/getByTitle('NgPeople')`;
@@ -152,7 +152,7 @@ export class PeopleService {
       switchMap(fdv => {
         const upload$: Promise<any> = sprLib.rest({
           url: url,
-          type: 'POST',
+          type: "POST",
           ...fdv,
           data: updatedPhoto.ArrayBuffer
         });
@@ -173,12 +173,12 @@ export class PeopleService {
       switchMap(fdv => {
         const deleted$: Promise<any> = sprLib.rest({
           url: url,
-          type: 'POST',
+          type: "POST",
           headers: {
-            Accept: 'application/json;odata=verbose',
-            'X-HTTP-Method': 'DELETE',
-            'If-Match': '*',
-            'X-RequestDigest': fdv.requestDigest
+            Accept: "application/json;odata=verbose",
+            "X-HTTP-Method": "DELETE",
+            "If-Match": "*",
+            "X-RequestDigest": fdv.requestDigest
           }
         });
         return from(
@@ -197,7 +197,7 @@ export class PeopleService {
     return fdv$.pipe(
       take(1),
       switchMap(fdv => {
-        const create$ = new sprLib.list({ name: 'NgPeople', ...fdv }).create(
+        const create$ = new sprLib.list({ name: "NgPeople", ...fdv }).create(
           userData
         );
         return from(create$);
@@ -211,7 +211,7 @@ export class PeopleService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? _.replace(params.text, /#/g, '%23') : null;
+    const text = params.text ? _.replace(params.text, /#/g, "%23") : null;
 
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
@@ -242,7 +242,8 @@ export class PeopleService {
       countFilters++;
       url += `((substringof('${text}',Name))`;
       url += `or(substringof('${text}',Surname))`;
-      url += `or(substringof('${text}',Alias))`;
+      url += `or(substringof('${text}',Fullname2))`;
+      // url += `or(substringof('${text}',Alias))`;
       url += `or(substringof('${text}',Email))`;
       url += `or(substringof('${text}',Gin)))`;
     }
@@ -253,7 +254,7 @@ export class PeopleService {
     if (locations.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
 
       countFilters++;
@@ -267,7 +268,7 @@ export class PeopleService {
     if (positions.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
 
       countFilters++;
@@ -292,45 +293,46 @@ export class PeopleService {
 
   getSelectFields() {
     const $select = [
-      'Id',
-      'ID',
-      'Alias',
-      'Name',
-      'Surname',
-      'Fullname',
-      'Shortname',
-      'Email',
-      'Gin',
-      'LocationAssigned/Id',
-      'LocationAssigned/Title',
-      'LocationAssignedId',
+      "Id",
+      "ID",
+      "Alias",
+      "Name",
+      "Surname",
+      "Fullname",
+      "Fullname2",
+      "Shortname",
+      "Email",
+      "Gin",
+      "LocationAssigned/Id",
+      "LocationAssigned/Title",
+      "LocationAssignedId",
       // 'LocationsOfInterest',
-      'LocationsOfInterestId',
-      'PositionId',
-      'Position/Id',
-      'Position/Title',
-      'RolesId',
-      'Roles/Id',
-      'Roles/Title',
-      'Attachments',
-      'AttachmentFiles'
+      "LocationsOfInterestId",
+      "PositionId",
+      "Position/Id",
+      "Position/Title",
+      "RolesId",
+      "Roles/Id",
+      "Roles/Title",
+      "Attachments",
+      "AttachmentFiles"
     ];
     return $select.toString();
   }
 
   getExpandFields() {
     const $expand = [
-      'AttachmentFiles',
-      'LocationAssigned',
-      'Position',
-      'Roles'
+      "AttachmentFiles",
+      "LocationAssigned",
+      "Position",
+      "Roles"
     ];
     return $expand.toString();
   }
 
   getFilterLocationAssigned(locations: number[]) {
     if (locations.length) {
-      let filter = '';
+      let filter = "";
       const n = locations.length;
       let i = 1;
 
@@ -361,7 +363,7 @@ export class PeopleService {
 
   getFilterPositions(positions: number[]) {
     if (positions.length) {
-      let filter = '';
+      let filter = "";
       const n = positions.length;
       let i = 1;
 
