@@ -1,7 +1,14 @@
+// Step1. import icons from FontAwesome library
+
 import {
   faAddressCard,
   faAngleDown,
   faBars,
+  faBatteryEmpty,
+  faBatteryQuarter,
+  faBatteryHalf,
+  faBatteryThreeQuarters,
+  faBatteryFull,
   faBell,
   faBolt,
   faBug,
@@ -33,7 +40,7 @@ import {
   faUser,
   faUsers,
   faUserGraduate
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
 import {
   faClock,
@@ -43,12 +50,19 @@ import {
   faImage,
   faTimesCircle,
   faTrashAlt
-} from '@fortawesome/free-regular-svg-icons';
+} from "@fortawesome/free-regular-svg-icons";
+
+// Step 2. Add imported icons to variable (to use it inside project)
 
 export const fontawesome_icons = {
   faAddressCard,
   faAngleDown,
   faBars,
+  faBatteryEmpty,
+  faBatteryQuarter,
+  faBatteryHalf,
+  faBatteryThreeQuarters,
+  faBatteryFull,
   faBell,
   faBolt,
   faBug,

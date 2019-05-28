@@ -7,22 +7,22 @@ import {
   EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy
-} from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+} from "@angular/core";
+import { FormGroup, FormBuilder } from "@angular/forms";
 
 // router
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from "@angular/router";
 
 // lodash
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // ngrx
-import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../../store';
-import * as fromPeople from '../../store';
+import { Store, select } from "@ngrx/store";
+import * as fromRoot from "../../../../store";
+import * as fromPeople from "../../store";
 
 // rxjs
-import { Subscription, combineLatest, of } from 'rxjs';
+import { Subscription, combineLatest, of } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
@@ -30,39 +30,41 @@ import {
   map,
   switchMap,
   startWith
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
 // interfaces
-import { UserSearchParams } from '../../../../shared/interface/people.model';
+import { UserSearchParams } from "../../../../shared/interface/people.model";
 
 // validators
-import { ValidationService } from '../../../../shared/validators/validation.service';
+import { ValidationService } from "../../../../shared/validators/validation.service";
 
 @Component({
-  selector: 'app-people-header',
-  styleUrls: ['people-header.component.scss'],
+  selector: "app-people-header",
+  styleUrls: ["people-header.component.scss"],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-      <app-people-toolbar class="common-toolbar"
-        fxFlex
-        fxFlex.gt-xs="568px"
-        fxLayout="row nowrap"
-        fxLayoutAlign="start center"
-        [appName]="appName"
-        [fg_params]="fg_params"
-        [searching]="searching"
-        [accessLevel]="accessLevel"
-        (onFocus)="onFocus()"
-        (onBlur)="onBlur()"
-        (openForm)="openForm.emit()"
-        (toggleFilters)="toggleFilters.emit()"
-        [ngClass]="{
-          focused: focus,
-          invalid: fg_params.get('text').invalid
-          }">
-      </app-people-toolbar>
-      `
+    <app-people-toolbar
+      class="common-toolbar"
+      fxFlex
+      fxFlex.gt-xs="568px"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
+      [appName]="appName"
+      [fg_params]="fg_params"
+      [searching]="searching"
+      [accessLevel]="accessLevel"
+      (onFocus)="onFocus()"
+      (onBlur)="onBlur()"
+      (openForm)="openForm.emit()"
+      (toggleFilters)="toggleFilters.emit()"
+      [ngClass]="{
+        focused: focus,
+        invalid: fg_params.get('text').invalid
+      }"
+    >
+    </app-people-toolbar>
+  `
 })
 export class PeopleHeaderComponent implements OnInit, OnDestroy {
   @Input()
@@ -108,10 +110,10 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
         this.urlParams = params;
         console.log(params);
         if (!params.text && this.fg_params) {
-          console.log(this.fg_params.controls['text']);
-          this.fg_params.controls['text'].patchValue('');
+          console.log(this.fg_params.controls["text"]);
+          this.fg_params.controls["text"].patchValue("");
         } else if (params.text && this.fg_params) {
-          this.fg_params.controls['text'].patchValue(params.text);
+          this.fg_params.controls["text"].patchValue(params.text);
         }
       });
 
@@ -122,7 +124,7 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
 
   initializeParamsFormGroup() {
     this.fg_params = this.fb.group({
-      text: ['', ValidationService.onlySearchable]
+      text: ["", ValidationService.onlySearchable]
     });
   }
 
@@ -130,20 +132,20 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
     if (this.urlParams && this.urlParams.text) {
       return this.urlParams.text;
     } else {
-      return '';
+      return "";
     }
   }
 
   resetParamsFormGroup() {
-    this.fg_params.get('text').patchValue('');
+    this.fg_params.get("text").patchValue("");
   }
 
   subscribeToParamsFormGroup() {
     // don't pass value after each keystroke, but wait for 600ms
     // don't pass value if it didn't change
-    const text$ = this.fg_params.get('text').valueChanges.pipe(
+    const text$ = this.fg_params.get("text").valueChanges.pipe(
       filter(text => {
-        return this.fg_params.get('text').valid;
+        return this.fg_params.get("text").valid;
       }),
       debounceTime(600),
       distinctUntilChanged()
@@ -158,23 +160,28 @@ export class PeopleHeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((q: UserSearchParams) => {
-        console.log('search text updated');
+        console.log("search text updated");
 
-        const text = encodeURI(q.text);
+        // fixed on 21-May-2019 by Zhandos Ombayev
+        // encode text from URI
+        // replace '%20' to simple whitespace
+        // assign to text constant
+        const text = _.replace(encodeURI(q.text), "%20", " ");
+
         console.log(this.urlParams);
 
         if (text) {
-          this.router.navigate(['./people', { ...this.urlParams, text }]);
+          this.router.navigate(["./people", { ...this.urlParams, text }]);
         } else {
           // remove text property from urlParams
           const newUrlParams = _.reduce(
             this.urlParams,
             (acc, value, key) => {
-              return key !== 'text' ? { ...acc, [key]: value } : { ...acc };
+              return key !== "text" ? { ...acc, [key]: value } : { ...acc };
             },
             {}
           );
-          this.router.navigate(['./people', newUrlParams]);
+          this.router.navigate(["./people", newUrlParams]);
         }
       });
   }

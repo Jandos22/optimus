@@ -1,44 +1,57 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 // rxjs
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 
 // ngrx
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../../../../store';
-import * as fromPeople from '../../../../store';
+import { Store } from "@ngrx/store";
+import * as fromRoot from "../../../../../../store";
+import * as fromPeople from "../../../../store";
 
 // ngrx actions
-import * as fromErrorActions from '../../../../../../store/actions/errors.actions';
-import * as fromUsersActions from '../../../../store/actions/users.action';
+import * as fromErrorActions from "../../../../../../store/actions/errors.actions";
+import * as fromUsersActions from "../../../../store/actions/users.action";
 
 // interfaces
-import { PeopleItem } from '../../../../../../shared/interface/people.model';
+import { PeopleItem } from "../../../../../../shared/interface/people.model";
 
 // services
-import { PeopleFormHttpService } from '../../form-services';
+import { PeopleFormHttpService } from "../../form-services";
 
 @Component({
-  selector: 'app-people-form-actions-new',
-  styleUrls: ['people-form-actions-new.component.scss'],
+  selector: "app-people-form-actions-new",
+  styleUrls: ["people-form-actions-new.component.scss"],
   template: `
     <!-- for development
     <button mat-button color="primary" (click)="log()">Log</button> -->
 
-    <button mat-button tabindex="-1" color="primary" class="mat-button__fa-icon"
+    <button
+      mat-button
+      tabindex="-1"
+      color="primary"
+      class="mat-button__fa-icon"
       [disabled]="!fg_fields.valid || !hasUnsavedPhoto || savingChanges"
-      (click)="onSave()">
-      <fa-icon *ngIf="savingChanges" [icon]="['fas', 'spinner']" [spin]="true" matTooltip="Saving changes"></fa-icon>
-      <fa-icon *ngIf="!savingChanges" [icon]="['far', 'save']" matTooltip="Save changes"></fa-icon>
+      (click)="onSave()"
+    >
+      <fa-icon
+        *ngIf="savingChanges"
+        [icon]="['fas', 'spinner']"
+        [spin]="true"
+        matTooltip="Saving changes"
+      ></fa-icon>
+      <fa-icon
+        *ngIf="!savingChanges"
+        [icon]="['far', 'save']"
+        matTooltip="Save changes"
+      ></fa-icon>
     </button>
 
-    <button mat-button tabindex="-1"
-      (click)="closeUserForm.emit()">
+    <button mat-button tabindex="-1" (click)="closeUserForm.emit()">
       CANCEL
     </button>
-    `
+  `
 })
 export class PeopleFormActionsNewComponent implements OnInit {
   @Input() fg_fields: FormGroup;
@@ -61,7 +74,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
 
   ngOnInit() {
     this.$watchArrayBuffer = this.fg_photo
-      .get('ArrayBuffer')
+      .get("ArrayBuffer")
       .valueChanges.subscribe(arrayBuffer =>
         this.onArrayBufferChange(arrayBuffer)
       );
@@ -83,13 +96,25 @@ export class PeopleFormActionsNewComponent implements OnInit {
   }
 
   saveFields(newFields: PeopleItem) {
+    // *** fix on 21-May-2019 by Zhandos Ombayev
+    // *** because cannot use filters in SP calculated fields
+    // combine 'Name' and 'Surname'
+    // assign combined text to field 'Fullname2'
+    // this way users may type name and surname and precisely find necessary user
+    newFields = {
+      ...newFields,
+      Fullname2: `${newFields.Surname} ${newFields.Name} ${newFields.Name} ${
+        newFields.Surname
+      }`
+    };
+
     this.spHttp
       .addUser(newFields)
       .pipe(take(1))
       .subscribe(
         success => this.saveFieldsSuccess(success as PeopleItem),
         error => this.saveFieldsError(error),
-        () => console.log('completed adding new user')
+        () => console.log("completed adding new user")
       );
   }
 
@@ -98,7 +123,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
     // update fg_photo by adding ID of created user
     // check if form has unsaved photo and upload it
     // if no unsaved photo, then close form
-    console.log('get new user');
+    console.log("get new user");
     console.log(newUser);
     this.spHttp
       .getUserById(newUser.ID)
@@ -106,14 +131,14 @@ export class PeopleFormActionsNewComponent implements OnInit {
       .subscribe(
         success => this.getNewlyCreatedUserSuccess(success as PeopleItem[]),
         error => console.log(error),
-        () => console.log('completed getting newly created user')
+        () => console.log("completed getting newly created user")
       );
   }
 
   getNewlyCreatedUserSuccess(newUserExpanded: PeopleItem[]) {
-    console.log('get new user expanded');
+    console.log("get new user expanded");
     console.log(newUserExpanded);
-    this.fg_photo.get('ID').patchValue(newUserExpanded[0].ID);
+    this.fg_photo.get("ID").patchValue(newUserExpanded[0].ID);
     this.store_people.dispatch(
       new fromUsersActions.InsertOneUser({
         ...newUserExpanded[0],
@@ -137,7 +162,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
       .subscribe(
         success => this.savePhotoSuccess(success),
         error => this.savePhotoError(error),
-        () => console.log('completed saving photo of new user')
+        () => console.log("completed saving photo of new user")
       );
   }
 
@@ -157,7 +182,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
     };
 
     this.store_people.dispatch(
-      new fromUsersActions.UpdateOneUser(this.fg_photo.get('ID').value, changes)
+      new fromUsersActions.UpdateOneUser(this.fg_photo.get("ID").value, changes)
     );
 
     this.closeFormOrUploadPhoto();
@@ -178,7 +203,7 @@ export class PeopleFormActionsNewComponent implements OnInit {
       console.log(this.fg_fields.value);
       this.savingChanges = false;
       this.closeUserForm.emit({
-        result: 'success',
+        result: "success",
         data: this.fg_fields.value
       });
     }

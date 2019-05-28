@@ -36,7 +36,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
           fxLayout="row nowrap" fxLayoutAling="space-between center">
         </app-sidenav-content-app-v2>
 
-        <!-- coming soon -->
+        <!-- coming soon 
         <app-sidenav-content-app-v2
           matTooltip="coming soon"
           matTooltipClass="mytooltip large-text"
@@ -48,6 +48,7 @@ import { AppItem } from '../../../shared/interface/applications.model';
               Visible: true
             }">
         </app-sidenav-content-app-v2>
+        -->
 
       </div>
 

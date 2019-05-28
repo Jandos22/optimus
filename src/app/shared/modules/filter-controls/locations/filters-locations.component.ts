@@ -7,50 +7,41 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
   ChangeDetectorRef
-} from '@angular/core';
+} from "@angular/core";
 
 // forms
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from "@angular/forms";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // rxjs
-import { Subscription } from 'rxjs';
-import {
-  take,
-  tap,
-  pairwise,
-  debounceTime,
-  startWith,
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { Subscription } from "rxjs";
+import { take, tap, startWith } from "rxjs/operators";
 
 // interfaces
-import { LocationEnt } from '../../../../shared/interface/locations.model';
+import { LocationEnt } from "../../../../shared/interface/locations.model";
 
 // services
-import { LocationsService } from '../../../../shared/services/locations.service';
+import { LocationsService } from "../../../../shared/services/locations.service";
 
 @Component({
-  selector: 'app-filters-locations',
-  styleUrls: ['filters-locations.component.scss'],
+  selector: "app-filters-locations",
+  styleUrls: ["filters-locations.component.scss"],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_filters">
-      <mat-select
-        placeholder="Locations"
-        formControlName="locations"
-        multiple>
+      <mat-select placeholder="Locations" formControlName="locations" multiple>
         <mat-option
           *ngFor="let item of locations | filterLocations: exclude"
           [value]="item.Id"
-          [disabled]="optionDisabled && thisId(item.Id)">
-            {{ item.Title }}
+          [disabled]="optionDisabled && thisId(item.Id)"
+        >
+          {{ item.Title }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    `
+  `
 })
 export class FiltersLocationsComponent implements OnInit {
   @Input()
@@ -80,10 +71,10 @@ export class FiltersLocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.$fc_locations = this.fg_filters.controls['locations'].valueChanges
+    this.$fc_locations = this.fg_filters.controls["locations"].valueChanges
       .pipe(
         tap(locations => this.updateLocationsofinterest.emit(locations)),
-        startWith(this.fg_filters.controls['locations'].value)
+        startWith(this.fg_filters.controls["locations"].value)
       )
       .subscribe((selected: number[]) => {
         this.onlyOneLocationLeftSelected(selected);
@@ -96,7 +87,7 @@ export class FiltersLocationsComponent implements OnInit {
   }
 
   thisId(Id: number) {
-    return Id === this.fg_filters.controls['locations'].value[0] ? true : false;
+    return Id === this.fg_filters.controls["locations"].value[0] ? true : false;
   }
 
   fetch() {
@@ -125,6 +116,6 @@ export class FiltersLocationsComponent implements OnInit {
   }
 
   updateFcLocations(locations: number[]) {
-    this.fg_filters.controls['locations'].patchValue(locations);
+    this.fg_filters.controls["locations"].patchValue(locations);
   }
 }

@@ -1,0 +1,111 @@
+<div
+  class="form-title-container"
+  fxLayout="row nowrap"
+  fxLayoutAlign="start start"
+>
+  <div fxFlex class="form-title">
+    PSP Battery
+  </div>
+  <app-form-control-location
+    fxFlex="88px"
+    class="cmn-form-component"
+    fxLayout="row"
+    [fg_fields]="fg_fields"
+    [mode]="data.mode"
+    [accessLevel]="accessLevel$ | async"
+    [locationAssignedId]="locationAssignedId"
+    [locations]="locations$ | async"
+  >
+  </app-form-control-location>
+</div>
+
+<mat-dialog-content class="common-mat-dialog-content">
+  <div class="cmn-form-container">
+    <div class="con2">
+      <app-battery-last-updated
+        [lastUpdatedById]="data?.item?.LastUpdatedById"
+        [lastUpdatedDate]="data?.item?.LastUpdated"
+      >
+      </app-battery-last-updated>
+    </div>
+    <div class="con2">
+      <div class="con2" fxLayout="row wrap" fxLayoutAlign="start start">
+        <!-- Serial -->
+        <app-batteries-form-serial
+          class="cmn-form-component t1w2-t1w3-t1w4"
+          fxLayout="row"
+          [fg_fields]="fg_fields"
+          [mode]="data.mode"
+        >
+        </app-batteries-form-serial>
+
+        <!-- Hours used -->
+        <app-batteries-form-hours
+          class="cmn-form-component t1w2-t1w3-t1w4"
+          fxLayout="row"
+          [fg_fields]="fg_fields"
+          [mode]="data.mode"
+        >
+        </app-batteries-form-hours>
+
+        <!-- Part Number -->
+        <app-batteries-form-pn
+          class="cmn-form-component t1w2-t1w3-t1w4"
+          fxLayout="row"
+          [fg_fields]="fg_fields"
+          [mode]="data.mode"
+        >
+        </app-batteries-form-pn>
+
+        <!-- Status -->
+        <app-batteries-form-status
+          class="cmn-form-component t1w2-t1w3-t1w4"
+          fxLayout="row"
+          [fg_fields]="fg_fields"
+          [mode]="data.mode"
+        >
+        </app-batteries-form-status>
+      </div>
+
+      <div class="con2" fxLayout="row wrap" fxLayoutAlign="start start">
+        <!-- Rich Text Editor / 2 columns -->
+        <div
+          class="t2w2-t3w3-t2w4"
+          fxLayout="column nowrap"
+          fxLayoutAlign="start stretch"
+          *ngIf="fg_fields.get('RichText').value || data.mode !== 'view'"
+        >
+          <span
+            class="cmn-form-control-title"
+            [ngClass]="{ rte_focused: rte_focused }"
+          >
+            Details
+            <i>(optional)</i>
+          </span>
+          <app-rich-text-editor-light
+            class="cmn-form-component t2w2-t2w3-t2w4"
+            [fg_fields]="fg_fields"
+            (onFocus)="onRichTextFocus($event)"
+            [mode]="data.mode"
+          >
+          </app-rich-text-editor-light>
+          <div fxFlex="19.5px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end">
+  <app-batteries-form-actions
+    class="common-form-actions-container"
+    [fg_fields]="fg_fields"
+    [initialFields]="data.item"
+    [mode]="data.mode"
+    [selfUser]="selfUser$ | async"
+    (closeForm)="closeForm($event)"
+    (switchFormMode)="switchFormMode($event)"
+    (updateDataItem)="updateDataItem($event)"
+  >
+  </app-batteries-form-actions>
+</mat-dialog-actions>
