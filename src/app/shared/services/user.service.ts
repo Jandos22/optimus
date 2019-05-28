@@ -1,20 +1,20 @@
-import { PathSlbSp } from '../constants';
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { PathSlbSp } from "../constants";
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 // rxjs
-import { Observable, of, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, of, from } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 
-import { ApiPath, WirelinePath, ProxyPath } from '../constants';
+import { ApiPath, WirelinePath, ProxyPath } from "../constants";
 
 // data models
-import { FDV } from '../interface/form-digest-value.model';
-import { CurrentUser } from './../interface/user.model';
+import { FDV } from "../interface/form-digest-value.model";
+import { CurrentUser } from "./../interface/user.model";
 
 // services
-import { SharepointService } from './sharepoint.service';
-import { PeopleItem } from '../interface/people.model';
+import { SharepointService } from "./sharepoint.service";
+import { PeopleItem } from "../interface/people.model";
 
 // import { sprLib } from '../../../typings';
 
@@ -36,12 +36,12 @@ export class UserService {
 
   listitem(list) {
     return (
-      'SP.Data.' + list.charAt(0).toUpperCase() + list.slice(1) + 'ListItem'
+      "SP.Data." + list.charAt(0).toUpperCase() + list.slice(1) + "ListItem"
     );
   }
 
   prepCurrentUserObject(user: CurrentUser) {
-    console.log('prepCurrentUserObject(user)');
+    console.log("prepCurrentUserObject(user)");
     console.log(user);
 
     let loginName = user.LoginName;
@@ -49,15 +49,15 @@ export class UserService {
 
     // used only in development mode, on my Mac
     if (
-      loginName === 'i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint'
+      loginName === "i:0i.t|00000003-0000-0ff1-ce00-000000000000|app@sharepoint"
     ) {
       // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      loginName = 'zombayev@slb.com'; // FE
+      loginName = "zombayev@slb.com"; // FE
       spId = 167;
       // loginName = 'azhussipov@slb.com'; // FE
       // spId = 6;
-      // loginName = 'cmarcotte@slb.com'; // PSDM
+      // loginName = "cmarcotte@slb.com"; // PSDM
       // spId = 209;
       // loginName = 'rmiller36@slb.com'; // OU PSDM
       // spId = 16;
@@ -71,8 +71,8 @@ export class UserService {
       // spId = 261;
     }
 
-    const email = loginName.replace('i:0#.f|membership|', '');
-    const username = email.replace('@slb.com', '');
+    const email = loginName.replace("i:0#.f|membership|", "");
+    const username = email.replace("@slb.com", "");
     const initials = username.substring(0, 2).toUpperCase();
 
     return {
@@ -85,42 +85,42 @@ export class UserService {
 
   getSelectFields() {
     return [
-      'Id',
-      'Name',
-      'Surname',
-      'Fullname',
-      'Shortname',
-      'Alias',
-      'Attachments',
-      'AttachmentFiles',
-      'LocationAssignedId',
-      'LocationAssigned/Title',
-      'LocationsOfInterestId',
-      'LocationsOfInterest/Title',
-      'PositionId',
-      'Position/Title',
-      'Position/AccessLevel',
-      'Roles',
-      'Roles/Id',
-      'Roles/Title'
+      "Id",
+      "Name",
+      "Surname",
+      "Fullname",
+      "Shortname",
+      "Alias",
+      "Attachments",
+      "AttachmentFiles",
+      "LocationAssignedId",
+      "LocationAssigned/Title",
+      "LocationsOfInterestId",
+      "LocationsOfInterest/Title",
+      "PositionId",
+      "Position/Title",
+      "Position/AccessLevel",
+      "Roles",
+      "Roles/Id",
+      "Roles/Title"
     ].toString();
   }
 
   getExpandsFields() {
     return [
-      'AttachmentFiles',
-      'LocationAssigned',
-      'LocationsOfInterest',
-      'Position',
-      'Roles'
+      "AttachmentFiles",
+      "LocationAssigned",
+      "LocationsOfInterest",
+      "Position",
+      "Roles"
     ].toString();
   }
 
   private getFDV() {
-    const url = ApiPath + 'contextinfo';
+    const url = ApiPath + "contextinfo";
     const headers = new HttpHeaders().set(
-      'accept',
-      'application/json;odata=verbose'
+      "accept",
+      "application/json;odata=verbose"
     );
     return this.http.post(url, { headers });
   }

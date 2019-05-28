@@ -22,6 +22,9 @@ export interface PeopleItem extends SpListItem {
   RolesId?: number;
   // pseudo
   selected?: boolean;
+  DirectReportsId?: {
+    results: PeopleItem[]; // lookup multiple
+  };
 }
 
 export interface PeopleUpdatedPhoto {

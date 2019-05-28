@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
 
 // constants
 import {
   PathSlbSp,
   WirelinePath,
   PathOptimus
-} from '../../../../shared/constants';
+} from "../../../../shared/constants";
 
-import { FormGroup } from '@angular/forms';
+import { FormGroup } from "@angular/forms";
 
 // rxjs
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription, Observable, Subject } from "rxjs";
 
 import {
   map,
@@ -21,38 +21,38 @@ import {
   pluck,
   takeUntil,
   startWith
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
 // ngrx
-import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../../store';
-import * as fromJobs from '../../store';
+import { Store, select } from "@ngrx/store";
+import * as fromRoot from "../../../../store";
+import * as fromJobs from "../../store";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // material
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
 // form services
-import { JobsFormInitService } from './form-services/jobs-form-init.service';
-import { JobsFormHttpService } from './form-services/jobs-form-http.service';
+import { JobsFormInitService } from "./form-services/jobs-form-init.service";
+import { JobsFormHttpService } from "./form-services/jobs-form-http.service";
 
 // interfaces
-import { JobItem } from '../../../../shared/interface/jobs.model';
-import { FormMode } from '../../../../shared/interface/form.model';
-import { SpListItemAttachmentFiles } from '../../../../shared/interface/sp-list-item.model';
-import { LocationEnt } from '../../../../shared/interface/locations.model';
-import { PeopleItem } from '../../../../shared/interface/people.model';
-import { ToolItem } from '../../../../shared/interface/tools.model';
+import { JobItem } from "../../../../shared/interface/jobs.model";
+import { FormMode } from "../../../../shared/interface/form.model";
+import { SpListItemAttachmentFiles } from "../../../../shared/interface/sp-list-item.model";
+import { LocationEnt } from "../../../../shared/interface/locations.model";
+import { PeopleItem } from "../../../../shared/interface/people.model";
+import { ToolItem } from "../../../../shared/interface/tools.model";
 
 // people group ids
-import { people_op } from './../../../../shared/constants/ids-op';
-import { people_fefs } from '../../../../shared/constants/ids-fefs';
+import { people_op } from "./../../../../shared/constants/ids-op";
+import { people_fefs } from "../../../../shared/constants/ids-fefs";
 
 @Component({
-  selector: 'app-jobs-form',
-  styleUrls: ['jobs-form.component.scss'],
-  templateUrl: './jobs-form.component.html',
+  selector: "app-jobs-form",
+  styleUrls: ["jobs-form.component.scss"],
+  templateUrl: "./jobs-form.component.html",
   providers: [JobsFormHttpService, JobsFormInitService]
 })
 export class JobsFormComponent implements OnInit, OnDestroy {
@@ -114,9 +114,9 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
     // $$$ when Form Mode changes initialize form groups
     this.$mode.subscribe(mode => {
-      console.log('mode changed to: ' + mode);
+      console.log("mode changed to: " + mode);
       this.data.mode = mode;
-      console.log('data item used:');
+      console.log("data item used:");
       console.log(this.data.item);
 
       this.createFormGroups(mode, this.data.item, this.locationAssignedId);
@@ -157,15 +157,15 @@ export class JobsFormComponent implements OnInit, OnDestroy {
   setupFormWatchers() {
     // this regulates how many job summary sections to show
     this.$summarySections = this.fg_fields.controls[
-      'SummarySections'
+      "SummarySections"
     ].valueChanges
-      .pipe(startWith(this.fg_fields.controls['SummarySections'].value))
+      .pipe(startWith(this.fg_fields.controls["SummarySections"].value))
       .subscribe(sections => {
         this.summarySections = _.times(sections, (i: number) => {
           return i + 1;
         });
         console.log(
-          'summary sections count changed to: ' + this.summarySections
+          "summary sections count changed to: " + this.summarySections
         );
       });
   }
@@ -183,10 +183,10 @@ export class JobsFormComponent implements OnInit, OnDestroy {
     // create 1 form group
     this.fg_fields = this.formInitService.create_FormGroup_Fields(m, it, lo);
 
-    console.log('created 1 form group:');
+    console.log("created 1 form group:");
     console.log(this.fg_fields);
 
-    console.log('refresh watchers of form group fields');
+    console.log("refresh watchers of form group fields");
     this.setupFormWatchers();
   }
 
@@ -196,28 +196,23 @@ export class JobsFormComponent implements OnInit, OnDestroy {
 
   // triggered after saving fields
   updateDataItem(updatedFields: JobItem) {
-    console.log('updating data item:');
+    console.log("updating data item:");
     console.log(updatedFields);
 
     this.data.item = { ...this.data.item, ...updatedFields };
   }
 
-  // onSelectUser(selected: number[]) {
-  //   // only one user allowed, so array should have 1 property
-  //   this.fg_fields.get('SubmitterId').patchValue(selected[0]);
-  // }
-
   onSelectEngineer(selected: number[]) {
     this.fg_fields
-      .get('EngineersId')
-      .get('results')
+      .get("EngineersId")
+      .get("results")
       .patchValue(selected);
   }
 
   onSelectOperator(selected: number[]) {
     this.fg_fields
-      .get('OperatorsId')
-      .get('results')
+      .get("OperatorsId")
+      .get("results")
       .patchValue(selected);
   }
 

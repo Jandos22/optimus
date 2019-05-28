@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 // rxjs
-import { Observable, throwError, of, from } from 'rxjs';
+import { Observable, throwError, of, from } from "rxjs";
 import {
   map,
   catchError,
@@ -11,22 +11,22 @@ import {
   take,
   retry,
   mergeMap
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
 // constants
-import { ApiPath, WirelinePath } from '../../../../../shared/constants';
+import { ApiPath, WirelinePath } from "../../../../../shared/constants";
 
 // interface
-import { SpGetListItemResult } from '../../../../../shared/interface/sp-list-item.model';
+import { SpGetListItemResult } from "../../../../../shared/interface/sp-list-item.model";
 import {
   PeopleUpdatedPhoto,
   PeopleItem,
   ToSaveUserPhoto
-} from '../../../../../shared/interface/people.model';
+} from "../../../../../shared/interface/people.model";
 
 // services
-import { SharepointService } from '../../../../../shared/services/sharepoint.service';
-import { PeopleService } from '../../../services';
+import { SharepointService } from "../../../../../shared/services/sharepoint.service";
+import { PeopleService } from "../../../services";
 
 @Injectable()
 export class PeopleFormHttpService {
@@ -42,7 +42,7 @@ export class PeopleFormHttpService {
     return fdv$.pipe(
       switchMap(fdv => {
         const create$ = new sprLib.list({
-          name: 'NgPeople',
+          name: "NgPeople",
           ...fdv
         }).create(newFields);
         return from(create$.then(res => res));
@@ -59,7 +59,7 @@ export class PeopleFormHttpService {
     return fdv$.pipe(
       switchMap(fdv => {
         const update$: Promise<any> = new sprLib.list({
-          name: 'NgPeople',
+          name: "NgPeople",
           ...fdv
         }).update(updatedFields);
         return from(update$.then(response => response));
@@ -82,7 +82,7 @@ export class PeopleFormHttpService {
     let url = `${ApiPath}/web/lists/getByTitle('NgPeople')/items(${photo.ID})`;
     url += `?$select=Attachments,AttachmentFiles&$expand=AttachmentFiles`;
 
-    const getUserObject$ = from(sprLib.rest({ url, type: 'GET' }));
+    const getUserObject$ = from(sprLib.rest({ url, type: "GET" }));
 
     return getUserObject$.pipe(
       take(1),
@@ -120,12 +120,12 @@ export class PeopleFormHttpService {
       switchMap(fdv => {
         const deleted$: Promise<any> = sprLib.rest({
           url: url,
-          type: 'POST',
+          type: "POST",
           headers: {
-            Accept: 'application/json;odata=verbose',
-            'X-HTTP-Method': 'DELETE',
-            'If-Match': '*',
-            'X-RequestDigest': fdv.requestDigest
+            Accept: "application/json;odata=verbose",
+            "X-HTTP-Method": "DELETE",
+            "If-Match": "*",
+            "X-RequestDigest": fdv.requestDigest
           }
         });
         return from(
@@ -147,7 +147,7 @@ export class PeopleFormHttpService {
       switchMap(fdv => {
         const upload$: Promise<any> = sprLib.rest({
           url: url,
-          type: 'POST',
+          type: "POST",
           ...fdv,
           data: photo.ArrayBuffer
         });
@@ -165,37 +165,42 @@ export class PeopleFormHttpService {
 
   getSelectFields() {
     const $select = [
-      'Id',
-      'ID',
-      'Alias',
-      'Name',
-      'Surname',
-      'Fullname',
-      'Shortname',
-      'Email',
-      'Gin',
-      'LocationAssigned/Id',
-      'LocationAssigned/Title',
-      'LocationAssignedId',
-      'LocationsOfInterestId',
-      'PositionId',
-      'Position/Id',
-      'Position/Title',
-      'RolesId',
-      'Roles/Id',
-      'Roles/Title',
-      'Attachments',
-      'AttachmentFiles'
+      "Id",
+      "ID",
+      "Alias",
+      "Name",
+      "Surname",
+      "Fullname",
+      "Shortname",
+      "Email",
+      "Gin",
+      "LocationAssigned/Id",
+      "LocationAssigned/Title",
+      "LocationAssignedId",
+      "LocationsOfInterestId",
+      "PositionId",
+      "Position/Id",
+      "Position/Title",
+      "RolesId",
+      "Roles/Id",
+      "Roles/Title",
+      "Attachments",
+      "AttachmentFiles",
+      "DirectReports",
+      "DirectReportsId",
+      "DirectReports/Id",
+      "DirectReports/Alias"
     ];
     return $select.toString();
   }
 
   getExpandFields() {
     const $expand = [
-      'AttachmentFiles',
-      'LocationAssigned',
-      'Position',
-      'Roles'
+      "AttachmentFiles",
+      "LocationAssigned",
+      "Position",
+      "Roles",
+      "DirectReports"
     ];
     return $expand.toString();
   }
