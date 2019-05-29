@@ -37,38 +37,53 @@ import { AppraisalRights } from '../../store';
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-appraisals-header
-      fxFlex="65px" class="common-header"
-      [appName]="appName" [searching]="searching"
+      fxFlex="65px"
+      class="common-header"
+      [appName]="appName"
+      [searching]="searching"
       [currentUser]="user$ | async"
       [position]="position$ | async"
       (openForm)="openForm('new', $event)"
-      (toggleFilters)="toggleFilters()">
+      (toggleFilters)="toggleFilters()"
+    >
     </app-appraisals-header>
 
     <app-appraisals-list
-      fxFlex class="common-content"
-      [appraisalGroups]="(appraisalGroups$ | async)" (openForm)="openForm('view', $event)"
-      [position]="position$ | async">
+      fxFlex
+      class="common-content"
+      [appraisalGroups]="appraisalGroups$ | async"
+      (openForm)="openForm('view', $event)"
+      [position]="position$ | async"
+    >
     </app-appraisals-list>
 
-    <app-appraisals-footer fxFlex="49px" class="common-footer"
-      [pagination]="pagination" [top]="params.top" [searching]="searching"
-      (onNext)="onNext()" (onBack)="onBack()">
+    <app-appraisals-footer
+      fxFlex="49px"
+      class="common-footer"
+      [pagination]="pagination"
+      [top]="params.top"
+      [searching]="searching"
+      (onNext)="onNext()"
+      (onBack)="onBack()"
+    >
     </app-appraisals-footer>
 
     <!-- FILTERS -->
-    <app-appraisals-filters class="common-filters-container"
-      [style.display]="(showFilters ? 'flex' : 'none')"
-      fxLayout="column" fxLayoutAlign="start start"
+    <app-appraisals-filters
+      class="common-filters-container"
+      fxLayout="column"
+      fxLayoutAlign="start start"
       [currentUser]="user$ | async"
       [position]="position$ | async"
-      (toggleFilters)="toggleFilters()">
+      (toggleFilters)="toggleFilters()"
+      [style.display]="flexOrNone"
+    >
     </app-appraisals-filters>
   `,
   styleUrls: ['./appraisals.component.scss']
 })
 export class AppraisalsComponent implements OnInit, OnDestroy {
-  appName = 'WPR';
+  appName = 'Appraisals';
 
   user$: Observable<PeopleItem>;
 
@@ -196,6 +211,10 @@ export class AppraisalsComponent implements OnInit, OnDestroy {
     } else {
       this.showFilters = true;
     }
+  }
+
+  get flexOrNone() {
+    return this.showFilters ? 'flex' : 'none';
   }
 
   ngOnDestroy() {

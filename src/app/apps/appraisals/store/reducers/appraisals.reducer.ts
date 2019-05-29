@@ -1,14 +1,14 @@
 // ngrx
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
 // actions
 import {
   AppraisalsActionTypes,
   AppraisalsActionsUnion
-} from '../actions/appraisals.actions';
+} from "../actions/appraisals.actions";
 
 // interfaces
-import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
+import { AppraisalItem } from "../../../../shared/interface/appraisals.model";
 
 // compose reducer state shape here
 export interface AppraisalsState extends EntityState<AppraisalItem> {
@@ -65,6 +65,10 @@ export function reducer(
 
     case AppraisalsActionTypes.DELETE_ONE_APPRAISAL: {
       return adapter.removeOne(action.id, state);
+    }
+
+    case AppraisalsActionTypes.DELETE_ALL_APPRAISALS: {
+      return adapter.removeAll(state);
     }
 
     default:

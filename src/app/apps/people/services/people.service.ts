@@ -335,7 +335,7 @@ export class PeopleService {
     return $expand.toString();
   }
 
-  getFilterLocationAssigned(locations: number[]) {
+  getFilterLocationAssigned(locations: number[] | "Global") {
     if (locations.length) {
       let filter = "";
       const n = locations.length;

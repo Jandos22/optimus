@@ -1,17 +1,19 @@
-import * as fromParams from '../actions/params.action';
+import * as fromParams from "../actions/params.action";
 
 export interface ParamsState {
   text: string;
-  locations: number[];
+  locations: number[] | "Global";
   top: number;
   positions: number[];
+  chooseFrom?: number[];
 }
 
 export const initialState: ParamsState = {
   text: null,
   locations: null,
   top: null,
-  positions: null
+  positions: null,
+  chooseFrom: null
 };
 
 export function reducer(

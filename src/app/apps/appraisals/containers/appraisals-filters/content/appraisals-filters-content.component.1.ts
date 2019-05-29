@@ -4,22 +4,19 @@ import {
   Input,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy,
-  OnInit,
-  ViewChild
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 // forms
 import { FormGroup } from '@angular/forms';
 
 // interfaces
+import { PeopleItem } from '../../../../people/models/people-item.model';
 import { AppraisalRights } from '../../../store';
 
 // people group ids
 import { people_fefs } from './../../../../../shared/constants/ids-fefs';
 import { people_op } from '../../../../../shared/constants/ids-op';
-import { PeopleItem } from '../../../../../shared/interface/people.model';
-import { MatButtonToggleGroup } from '@angular/material';
 
 @Component({
   selector: 'app-appraisals-filters-content',
@@ -27,50 +24,36 @@ import { MatButtonToggleGroup } from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="filters-content-container">
-      <mat-button-toggle-group
-        class="by-whom-button-group"
-        #filter="matButtonToggleGroup"
-        (change)="onByChange.emit(filter.value)"
-        *ngIf="position.isFEFS"
-      >
-        <mat-button-toggle value="byMe" [checked]="true">
-          by Me
-        </mat-button-toggle>
-        <mat-button-toggle value="byOthers">
-          by Others
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+        <app-filters-locations
+            [fg_filters]="fg_filters" [locofinterest]="locofinterest"
+            (updateLocationsofinterest)="updateLocationsofinterest.emit($event)">
+        </app-filters-locations>
 
-      <app-filters-people-single
-        class=""
-        fxLayout="row wrap"
-        [fg_filters]="fg_filters"
-        [displayName]="'Given For'"
-        [selfUser]="selfUser"
-        [includeOnly]="people_op"
-        [locationGlobal]="true"
-        [default]="defaultGivenFor"
-        [disabled]="disabledGivenFor"
-        [reset]="reset"
-        [resetThis]="resetGivenFor"
-        (onSelectUser)="onSelectGivenFor.emit($event)"
-      >
-      </app-filters-people-single>
+        <app-filters-people-single class=""
+            fxLayout="row wrap"
+            [fg_filters]="fg_filters" [displayName]="'Given For'" [selfUser]="selfUser"
+            [includeOnly]="people_op" [default]="defaultGivenFor" [disabled]="disabledGivenFor"
+            [reset]="reset"
+            (onSelectUser)="onSelectGivenFor.emit($event)">
+        </app-filters-people-single>
 
-      <app-filters-date-range
-        class=""
-        fxLayout="row wrap"
-        fxLayoutAlign="start start"
-        [fg_filters]="fg_filters"
-        [reset]="reset"
-      >
-      </app-filters-date-range>
+        <app-filters-people-single class=""
+            fxLayout="row wrap"
+            [fg_filters]="fg_filters" [displayName]="'Given By'" [selfUser]="selfUser"
+            [includeOnly]="people_fefs" [default]="defaultGivenBy" [disabled]="disabledGivenBy"
+            [reset]="reset"
+            (onSelectUser)="onSelectGivenBy.emit($event)">
+        </app-filters-people-single>
+
+        <app-filters-date-range class=""
+            fxLayout="row wrap" fxLayoutAlign="start start"
+            [fg_filters]="fg_filters" [reset]="reset">
+        </app-filters-date-range>
+
     </div>
-  `
+    `
 })
-export class AppraisalsFiltersContentComponent implements OnInit {
-  @ViewChild('filter') filter: MatButtonToggleGroup;
-
+export class AppraisalsFiltersContentComponent {
   @Input()
   fg_filters: FormGroup;
 
@@ -81,21 +64,10 @@ export class AppraisalsFiltersContentComponent implements OnInit {
   selfUser: PeopleItem;
 
   @Input()
-  currentUser: PeopleItem;
-
-  @Input()
   position: AppraisalRights;
 
   @Input()
   reset: boolean;
-
-  @Input()
-  resetGivenFor: boolean;
-
-  @Input()
-  byWhom: string;
-
-  @Output() onByChange = new EventEmitter<string>();
 
   @Output()
   updateLocationsofinterest = new EventEmitter<number[]>();
@@ -110,11 +82,6 @@ export class AppraisalsFiltersContentComponent implements OnInit {
   people_op = people_op;
 
   constructor() {}
-
-  ngOnInit() {
-    // setting default choice
-    this.onByChange.emit('byMe');
-  }
 
   get defaultGivenBy() {
     // default user for GivenBy depends on user's position
@@ -156,29 +123,13 @@ export class AppraisalsFiltersContentComponent implements OnInit {
   }
 
   get disabledGivenFor() {
-    console.log('checking');
     // if user belongs to Reviewers team
     // then he/she can select anybody
     // other people cannot select GivenBy
-    if (this.position.isReviewer) {
+    if (this.position.isReviewer || this.position.isFEFS) {
       return false;
-    } else if (this.position.isFEFS) {
-      if (this.byWhom === 'byOthers') {
-        console.log('here');
-        return true;
-      } else if (this.byWhom === 'byMe') {
-        console.log('now here');
-        return false;
-      } else {
-        return true;
-      }
-      // return this.currentUser.DirectReportsId.results.length ? false : true;
     } else {
       return true;
     }
   }
-
-  // get isFEFS() {
-  //   return this.selfUser.
-  // }
 }

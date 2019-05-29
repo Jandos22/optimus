@@ -1,16 +1,17 @@
-import { Action } from '@ngrx/store';
+import { Action } from "@ngrx/store";
 
-import { AppraisalItem } from '../../../../shared/interface/appraisals.model';
+import { AppraisalItem } from "../../../../shared/interface/appraisals.model";
 
 export enum AppraisalsActionTypes {
-  SEARCH_APPRAISALS_START = '[Appraisals] Search Appraisals Start',
-  SEARCH_APPRAISALS_SUCCESS = '[Appraisals] Search Appraisals Success',
-  SEARCH_APPRAISALS_NO_RESULTS = '[Appraisals] Search Appraisals No Results',
-  COUNT_APPRAISALS_TOTAL = '[Appraisals] Count Total (since next url is present)',
-  ADD_ONE_APPRAISAL = '[Appraisals] Add One Appraisal',
-  INSERT_ONE_APPRAISAL = '[Appraisals] Insert One Appraisal (in beginning)',
-  UPDATE_ONE_APPRAISAL = '[Appraisals] Update One Appraisal',
-  DELETE_ONE_APPRAISAL = '[Appraisals] Delete One Appraisal'
+  SEARCH_APPRAISALS_START = "[Appraisals] Search Appraisals Start",
+  SEARCH_APPRAISALS_SUCCESS = "[Appraisals] Search Appraisals Success",
+  SEARCH_APPRAISALS_NO_RESULTS = "[Appraisals] Search Appraisals No Results",
+  COUNT_APPRAISALS_TOTAL = "[Appraisals] Count Total (since next url is present)",
+  ADD_ONE_APPRAISAL = "[Appraisals] Add One Appraisal",
+  INSERT_ONE_APPRAISAL = "[Appraisals] Insert One Appraisal (in beginning)",
+  UPDATE_ONE_APPRAISAL = "[Appraisals] Update One Appraisal",
+  DELETE_ONE_APPRAISAL = "[Appraisals] Delete One Appraisal",
+  DELETE_ALL_APPRAISALS = "[Appraisals] Delete All Appraisals"
 }
 
 export class SearchAppraisalsStart implements Action {
@@ -51,6 +52,10 @@ export class DeleteOneAppraisal implements Action {
   constructor(public id: number) {}
 }
 
+export class DeleteAllAppraisals implements Action {
+  readonly type = AppraisalsActionTypes.DELETE_ALL_APPRAISALS;
+}
+
 export type AppraisalsActionsUnion =
   | SearchAppraisalsStart
   | SearchAppraisalsSuccess
@@ -59,4 +64,5 @@ export type AppraisalsActionsUnion =
   | AddOneAppraisal
   | InsertOneAppraisal
   | UpdateOneAppraisal
-  | DeleteOneAppraisal;
+  | DeleteOneAppraisal
+  | DeleteAllAppraisals;
