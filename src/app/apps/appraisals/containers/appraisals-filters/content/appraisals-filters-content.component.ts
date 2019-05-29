@@ -163,22 +163,26 @@ export class AppraisalsFiltersContentComponent implements OnInit {
     if (this.position.isReviewer) {
       return false;
     } else if (this.position.isFEFS) {
-      if (this.byWhom === 'byOthers') {
+      if (
+        this.byWhom === 'byOthers' &&
+        !this.currentUser.DirectReportsId.results.length
+      ) {
         console.log('here');
         return true;
+      }
+      if (
+        this.byWhom === 'byOthers' &&
+        this.currentUser.DirectReportsId.results.length
+      ) {
+        return false;
       } else if (this.byWhom === 'byMe') {
         console.log('now here');
         return false;
       } else {
         return true;
       }
-      // return this.currentUser.DirectReportsId.results.length ? false : true;
     } else {
       return true;
     }
   }
-
-  // get isFEFS() {
-  //   return this.selfUser.
-  // }
 }

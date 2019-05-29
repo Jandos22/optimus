@@ -58,7 +58,6 @@ import { AppraisalRights } from '../../store';
       [position]="position"
       [byWhom]="byWhom"
       (onByChange)="onByChange($event)"
-      (updateLocationsofinterest)="updateLocationsofinterest($event)"
       (onSelectGivenBy)="onSelectGivenBy($event)"
       (onSelectGivenFor)="onSelectGivenFor($event)"
     >
