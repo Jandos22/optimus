@@ -60,7 +60,6 @@ export class BatteryListItemComponent {
   }
 
   getBatteryLevel(hours: number, status: string) {
-    console.log(status);
     if (status === 'Disposed') {
       return 'battery-no-charge';
     } else {
