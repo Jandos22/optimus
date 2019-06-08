@@ -5,22 +5,22 @@ import {
   OnDestroy,
   EventEmitter,
   Output
-} from '@angular/core';
-import { FormGroup } from '@angular/forms';
+} from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 // ngrx
-import { Store } from '@ngrx/store';
-import * as fromPeople from '../../../../store';
+import { Store } from "@ngrx/store";
+import * as fromPeople from "../../../../store";
 
 // rxjs
-import { Subscription, Observable, merge } from 'rxjs';
-import { map, scan } from 'rxjs/operators';
+import { Subscription, Observable, merge } from "rxjs";
+import { map, scan } from "rxjs/operators";
 
 // interfaces
-import { PeopleItem } from '../../../../../../shared/interface/people.model';
+import { PeopleItem } from "../../../../../../shared/interface/people.model";
 
 @Component({
-  selector: 'app-people-form-actions-edit-fields',
+  selector: "app-people-form-actions-edit-fields",
   template: ``
 })
 export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
@@ -39,49 +39,54 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
   $maybeUnsavedFields: Subscription;
 
   constructor(private store: Store<fromPeople.PeopleState>) {
-    console.log('people-form-actions-edit-fields component: initialized');
+    console.log("people-form-actions-edit-fields component: initialized");
   }
 
   ngOnInit() {
     this.fc_changes$ = merge(
       // Name observable
-      this.fg_fields.get('Name').valueChanges.pipe(map(Name => ({ Name }))),
+      this.fg_fields.get("Name").valueChanges.pipe(map(Name => ({ Name }))),
 
       // Surname observable
       this.fg_fields
-        .get('Surname')
+        .get("Surname")
         .valueChanges.pipe(map(Surname => ({ Surname }))),
 
       // Alias observable
-      this.fg_fields.get('Alias').valueChanges.pipe(map(Alias => ({ Alias }))),
+      this.fg_fields.get("Alias").valueChanges.pipe(map(Alias => ({ Alias }))),
 
       // Email observable
-      this.fg_fields.get('Email').valueChanges.pipe(map(Email => ({ Email }))),
+      this.fg_fields.get("Email").valueChanges.pipe(map(Email => ({ Email }))),
 
       // Gin observable
-      this.fg_fields.get('Gin').valueChanges.pipe(map(Gin => ({ Gin }))),
+      this.fg_fields.get("Gin").valueChanges.pipe(map(Gin => ({ Gin }))),
 
       // Shortname observable
       this.fg_fields
-        .get('Shortname')
+        .get("Shortname")
         .valueChanges.pipe(map(Shortname => ({ Shortname }))),
 
       // LocationAssignedId observable
       this.fg_fields
-        .get('LocationAssignedId')
+        .get("LocationAssignedId")
         .valueChanges.pipe(map(id => ({ LocationAssignedId: id }))),
 
       // LocationsOfInterest observable
       this.fg_fields
-        .get('LocationsOfInterestId')
+        .get("LocationsOfInterestId")
         .valueChanges.pipe(
           map(LocationsOfInterestId => ({ LocationsOfInterestId }))
         ),
 
       // PositionId observable
       this.fg_fields
-        .get('PositionId')
-        .valueChanges.pipe(map(PositionId => ({ PositionId })))
+        .get("PositionId")
+        .valueChanges.pipe(map(PositionId => ({ PositionId }))),
+
+      // DirectReportsId observable
+      this.fg_fields
+        .get("DirectReportsId")
+        .valueChanges.pipe(map(DirectReportsId => ({ DirectReportsId })))
     );
 
     this.$maybeUnsavedFields = this.fc_changes$
@@ -98,7 +103,7 @@ export class PeopleFormActionsEditFieldsComponent implements OnInit, OnDestroy {
         }, {}),
         map((fields: PeopleItem | {}) => {
           if (Object.keys(fields).length >= 1) {
-            return { ...fields, id: this.initialFields['ID'] };
+            return { ...fields, id: this.initialFields["ID"] };
           } else {
             return fields;
           }

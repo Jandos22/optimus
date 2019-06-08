@@ -1,46 +1,48 @@
 // angular
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule, Routes } from "@angular/router";
+import { ReactiveFormsModule } from "@angular/forms";
 
 // my modules
-import { SharedModule } from '../../shared/shared.module';
-import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
-import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
+import { SharedModule } from "../../shared/shared.module";
+import { ToolbarButtonsModule } from "../../shared/modules/toolbar-buttons/toolbar-buttons.module";
+import { FilterControlsModule } from "../../shared/modules/filter-controls/form-controls.module";
 
 // ngrx
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { reducers, effects } from './store';
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
+import { reducers, effects } from "./store";
 
 // 3rd party
-import { MaterialModule } from '../../shared/libraries/material.module';
-import { MaterialDesignComponentsModule } from '../../shared/libraries/material-design-components.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ImageCropperModule } from 'ngx-img-cropper';
-import { SimpleNotificationsModule } from 'angular2-notifications';
+import { MaterialModule } from "../../shared/libraries/material.module";
+import { MaterialDesignComponentsModule } from "../../shared/libraries/material-design-components.module";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ImageCropperModule } from "ngx-img-cropper";
+import { SimpleNotificationsModule } from "angular2-notifications";
 
 // containers
-import * as fromContainers from './containers';
+import * as fromContainers from "./containers";
 
 // components
-import * as fromComponents from './components';
+import * as fromComponents from "./components";
 
 // filters
-import * as fromFilters from './containers/people-filters/content';
+import * as fromFilters from "./containers/people-filters/content";
 
 // forms
-import * as fromForms from './forms';
-import * as fromFormControls from './forms/people-form/form-controls';
-import * as fromFormActions from './forms/people-form/form-actions';
+import * as fromForms from "./forms";
+import * as fromFormControls from "./forms/people-form/form-controls";
+import * as fromFormActions from "./forms/people-form/form-actions";
+
+import { FormControlsModule } from "../../shared/modules/form-controls/form-controls.module";
 
 // services
-import * as fromServices from './services';
+import * as fromServices from "./services";
 
 // routes
 export const peopleRoutes: Routes = [
-  { path: '', component: fromContainers.PeopleComponent }
+  { path: "", component: fromContainers.PeopleComponent }
 ];
 
 @NgModule({
@@ -49,7 +51,7 @@ export const peopleRoutes: Routes = [
     SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild(peopleRoutes),
-    StoreModule.forFeature('people', reducers),
+    StoreModule.forFeature("people", reducers),
     EffectsModule.forFeature(effects),
     ImageCropperModule,
     MaterialModule,
@@ -57,7 +59,8 @@ export const peopleRoutes: Routes = [
     FontAwesomeModule,
     SimpleNotificationsModule,
     FilterControlsModule,
-    ToolbarButtonsModule
+    ToolbarButtonsModule,
+    FormControlsModule
   ],
   providers: [...fromServices.services],
   declarations: [

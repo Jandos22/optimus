@@ -22,6 +22,9 @@ export interface PeopleItem extends SpListItem {
   RolesId?: number;
   // pseudo
   selected?: boolean;
+  DirectReportsId?: {
+    results: PeopleItem[]; // lookup multiple
+  };
 }
 
 export interface PeopleUpdatedPhoto {
@@ -38,16 +41,18 @@ export interface ToSaveUserPhoto {
 
 export interface UserSearchParams {
   text?: string;
-  locations?: number[];
+  locations?: number[] | "Global";
   top?: number;
   positions?: number[];
+  chooseFrom?: number[];
 }
 
 export interface SearchParamsUser {
   text: string;
-  locations: number[];
+  locations: number[] | "Global";
   top?: number;
   positions?: number[];
+  chooseFrom?: number[];
 }
 
 export interface UserPosition extends SpListItem {

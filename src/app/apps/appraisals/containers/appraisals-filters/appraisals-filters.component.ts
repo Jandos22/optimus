@@ -14,7 +14,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
-import { take, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
+import {
+  take,
+  tap,
+  withLatestFrom,
+  debounceTime,
+  filter
+} from 'rxjs/operators';
 
 // ngrx
 import { Store, select } from '@ngrx/store';
@@ -33,24 +39,38 @@ import { AppraisalRights } from '../../store';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-appraisals-filters-header fxFlex="65px" class="common-filters-header"
-        (toggleFilters)="toggleFilters.emit()">
+    <app-appraisals-filters-header
+      fxFlex="65px"
+      class="common-filters-header"
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-appraisals-filters-header>
 
-    <app-appraisals-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async" [reset]="reset"
-        [position]="position"
-        (updateLocationsofinterest)="updateLocationsofinterest($event)"
-        (onSelectGivenBy)="onSelectGivenBy($event)"
-        (onSelectGivenFor)="onSelectGivenFor($event)">
+    <app-appraisals-filters-content
+      fxFlex
+      class="common-filters-content"
+      [fg_filters]="fg_filters"
+      [locofinterest]="locofinterest$ | async"
+      [selfUser]="selfUser$ | async"
+      [currentUser]="currentUser"
+      [reset]="reset"
+      [resetGivenFor]="resetGivenFor"
+      [position]="position"
+      [byWhom]="byWhom"
+      (onByChange)="onByChange($event)"
+      (onSelectGivenBy)="onSelectGivenBy($event)"
+      (onSelectGivenFor)="onSelectGivenFor($event)"
+    >
     </app-appraisals-filters-content>
 
-    <app-appraisals-filters-footer fxFlex="49px" class="common-filters-footer"
+    <app-appraisals-filters-footer
+      fxFlex="49px"
+      class="common-filters-footer"
       (onResetFilters)="onResetFilters($event)"
-      (toggleFilters)="toggleFilters.emit()">
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-appraisals-filters-footer>
-    `
+  `
 })
 export class AppraisalsFiltersComponent implements OnInit {
   @Input()
@@ -72,11 +92,14 @@ export class AppraisalsFiltersComponent implements OnInit {
   locofinterest$: Observable<number[]>;
 
   reset = false;
+  resetGivenFor: boolean = true;
+
+  byWhom: string;
 
   constructor(
     private fb: FormBuilder,
     private store_root: Store<fromRoot.RootState>,
-    private store_jobs: Store<fromAppraisals.AppraisalsState>
+    private store_appraisals: Store<fromAppraisals.AppraisalsState>
   ) {}
 
   ngOnInit() {
@@ -89,8 +112,8 @@ export class AppraisalsFiltersComponent implements OnInit {
   startObservables() {
     // locations of interest are default for locations filter
     this.locofinterest$ = this.store_root.pipe(
-      select(fromRoot.selectLocationsSelectedIds),
-      tap(locations => this.updateFgFiltersLocations(locations))
+      select(fromRoot.selectLocationsSelectedIds)
+      // tap(locations => this.updateFgFiltersLocations(locations))
     );
 
     // get self user item to use in project reporters selection
@@ -100,13 +123,19 @@ export class AppraisalsFiltersComponent implements OnInit {
   startSubscriptions() {
     // when change, then update params in store
     this.fg_filters.valueChanges
-      .pipe(debounceTime(300))
+      .pipe(
+        debounceTime(300),
+        filter(
+          (filter: AppraisalsSearchParams) =>
+            filter.givenby !== 0 || filter.givenfor !== 0
+        )
+      )
       .subscribe((params: AppraisalsSearchParams) => {
         console.log(params);
-        this.store_jobs.dispatch(new fromAppraisals.UpdateParams(params));
+        this.store_appraisals.dispatch(new fromAppraisals.UpdateParams(params));
       });
 
-    this.modifyGivenForGivenBy();
+    // this.modifyGivenForGivenBy();
 
     // subscribe to change of Locations.selected
     this.$locofinterest = this.locofinterest$.subscribe();
@@ -119,24 +148,42 @@ export class AppraisalsFiltersComponent implements OnInit {
 
   createFormGroup() {
     this.fg_filters = this.fb.group({
-      locations: '',
+      // locations: '',
       top: 25,
       afterDate: '',
       beforeDate: '',
       givenby: 0,
-      givenfor: ''
+      givenfor: '',
+      chooseFrom: []
     });
     console.log(this.fg_filters.value);
   }
 
-  updateFgFiltersLocations(locations: number[]) {
-    console.log(locations);
-    this.fg_filters.controls['locations'].patchValue(locations);
-  }
+  onByChange(byWhom: string) {
+    console.log(byWhom);
 
-  updateLocationsofinterest(locations: number[]) {
-    console.log(locations);
-    this.store_root.dispatch(new fromRoot.UpdateSelected(locations));
+    this.byWhom = byWhom;
+
+    if (byWhom === 'byMe' && (this.position.isFEFS || this.position.isOther)) {
+      this.fg_filters.controls['givenby'].patchValue(this.currentUser.Id);
+      this.fg_filters.controls['givenfor'].patchValue(0);
+      this.fg_filters.controls['chooseFrom'].patchValue([]);
+    }
+
+    if (
+      byWhom === 'byOthers' &&
+      (this.position.isFEFS || this.position.isOther)
+    ) {
+      this.store_appraisals.dispatch(new fromAppraisals.DeleteAllAppraisals());
+      this.toggleResetGivenFor();
+
+      this.fg_filters.controls['givenby'].patchValue(0);
+      this.fg_filters.controls['givenfor'].patchValue(0);
+
+      this.fg_filters.controls['chooseFrom'].patchValue(
+        this.currentUser.DirectReportsId.results
+      );
+    }
   }
 
   onSelectGivenBy(givenby: number) {
@@ -153,6 +200,10 @@ export class AppraisalsFiltersComponent implements OnInit {
 
   onResetFilters(event) {
     this.reset = this.reset ? false : true;
+  }
+
+  toggleResetGivenFor() {
+    this.resetGivenFor = this.resetGivenFor ? false : true;
   }
 
   getGivenForByParams() {

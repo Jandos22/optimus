@@ -2,10 +2,10 @@
 import {
   ParamsActionTypes,
   ParamsActionsUnion
-} from '../actions/params.actions';
+} from "../actions/params.actions";
 
 // constants
-import { WirelinePath, ApiPath } from '../../../../shared/constants';
+import { WirelinePath, ApiPath } from "../../../../shared/constants";
 
 export interface ParamsState {
   text: string;
@@ -15,6 +15,7 @@ export interface ParamsState {
   beforeDate?: Date;
   givenfor: number;
   givenby: number;
+  chooseFrom?: number[];
 }
 
 export const initialState: ParamsState = {
@@ -24,7 +25,8 @@ export const initialState: ParamsState = {
   afterDate: null,
   beforeDate: null,
   givenfor: null,
-  givenby: null
+  givenby: null,
+  chooseFrom: null
 };
 
 export function reducer(

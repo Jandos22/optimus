@@ -315,7 +315,11 @@ export class PeopleService {
       "Roles/Id",
       "Roles/Title",
       "Attachments",
-      "AttachmentFiles"
+      "AttachmentFiles",
+      "DirectReports",
+      "DirectReportsId",
+      "DirectReports/Id",
+      "DirectReports/Alias"
     ];
     return $select.toString();
   }
@@ -325,12 +329,13 @@ export class PeopleService {
       "AttachmentFiles",
       "LocationAssigned",
       "Position",
-      "Roles"
+      "Roles",
+      "DirectReports"
     ];
     return $expand.toString();
   }
 
-  getFilterLocationAssigned(locations: number[]) {
+  getFilterLocationAssigned(locations: number[] | "Global") {
     if (locations.length) {
       let filter = "";
       const n = locations.length;

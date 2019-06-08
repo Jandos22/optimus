@@ -14,17 +14,17 @@ import {
   ElementRef,
   SimpleChange,
   ChangeDetectorRef
-} from '@angular/core';
-import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+} from "@angular/core";
+import { FormBuilder, FormGroup, AbstractControl } from "@angular/forms";
 
 // material
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
-} from '@angular/material';
+} from "@angular/material";
 
 // rxjs
-import { Observable, combineLatest, Subscription, Subject, from } from 'rxjs';
+import { Observable, combineLatest, Subscription, Subject, from } from "rxjs";
 import {
   startWith,
   map,
@@ -36,78 +36,97 @@ import {
   pairwise,
   filter,
   tap
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // interfaces
-import { LocationEnt } from '../../../interface/locations.model';
-import { PeopleItem, SearchParamsUser } from '../../../interface/people.model';
-import { FormMode } from '../../../interface/form.model';
+import { LocationEnt } from "../../../interface/locations.model";
+import { PeopleItem, SearchParamsUser } from "../../../interface/people.model";
+import { FormMode } from "../../../interface/form.model";
 
 // services
-import { SearchUsersService, UtilitiesService } from '../../../services';
-import { PeopleLookupService } from './../../../services/people-lookup.service';
+import { SearchUsersService, UtilitiesService } from "../../../services";
+import { PeopleLookupService } from "./../../../services/people-lookup.service";
 
 @Component({
-  selector: 'app-form-control-people-selector',
-  styleUrls: ['form-control-people-selector.component.scss'],
+  selector: "app-form-control-people-selector",
+  styleUrls: ["form-control-people-selector.component.scss"],
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <mat-form-field [id]="'refWidth' + id" *ngIf="mode !== 'view'"
-      class="people-selector-field" [formGroup]="fg_users"
-      [ngClass]="{ 'forFilters': forFilters }">
-
-      <input matInput
+    <mat-form-field
+      [id]="'refWidth' + id"
+      *ngIf="mode !== 'view'"
+      class="people-selector-field"
+      [formGroup]="fg_users"
+      [ngClass]="{ forFilters: forFilters }"
+    >
+      <input
+        matInput
         #autoCompleteInput
         [placeholder]="displayName"
         [matAutocomplete]="auto"
         formControlName="text"
-        [disabled]="mode === 'view'">
+        [disabled]="mode === 'view'"
+      />
 
       <mat-autocomplete
-        #auto="matAutocomplete" [displayWith]="displayFn"
-        (optionSelected)="optionSelected($event)">
-
-        <mat-option *ngFor="let user of users" [value]="user"
-          (click)="keepOpen()" [disabled]="user.selected"
-          [ngClass]="{ 'people-selector-selected': user.selected }">
-
-          <app-people-selector-option fxLayout="row nowrap" fxLayoutAlign="start center"
-            [user]="user">
+        #auto="matAutocomplete"
+        [displayWith]="displayFn"
+        (optionSelected)="optionSelected($event)"
+      >
+        <mat-option
+          *ngFor="let user of users"
+          [value]="user"
+          (click)="keepOpen()"
+          [disabled]="user.selected"
+          [ngClass]="{ 'people-selector-selected': user.selected }"
+        >
+          <app-people-selector-option
+            fxLayout="row nowrap"
+            fxLayoutAlign="start center"
+            [user]="user"
+          >
           </app-people-selector-option>
-
         </mat-option>
       </mat-autocomplete>
 
-      <div matSuffix *ngIf="!searching"
-        class="people-selector-suffix-chip">
+      <div matSuffix *ngIf="!searching" class="people-selector-suffix-chip">
         {{ getCountSelectedUsers() }}
       </div>
 
       <span matSuffix *ngIf="searching" style="margin-left: 8px;">
-        <span class='fa_regular'><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon></span>
+        <span class="fa_regular"
+          ><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+        ></span>
       </span>
-
     </mat-form-field>
 
     <!-- button to select self -->
-    <div class='filter-button-select-self' *ngIf="forFilters"
-      fxLayout="row nowrap" fxLayoutAlign="center center"
-      [matTooltip]="tooltipSelectMe" (click)="addSelfToSelected(selfUser)">
+    <div
+      class="filter-button-select-self"
+      *ngIf="forFilters"
+      fxLayout="row nowrap"
+      fxLayoutAlign="center center"
+      [matTooltip]="tooltipSelectMe"
+      (click)="addSelfToSelected(selfUser)"
+    >
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </div>
 
     <app-people-selector-selected
       *ngFor="let user of this.fg_users.get('selectedUsers').value"
-      fxLayout="row nowrap" fxLayoutAlign="start center"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
       class="people-selector-selected-item"
-      [ngClass]="{ 'forFilters': forFilters }"
-      [user]="user" [mode]="mode"
-      (removeSelectedUser)="removeSelectedUser($event)">
+      [ngClass]="{ forFilters: forFilters }"
+      [user]="user"
+      [mode]="mode"
+      (removeSelectedUser)="removeSelectedUser($event)"
+    >
     </app-people-selector-selected>
-    `
+  `
 })
 export class FormControlPeopleSelectorComponent
   implements OnInit, OnDestroy, OnChanges {
@@ -142,18 +161,22 @@ export class FormControlPeopleSelectorComponent
   @Input()
   forFilters: boolean; // Location or Locations
 
+  // used in People form
+  @Input()
+  forPeople: boolean; // LocationAssigned
+
   @Input()
   doReset: boolean;
 
   selfSelected: boolean;
-  tooltipSelectMe = 'Select Me';
+  tooltipSelectMe = "Select Me";
 
   @Output()
   onSelectUser = new EventEmitter<number[]>();
 
-  @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger })
+  @ViewChild("autoCompleteInput", { read: MatAutocompleteTrigger })
   autoComplete: MatAutocompleteTrigger;
-  @ViewChild('formField')
+  @ViewChild("formField")
   el_FormField: ElementRef;
 
   // form group for autocomplete input
@@ -188,33 +211,40 @@ export class FormControlPeopleSelectorComponent
     // watch location/locations changes
     // start with inital value from fg_fields
     // log in console whenever location selection changed
-    if (!this.singleLocation && !this.forFilters) {
+    if (!this.singleLocation && !this.forFilters && !this.forPeople) {
       this.locations$ = this.fg_fields.controls[
-        'LocationsId'
+        "LocationsId"
       ].valueChanges.pipe(
-        startWith(this.fg_fields.get('LocationsId').get('results').value)
+        startWith(this.fg_fields.get("LocationsId").get("results").value)
         // tap(v => console.log(v))
       );
-    } else if (this.singleLocation && !this.forFilters) {
-      this.locations$ = this.fg_fields.controls['LocationId'].valueChanges.pipe(
-        startWith(this.fg_fields.get('LocationId').value),
+    } else if (this.singleLocation && !this.forFilters && !this.forPeople) {
+      this.locations$ = this.fg_fields.controls["LocationId"].valueChanges.pipe(
+        startWith(this.fg_fields.get("LocationId").value),
         map((location: number) => [location])
         // tap(v => console.log(v))
       );
     } else if (this.forFilters) {
-      this.locations$ = this.fg_fields.controls['locations'].valueChanges.pipe(
-        startWith(this.fg_fields.get('locations').value),
+      this.locations$ = this.fg_fields.controls["locations"].valueChanges.pipe(
+        startWith(this.fg_fields.get("locations").value),
         map((locations: number[]) => [...locations])
         // tap(v => console.log(v))
+      );
+    } else if (this.forPeople) {
+      this.locations$ = this.fg_fields.controls[
+        "LocationAssignedId"
+      ].valueChanges.pipe(
+        startWith(this.fg_fields.get("LocationAssignedId").value),
+        map((location: number) => [location])
       );
     }
 
     // watch query text changes
     // pass only text and check if new value is different
     // also wait 500 ms until passing new value
-    this.text$ = this.fg_users.get('text').valueChanges.pipe(
-      startWith(''),
-      filter(value => typeof value === 'string'),
+    this.text$ = this.fg_users.get("text").valueChanges.pipe(
+      startWith(""),
+      filter(value => typeof value === "string"),
       distinctUntilChanged(),
       debounceTime(500)
     );
@@ -222,7 +252,7 @@ export class FormControlPeopleSelectorComponent
     // watch query text changes
     // pass only text and check if new value is different
     // also wait 500 ms until passing new value
-    this.top$ = this.fg_users.get('top').valueChanges.pipe(
+    this.top$ = this.fg_users.get("top").valueChanges.pipe(
       startWith(100),
       distinctUntilChanged()
     );
@@ -235,9 +265,8 @@ export class FormControlPeopleSelectorComponent
           // console.log(this.includeOnly);
           return { text: q[0], locations: q[1], top: q[2] };
         }),
-        map(
-          (q: SearchParamsUser) =>
-            this.includeOnly.length ? { ...q, positions: this.includeOnly } : q
+        map((q: SearchParamsUser) =>
+          this.includeOnly.length ? { ...q, positions: this.includeOnly } : q
         )
       )
       .subscribe((query: SearchParamsUser) => {
@@ -248,7 +277,7 @@ export class FormControlPeopleSelectorComponent
     // then map to ids, then loop through users and disable selected
     // so that they cannot be selected again
     this.$fc_selectedUsers = this.fg_users
-      .get('selectedUsers')
+      .get("selectedUsers")
       .valueChanges.pipe(
         map((selected: PeopleItem[]) => {
           return _.map(selected, function(user) {
@@ -261,13 +290,13 @@ export class FormControlPeopleSelectorComponent
 
     // when opening new form
     // then add user to selected automatically
-    if (this.mode === 'new' && !this.forFilters) {
+    if (this.mode === "new" && !this.forFilters) {
       this.addSelfToSelected(this.selfUser);
     }
 
     // when opening form in view mode
     // then get IDs array and fetch users' info
-    if (this.mode === 'view') {
+    if (this.mode === "view") {
       // prepare input to handle reporters depending on number of users
       if (this.allowNumberOfUsers === 1) {
         const id: number = this.fg_fields.controls[this.fieldName].value;
@@ -282,9 +311,9 @@ export class FormControlPeopleSelectorComponent
     // console.log(mode);
     // initialize form group for searching users
     this.fg_users = this.fb.group({
-      text: '',
-      selectedUsers: '',
-      top: ''
+      text: "",
+      selectedUsers: "",
+      top: ""
     });
   }
 
@@ -292,11 +321,11 @@ export class FormControlPeopleSelectorComponent
     if (self && !this.selfSelected) {
       this.selfSelected = true;
       this.addSelectedUsers(self);
-      this.tooltipSelectMe = 'Unselect Me';
+      this.tooltipSelectMe = "Unselect Me";
     } else if (self && this.selfSelected) {
       this.removeSelectedUser(self.Id);
       this.selfSelected = false;
-      this.tooltipSelectMe = 'Select Me';
+      this.tooltipSelectMe = "Select Me";
     }
   }
 
@@ -366,7 +395,7 @@ export class FormControlPeopleSelectorComponent
         this.disableSelected(this.fg_fields.get(this.fieldName).value);
       } else {
         this.disableSelected(
-          this.fg_fields.get(this.fieldName).get('results').value
+          this.fg_fields.get(this.fieldName).get("results").value
         );
       }
     }
@@ -383,7 +412,7 @@ export class FormControlPeopleSelectorComponent
   }
 
   displayFn(user?): string | undefined {
-    return ''; // in any case let it be empty string
+    return ""; // in any case let it be empty string
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent) {
@@ -393,33 +422,33 @@ export class FormControlPeopleSelectorComponent
   }
 
   addSelectedUsers(user: PeopleItem) {
-    console.log('adding user to selected: ' + user.Alias);
-    console.log('limit is:' + this.allowNumberOfUsers);
+    console.log("adding user to selected: " + user.Alias);
+    console.log("limit is:" + this.allowNumberOfUsers);
 
     // previously selected users
-    const selected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+    const selected: null | PeopleItem[] = this.fg_users.get("selectedUsers")
       .value;
 
-    console.log('previously selected number of users: ' + selected.length);
+    console.log("previously selected number of users: " + selected.length);
 
     if (selected.length && selected.length < this.allowNumberOfUsers) {
-      this.fg_users.get('selectedUsers').patchValue([user, ...selected]);
+      this.fg_users.get("selectedUsers").patchValue([user, ...selected]);
     } else if (selected.length === 0) {
-      this.fg_users.get('selectedUsers').patchValue([user]);
+      this.fg_users.get("selectedUsers").patchValue([user]);
     }
 
-    const newSelected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+    const newSelected: null | PeopleItem[] = this.fg_users.get("selectedUsers")
       .value;
 
     this.checkSelectionLimit();
   }
 
   checkSelectionLimit() {
-    const newSelected: null | PeopleItem[] = this.fg_users.get('selectedUsers')
+    const newSelected: null | PeopleItem[] = this.fg_users.get("selectedUsers")
       .value;
 
     if (newSelected.length === this.allowNumberOfUsers) {
-      console.log('limit reached, disable all options');
+      console.log("limit reached, disable all options");
       this.limitReached = true;
       this.disableAll();
     } else {
@@ -441,14 +470,14 @@ export class FormControlPeopleSelectorComponent
   }
 
   resetText() {
-    this.fg_users.get('text').setValue('');
+    this.fg_users.get("text").setValue("");
   }
 
   // @output from child
   removeSelectedUser(id: number) {
-    console.log('remove user with id:' + id);
+    console.log("remove user with id:" + id);
     // get selected users
-    const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
+    const selected: PeopleItem[] = this.fg_users.get("selectedUsers").value;
     // get new array without removed user
     const filtered = _.filter(selected, function(o: PeopleItem) {
       return o.ID !== id;
@@ -456,16 +485,16 @@ export class FormControlPeopleSelectorComponent
     // unselect user in users
     this.enableUnselected(id);
     // overwrite previously selected users
-    this.fg_users.get('selectedUsers').patchValue(filtered);
+    this.fg_users.get("selectedUsers").patchValue(filtered);
 
     if (id === this.selfUser.Id) {
       this.selfSelected = false;
-      this.tooltipSelectMe = 'Select Me';
+      this.tooltipSelectMe = "Select Me";
     }
   }
 
   getCountSelectedUsers() {
-    const selected: PeopleItem[] = this.fg_users.get('selectedUsers').value;
+    const selected: PeopleItem[] = this.fg_users.get("selectedUsers").value;
 
     if (selected.length) {
       return `${selected.length}`;
@@ -494,7 +523,7 @@ export class FormControlPeopleSelectorComponent
         )
         .subscribe(v => {
           // console.log(v);
-          this.fg_users.controls['selectedUsers'].patchValue(v);
+          this.fg_users.controls["selectedUsers"].patchValue(v);
         });
     }
   }
@@ -509,7 +538,7 @@ export class FormControlPeopleSelectorComponent
       if (changes.doReset.currentValue) {
         // console.log('reset');
         if (changes.doReset.currentValue !== changes.doReset.previousValue) {
-          this.fg_users.get('selectedUsers').patchValue([]);
+          this.fg_users.get("selectedUsers").patchValue([]);
         }
       }
     }

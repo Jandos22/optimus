@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 // rxjs
-import { throwError, of, from } from 'rxjs';
+import { throwError, of, from } from "rxjs";
 import {
   map,
   mergeMap,
@@ -10,20 +10,20 @@ import {
   switchMap,
   take,
   retry
-} from 'rxjs/operators';
+} from "rxjs/operators";
 
 // constants
-import { ApiPath } from '../constants';
-import { hk_accept, hv_appjson } from '../constants/headers';
+import { ApiPath } from "../constants";
+import { hk_accept, hv_appjson } from "../constants/headers";
 
-import { SpResponse } from './../interface/sp-response.model';
-import { SpGetListItemResult } from '../interface/sp-list-item.model';
+import { SpResponse } from "./../interface/sp-response.model";
+import { SpGetListItemResult } from "../interface/sp-list-item.model";
 
 // services
-import { SharepointService } from './sharepoint.service';
+import { SharepointService } from "./sharepoint.service";
 
 // interfaces
-import { SearchParamsUser } from '../interface/people.model';
+import { SearchParamsUser } from "../interface/people.model";
 
 @Injectable()
 export class SearchUsersService {
@@ -46,9 +46,10 @@ export class SearchUsersService {
     let url = `${ApiPath}/web/lists/getbytitle('NgPeople')/items?`;
 
     // filters
-    const text = params.text.replace('#', '%23'); // otherwise http request will throw error
+    const text = params.text.replace("#", "%23"); // otherwise http request will throw error
     const locations = params.locations; // locations must be ids array
     const positions = params.positions ? params.positions : []; // locations must be ids array
+    const chooseFrom = params.chooseFrom ? params.chooseFrom : [];
 
     const top = params.top;
 
@@ -57,7 +58,7 @@ export class SearchUsersService {
     url += `&$expand=${this.getExpandsFields().toString()}`;
 
     // $filter add when any of these filter options present
-    if (text || locations.length || positions) {
+    if (text || (locations.length && locations !== "Global") || positions) {
       url += `&$filter=`;
     }
 
@@ -74,21 +75,34 @@ export class SearchUsersService {
     // locations filter configuration
     // check if "AND" is needed
     // finds items with given location
-    if (locations.length) {
+    if (locations.length && locations !== "Global") {
       if (text) {
-        url += 'and';
+        url += "and";
       }
       url += `${this.getFilterLocationAssigned(locations)}`;
+    } else if (locations === "Global") {
+      url += "";
     }
 
     // positions filter configuration
     // check if "AND" is needed
     // finds items with given positions
     if (positions.length) {
-      if (text || positions.length) {
-        url += 'and';
+      if (text || (locations.length && locations !== "Global")) {
+        url += "and";
       }
       url += `${this.getFilterPositions(positions)}`;
+    }
+
+    if (chooseFrom.length) {
+      if (
+        text ||
+        (locations.length && locations !== "Global") ||
+        positions.length
+      ) {
+        url += "and";
+      }
+      url += `${this.getFilterChooseFrom(chooseFrom)}`;
     }
 
     // $orderby
@@ -105,44 +119,36 @@ export class SearchUsersService {
 
   getSelectFields() {
     const $select = [
-      'Id',
-      'ID',
-      'Alias',
-      'Name',
-      'Surname',
-      'Fullname',
-      'Shortname',
-      'Email',
-      'Gin',
-      'LocationAssignedId',
-      'LocationAssigned/Id',
-      'LocationAssigned/Title',
-      'PositionId',
-      'Position/Id',
-      'Position/Title',
-      //   'RolesId',
-      //   'Roles/Id',
-      //   'Roles/Title',
-      'Attachments',
-      'AttachmentFiles'
+      "Id",
+      "ID",
+      "Alias",
+      "Name",
+      "Surname",
+      "Fullname",
+      "Shortname",
+      "Email",
+      "Gin",
+      "LocationAssignedId",
+      "LocationAssigned/Id",
+      "LocationAssigned/Title",
+      "PositionId",
+      "Position/Id",
+      "Position/Title",
+      "Attachments",
+      "AttachmentFiles"
     ];
     return $select.toString();
   }
 
   getExpandsFields() {
-    const $expand = [
-      'AttachmentFiles',
-      'LocationAssigned',
-      'Position'
-      //   'Roles'
-    ];
+    const $expand = ["AttachmentFiles", "LocationAssigned", "Position"];
     return $expand.toString();
   }
 
-  getFilterLocationAssigned(locations: number[]) {
-    if (locations.length) {
+  getFilterLocationAssigned(locations: number[] | "Global") {
+    if (locations.length && locations !== "Global") {
       // start with empty string
-      let filter = '';
+      let filter = "";
 
       // total number of locations in array
       const n = locations.length;
@@ -177,7 +183,7 @@ export class SearchUsersService {
 
   getFilterPositions(positions: number[]) {
     if (positions.length) {
-      let filter = '';
+      let filter = "";
       const n = positions.length;
       let i = 1;
 
@@ -188,6 +194,37 @@ export class SearchUsersService {
         }
 
         filter += `(Position/Id eq ${position})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterChooseFrom(chooseFrom: number[]) {
+    if (chooseFrom.length) {
+      let filter = "";
+      const n = chooseFrom.length;
+      let i = 1;
+
+      for (const c of chooseFrom) {
+        // if multiple positions then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Id eq ${c})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {

@@ -16,25 +16,34 @@ import { AppraisalRights } from '../../store';
   styleUrls: ['appraisals-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
   template: `
-    <div class="appraisals-list-container" fxFlex id="PrintAppraisals"
-      fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="16px">
-
-      <div class="is-private">Wellsite Performance Reviews are PRIVATE</div>
+    <div
+      class="appraisals-list-container"
+      fxFlex
+      id="PrintAppraisals"
+      fxLayout="row wrap"
+      fxLayoutAlign="start start"
+      fxLayoutGap="16px"
+    >
+      <div class="is-private">Wellsite Appraisals are PRIVATE</div>
 
       <div *ngIf="position.isOther" class="is-other">
-        <p>Only PSDM, FEFS, OP, FDE and WFC have access to WPRs. You can see WPRs that were submitted by you in the past.</p>
+        <p>
+          Only PSDM/JDL, FEFS and Operators, have access to appraisals. You can
+          see WPRs that were submitted by you and also those submitted by other
+          for your Direct Reports.
+        </p>
       </div>
 
       <app-appraisal-group
         *ngFor="let job of appraisalGroups; last as last"
         [job]="job"
-        [ngClass]="{'last-item': last}"
+        [ngClass]="{ 'last-item': last }"
         (openForm)="openForm.emit($event)"
-        fxLayout="row nowrap">
+        fxLayout="row nowrap"
+      >
       </app-appraisal-group>
-
     </div>
-    `
+  `
 })
 export class AppraisalsListComponent {
   @Input()

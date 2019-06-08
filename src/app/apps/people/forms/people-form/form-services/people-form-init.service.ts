@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 import {
   FormBuilder,
@@ -6,21 +6,21 @@ import {
   FormControl,
   Validators,
   AbstractControl
-} from '@angular/forms';
+} from "@angular/forms";
 
 // rxjs
-import { of } from 'rxjs';
-import { take, switchMap, map } from 'rxjs/operators';
+import { of } from "rxjs";
+import { take, switchMap, map } from "rxjs/operators";
 
 // services
-import { ValidationService } from '../../../../../shared/validators/validation.service';
-import { AsyncValidationService } from '../../../../../shared/validators/async-validation.service';
+import { ValidationService } from "../../../../../shared/validators/validation.service";
+import { AsyncValidationService } from "../../../../../shared/validators/async-validation.service";
 // import { PeopleFormValueService } from './people-form-value.service';
-import { PeopleFormPhotoService } from './people-form-photo.service';
+import { PeopleFormPhotoService } from "./people-form-photo.service";
 
 // interfaces
-import { PeopleItem } from '../../../../../shared/interface/people.model';
-import { FormMode } from '../../../../../shared/interface/form.model';
+import { PeopleItem } from "../../../../../shared/interface/people.model";
+import { FormMode } from "../../../../../shared/interface/form.model";
 
 @Injectable()
 export class PeopleFormInitService {
@@ -34,27 +34,27 @@ export class PeopleFormInitService {
   create_FormGroup_Fields(mode: FormMode, item: PeopleItem) {
     // create item via new class
     // item = this.formValueService.createPeopleItemObject(mode, item);
-    console.log('[People Form] Creating form group with:');
+    console.log("[People Form] Creating form group with:");
     console.log(item);
-    console.log('[People Form] when mode is: ' + mode);
+    console.log("[People Form] when mode is: " + mode);
 
     return this.fb.group({
-      Name: [this.getSimpleFormValue(mode, item, 'Name'), Validators.required],
+      Name: [this.getSimpleFormValue(mode, item, "Name"), Validators.required],
       Surname: [
-        this.getSimpleFormValue(mode, item, 'Surname'),
+        this.getSimpleFormValue(mode, item, "Surname"),
         Validators.required
       ],
       Alias: [
-        this.getDisabledFieldValue(mode, item, 'Alias'),
+        this.getDisabledFieldValue(mode, item, "Alias"),
         Validators.required,
         this.uniqueAlias.bind(this)
       ],
       Email: [
-        this.getDisabledFieldValue(mode, item, 'Email', '@slb.com'),
+        this.getDisabledFieldValue(mode, item, "Email", "@slb.com"),
         Validators.required
       ],
       Gin: [
-        this.getDisabledFieldValue(mode, item, 'Gin'),
+        this.getDisabledFieldValue(mode, item, "Gin"),
         [
           Validators.required,
           Validators.minLength(8),
@@ -64,32 +64,35 @@ export class PeopleFormInitService {
         this.uniqueGin.bind(this)
       ],
       Shortname: [
-        this.getSimpleFormValue(mode, item, 'Shortname'),
+        this.getSimpleFormValue(mode, item, "Shortname"),
         Validators.required
       ],
       LocationAssignedId: [
-        this.getSimpleFormValue(mode, item, 'LocationAssignedId'),
+        this.getSimpleFormValue(mode, item, "LocationAssignedId"),
         Validators.required
       ],
       LocationsOfInterestId: this.fb.group({
         results: [
-          this.getMultiSelectId(mode, item, 'LocationsOfInterestId'),
+          this.getMultiSelectId(mode, item, "LocationsOfInterestId"),
           Validators.required
         ]
       }),
       PositionId: [
-        this.getSimpleFormValue(mode, item, 'PositionId'),
+        this.getSimpleFormValue(mode, item, "PositionId"),
         Validators.required
-      ]
+      ],
+      DirectReportsId: this.fb.group({
+        results: [this.getMultiSelectPeople(mode, item, "DirectReportsId")]
+      })
     });
   }
 
   create_FormGroup_Photo(mode: FormMode, item?: PeopleItem) {
     console.log(mode);
-    if (mode === 'new') {
+    if (mode === "new") {
       return new FormGroup({
-        ID: new FormControl(''),
-        Filename: new FormControl(''),
+        ID: new FormControl(""),
+        Filename: new FormControl(""),
         PhotoUrl: new FormControl(this.photoService.getNoPhotoUrl()),
         ArrayBuffer: new FormControl(new ArrayBuffer(0))
       });
@@ -106,23 +109,34 @@ export class PeopleFormInitService {
   // get field value & condition
   getSimpleFormValue(mode: FormMode, item: PeopleItem, field: string) {
     switch (mode) {
-      case 'new':
-        return '';
-      case 'view':
+      case "new":
+        return "";
+      case "view":
         return { value: item[field], disabled: true };
-      case 'edit':
+      case "edit":
         return { value: item[field], disabled: false };
     }
   }
 
   getMultiSelectId(mode: FormMode, item: PeopleItem, field: string) {
     switch (mode) {
-      case 'new':
+      case "new":
         return [];
-      case 'view':
+      case "view":
         return item[field].results;
-      case 'edit':
+      case "edit":
         return item[field].results;
+    }
+  }
+
+  getMultiSelectPeople(mode: FormMode, item: PeopleItem, field: string) {
+    switch (mode) {
+      case "new":
+        return [];
+      case "view":
+        return { value: item[field].results, disabled: true };
+      case "edit":
+        return { value: item[field].results, disabled: false };
     }
   }
 
@@ -135,11 +149,11 @@ export class PeopleFormInitService {
     appendix?: string
   ) {
     switch (mode) {
-      case 'new':
-        return '' + appendix ? appendix : '';
-      case 'view':
+      case "new":
+        return "" + appendix ? appendix : "";
+      case "view":
         return { value: item[field], disabled: true };
-      case 'edit':
+      case "edit":
         return { value: item[field], disabled: true };
     }
   }
