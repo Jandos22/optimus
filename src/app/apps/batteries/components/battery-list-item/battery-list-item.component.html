@@ -2,7 +2,10 @@
   fxFlex="100"
   fxLayout="row nowrap"
   (click)="openForm.emit(battery)"
-  [ngClass]="['battery-container', getBatteryLevel(battery.Hours)]"
+  [ngClass]="[
+    'battery-container',
+    getBatteryLevel(battery.Hours, battery.Status)
+  ]"
 >
   <div class="common-button battery-icon" fxFlex="40px">
     <button
