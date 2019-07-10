@@ -65,6 +65,7 @@ export class SearchEffects {
       return this.srv.buildUrl(params);
     }),
     mergeMap(url => {
+      console.log(url);
       return [
         new fromPaginationActions.ResetPagination(),
         new fromPaginationActions.AddLink(url),
@@ -149,10 +150,12 @@ export class SearchEffects {
         map((res: SpResponse) => {
           if (res.d.results.length === 0) {
             return new fromPaginationActions.UpdateTotalExist(0);
-          } else if (res.d.results.length <= 500 && !res.d.__next) {
+          } else if (res.d.results.length <= 499 && !res.d.__next) {
             return new fromPaginationActions.UpdateTotalExist(
               res.d.results.length
             );
+          } else if (res.d.results.length >= 500) {
+            return new fromPaginationActions.UpdateTotalExist('500+');
           }
         })
       );

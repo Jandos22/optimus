@@ -1,20 +1,20 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable, of, from } from "rxjs";
-import { map, mergeMap, switchMap, take, retry } from "rxjs/operators";
+import { Observable, of, from } from 'rxjs';
+import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
 
 // constants
-import { ApiPath, WirelinePath } from "../../../shared/constants";
-import { hk_accept, hv_appjson } from "../../../shared/constants/headers";
+import { ApiPath, WirelinePath } from '../../../shared/constants';
+import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
 
 // interfaces
-import { AppraisalsSearchParams } from "../../../shared/interface/appraisals.model";
-import { SpResponse } from "../../../shared/interface/sp-response.model";
+import { AppraisalsSearchParams } from '../../../shared/interface/appraisals.model';
+import { SpResponse } from '../../../shared/interface/sp-response.model';
 
 // services
-import { SharepointService } from "../../../shared/services/sharepoint.service";
+import { SharepointService } from '../../../shared/services/sharepoint.service';
 
 @Injectable()
 export class AppraisalsService {
@@ -43,12 +43,19 @@ export class AppraisalsService {
     console.log(params);
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? params.text.replace("#", "%23") : null;
+    const text = params.text ? params.text.replace('#', '%23') : null;
     // locations must be ids array
     // const locations = params.locations ? params.locations : [];
     // people must be just id number or null
     const givenby = params.givenby ? params.givenby : null;
     const givenfor = params.givenfor ? params.givenfor : null;
+
+    let choosefrom: number[] | null = null;
+    // then show only from chooseFrom list
+    if (givenby === null && givenfor === null && params.chooseFrom.length) {
+      choosefrom = params.chooseFrom;
+    }
+
     // if top is missing then default is 25
     let top = params.top ? params.top : 25;
 
@@ -56,8 +63,8 @@ export class AppraisalsService {
     let countFilters = 0;
 
     // dates start with empty string
-    let beforeDate = "",
-      afterDate = "";
+    let beforeDate = '',
+      afterDate = '';
 
     // date object need to be converted into string (ISO)
     if (params.beforeDate) {
@@ -77,6 +84,7 @@ export class AppraisalsService {
       // locations.length ||
       givenby ||
       givenfor ||
+      choosefrom ||
       beforeDate ||
       afterDate
     ) {
@@ -107,7 +115,7 @@ export class AppraisalsService {
     if (beforeDate) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += "and";
+        url += 'and';
       }
       countFilters++;
       url += `(Date lt datetime'${beforeDate}')`;
@@ -117,7 +125,7 @@ export class AppraisalsService {
     if (afterDate) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += "and";
+        url += 'and';
       }
       countFilters++;
       url += `(Date gt datetime'${afterDate}')`;
@@ -127,7 +135,7 @@ export class AppraisalsService {
     if (givenfor) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += "and";
+        url += 'and';
       }
       countFilters++;
       url += `(GivenFor/Id eq ${givenfor})`;
@@ -137,10 +145,23 @@ export class AppraisalsService {
     if (givenby) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += "and";
+        url += 'and';
       }
       countFilters++;
       url += `(GivenBy/Id eq ${givenby})`;
+    }
+
+    console.log(choosefrom);
+
+    // chooseFrom filter configuration
+    if (choosefrom !== null && choosefrom.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      console.log('DDOOODODODO');
+      url += `${this.getFilterChooseFrom(choosefrom)}`;
     }
 
     // $orderby
@@ -160,41 +181,41 @@ export class AppraisalsService {
 
   getSelectFields() {
     const $select = [
-      "Id",
-      "ID",
-      "Title",
-      "Date",
-      "Job",
-      "JobId",
-      "Job/Id",
-      "Job/RigUpStart", // date
-      "Job/Well",
-      "Job/Title",
-      "GivenFor",
-      "GivenForId",
-      "GivenFor/Id",
-      "GivenFor/Fullname",
-      "GivenFor/Shortname",
-      "GivenBy",
-      "GivenById",
-      "GivenBy/Id",
-      "GivenBy/Fullname",
-      "GivenBy/Shortname",
-      "OverallPerformance",
-      "FurtherDevelopment",
-      "OperatorComments",
-      "Safety",
-      "SafetyDetails",
-      "Proactivity",
-      "ProactivityDetails",
-      "Quality",
-      "QualityDetails",
-      "WinchDriving",
-      "WinchDrivingDetails",
-      "DidRopeSocket",
-      "DidRopeSocketH2S",
-      "DidCollector",
-      "DidHead"
+      'Id',
+      'ID',
+      'Title',
+      'Date',
+      'Job',
+      'JobId',
+      'Job/Id',
+      'Job/RigUpStart', // date
+      'Job/Well',
+      'Job/Title',
+      'GivenFor',
+      'GivenForId',
+      'GivenFor/Id',
+      'GivenFor/Fullname',
+      'GivenFor/Shortname',
+      'GivenBy',
+      'GivenById',
+      'GivenBy/Id',
+      'GivenBy/Fullname',
+      'GivenBy/Shortname',
+      'OverallPerformance',
+      'FurtherDevelopment',
+      'OperatorComments',
+      'Safety',
+      'SafetyDetails',
+      'Proactivity',
+      'ProactivityDetails',
+      'Quality',
+      'QualityDetails',
+      'WinchDriving',
+      'WinchDrivingDetails',
+      'DidRopeSocket',
+      'DidRopeSocketH2S',
+      'DidCollector',
+      'DidHead'
       // 'Location',
       // 'LocationId',
       // 'Location/Id',
@@ -204,41 +225,73 @@ export class AppraisalsService {
   }
 
   getExpandFields() {
-    const $expand = ["Job", "GivenFor", "GivenBy"];
+    const $expand = ['Job', 'GivenFor', 'GivenBy'];
     // const $expand = ['Location', 'Job', 'GivenFor', 'GivenBy'];
     return $expand.toString();
   }
 
-  // getFilterLocations(locations: number[]) {
-  //   if (locations.length) {
-  //     let filter = '';
-  //     const n = locations.length;
-  //     let i = 1;
+  getFilterChooseFrom(people: number[]) {
+    if (people.length) {
+      let filter = '';
 
-  //     for (const location of locations) {
-  //       // if multiple locations then wrap them in brackets
-  //       if (i === 1 && n > 1) {
-  //         filter += `(`;
-  //       }
+      const n = people.length;
+      let i = 1;
 
-  //       filter += `(Location/Id eq ${location})`;
+      for (const man of people) {
+        // if multiple then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
 
-  //       // if current iteration is not last then add 'or'
-  //       if (n > 1 && n !== i) {
-  //         filter += `or`;
-  //       }
+        filter += `(GivenFor/Id eq ${man})`;
 
-  //       // if last then close brackets
-  //       if (n > 1 && i === n) {
-  //         filter += `)`;
-  //       }
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
 
-  //       i++;
-  //     }
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
 
-  //     return filter;
-  //   }
-  // }
+        i++;
+      } // end of for loop
+
+      return filter;
+    }
+  }
+
+  getFilterLocations(locations: number[]) {
+    if (locations.length) {
+      let filter = '';
+      const n = locations.length;
+      let i = 1;
+
+      for (const location of locations) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(Location/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
 
   deleteItemById(id: number) {
     const fdv$ = this.sp.getFDV();
@@ -249,16 +302,16 @@ export class AppraisalsService {
       retry(3),
       switchMap(fdv => {
         console.log(fdv);
-        console.log("deleting: " + id);
+        console.log('deleting: ' + id);
 
         const delete$: Promise<any> = sprLib.rest({
           url: url,
-          type: "POST",
+          type: 'POST',
           headers: {
-            Accept: "application/json;odata=verbose",
-            "X-HTTP-Method": "DELETE",
-            "If-Match": "*",
-            "X-RequestDigest": fdv.requestDigest
+            Accept: 'application/json;odata=verbose',
+            'X-HTTP-Method': 'DELETE',
+            'If-Match': '*',
+            'X-RequestDigest': fdv.requestDigest
           }
         });
         return from(delete$);

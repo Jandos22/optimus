@@ -13,7 +13,7 @@ export interface PaginationState {
   currentIndex: number;
   links: string[];
   totalDisplayed: number;
-  totalExist: number;
+  totalExist: number | string;
 }
 
 export const initialState: PaginationState = {
