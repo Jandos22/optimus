@@ -30,7 +30,7 @@ export class UpdateTotalDisplayed implements Action {
 
 export class UpdateTotalExist implements Action {
   readonly type = PaginationActionTypes.UPDATE_TOTAL_EXIST;
-  constructor(public totalExist: number) {}
+  constructor(public totalExist: number | string) {}
 }
 
 export class AddLink implements Action {

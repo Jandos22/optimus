@@ -43,17 +43,24 @@ import { AppraisalRights } from '../../store';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-appraisals-toolbar class="common-toolbar"
-      fxFlex fxFlex.gt-xs="568px"
-      fxLayout="row nowrap" fxLayoutAlign="start center"
-      [appName]="appName" [fg_params]="fg_params" [searching]="searching"
+    <app-appraisals-toolbar
+      class="common-toolbar"
+      fxFlex
+      fxFlex.gt-xs="568px"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
+      [appName]="appName"
+      [fg_params]="fg_params"
+      [searching]="searching"
       [isFEFS]="position?.isFEFS"
-      (onFocus)="onFocus()" (onBlur)="onBlur()" (openForm)="openForm.emit()"
+      (onFocus)="onFocus()"
+      (onBlur)="onBlur()"
+      (openForm)="openForm.emit()"
       (toggleFilters)="toggleFilters.emit()"
-      [ngClass]="{  focused: focus,
-                    invalid: fg_params.get('text').invalid }">
+      [ngClass]="{ focused: focus, invalid: fg_params.get('text').invalid }"
+    >
     </app-appraisals-toolbar>
-    `
+  `
 })
 export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
   @Input()
@@ -135,13 +142,11 @@ export class AppraisalsHeaderComponent implements OnInit, OnDestroy {
       .pipe(
         map(params => {
           console.log('params updated');
-          console.log(params);
+          console.log(params[0]);
 
           return {
             ...this.fg_params.value,
             text: params[0]
-            // locations: params[1],
-            // top: params[2]
           };
         })
       )

@@ -28,7 +28,8 @@ import {
   map,
   debounceTime,
   distinctUntilChanged,
-  filter
+  filter,
+  tap
 } from 'rxjs/operators';
 
 // interfaces
@@ -165,6 +166,7 @@ export class FiltersPeopleSingleComponent implements OnInit, OnChanges {
       top: 100,
       chooseFrom: ''
     });
+    console.log(this.fg.value);
   }
 
   startReactions() {
@@ -187,6 +189,9 @@ export class FiltersPeopleSingleComponent implements OnInit, OnChanges {
       filter(value => typeof value === 'string'),
       distinctUntilChanged(),
       debounceTime(400)
+      // tap(() => {
+      //   this.cd.detectChanges();
+      // })
     );
 
     this.chooseFrom$ = this.fg_filters.controls['chooseFrom'].valueChanges.pipe(
@@ -211,8 +216,8 @@ export class FiltersPeopleSingleComponent implements OnInit, OnChanges {
       .subscribe((query: SearchParamsUser) => {
         // update fetch object,
         // so that child logical component would react and fetch users
-        console.log(query);
         this.fetch = { ...query };
+        this.cd.detectChanges();
       });
   }
 
@@ -249,16 +254,19 @@ export class FiltersPeopleSingleComponent implements OnInit, OnChanges {
     } else {
       this.selected = null;
       this.onSelectUser.emit();
-      this.fg.controls['text'].reset();
+      this.fg.controls['text'].patchValue('');
+      // this.cd.detectChanges();
     }
   }
 
   checkDisabled(disabled: boolean) {
     console.log('disabled: ' + disabled);
-    if (disabled) {
-      this.fg.controls['text'].disable();
-    } else {
-      this.fg.controls['text'].enable();
+    if (this.fg) {
+      if (disabled) {
+        this.fg.controls['text'].disable();
+      } else {
+        this.fg.controls['text'].enable();
+      }
     }
   }
 

@@ -124,11 +124,11 @@ export class AppraisalsFiltersComponent implements OnInit {
     // when change, then update params in store
     this.fg_filters.valueChanges
       .pipe(
-        debounceTime(300),
-        filter(
-          (filter: AppraisalsSearchParams) =>
-            filter.givenby !== 0 || filter.givenfor !== 0
-        )
+        debounceTime(300)
+        // filter(
+        //   (filter: AppraisalsSearchParams) =>
+        //     filter.givenby !== 0 || filter.givenfor !== 0
+        // )
       )
       .subscribe((params: AppraisalsSearchParams) => {
         console.log(params);
@@ -170,6 +170,12 @@ export class AppraisalsFiltersComponent implements OnInit {
       this.fg_filters.controls['chooseFrom'].patchValue([]);
     }
 
+    if (byWhom === 'byMe' && this.position.isReviewer) {
+      this.fg_filters.controls['givenby'].patchValue(0);
+      this.fg_filters.controls['givenfor'].patchValue(0);
+      this.fg_filters.controls['chooseFrom'].patchValue([]);
+    }
+
     if (
       byWhom === 'byOthers' &&
       (this.position.isFEFS || this.position.isOther)
@@ -193,8 +199,15 @@ export class AppraisalsFiltersComponent implements OnInit {
   }
 
   onSelectGivenFor(givenfor: number) {
+    console.log(givenfor);
+    // if (givenfor) {
+    //   this.fg_filters.controls['givenfor'].patchValue(givenfor);
+    // }
+
     if (givenfor) {
       this.fg_filters.controls['givenfor'].patchValue(givenfor);
+    } else {
+      this.fg_filters.controls['givenfor'].patchValue(0);
     }
   }
 
