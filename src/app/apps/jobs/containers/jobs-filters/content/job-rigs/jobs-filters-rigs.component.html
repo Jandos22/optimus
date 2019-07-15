@@ -1,0 +1,34 @@
+<mat-form-field [formGroup]="fg">
+  <input
+    matInput
+    #autoCompleteInput
+    [placeholder]="'Rig'"
+    [matAutocomplete]="auto"
+    formControlName="text"
+    spellcheck="false"
+  />
+
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayFn.bind(this)"
+    (optionSelected)="onRigSelect($event)"
+  >
+    <mat-option *ngFor="let rig of rigs" [value]="rig">
+      {{ rig.Title }}
+    </mat-option>
+  </mat-autocomplete>
+
+  <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
+</mat-form-field>
+
+<!-- RESET BUTTON -->
+<div
+  class="quick-filter-button"
+  *ngIf="this.fg_filters.controls['rigId'].value"
+  fxLayout="row nowrap"
+  fxLayoutAlign="center center"
+  [matTooltip]="'Remove Rig Name'"
+  (click)="reset()"
+>
+  <fa-icon [icon]="['fas', 'times']"></fa-icon>
+</div>

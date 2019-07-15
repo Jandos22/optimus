@@ -34,7 +34,7 @@ export class KaizenFormInitService {
         [
           Validators.required,
           Validators.minLength(10),
-          Validators.maxLength(70)
+          Validators.maxLength(140)
         ]
       ],
       Summary: [
@@ -42,7 +42,7 @@ export class KaizenFormInitService {
         [
           Validators.required,
           Validators.minLength(60),
-          Validators.maxLength(140)
+          Validators.maxLength(255)
         ]
       ],
       RichText: [this.getRichText(mo, it)],

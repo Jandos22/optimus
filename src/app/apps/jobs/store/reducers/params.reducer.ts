@@ -15,6 +15,7 @@ export interface ParamsState {
   beforeDate?: Date;
   jobType?: string;
   well?: string;
+  rigId?: number;
   engineers?: number[];
   operators?: number[];
 }
@@ -27,6 +28,7 @@ export const initialState: ParamsState = {
   beforeDate: null,
   jobType: null,
   well: null,
+  rigId: null,
   engineers: null,
   operators: null
 };

@@ -101,7 +101,7 @@
 }
 
 .job-row-2 {
-  margin: 4px 0 8px 0;
+  margin: 4px 0 4px 0;
   // padding: 0 8px;
   min-height: 16px;
   max-height: 48px;
@@ -146,9 +146,21 @@
 
 .jobs-job-summary-list {
   margin-left: 84px;
+  margin-top: 8px;
   position: relative;
 }
 
-// .locations-card {
+.job-data {
+  margin-left: 84px;
+  padding: 0;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.875);
 
-// }
+  .title {
+    font-weight: 400;
+  }
+
+  .value {
+    font-weight: 400;
+  }
+}
