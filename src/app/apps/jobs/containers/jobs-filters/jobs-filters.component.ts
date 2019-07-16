@@ -31,23 +31,34 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-jobs-filters-header fxFlex="65px" class="common-filters-header"
-        (toggleFilters)="toggleFilters.emit()">
+    <app-jobs-filters-header
+      fxFlex="65px"
+      class="common-filters-header"
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-jobs-filters-header>
 
-    <app-jobs-filters-content fxFlex class="common-filters-content"
-        [fg_filters]="fg_filters" [locofinterest]="locofinterest$ | async"
-        [selfUser]="selfUser$ | async" [doReset]="doReset"
-        (updateLocationsofinterest)="updateLocationsofinterest($event)"
-        (onSelectEngineers)="onSelectEngineers($event)"
-        (onSelectOperators)="onSelectOperators($event)">
+    <app-jobs-filters-content
+      fxFlex
+      class="common-filters-content"
+      [fg_filters]="fg_filters"
+      [locofinterest]="locofinterest$ | async"
+      [selfUser]="selfUser$ | async"
+      [doReset]="doReset"
+      (updateLocationsofinterest)="updateLocationsofinterest($event)"
+      (onSelectEngineers)="onSelectEngineers($event)"
+      (onSelectOperators)="onSelectOperators($event)"
+    >
     </app-jobs-filters-content>
 
-    <app-jobs-filters-footer fxFlex="49px" class="common-filters-footer"
+    <app-jobs-filters-footer
+      fxFlex="49px"
+      class="common-filters-footer"
       (onResetFilters)="onResetFilters($event)"
-      (toggleFilters)="toggleFilters.emit()">
+      (toggleFilters)="toggleFilters.emit()"
+    >
     </app-jobs-filters-footer>
-    `
+  `
 })
 export class JobsFiltersComponent implements OnInit {
   @Output()
@@ -111,6 +122,7 @@ export class JobsFiltersComponent implements OnInit {
       top: 100,
       jobType: '',
       well: '',
+      rigId: '',
       engineers: [{ value: [] }],
       operators: [{ value: [] }]
     });
@@ -138,5 +150,6 @@ export class JobsFiltersComponent implements OnInit {
     this.doReset = this.doReset ? false : true;
     this.fg_filters.controls['well'].reset();
     this.fg_filters.controls['jobType'].reset();
+    this.fg_filters.controls['rigId'].patchValue('');
   }
 }

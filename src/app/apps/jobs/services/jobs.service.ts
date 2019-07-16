@@ -48,6 +48,8 @@ export class JobsService {
 
     const well = params.well ? params.well.replace('#', '%23') : null;
 
+    const rigId = params.rigId ? params.rigId : null;
+
     // locations must be ids array
     const locations = params.locations ? params.locations : [];
     // people arrays must be ids array
@@ -82,6 +84,7 @@ export class JobsService {
       beforeDate ||
       afterDate ||
       well ||
+      rigId ||
       engineers.length
     ) {
       url += `&$filter=`;
@@ -157,6 +160,15 @@ export class JobsService {
       countFilters++;
       // finds items with given location
       url += `${this.getFilterWell(well)}`;
+    }
+
+    if (rigId) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `(Rig/Id eq ${rigId})`;
     }
 
     if (engineers.length) {

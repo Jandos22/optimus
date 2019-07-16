@@ -120,7 +120,7 @@ export class FormControlRigPickerComponent
     console.log('initFormGroup');
     console.log(mode);
 
-    // initialize form group for searching users
+    // initialize form group for searching rigs
     this.createFormGroup();
 
     if (mode === 'view') {

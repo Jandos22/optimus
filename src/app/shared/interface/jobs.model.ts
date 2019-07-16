@@ -5,6 +5,7 @@ import { PeopleItem } from './people.model';
 import { FieldItem } from './fields.model';
 import { ToolItem } from './tools.model';
 import { SpHyperlink } from './sp-hyperlink.model';
+import { RigItem } from './rigs.model';
 
 export interface JobItem extends SpListItem {
   id?: number;
@@ -18,8 +19,8 @@ export interface JobItem extends SpListItem {
   FieldId?: FieldItem;
   Client?: ClientItem;
   ClientId?: ClientItem;
-  Rig?: ClientItem;
-  RigId?: ClientItem;
+  Rig?: RigItem;
+  RigId?: RigItem;
   Ftl?: string;
   TotalDepth?: number;
   TotalDepthUnits?: string;
@@ -68,6 +69,7 @@ export interface JobsSearchParams {
   afterDate?: Date;
   beforeDate?: Date;
   well?: string;
+  rigId?: number;
   jobType?: string;
   engineers?: number[];
   operators?: number[];
