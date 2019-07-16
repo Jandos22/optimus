@@ -30,34 +30,64 @@ import { PeopleLookupService } from './../../../../shared/services/people-lookup
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="person-container"
-        fxLayout="row nowrap" fxLayoutAlign="space-between center"
-        fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="start start">
+    <div
+      class="person-container"
+      fxLayout="row nowrap"
+      fxLayoutAlign="space-between center"
+      fxLayout.gt-xs="row wrap"
+      fxLayoutAlign.gt-xs="start start"
+    >
+      <div
+        class="person-photo-container"
+        fxFlex="36px"
+        fxFlex.gt-xs="180px"
+        fxFlexOrder.gt-xs="3"
+        fxLayout.gt-xs="row wrap"
+        fxLayoutAlign.gt-xs="start end"
+      >
+        <img
+          class="photo"
+          [src]="photo"
+          [matTooltip]="fullname"
+          matTooltipClass="mytooltip large-text"
+        />
+      </div>
 
-        <div class="person-photo-container"
-          fxFlex="36px" fxFlex.gt-xs="180px" fxFlexOrder.gt-xs="3"
-          fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="start end">
-
-          <img class="photo" [src]="photo" [matTooltip]="fullname">
-
+      <div
+        class="person-info"
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        fxFlex
+        fxFlex.gt-xs="124px"
+        fxFlexOrder.gt-xs="2"
+      >
+        <div class="shortname">{{ viewPerson.Shortname }}</div>
+        <div
+          class="secondary"
+          fxLayout="row nowrap"
+          fxLayoutAlign="start center"
+          fxLayoutGap="4px"
+        >
+          <span class="text"
+            >{{ ($person | async)?.LocationAssigned?.Title }} &middot;
+            {{ ($person | async)?.Position?.Title }}</span
+          >
         </div>
+      </div>
 
-        <div class="person-info"
-          fxLayout="column" fxLayoutAlign="center start"
-          fxFlex fxFlex.gt-xs="124px" fxFlexOrder.gt-xs="2">
-            <div class="shortname">{{ viewPerson.Shortname}}</div>
-            <div class="secondary" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="4px">
-                <span class="text">{{ ($person | async)?.LocationAssigned?.Title }} &middot; {{ ($person | async)?.Position?.Title}}</span>
-            </div>
-        </div>
-
-        <div class="button-to-quest" fxFlexOrder.gt-xs="1">
-          <button mat-icon-button matTooltip='Open QUEST Certifications' (click)="openQuestCerts(gin)">
-            <span class='fa_regular'><fa-icon [icon]="['fas', 'user-graduate']"></fa-icon></span>
-          </button>
-        </div>
+      <div class="button-to-quest" fxFlexOrder.gt-xs="1">
+        <button
+          mat-icon-button
+          matTooltip="Open QUEST Certifications"
+          (click)="openQuestCerts(gin)"
+        >
+          <span class="fa_regular"
+            ><fa-icon [icon]="['fas', 'user-graduate']"></fa-icon
+          ></span>
+        </button>
+      </div>
     </div>
-    `
+  `
 })
 export class AppraisalGivenForComponent implements OnChanges {
   @Input() viewPerson: PeopleItem;

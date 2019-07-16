@@ -45,7 +45,7 @@ export class AppraisalsService {
     // # needs to be replaced, otherwise http request to sharepoint will through error
     const text = params.text ? params.text.replace('#', '%23') : null;
     // locations must be ids array
-    // const locations = params.locations ? params.locations : [];
+    const locations = params.locations ? params.locations : [];
     // people must be just id number or null
     const givenby = params.givenby ? params.givenby : null;
     const givenfor = params.givenfor ? params.givenfor : null;
@@ -81,7 +81,7 @@ export class AppraisalsService {
     // $filter is added if one of these is not empty/null
     if (
       text ||
-      // locations.length ||
+      locations.length ||
       givenby ||
       givenfor ||
       choosefrom ||
@@ -100,16 +100,16 @@ export class AppraisalsService {
       url += `)`;
     }
 
-    // // locations filter configuration
-    // if (locations.length) {
-    //   // check if "AND" is needed
-    //   if (countFilters > 0) {
-    //     url += 'and';
-    //   }
-    //   countFilters++;
-    //   // finds items with given location
-    //   url += `${this.getFilterLocations(locations)}`;
-    // }
+    // locations filter configuration
+    if (locations.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      // finds items with given location
+      url += `${this.getFilterLocations(locations)}`;
+    }
 
     // beforeDate filter configuration
     if (beforeDate) {
@@ -215,17 +215,17 @@ export class AppraisalsService {
       'DidRopeSocket',
       'DidRopeSocketH2S',
       'DidCollector',
-      'DidHead'
-      // 'Location',
-      // 'LocationId',
-      // 'Location/Id',
-      // 'Location/Title'
+      'DidHead',
+      'Location',
+      'LocationId',
+      'Location/Id',
+      'Location/Title'
     ];
     return $select.toString();
   }
 
   getExpandFields() {
-    const $expand = ['Job', 'GivenFor', 'GivenBy'];
+    const $expand = ['Job', 'GivenFor', 'GivenBy', 'Location'];
     // const $expand = ['Location', 'Job', 'GivenFor', 'GivenBy'];
     return $expand.toString();
   }
