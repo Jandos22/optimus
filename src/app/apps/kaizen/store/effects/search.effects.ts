@@ -53,10 +53,17 @@ export class SearchEffects {
     map((action: fromParamsActions.UpdateParams) => {
       return action.params;
     }),
+    withLatestFrom(this.store$.pipe(select(fromKaizen.getParams))),
+    map((merged: any[]) => {
+      const prevParams = merged[0];
+      const currParams = merged[1];
+      const newParams = { ...prevParams, ...currParams };
+      return newParams;
+    }),
     map((params: KaizenSearchParams) => {
       this.params = params;
       return this.srv.buildUrl(params);
-    }),
+    }),    
     mergeMap(url => {
       return [
         new fromPaginationActions.ResetPagination(),
@@ -67,7 +74,7 @@ export class SearchEffects {
   );
 
   @Effect() // BEGIN SEARCH
-  searchUsersStart$ = this.actions$.pipe(
+  searchProjectsStart$ = this.actions$.pipe(
     ofType(fromProjectsActions.ProjectsActionTypes.SEARCH_PROJECTS_START),
     withLatestFrom(this.store$.pipe(select(fromKaizen.getCurrentIndex))),
     map((merged: any[]) => {
@@ -77,8 +84,8 @@ export class SearchEffects {
       };
     }),
     switchMap(merged => {
-      const getUsers$ = this.srv.getDataWithGivenUrl(merged.action.url);
-      return getUsers$.pipe(
+      const getProjects$ = this.srv.getDataWithGivenUrl(merged.action.url);
+      return getProjects$.pipe(
         mergeMap((response: SpResponse) => {
           // collection of actions that will be dispatched
           const dispatch = [];
@@ -130,7 +137,7 @@ export class SearchEffects {
   );
 
   @Effect()
-  countUsersTotal$ = this.actions$.pipe(
+  countProjectsTotal$ = this.actions$.pipe(
     ofType(fromProjectsActions.ProjectsActionTypes.COUNT_PROJECTS_TOTAL),
     map(x => {
       return this.srv.buildUrl(this.params, true);

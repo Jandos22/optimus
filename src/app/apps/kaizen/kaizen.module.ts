@@ -42,6 +42,7 @@ import { RichTextEditorLightModule } from '../../shared/modules/rich-text-editor
 import { FormControlImagePickerModule } from './../../shared/modules/form-control-image-picker/form-control-image-picker.module';
 import { ToolbarButtonsModule } from '../../shared/modules/toolbar-buttons/toolbar-buttons.module';
 import { FormControlsModule } from '../../shared/modules/form-controls/form-controls.module';
+import { FilterControlsModule } from '../../shared/modules/filter-controls/form-controls.module';
 
 // routes
 export const kaizenRoutes: Routes = [
@@ -63,6 +64,7 @@ export const kaizenRoutes: Routes = [
     SimpleNotificationsModule,
     // form control modules
     FormControlsModule,
+    FilterControlsModule,
     RichTextEditorLightModule,
     FormControlImagePickerModule,
     // toolbar modules

@@ -42,20 +42,24 @@ export class KaizenService {
 
     // parameters
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text.replace('#', '%23');
-    const locations = params.locations;
-    let top = params.top;
+    const text = params.text ? params.text.replace('#', '%23') : null;
+    const locations = params.locations ? params.locations : [];
+    let top = params.top ? params.top : 100;
+    const doneBy = params.doneBy ? params.doneBy : [];
+
+    let countFilters = 0;
 
     // $select & $expand
     url += `$select=${this.getSelectFields().toString()}`;
     url += `&$expand=${this.getExpandFields().toString()}`;
 
-    // $filter
-    if (text || locations.length) {
+    // $filter is added if one of these is not empty/null
+    if (text || locations.length || doneBy.length) {
       url += `&$filter=`;
     }
 
     if (text) {
+      countFilters++;
       url += `(`;
       url += `(substringof('${text}',Title))`;
       url += `or(substringof('${text}',Summary))`;
@@ -63,12 +67,24 @@ export class KaizenService {
       url += `)`;
     }
 
-    if (text && locations.length) {
-      url += 'and';
+    // locations filter configuration
+    if (locations.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      // finds items with given location
+      url += `${this.getFilterLocations(locations)}`;
     }
 
-    if (locations.length) {
-      url += `${this.getFilterLocations(locations)}`;
+    if (doneBy.length) {
+      // check if "AND" is needed
+      if (countFilters > 0) {
+        url += 'and';
+      }
+      countFilters++;
+      url += `${this.getFilterDoneBy(doneBy)}`;
     }
 
     // $orderby
@@ -142,6 +158,37 @@ export class KaizenService {
         }
 
         filter += `(Locations/Id eq ${location})`;
+
+        // if current iteration is not last then add 'or'
+        if (n > 1 && n !== i) {
+          filter += `or`;
+        }
+
+        // if last then close brackets
+        if (n > 1 && i === n) {
+          filter += `)`;
+        }
+
+        i++;
+      }
+
+      return filter;
+    }
+  }
+
+  getFilterDoneBy(doneBy: number[]) {
+    if (doneBy.length) {
+      let filter = '';
+      const n = doneBy.length;
+      let i = 1;
+
+      for (const mate of doneBy) {
+        // if multiple locations then wrap them in brackets
+        if (i === 1 && n > 1) {
+          filter += `(`;
+        }
+
+        filter += `(DoneBy/Id eq ${mate})`;
 
         // if current iteration is not last then add 'or'
         if (n > 1 && n !== i) {

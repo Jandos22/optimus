@@ -35,6 +35,7 @@ export interface KaizenSearchParams {
   text: string;
   locations: number[];
   top: number;
+  doneBy?: number[];
 }
 
 export interface KaizenProjectType extends SpListItem {

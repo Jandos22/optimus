@@ -29,7 +29,8 @@ import { FormGroup } from '@angular/forms';
         [fg_params]="fg_params">
     </app-toolbar-button-clear>
 
-    <app-toolbar-button-filters>
+    <app-toolbar-button-filters
+      (toggleFilters)="toggleFilters.emit()">
     </app-toolbar-button-filters>
 
     <app-toolbar-button-add
@@ -46,6 +47,7 @@ export class KaizenToolbarComponent {
   @Input() accessLevel: number;
 
   @Output() openForm = new EventEmitter<any>();
+  @Output() toggleFilters = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
   @Output() onBlur = new EventEmitter<any>();
 

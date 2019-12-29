@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, HostBinding } from '@angular/core';
 
 // rxjs
 import { Subscription, Observable } from 'rxjs';
@@ -24,14 +24,15 @@ import { PaginationState } from '../../../people/store/reducers/pagination.reduc
 import { PeopleItem } from '../../../../shared/interface/people.model';
 
 @Component({
-  selector: 'app-kaizen.common-app-container',
+  selector: 'app-kaizen.common-app-v2-container',
   encapsulation: ViewEncapsulation.None,
   template: `
     <app-kaizen-header
       fxFlex="65px" class="common-header"
       [appName]="appName" [searching]="searching"
       [accessLevel]="(user$ | async).Position?.AccessLevel"
-      (openForm)="openForm('new', $event)">
+      (openForm)="openForm('new', $event)"
+      (toggleFilters)="toggleFilters()">
     </app-kaizen-header>
 
     <app-kaizen-projects-list
@@ -43,6 +44,12 @@ import { PeopleItem } from '../../../../shared/interface/people.model';
       [pagination]="pagination" [top]="params.top" [searching]="searching"
       (onNext)="onNext()" (onBack)="onBack()">
     </app-kaizen-footer>
+
+    <app-kaizen-filters class="common-filters-container"
+      [style.display]="(showFilters ? 'flex' : 'none')"
+      fxLayout="column" fxLayoutAlign="start start"
+      (toggleFilters)="toggleFilters()">
+    </app-kaizen-filters>
   `,
   styleUrls: ['./kaizen.component.scss']
 })
@@ -62,6 +69,10 @@ export class KaizenComponent implements OnInit, OnDestroy {
 
   $pagination: Subscription;
   pagination: PaginationState;
+
+  // when showFilters toggle it toggles class in host element
+  @HostBinding('class.filtersOpened')
+  showFilters = false;
 
   constructor(
     private store_root: Store<fromRoot.RootState>,
@@ -140,6 +151,14 @@ export class KaizenComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         console.log(res);
       });
+  }
+
+  toggleFilters() {
+    if (this.showFilters) {
+      this.showFilters = false;
+    } else {
+      this.showFilters = true;
+    }
   }
 
   ngOnDestroy() {
