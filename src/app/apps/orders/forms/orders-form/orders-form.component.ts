@@ -156,7 +156,6 @@ export class OrdersFormComponent implements OnInit, OnDestroy {
   }
 
   setupFormWatchers() {
-    // this regulates how many job summary sections to show
     this.$activeLineItems = this.fg_fields.controls[
       'ActiveLineItems'
     ].valueChanges
