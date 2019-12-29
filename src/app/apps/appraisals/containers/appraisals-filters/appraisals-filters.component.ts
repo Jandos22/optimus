@@ -138,7 +138,9 @@ export class AppraisalsFiltersComponent implements OnInit {
     // this.modifyGivenForGivenBy();
 
     // subscribe to change of Locations.selected
-    this.$locofinterest = this.locofinterest$.subscribe();
+    this.$locofinterest = this.locofinterest$.subscribe(locations => {
+      this.fg_filters.controls['locations'].patchValue(locations);
+    });
   }
 
   killSubscriptions() {
@@ -148,7 +150,7 @@ export class AppraisalsFiltersComponent implements OnInit {
 
   createFormGroup() {
     this.fg_filters = this.fb.group({
-      // locations: '',
+      locations: '',
       top: 25,
       afterDate: '',
       beforeDate: '',

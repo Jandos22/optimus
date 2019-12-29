@@ -1,7 +1,7 @@
-import { SpListItem } from "./sp-list-item.model";
-import { LocationEnt } from "./locations.model";
-import { PeopleItem } from "./people.model";
-import { JobItem } from "./jobs.model";
+import { SpListItem } from './sp-list-item.model';
+import { LocationEnt } from './locations.model';
+import { PeopleItem } from './people.model';
+import { JobItem } from './jobs.model';
 
 export interface AppraisalItem extends SpListItem {
   id?: number;
@@ -34,7 +34,7 @@ export interface AppraisalItem extends SpListItem {
 
 export interface AppraisalsSearchParams {
   text: string;
-  // locations: number[];
+  locations: number[];
   top: number;
   afterDate?: Date;
   beforeDate?: Date;
