@@ -210,6 +210,7 @@ export class JobsService {
       'ID',
       'Title',
       'iDistrict',
+      'isFDP',
       'JobFolder',
       'JobArchive',
       'JobType',

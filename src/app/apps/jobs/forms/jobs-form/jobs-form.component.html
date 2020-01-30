@@ -117,7 +117,7 @@
             <div class="group-of-2" fxLayout="row wrap" fxLayoutAlign="start start">
 
                 <!-- SECTION -->
-                <div class="form-group-title" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
+                <!-- <div class="form-group-title" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
                     Job Files
                 </div>
 
@@ -127,7 +127,7 @@
 
                 <app-jobs-form-jobarchive class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start"
                     fxLayoutGap="4px" [fg_fields]="fg_fields.controls['JobArchive']" [mode]="data.mode" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
-                </app-jobs-form-jobarchive>
+                </app-jobs-form-jobarchive> -->
 
                 <!-- SECTION -->
                 <div class="form-group-title">Job Summary</div>

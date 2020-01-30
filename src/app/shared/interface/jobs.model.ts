@@ -11,6 +11,7 @@ export interface JobItem extends SpListItem {
   id?: number;
   Title?: string;
   iDistrict?: string;
+  isFDP?: boolean;
   JobFolder?: SpHyperlink;
   JobArchive?: SpHyperlink;
   JobType?: string;

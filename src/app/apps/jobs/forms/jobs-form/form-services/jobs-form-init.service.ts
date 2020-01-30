@@ -40,6 +40,9 @@ export class JobsFormInitService {
         this.getSimpleFormValue(mo, it, 'iDistrict'),
         Validators.required
       ],
+      isFDP: [
+        this.getIsFDP(mo, it, 'isFDP')
+      ],
       JobFolder: this.fb.group({
         Description: '',
         Url: this.getJobFolder(mo, it)
@@ -119,6 +122,17 @@ export class JobsFormInitService {
         return { value: item[field], disabled: true };
       case 'edit':
         return { value: item[field], disabled: false };
+    }
+  }
+
+  getIsFDP(mode: FormMode, item: JobItem, field: string) {
+    switch (mode) {
+      case 'new':
+        return true;
+      case 'view':
+        return item[field];
+      case 'edit':
+        return item[field];
     }
   }
 
