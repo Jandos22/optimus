@@ -3,36 +3,47 @@ import {
   Input,
   ViewEncapsulation,
   ChangeDetectionStrategy
-} from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+} from "@angular/core";
+import { FormGroup, FormControl, AbstractControl } from "@angular/forms";
 
 // interfaces
-import { FormMode } from './../../../../../../shared/interface/form.model';
+import { FormMode } from "./../../../../../../shared/interface/form.model";
+
+// iDistrict has been retired, FDP was introduced instead
+// however, the component name can stay as iDistrict
+// 25-Jan-2020 Zhandos Ombayev
+
+import * as _ from "lodash";
 
 @Component({
-  selector: 'app-jobs-form-idistrict',
-  styleUrls: ['jobs-form-idistrict.component.scss'],
+  selector: "app-jobs-form-idistrict",
+  styleUrls: ["jobs-form-idistrict.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-form-field fxFlex="100" [formGroup]="fg_fields">
+      <input
+        matInput
+        placeholder="OA or iD"
+        formControlName="iDistrict"
+        autocomplete="off"
+      />
 
-        <input
-          matInput
-          placeholder="iDistrict"
-          formControlName="iDistrict"
-          autocomplete="off">
+      <button
+        mat-icon-button
+        matTooltip="Open JRI"
+        matSuffix
+        *ngIf="
+          this.fg_fields.controls['iDistrict'].value &&
+          !this.fg_fields.controls['iDistrict'].errors
+        "
+        (click)="openJRI()"
+      >
+        <span class="fa_regular"
+          ><fa-icon [icon]="['fas', 'link']"></fa-icon
+        ></span>
+      </button>
 
-        <button
-          mat-icon-button
-          matTooltip='Open JRI'
-          matSuffix
-          *ngIf="this.fg_fields.controls['iDistrict'].value && !this.fg_fields.controls['iDistrict'].errors"
-          (click)="openJRI()">
-          <span class='fa_regular'><fa-icon [icon]="['fas', 'link']"></fa-icon></span>
-        </button>
-
-        <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
-
+      <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   `
 })
@@ -43,25 +54,25 @@ export class JobsFormIdistrictComponent {
   constructor() {}
 
   get hasError() {
-    return this.fg_fields.get('iDistrict').invalid;
+    return this.fg_fields.get("iDistrict").invalid;
   }
 
   get errorMessage() {
-    const required = this.fg_fields.get('iDistrict').hasError('required');
+    const required = this.fg_fields.get("iDistrict").hasError("required");
 
-    return this.fg_fields.get('iDistrict').touched
+    return this.fg_fields.get("iDistrict").touched
       ? required
-        ? '... is required'
-        : ''
-      : '';
+        ? "... is required"
+        : ""
+      : "";
   }
 
   openJRI() {
-    const iDistrict = this.fg_fields.controls['iDistrict'].value;
+    const iDistrict = this.fg_fields.controls["iDistrict"].value;
     if (iDistrict) {
       window.open(
         `https://operationsportal.slb.com/fsmhome/pages/JRIQuestions.aspx?jobid=${iDistrict}&category=0`,
-        '_blank'
+        "_blank"
       );
     }
   }

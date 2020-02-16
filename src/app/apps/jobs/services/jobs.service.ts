@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 // rxjs
-import { Observable, of, from } from 'rxjs';
-import { map, mergeMap, switchMap, take, retry } from 'rxjs/operators';
+import { Observable, of, from } from "rxjs";
+import { map, mergeMap, switchMap, take, retry } from "rxjs/operators";
 
 // constants
-import { ApiPath, WirelinePath } from '../../../shared/constants';
-import { hk_accept, hv_appjson } from '../../../shared/constants/headers';
+import { ApiPath, WirelinePath } from "../../../shared/constants";
+import { hk_accept, hv_appjson } from "../../../shared/constants/headers";
 
 // interfaces
-import { JobsSearchParams } from '../../../shared/interface/jobs.model';
-import { SpResponse } from '../../../shared/interface/sp-response.model';
+import { JobsSearchParams } from "../../../shared/interface/jobs.model";
+import { SpResponse } from "../../../shared/interface/sp-response.model";
 
 // services
-import { SharepointService } from '../../../shared/services/sharepoint.service';
+import { SharepointService } from "../../../shared/services/sharepoint.service";
 
 @Injectable()
 export class JobsService {
@@ -42,11 +42,11 @@ export class JobsService {
     // parameters
 
     // # needs to be replaced, otherwise http request to sharepoint will through error
-    const text = params.text ? params.text.replace('#', '%23') : null;
+    const text = params.text ? params.text.replace("#", "%23") : null;
 
     const jobType = params.jobType ? params.jobType : null;
 
-    const well = params.well ? params.well.replace('#', '%23') : null;
+    const well = params.well ? params.well.replace("#", "%23") : null;
 
     const rigId = params.rigId ? params.rigId : null;
 
@@ -63,8 +63,8 @@ export class JobsService {
 
     // job date
     // dates start with empty string
-    let beforeDate = '',
-      afterDate = '';
+    let beforeDate = "",
+      afterDate = "";
     // date object need to be converted into string (ISO)
     if (params.beforeDate) {
       beforeDate = params.beforeDate.toISOString();
@@ -122,7 +122,7 @@ export class JobsService {
     if (locations.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       // finds items with given location
@@ -133,7 +133,7 @@ export class JobsService {
     if (beforeDate) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       // find items with RigUpStart before given date
@@ -144,7 +144,7 @@ export class JobsService {
     if (jobType) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       // finds items with given location
@@ -155,7 +155,7 @@ export class JobsService {
     if (well) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       // finds items with given location
@@ -165,7 +165,7 @@ export class JobsService {
     if (rigId) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       url += `(Rig/Id eq ${rigId})`;
@@ -174,7 +174,7 @@ export class JobsService {
     if (engineers.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       url += `${this.getFilterEngineers(engineers)}`;
@@ -183,7 +183,7 @@ export class JobsService {
     if (operators.length) {
       // check if "AND" is needed
       if (countFilters > 0) {
-        url += 'and';
+        url += "and";
       }
       countFilters++;
       url += `${this.getFilterOperators(operators)}`;
@@ -206,90 +206,90 @@ export class JobsService {
 
   getSelectFields() {
     const $select = [
-      'Id',
-      'ID',
-      'Title',
-      'iDistrict',
-      'JobFolder',
-      'JobArchive',
-      'JobType',
-      'Well',
-      'Field',
-      'FieldId',
-      'Field/Id',
-      'Field/Title',
-      'Client',
-      'ClientId',
-      'Client/Id',
-      'Client/Title',
-      'Rig',
-      'RigId',
-      'Rig/Id',
-      'Rig/Title',
-      'Ftl',
-      'TotalDepth',
-      'TotalDepthUnits',
-      'HoleSize',
-      'HoleSizeUnits',
-      'MudWeight',
-      'MudWeightUnits',
-      'MaxDeviation',
-      'RigUpStart',
-      'RigUpEnd',
-      'JobDuration',
-      'ToolsUsedId',
-      'ToolsUsed/Id',
-      'ToolsUsed/Title',
-      'SummarySections',
-      'JSStitle1',
-      'JSStitle2',
-      'JSStitle3',
-      'JSStitle4',
-      'JSStitle5',
-      'JSStitle6',
-      'JSStitle7',
-      'JSStitle8',
-      'JSSbody1',
-      'JSSbody2',
-      'JSSbody3',
-      'JSSbody4',
-      'JSSbody5',
-      'JSSbody6',
-      'JSSbody7',
-      'JSSbody8',
-      'LocationId',
-      'Location/Id',
-      'Location/Title',
-      'EngineersId',
-      'Engineers/Id',
-      'Engineers/ID',
-      'Engineers/Alias',
-      'Engineers/Fullname',
-      'OperatorsId',
-      'Operators/Id',
-      'Operators/ID',
-      'Operators/Alias',
-      'Operators/Fullname'
+      "Id",
+      "ID",
+      "Title",
+      "iDistrict",
+      "JobFolder",
+      "JobArchive",
+      "JobType",
+      "Well",
+      "Field",
+      "FieldId",
+      "Field/Id",
+      "Field/Title",
+      "Client",
+      "ClientId",
+      "Client/Id",
+      "Client/Title",
+      "Rig",
+      "RigId",
+      "Rig/Id",
+      "Rig/Title",
+      "Ftl",
+      "TotalDepth",
+      "TotalDepthUnits",
+      "HoleSize",
+      "HoleSizeUnits",
+      "MudWeight",
+      "MudWeightUnits",
+      "MaxDeviation",
+      "RigUpStart",
+      "RigUpEnd",
+      "JobDuration",
+      "ToolsUsedId",
+      "ToolsUsed/Id",
+      "ToolsUsed/Title",
+      "SummarySections",
+      "JSStitle1",
+      "JSStitle2",
+      "JSStitle3",
+      "JSStitle4",
+      "JSStitle5",
+      "JSStitle6",
+      "JSStitle7",
+      "JSStitle8",
+      "JSSbody1",
+      "JSSbody2",
+      "JSSbody3",
+      "JSSbody4",
+      "JSSbody5",
+      "JSSbody6",
+      "JSSbody7",
+      "JSSbody8",
+      "LocationId",
+      "Location/Id",
+      "Location/Title",
+      "EngineersId",
+      "Engineers/Id",
+      "Engineers/ID",
+      "Engineers/Alias",
+      "Engineers/Fullname",
+      "OperatorsId",
+      "Operators/Id",
+      "Operators/ID",
+      "Operators/Alias",
+      "Operators/Fullname"
     ];
     return $select.toString();
   }
 
   getExpandFields() {
     const $expand = [
-      'Location',
-      'Field',
-      'Client',
-      'Rig',
-      'ToolsUsed',
-      'Engineers',
-      'Operators'
+      "Location",
+      "Field",
+      "Client",
+      "Rig",
+      "ToolsUsed",
+      "Engineers",
+      "Operators"
     ];
     return $expand.toString();
   }
 
   getFilterLocations(locations: number[]) {
     if (locations.length) {
-      let filter = '';
+      let filter = "";
       const n = locations.length;
       let i = 1;
 
@@ -322,7 +322,7 @@ export class JobsService {
     if (jobType) {
       return `(JobType eq '${jobType}')`;
     } else {
-      return '';
+      return "";
     }
   }
 
@@ -330,13 +330,13 @@ export class JobsService {
     if (well) {
       return `(substringof('${well}',Well))`;
     } else {
-      return '';
+      return "";
     }
   }
 
   getFilterEngineers(engineers: number[]) {
     if (engineers.length) {
-      let filter = '';
+      let filter = "";
       const n = engineers.length;
       let i = 1;
 
@@ -367,7 +367,7 @@ export class JobsService {
 
   getFilterOperators(operators: number[]) {
     if (operators.length) {
-      let filter = '';
+      let filter = "";
       const n = operators.length;
       let i = 1;
 

@@ -1,4 +1,4 @@
-@import '../../../../../colors';
+@import "../../../../../colors";
 
 .job-container {
   border-radius: 8px;
@@ -34,14 +34,13 @@
 
 .job-row-1 {
   margin: 8px 0 4px 0;
-  // padding: 0 8px;
   height: 18px;
   max-height: 18px;
   font-size: 0.75rem;
 
   .date {
-    min-width: 72px;
-    max-width: 72px;
+    // min-width: 72px;
+    // max-width: 90px;
     font-size: 0.75rem;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
@@ -50,7 +49,7 @@
 
   .iDistrict {
     min-width: 78px;
-    max-width: 78px;
+    // max-width: 78px;
     font-size: 0.75rem;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
