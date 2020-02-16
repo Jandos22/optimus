@@ -1,86 +1,97 @@
 <div class="job-container" fxFlex="100" fxLayout="row nowrap">
-    <!-- color depends on Job Type: OH or CH -->
+  <!-- color depends on Job Type: OH or CH -->
+  <div
+    class="jobtype"
+    fxFlex="8px"
+    [matTooltip]="'Job Type: ' + job.JobType"
+    [ngClass]="{
+      ch: job.JobType === 'CH',
+      oh: job.JobType === 'OH'
+    }"
+  ></div>
+
+  <div class="job-col-body" fxFlex="calc(100% - 8px)">
     <div
-      class="jobtype"
-      fxFlex="8px"
-      [matTooltip]="'Job Type: ' + job.JobType"
-      [ngClass]="{
-        ch: job.JobType === 'CH',
-        oh: job.JobType === 'OH'
-      }"
-    ></div>
-
-    <div class="job-col-body" fxFlex="calc(100% - 8px)">
+      class="job-row-1"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start center"
+      fxLayoutGap="12px"
+    >
       <div
-        class="job-row-1"
-        fxLayout="row nowrap"
-        fxLayoutAlign="start center"
-        fxLayoutGap="12px"
+        class="date"
+        matTooltip="Job Start/End"
+        matTooltipClass="mytooltip large-text"
       >
-        <div
-          class="date"
-          matTooltip="Job Date"
-          matTooltipClass="mytooltip large-text"
-        >
-          {{ job.RigUpStart | date: 'mediumDate' }}
-        </div>
-
-        <div
-          class="iDistrict"
-          (click)="openJRI(job.iDistrict)"
-          matTooltip="open JRI"
-          matTooltipClass="mytooltip large-text"
-        >
-          iD: {{ job.iDistrict }}
-        </div>
-
+        {{ job.RigUpStart | date: "mediumDate" }} -
+        {{ job.RigUpEnd | date: "mediumDate" }}
       </div>
 
       <div
-        class="job-row-2"
-        fxLayout="row nowrap"
-        fxLayoutAlign="start start"
-        fxLayoutGap="12px"
+        class="iDistrict"
+        (click)="openFDP(job.iDistrict)"
+        matTooltip="open activity in FDP"
+        matTooltipClass="mytooltip large-text"
+        *ngIf="isFDP"
       >
-        <div
-          class="well"
-          (click)="openForm.emit(job)"
-          [matTooltip]="job.Well + ', ' + job.Rig.Title"
-        >
-          {{ job.Well }}
-        </div>
-        <div class="title" (click)="openForm.emit(job)">
-          {{ job.Title }}
-        </div>
+        OA: {{ job.iDistrict }}
       </div>
 
-      <!-- Job Summary List -->
       <div
-        class="job-row-3"
-        *ngIf="job.JSStitle1"
-        fxLayout="row wrap"
-        fxLayoutAlign="start start"
+        class="iDistrict"
+        (click)="openJRI(job.iDistrict)"
+        matTooltip="open JRI"
+        matTooltipClass="mytooltip large-text"
+        *ngIf="isiDistrict"
       >
-        <div fxFlex="100" class="job-data">
-          <span class="title">Rig: </span>
-          <span class="value">{{ job.Rig.Title }}</span>
-        </div>
-
-        <div fxFlex="100" class="job-data" *ngIf="job.MaxDeviation">
-          <span class="title">Deviation: </span>
-          <span class="value">{{ job.MaxDeviation }}</span>
-        </div>
-
-        <app-jobs-job-summary-list
-          fxFlex="100"
-          class="jobs-job-summary-list"
-          [job]="job"
-          (click)="openForm.emit(job)"
-        >
-        </app-jobs-job-summary-list>
+        iD: {{ job.iDistrict }}
       </div>
     </div>
 
-    <app-locations-card class="locations-card" [locations]="job?.Location">
-    </app-locations-card>
+    <div
+      class="job-row-2"
+      fxLayout="row nowrap"
+      fxLayoutAlign="start start"
+      fxLayoutGap="12px"
+    >
+      <div
+        class="well"
+        (click)="openForm.emit(job)"
+        [matTooltip]="job.Well + ', ' + job.Rig.Title"
+      >
+        {{ job.Well }}
+      </div>
+      <div class="title" (click)="openForm.emit(job)">
+        {{ job.Title }}
+      </div>
+    </div>
+
+    <!-- Job Summary List -->
+    <div
+      class="job-row-3"
+      *ngIf="job.JSStitle1"
+      fxLayout="row wrap"
+      fxLayoutAlign="start start"
+    >
+      <div fxFlex="100" class="job-data">
+        <!-- <span class="title">Rig: </span> -->
+        <span class="value">@ {{ job.Rig.Title }}</span>
+      </div>
+
+      <!-- <div fxFlex="100" class="job-data" *ngIf="job.MaxDeviation">
+        <span class="title">Deviation: </span>
+        <span class="value">{{ job.MaxDeviation }}</span>
+      </div> -->
+
+      <app-jobs-job-summary-list
+        fxFlex="100"
+        class="jobs-job-summary-list"
+        [job]="job"
+        (click)="openForm.emit(job)"
+      >
+      </app-jobs-job-summary-list>
+    </div>
   </div>
+
+  <app-locations-card class="locations-card" [locations]="job?.Location">
+  </app-locations-card>
+</div>

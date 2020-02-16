@@ -5,22 +5,22 @@ import {
   EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy
-} from '@angular/core';
+} from "@angular/core";
 
 // import * as differenceInDays from 'date-fns/difference_in_days';
 // import * as startOfToday from 'date-fns/start_of_today';
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // interfaces
-import { JobItem } from '../../../../shared/interface/jobs.model';
+import { JobItem } from "../../../../shared/interface/jobs.model";
 
 @Component({
-  selector: 'app-jobs-list-item-v2',
-  styleUrls: ['jobs-list-item-v2.component.scss'],
+  selector: "app-jobs-list-item-v2",
+  styleUrls: ["jobs-list-item-v2.component.scss"],
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './jobs-list-item-v2.component.html'
+  templateUrl: "./jobs-list-item-v2.component.html"
 })
 export class JobsListItemV2Component {
   @Input()
@@ -34,38 +34,43 @@ export class JobsListItemV2Component {
 
   constructor() {}
 
+  get isiDistrict() {
+    return this.job.iDistrict.length <= 7 ? true : false;
+  }
+
+  get isFDP() {
+    return this.job.iDistrict.startsWith("A") ? true : false;
+  }
+
   openJRI(iDistrict: string) {
     if (iDistrict) {
       window.open(
         `https://operationsportal.slb.com/fsmhome/pages/JRIQuestions.aspx?jobid=${iDistrict}&category=0`,
-        '_blank'
+        "_blank"
       );
     }
- }
-
- openFDP(op_activity_num: string) {
-
-  if (op_activity_num) {
-    let fdp = _.split(op_activity_num, '.');
-
-    window.open(
-      `https://fdp.slb.com/apps/jobmanagement/#/operation/O.${fdp[1]}.${fdp[2]}/activity/${op_activity_num}/WL`,
-      '_blank'
-    );
-
   }
-  
- }
+
+  openFDP(op_activity_num: string) {
+    if (op_activity_num) {
+      let fdp = _.split(op_activity_num, ".");
+
+      window.open(
+        `https://fdp.slb.com/apps/jobmanagement/#/operation/O.${fdp[1]}.${fdp[2]}/activity/${op_activity_num}/WL`,
+        "_blank"
+      );
+    }
+  }
 
   openJobFolder(link) {
     if (link) {
-      window.open(`${link.Url}`, '_blank');
+      window.open(`${link.Url}`, "_blank");
     }
   }
 
   openJobArchive(link) {
     if (link) {
-      window.open(`${link.Url}`, '_blank');
+      window.open(`${link.Url}`, "_blank");
     }
   }
 }

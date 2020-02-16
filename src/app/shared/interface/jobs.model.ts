@@ -1,17 +1,16 @@
-import { ClientItem } from './clients.model';
-import { SpListItem } from './sp-list-item.model';
-import { LocationEnt } from './locations.model';
-import { PeopleItem } from './people.model';
-import { FieldItem } from './fields.model';
-import { ToolItem } from './tools.model';
-import { SpHyperlink } from './sp-hyperlink.model';
-import { RigItem } from './rigs.model';
+import { ClientItem } from "./clients.model";
+import { SpListItem } from "./sp-list-item.model";
+import { LocationEnt } from "./locations.model";
+import { PeopleItem } from "./people.model";
+import { FieldItem } from "./fields.model";
+import { ToolItem } from "./tools.model";
+import { SpHyperlink } from "./sp-hyperlink.model";
+import { RigItem } from "./rigs.model";
 
 export interface JobItem extends SpListItem {
   id?: number;
   Title?: string;
   iDistrict?: string;
-  isFDP?: boolean;
   JobFolder?: SpHyperlink;
   JobArchive?: SpHyperlink;
   JobType?: string;

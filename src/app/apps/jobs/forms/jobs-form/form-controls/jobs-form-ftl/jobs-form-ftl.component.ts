@@ -20,7 +20,7 @@ import * as format from "date-fns/format";
     <mat-form-field fxFlex="100" [formGroup]="fg_fields">
       <input
         matInput
-        placeholder="FTL"
+        placeholder="Field Ticket"
         formControlName="Ftl"
         autocomplete="off"
       />
@@ -85,7 +85,7 @@ export class JobsFormFtlComponent {
         : min
         ? "min 10 characters allowed"
         : max
-        ? "max 10 characters allowed"
+        ? "max 11 characters allowed"
         : ""
       : "";
   }
