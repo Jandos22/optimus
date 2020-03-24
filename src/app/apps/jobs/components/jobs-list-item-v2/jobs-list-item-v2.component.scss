@@ -61,6 +61,20 @@
     }
   }
 
+  .JRI {
+    min-width: 38px;
+    // max-width: 78px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 14px;
+
+    &:hover {
+      cursor: pointer;
+      color: $my-primary-dark;
+    }
+  }
+
   .JobFolder {
     &:hover {
       cursor: pointer;
