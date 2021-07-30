@@ -9,5 +9,6 @@
 // 22   OP G05             3
 // 23   OP G06             3
 // 24   OP G07             3
+// 77   Wellsite Supervisor G08             3
 
-export const people_op: number[] = [3, 20, 21, 22, 23, 24];
+export const people_op: number[] = [3, 20, 21, 22, 23, 24, 77];

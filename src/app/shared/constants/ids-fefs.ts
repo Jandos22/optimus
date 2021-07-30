@@ -11,6 +11,7 @@
 // 27   JFS             3
 // 28   FS              3
 // 29   SFS             3
-// 30   GFS             3
+// 30   GFS             3,
+// 77   GFS             3
 
-export const people_fefs: number[] = [4, 5, 6, 7, 8, 27, 28, 29, 30];
+export const people_fefs: number[] = [4, 5, 6, 7, 8, 27, 28, 29, 30, 77];

@@ -91,10 +91,10 @@
                 <!-- Engineers / 1 column -->
                 <div class="t2-w2-t1-w3-t2-w4" fxLayout="row wrap" fxLayoutAlign="start start">
                     <span class="cmn-form-control-title" *ngIf="data.mode === 'view'">
-                        Engineers
+                        Engineers/Supervisors
                     </span>
                     <app-form-control-people-selector class="cmn-form-component t2-w2-t1-w3-t2-w4" fxLayout="row wrap"
-                        [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'EngineersId'" [displayName]="'Engineers'"
+                        [fg_fields]="fg_fields" [mode]="data.mode" [fieldName]="'EngineersId'" [displayName]="'Engineers/Supervisors'"
                         [selfUser]="selfUser$ | async" [singleLocation]="true" [allowNumberOfUsers]="4" (onSelectUser)="onSelectEngineer($event)"
                         [id]="1" [includeOnly]="engineers">
                     </app-form-control-people-selector>
@@ -115,19 +115,6 @@
             </div>
 
             <div class="group-of-2" fxLayout="row wrap" fxLayoutAlign="start start">
-
-                <!-- SECTION -->
-                <!-- <div class="form-group-title" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
-                    Job Files
-                </div>
-
-                <app-jobs-form-jobfolder class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start"
-                    fxLayoutGap="4px" [fg_fields]="fg_fields.controls['JobFolder']" [mode]="data.mode" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
-                </app-jobs-form-jobfolder>
-
-                <app-jobs-form-jobarchive class="cmn-form-component" fxLayout="row nowrap" fxLayoutAlign="space-between start"
-                    fxLayoutGap="4px" [fg_fields]="fg_fields.controls['JobArchive']" [mode]="data.mode" *ngIf="data.mode === 'new' || data.mode === 'edit' || (data.mode === 'view' && (this.fg_fields.controls['JobFolder'].get('Url').value || this.fg_fields.controls['JobArchive'].get('Url').value))">
-                </app-jobs-form-jobarchive> -->
 
                 <!-- SECTION -->
                 <div class="form-group-title">Job Summary</div>
