@@ -145,13 +145,7 @@ export class SearchEffects {
     switchMap(url => {
       return this.srv.getDataWithNext(url).pipe(
         map((res: SpResponse) => {
-          if (res.d.results.length === 0) {
-            return new fromPaginationActions.UpdateTotalExist(0);
-          } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromPaginationActions.UpdateTotalExist(
-              res.d.results.length
-            );
-          }
+            return new fromPaginationActions.UpdateTotalExist(res.d.results.length);
         })
       );
     })

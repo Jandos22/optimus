@@ -49,8 +49,8 @@ import { BatteryLastUpdatedComponent } from './components/battery-last-updated/b
 // routes
 export const batteriesRoutes: Routes = [
   { path: ":status", component: fromContainers.BatteriesComponent },
-  { path: "", redirectTo: "All", pathMatch: "full" },
-  { path: "**", redirectTo: "All" }
+  { path: "", redirectTo: "InUse", pathMatch: "full" },
+  { path: "**", redirectTo: "InUse" }
 ];
 
 @NgModule({
