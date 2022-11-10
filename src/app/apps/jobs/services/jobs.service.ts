@@ -193,10 +193,7 @@ export class JobsService {
     url += `&$orderby=RigUpStart desc`;
 
     // $top
-    if (top) {
-      if (counter) {
-        top = 500;
-      }
+    if (top && !counter) {
       url += `&$top=${top}`;
     }
 

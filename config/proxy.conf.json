@@ -1,11 +1,6 @@
 {
   "/_api": {
-    "target": "http://localhost:8080",
-    "secure": false,
-    "changeOrigin": true
-  },
-  "*/NgPhotos/**": {
-    "target": "http://localhost:8080/NgPhotos",
+    "target": "http://SLB-4SVXP13:8080",
     "secure": false,
     "changeOrigin": true
   }

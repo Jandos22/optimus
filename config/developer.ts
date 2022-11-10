@@ -6,8 +6,8 @@
 // not localhost to overcome CORS authorization issues
 
 const Optimus2 = {
-  clientId: '773d1dc5-879d-4fc0-8a16-9fc0b4eb8347',
-  clientSecret: 'dcV1XxqFy6LAwcEfMuLSc5W8IkEm9F2g5xT4/yl2vSI='
+  clientId: 'a3e872f7-9a24-4673-ab78-b75aba18d301',
+  clientSecret: 'nU3twF78eQKTEpiuJaaiieY83K1fxVLZxIC86+8vteE='
 };
 
 // you need 2 command terminals

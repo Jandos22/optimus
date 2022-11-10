@@ -26,7 +26,7 @@ export class BatteriesService {
         headers: new HttpHeaders().set(hk_accept, hv_appjson)
       })
       .pipe(
-        retry(3),
+        // retry(3),
         switchMap((response: SpResponse) => {
           // console.log(response);
           if (response.d.results) {

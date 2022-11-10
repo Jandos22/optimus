@@ -4,33 +4,18 @@ import {
   ParamsActionsUnion
 } from "../actions/params.actions";
 
-// constants
-// import { WirelinePath, ApiPath } from '../../../../shared/constants';
-
 export interface ParamsState {
   text: string;
   status: string;
   locations: number[];
   top: number;
-  // afterDate?: Date;
-  // beforeDate?: Date;
-  // jobType?: string;
-  // well?: string;
-  // engineers?: number[];
-  // operators?: number[];
 }
 
 export const initialState: ParamsState = {
   text: null,
   status: null,
   locations: null,
-  top: null
-  // afterDate: null,
-  // beforeDate: null,
-  // jobType: null,
-  // well: null,
-  // engineers: null,
-  // operators: null
+  top: 50
 };
 
 export function reducer(
