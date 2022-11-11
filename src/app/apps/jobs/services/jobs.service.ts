@@ -195,6 +195,8 @@ export class JobsService {
     // $top
     if (top && !counter) {
       url += `&$top=${top}`;
+    } else if (counter) {
+      url += `&$top=10000`;
     }
 
     // return combiner url string

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 // rxjs
 import {
@@ -8,30 +8,30 @@ import {
   catchError,
   take,
   reduce,
-  withLatestFrom
-} from 'rxjs/operators';
+  withLatestFrom,
+} from "rxjs/operators";
 
 // lodash
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 // ngrx
-import { Store, select } from '@ngrx/store';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import * as fromJobs from '..';
-import * as fromParamsActions from '../actions/params.actions';
-import * as fromPaginationActions from '../actions/pagination.actions';
-import * as fromJobsActions from '../actions/jobs.actions';
-import * as fromErrorActions from '../../../../store/actions/errors.actions';
+import { Store, select } from "@ngrx/store";
+import { Effect, Actions, ofType } from "@ngrx/effects";
+import * as fromJobs from "..";
+import * as fromParamsActions from "../actions/params.actions";
+import * as fromPaginationActions from "../actions/pagination.actions";
+import * as fromJobsActions from "../actions/jobs.actions";
+import * as fromErrorActions from "../../../../store/actions/errors.actions";
 
 // services
-import { JobsService } from '../../services/jobs.service';
+import { JobsService } from "../../services/jobs.service";
 
 // interfaces
-import { SpResponse } from './../../../../shared/interface/sp-response.model';
+import { SpResponse } from "./../../../../shared/interface/sp-response.model";
 import {
   JobItem,
-  JobsSearchParams
-} from '../../../../shared/interface/jobs.model';
+  JobsSearchParams,
+} from "../../../../shared/interface/jobs.model";
 
 @Injectable()
 export class SearchEffects {
@@ -64,11 +64,11 @@ export class SearchEffects {
       this.params = params;
       return this.srv.buildUrl(params);
     }),
-    mergeMap(url => {
+    mergeMap((url) => {
       return [
         new fromPaginationActions.ResetPagination(),
         new fromPaginationActions.AddLink(url),
-        new fromJobsActions.SearchJobsStart(url)
+        new fromJobsActions.SearchJobsStart(url),
       ];
     })
   );
@@ -80,10 +80,10 @@ export class SearchEffects {
     map((merged: any[]) => {
       return {
         action: merged[0] as fromJobsActions.SearchJobsStart,
-        currentIndex: merged[1] as number
+        currentIndex: merged[1] as number,
       };
     }),
-    switchMap(merged => {
+    switchMap((merged) => {
       const getUsers$ = this.srv.getDataWithNext(merged.action.url);
       return getUsers$.pipe(
         mergeMap((response: SpResponse) => {
@@ -94,7 +94,7 @@ export class SearchEffects {
             // when users received, map them to add "id" property for @ngrx/entity
             const jobs = _.reduce(
               response.d.results,
-              function(acc: JobItem[], item: JobItem) {
+              function (acc: JobItem[], item: JobItem) {
                 return [...acc, { ...item, id: item.ID }];
               },
               []
@@ -137,19 +137,15 @@ export class SearchEffects {
   @Effect()
   countUsersTotal$ = this.actions$.pipe(
     ofType(fromJobsActions.JobsActionTypes.COUNT_JOBS_TOTAL),
-    map(x => {
+    map((x) => {
       return this.srv.buildUrl(this.params, true);
     }),
-    switchMap(url => {
+    switchMap((url) => {
       return this.srv.getDataWithNext(url).pipe(
         map((res: SpResponse) => {
-          if (res.d.results.length === 0) {
-            return new fromPaginationActions.UpdateTotalExist(0);
-          } else if (res.d.results.length <= 500 && !res.d.__next) {
-            return new fromPaginationActions.UpdateTotalExist(
-              res.d.results.length
-            );
-          }
+          return new fromPaginationActions.UpdateTotalExist(
+            res.d.results.length
+          );
         })
       );
     })
@@ -170,13 +166,13 @@ export class SearchEffects {
     map((merged: any[]) => {
       return {
         action: merged[0] as fromPaginationActions.OnBack,
-        currentIndex: merged[1] as number
+        currentIndex: merged[1] as number,
       };
     }),
-    mergeMap(merged => {
+    mergeMap((merged) => {
       return [
         new fromJobsActions.SearchJobsStart(merged.action.url),
-        new fromPaginationActions.RemoveLink(merged.currentIndex)
+        new fromPaginationActions.RemoveLink(merged.currentIndex),
       ];
     })
   );
