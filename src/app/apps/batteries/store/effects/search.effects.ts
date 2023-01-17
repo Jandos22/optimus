@@ -8,7 +8,8 @@ import {
   catchError,
   take,
   reduce,
-  withLatestFrom
+  withLatestFrom,
+  auditTime
 } from "rxjs/operators";
 
 // lodash
@@ -64,6 +65,7 @@ export class SearchEffects {
       this.params = params;
       return this.srv.buildUrl(params);
     }),
+    auditTime(1000),
     mergeMap(url => {
       return [
         new fromPaginationActions.ResetPagination(),
@@ -91,7 +93,7 @@ export class SearchEffects {
           const dispatch = [];
 
           if (response.d.results.length) {
-            // when users received, map them to add "id" property for @ngrx/entity
+            // when batteries received, map them to add "id" property for @ngrx/entity
             const batteries = _.reduce(
               response.d.results,
               function(acc: BatteryItem[], item: BatteryItem) {
@@ -99,12 +101,12 @@ export class SearchEffects {
               },
               []
             );
-            // if users exist and have length more than 0
+            // if baterries exist and have length more than 0
             dispatch.push(
               new fromBatteriesActions.SearchBatteriesSuccess(batteries)
             );
             dispatch.push(
-              new fromPaginationActions.UpdateTotalDisplayed(batteries.length)
+              new fromPaginationActions.UpdateCurrentDisplayed(batteries.length)
             );
 
             // if results have next page
@@ -114,7 +116,7 @@ export class SearchEffects {
               dispatch.push(
                 new fromPaginationActions.AddLink(response.d.__next)
               );
-              dispatch.push(new fromBatteriesActions.CountBatteriesTotal());
+              dispatch.push(new fromPaginationActions.CountTotal());
             } else {
               if (merged.currentIndex === 0) {
                 dispatch.push(
@@ -125,7 +127,7 @@ export class SearchEffects {
           } else {
             // if no users found
             dispatch.push(new fromBatteriesActions.SearchBatteriesNoResults());
-            dispatch.push(new fromPaginationActions.UpdateTotalDisplayed(0));
+            dispatch.push(new fromPaginationActions.UpdateCurrentDisplayed(0));
             dispatch.push(new fromPaginationActions.UpdateTotalExist(0));
           }
 
@@ -138,7 +140,7 @@ export class SearchEffects {
 
   @Effect()
   countTotal$ = this.actions$.pipe(
-    ofType(fromBatteriesActions.BatteriesActionTypes.COUNT_BATTERIES_TOTAL),
+    ofType(fromPaginationActions.PaginationActionTypes.COUNT_TOTAL),
     map(x => {
       return this.srv.buildUrl(this.params, true);
     }),

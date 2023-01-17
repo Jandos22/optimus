@@ -65,9 +65,9 @@ export class BatteriesFooterComponent implements OnChanges {
   renderFromTo(p: PaginationState) {
     let result = '';
 
-    if (p && p.totalDisplayed) {
+    if (p && p.currentDisplayed) {
       const from = p.currentIndex * this.top + 1;
-      const to = from + p.totalDisplayed - 1;
+      const to = from + p.currentDisplayed - 1;
       result += `${from} - ${to}`;
     } else {
       result += '0 results';
@@ -80,7 +80,7 @@ export class BatteriesFooterComponent implements OnChanges {
     let result = '';
 
     if (p && p.totalExist) {
-      result += p.totalExist < 500 ? ' of ' + p.totalExist : ' of 500+';
+      result += p.totalExist < 10000 ? ' of ' + p.totalExist : ' of 10000+';
     }
 
     this.renderedTotal = result;

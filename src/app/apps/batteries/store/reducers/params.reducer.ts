@@ -15,7 +15,7 @@ export const initialState: ParamsState = {
   text: null,
   status: null,
   locations: null,
-  top: 50
+  top: 100
 };
 
 export function reducer(

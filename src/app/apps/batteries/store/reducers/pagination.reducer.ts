@@ -12,14 +12,14 @@ import { WirelinePath, ApiPath } from '../../../../shared/constants';
 export interface PaginationState {
   currentIndex: number;
   links: string[];
-  totalDisplayed: number;
+  currentDisplayed: number;
   totalExist: number;
 }
 
 export const initialState: PaginationState = {
   currentIndex: 0,
   links: [],
-  totalDisplayed: 0,
+  currentDisplayed: 0,
   totalExist: null
 };
 
@@ -34,9 +34,9 @@ export function reducer(
         ...initialState
       };
 
-    case PaginationActionTypes.UPDATE_TOTAL_DISPLAYED: {
-      const totalDisplayed = action.totalDisplayed;
-      return { ...state, totalDisplayed };
+    case PaginationActionTypes.UPDATE_CURRENT_DISPLAYED: {
+      const currentDisplayed = action.currentDisplayed;
+      return { ...state, currentDisplayed };
     }
 
     case PaginationActionTypes.UPDATE_TOTAL_EXIST: {
@@ -73,8 +73,7 @@ export function reducer(
 export const getPagination = (state: PaginationState) => state;
 export const getCurrentIndex = (state: PaginationState) => state.currentIndex;
 export const getPageLinks = (state: PaginationState) => state.links;
-export const getTotalDisplayed = (state: PaginationState) =>
-  state.totalDisplayed;
+export const getTotalDisplayed = (state: PaginationState) => state.currentDisplayed;
 export const getTotalExist = (state: PaginationState) => state.totalExist;
 
 // help functions

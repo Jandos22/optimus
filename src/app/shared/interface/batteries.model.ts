@@ -7,17 +7,11 @@ export interface BatteryItem extends SpListItem {
   Title?: string;
   Serial?: string;
   PN?: string;
-  // ManufDate?: Date;
-  // Jobs?: Number;
-  // Junked?: Boolean;
   Hours?: number;
-  // PercentUsed?: Number;
-  // DepassDate?: Date;
   Status?: string;
   Details?: string;
   Location?: LocationEnt;
   LocationId?: number;
-  // New?: boolean;
   LastUpdated?: Date;
   LastUpdatedBy?: PeopleItem;
   LastUpdatedById?: number;

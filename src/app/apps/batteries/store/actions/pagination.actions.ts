@@ -3,9 +3,10 @@ import { Action } from '@ngrx/store';
 // actions
 export enum PaginationActionTypes {
   // below actions caught only in reducers
-  RESET_PAGINATION = '[Batteries Pagination] Reset (since params changed)',
+  RESET_PAGINATION = '[Batteries Pagination] Reset (since params changed)',  
+  COUNT_TOTAL = "[Batteries Pagination] Count Total (since next url is present)",
 
-  UPDATE_TOTAL_DISPLAYED = '[Batteries Pagination] Update Total Displayed',
+  UPDATE_CURRENT_DISPLAYED = '[Batteries Pagination] Update Current Displayed',
   UPDATE_TOTAL_EXIST = '[Batteries Pagination] Update Total Exist',
 
   ADD_LINK = '[Batteries Pagination] Add Link',
@@ -23,9 +24,13 @@ export class ResetPagination implements Action {
   constructor() {}
 }
 
-export class UpdateTotalDisplayed implements Action {
-  readonly type = PaginationActionTypes.UPDATE_TOTAL_DISPLAYED;
-  constructor(public totalDisplayed: number) {}
+export class CountTotal implements Action {
+  readonly type = PaginationActionTypes.COUNT_TOTAL;
+}
+
+export class UpdateCurrentDisplayed implements Action {
+  readonly type = PaginationActionTypes.UPDATE_CURRENT_DISPLAYED;
+  constructor(public currentDisplayed: number) {}
 }
 
 export class UpdateTotalExist implements Action {
@@ -55,7 +60,8 @@ export class OnBack implements Action {
 
 export type PaginationActionsUnion =
   | ResetPagination
-  | UpdateTotalDisplayed
+  | CountTotal
+  | UpdateCurrentDisplayed
   | UpdateTotalExist
   | AddLink
   | RemoveLink
