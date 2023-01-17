@@ -123,12 +123,12 @@ export class BatteriesService {
     }
 
     // $orderby
-    url += `&$orderby=Hours asc`;
+    url += `&$orderby=Serial asc`;
 
     // $top
     if (top) {
       if (counter) {
-        top = 500;
+        top = 10000;
       }
       url += `&$top=${top}`;
     }

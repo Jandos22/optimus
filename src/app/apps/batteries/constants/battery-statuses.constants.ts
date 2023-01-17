@@ -3,5 +3,6 @@ export const batteryStatuses: string[] = [
   "New",
   "InUse",
   "FmtOut",
+  "For disposal",
   "Disposed"
 ];

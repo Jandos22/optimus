@@ -53,24 +53,10 @@ export class UserService {
     ) {
       // loginName = 'dismagulov@slb.com'; // FE
       // spId = 9;
-      loginName = 'zombayev@slb.com'; // FE
-      spId = 167;
-      // loginName = 'azhussipov@slb.com'; // FE
-      // spId = 6;
-      // loginName = 'cmarcotte@slb.com'; // PSDM
-      // spId = 209;
-      // loginName = 'rmiller36@slb.com'; // OU PSDM
-      // spId = 16;
-      // loginName = 'myergazin@slb.com'; // OU PSDM
-      // spId = 210;
-      // loginName = 'knigmetullin@slb.com'; // OU PSDM
-      // spId = 226;
-      // loginName = 'rayat@slb.com'; // FDE Manager
-      // spId = 250;
-      // loginName = 'kbatyrkhanov@slb.com'; // Sales Engineer
-      // spId = 261;
-      // loginName = 'amukumova@slb.com';
-      // spId = 233;
+      // loginName = 'zombayev@slb.com'; // FE
+      // spId = 167;
+      loginName = 'HPulido@slb.com';
+      spId = 606;
     }
 
     const email = loginName.replace('i:0#.f|membership|', '');
