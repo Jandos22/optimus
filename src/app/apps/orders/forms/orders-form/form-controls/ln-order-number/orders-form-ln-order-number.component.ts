@@ -33,7 +33,7 @@ import { distinctUntilChanged } from "rxjs/operators";
 
       <button
         mat-icon-button
-        matTooltip="check status via Track My Order"
+        matTooltip="check status via Supply Visibility"
         matSuffix
         *ngIf="isPurchaseOrder"
         (click)="openTMO(fg_fields.controls[this.fieldName].value)"
@@ -97,7 +97,7 @@ export class OrdersFormLnOrderNumberComponent implements OnInit {
   openTMO(orderNumber: string) {
     if (orderNumber) {
       window.open(
-        `http://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
+        `https://supplyvisibility.gt.slb.com/dashboard?poNumber=${orderNumber}`,
         "_blank"
       );
     }

@@ -92,7 +92,7 @@ export class OrdersLineItemComponent {
   openTMO(orderNumber: string) {
     if (orderNumber && this.isPurchaseOrder) {
       window.open(
-        `http://trackmyorder.slb.com/_layouts/SLB.COE.ExpeditingConsole/ExpeditingConsoleTracking.aspx?PONo=${orderNumber}`,
+        `https://supplyvisibility.gt.slb.com/dashboard?poNumber=${orderNumber}`,
         '_blank'
       );
     }
